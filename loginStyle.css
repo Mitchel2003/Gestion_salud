@@ -1,0 +1,100 @@
+body{
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    height: 100vh;
+    margin:0;
+    background: color #f5f5f5;
+    animation: animEntry 0.7s ease;
+}
+
+@keyframes animEntry{
+    from{
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*text page*/
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+    font-family:"Tahoma Light";
+    color: #7a36d480;
+    transition: color 0.5s ease;
+}
+h1:hover{
+    color: #7a36d4;
+}
+
+
+/*styles for container of formulary*/
+.loginContainer{
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/*styles for formulary*/
+#loginForm{
+    display:flex;
+    flex-direction: column;
+}
+.inputGroup{
+    margin-bottom: 15px;
+}
+label{
+    font-family: 'Lucida Sans Regular';
+    margin-bottom: 5px;
+    display: block;
+}
+input[type="text"],input[type="password"]{
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: calc(100% - 20px);
+    margin-right:5%;
+}
+
+/*onClick actions*/
+button[type="submit"]{
+    padding: 10px;
+    font-family:'Lucida Sans Regular';
+    border: 0.5px solid #fff;
+    border-radius: 5px;
+    background-color: #7a36D415;
+    color: #7A36D4;
+    cursor:pointer;
+    transition: background-color 0.5s ease;
+}
+button:hover{
+    background-color: #7A36D4;
+    color: #fff;
+}
+a{
+    text-align: center;
+    margin-top: 5px;
+    padding: 5px;
+    font-size: small;
+    font-family: "Lucida Sans Regular";
+    border-radius: 5px;
+    text-decoration: none;
+    border: 0.5px #fff;
+    background-color: #fff;
+    color: #7A36D4;
+    transition: background-color 0.5s ease;
+}
+a:hover{
+    background-color: #7A36D450;
+}
+
+
+
+
