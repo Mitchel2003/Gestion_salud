@@ -14,7 +14,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
-
 /*--------------------------------------------------tools--------------------------------------------------*/
 
 /*--------------------------------------------------visual--------------------------------------------------*/
@@ -41,14 +40,4 @@ document.addEventListener("DOMContentLoaded", function () {
       container.classList.remove('active');
     })
 
-    //button
-    const button = document.querySelector('.signContainer .button');
-
-    button.addEventListener('mouseenter', () => {
-      button.classList.add('activeButton');
-    });
-
-    button.addEventListener('transitionend', () => {
-      button.classList.remove('activeButton');
-    });
 

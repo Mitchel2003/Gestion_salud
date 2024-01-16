@@ -11,13 +11,17 @@
 }
 /*anim spawn of register*/
 .mainContainer.active .registerContainer{
-    bottom: -13%;
+    bottom: -14%;
     border-radius: 200px;
     box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
 }.mainContainer.active .registerContainer header{
+    font-size: 34px;
     opacity: 1;
 }.mainContainer.active .signContainer header{
+    font-size: 30px;
     opacity: 0.6;
+}.mainContainer.active .signContainer header:hover{
+    font-size: 34px;
 }
 
 /*--------------------------------------------------Generaly--------------------------------------------------*/
@@ -63,12 +67,12 @@
 .registerContainer{
     position: absolute;
     left: 50%;
-    bottom: -86%;
+    bottom: -87%;
     height: 100%;
     width: calc(100% + 180px);
     padding: 5px 140px;
     background: #fafafa;
-    border-radius: 290px;
+    border-radius: 300px;
     transform: translateX(-50%);
     transition: bottom 0.7s ease, 
                 border-radius 0.7s ease,
@@ -78,7 +82,7 @@
 /*--------------------custom header--------------------*/
 .signContainer header, .registerContainer header{
     text-align: center;
-    font-size: 30px;
+    font-size: 34px;
     height: 9vh;
     width: calc(100% - 50%);
     margin-left: calc(100% - 75%);
@@ -86,13 +90,14 @@
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s ease;
-}.signContainer header:hover, .registerContainer header:hover{
-    font-size: 34px;
 }.registerContainer header{
+    font-size: 30px;
     width: calc(100% - 45%);
     margin-left: calc(100% - 77.5%);
     color: #333;
     opacity: 0.6;
+}.registerContainer header:hover{
+    font-size: 34px;
 }
 
 /*--------------------custom form of container--------------------*/
@@ -103,7 +108,7 @@
     margin-top: 15px;
 }.registerContainer form{
     gap: 8px;
-    margin-top: 15px;
+    margin-top: 0px;
 }
 
 /*--------------------inputs and select--------------------*/
@@ -114,10 +119,13 @@ form input, form select{
     font-size: 16px;
     color: #333;
     font-weight: 400;
+    border: 1px solid #aaa;
     border-radius: 8px;
 }form input:hover, form select:hover{
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}.signContainer input{
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signContainer input{
     height: 7vh;
     width: calc(100% - 10%);
     margin-left: calc(100% - 95%);
@@ -141,16 +149,29 @@ form input, form select{
 }
 
 .registerContainer input, .registerContainer select{
-    border: 1px solid #aaa;
+    height: 7vh;
+    width: calc(100% - 5%);
+    margin-left: calc(100% - 97.5%);
     transition: 0.3s ease;
 }.registerContainer select{
     margin-top: -10px;
-    padding: 5px 20px;
+    padding: 10px 15px;
+}.registerContainer input:hover, .registerContainer select:hover{
+    font-size: 18px;
+    height: 8vh;
+    width: calc(100% - 2.5%);
+    margin-left: calc(100% - 98.75%);
+    border: 1px solid rgb(140, 70, 140);
+}.registerContainer input:hover{
+    margin-top: -3.25px;
+    margin-bottom: -3.25px;
+}.registerContainer select:hover{
+    margin-bottom: -6.5px;
 }
 
 .registerContainer label{
     font-size: 18px;
-    margin-left: 10px;
+    margin-left: 20px;
     font-weight: 400;
 }
 
@@ -177,21 +198,24 @@ form .button{
     padding: 8px 15px;
     border-radius: 8px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-}.signContainer .button{
+}
+
+.signContainer .button{
     font-size: 17px;
     height: 7vh;
     width: calc(100% - 50%);
     margin-left: calc(100% - 75%);
-    color: rgb(255, 224, 255);
-    border: 1px solid rgb(250, 205, 250);
-    background: linear-gradient(to bottom, 
-                                rgb(210, 175, 210), 
-                                rgb(185, 125, 185),
-                                rgb(170, 110, 170), 
-                                rgb(150, 100, 150),
-                                rgb(127, 80, 127));
+    color: rgb(230, 200, 230);
+    border: 1px solid rgb(135, 100, 135, 0.5);
+    background: linear-gradient(to bottom,
+                                rgb(110, 60, 110),
+                                rgb(120, 80, 120),
+                                rgb(135, 100, 135),
+                                rgb(150, 120, 150),
+                                rgb(175, 140, 175),
+                                rgb(190, 190, 190));
     transition: 0.5s ease;
     position: relative;
     overflow: hidden;
@@ -228,7 +252,51 @@ form .button{
 }
 
 .registerContainer .button{
-     background: #303f;
-     color: #fff;
-     border: none;
+    font-size: 17px;
+    height: 7vh;
+    width: calc(100% - 50%);
+    margin-left: calc(100% - 75%);
+    color: rgb(190, 120, 190);
+    border: 2px solid rgb(190, 120, 190);
+    background: linear-gradient(to bottom, 
+                                rgb(220, 110, 220, 0.0),
+                                rgb(220, 110, 220, 0.1), 
+                                rgb(220, 110, 220, 0.2),
+                                rgb(220, 110, 220, 0.3), 
+                                rgb(220, 110, 220, 0.4),
+                                rgb(220, 110, 220, 0.5),
+                                rgb(220, 110, 220, 0.6));
+    transition: 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}.registerContainer .button:hover{
+    font-size: 20px;
+    height: 8vh;
+    width: calc(100% - 40%);
+    margin-left: calc(100% - 80%);
+    color: #000;
+    margin-bottom: -6px;
+    border-radius: 0px;
+    border-image: linear-gradient(to top, 
+                        rgba(159, 0, 11),
+                        rgba(111, 0, 229),
+                        rgba(0, 235, 252))1;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}.registerContainer .button::before{
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 0 0 20% 20%;
+    background: linear-gradient(to bottom, 
+                            rgba(159, 0, 11, 0.5),
+                            rgba(111, 0, 229, 0.5),
+                            rgba(0, 235, 252, 0.5),
+                            rgba(0, 228, 42, 0.5),
+                            rgba(225, 255, 0, 0.5));
+    transition: height 0.5s ease;
+}.registerContainer .button:hover::before{
+    height: 180%;
 }
