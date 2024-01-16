@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+/*--------------------------------------------------animation custom--------------------------------------------------*/
+@keyframes animEntry {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/*anim spawn of register*/
+.mainContainer.active .registerContainer{
+    bottom: -13%;
+    border-radius: 200px;
+    box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
+}.mainContainer.active .registerContainer header{
+    opacity: 1;
+}.mainContainer.active .signContainer header{
+    opacity: 0.6;
+}
+
+/*--------------------------------------------------Generaly--------------------------------------------------*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+}a{
+    text-decoration: none;
+}
+
+/*--------------------------------------------------styles for containers--------------------------------------------------*/
+.mainContainer{
+    position: relative;
+    opacity: 0;
+    width: 400px;
+    height: 450px;
+    border-radius: 12px;
+    padding: 8px 30px 120px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    background: linear-gradient(to bottom, 
+                                rgba(50, 0, 50, 0.3),
+                                rgba(80, 0, 80, 0.9),
+                                rgb(100, 30, 100),
+                                rgb(130, 50, 130),
+                                rgb(150, 80, 150));
+}.mainContainer.loaded {
+    animation: animEntry 2s ease; /*addNote "code #201"*/
+    opacity: 1;
+}
+
+.registerContainer{
+    position: absolute;
+    left: 50%;
+    bottom: -86%;
+    height: 100%;
+    width: calc(100% + 180px);
+    padding: 5px 140px;
+    background: #fafafa;
+    border-radius: 290px;
+    transform: translateX(-50%);
+    transition: bottom 0.7s ease, 
+                border-radius 0.7s ease,
+                box-shadow 0.7s ease;
+}
+
+/*--------------------custom header--------------------*/
+.signContainer header, .registerContainer header{
+    text-align: center;
+    font-size: 30px;
+    height: 9vh;
+    width: calc(100% - 50%);
+    margin-left: calc(100% - 75%);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}.signContainer header:hover, .registerContainer header:hover{
+    font-size: 34px;
+}.registerContainer header{
+    width: calc(100% - 45%);
+    margin-left: calc(100% - 77.5%);
+    color: #333;
+    opacity: 0.6;
+}
+
+/*--------------------custom form of container--------------------*/
+.mainContainer form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 15px;
+}.registerContainer form{
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/*--------------------inputs and select--------------------*/
+form input, form select{
+    outline: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 400;
+    border-radius: 8px;
+}form input:hover, form select:hover{
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}.signContainer input{
+    height: 7vh;
+    width: calc(100% - 10%);
+    margin-left: calc(100% - 95%);
+    color: #ddd2d2;
+    border: 1px solid rgba(5, 7, 12, 0.1);
+    background: rgba(5, 7, 12, 0.2);
+    transition: 0.3s ease;
+}.signContainer input:hover{
+    font-size: 18px;
+    height: 8vh;
+    width: calc(100% - 5%);
+    margin-left: calc(100% - 97.5%);
+    margin-bottom: -6.5px;
+    border: 1px solid rgba(40, 5, 40, 0.9);
+    background: rgba(5, 7, 12, 0.1);
+}.signContainer input[type="password"]:hover{
+    margin-top: -6.5px;
+    margin-bottom: 0;
+}.signContainer input::placeholder{
+    color: #909090;
+}
+
+.registerContainer input, .registerContainer select{
+    border: 1px solid #aaa;
+    transition: 0.3s ease;
+}.registerContainer select{
+    margin-top: -10px;
+    padding: 5px 20px;
+}
+
+.registerContainer label{
+    font-size: 18px;
+    margin-left: 10px;
+    font-weight: 400;
+}
+
+/*--------------------link text--------------------*/
+form a{
+    color: #333;
+}.signContainer form a{
+    margin-top: -12px;
+    margin-left: calc(100% - 80%);/*translate to left - relation: this ++1, width --2*/
+    width: calc(100% - 40%);/*translate to rigth - relation: this --2, margin-left ++1*/
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(205, 170, 205);
+    transition: font-size 0.3s ease;
+}.signContainer form a:hover{
+    font-size: 16px;
+}
+
+/*--------------------buttons--------------------*/
+form .button{
+    margin-top: 15px;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+}.signContainer .button{
+    font-size: 17px;
+    height: 7vh;
+    width: calc(100% - 50%);
+    margin-left: calc(100% - 75%);
+    color: rgb(255, 224, 255);
+    border: 1px solid rgb(250, 205, 250);
+    background: linear-gradient(to bottom, 
+                                rgb(210, 175, 210), 
+                                rgb(185, 125, 185),
+                                rgb(170, 110, 170), 
+                                rgb(150, 100, 150),
+                                rgb(127, 80, 127));
+    transition: 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}.signContainer .button:hover{
+    font-size: 20px;
+    height: 8vh;
+    width: calc(100% - 40%);
+    margin-left: calc(100% - 80%);
+    color: #000;
+    margin-bottom: -6px;
+    border-radius: 0px;
+    border-image: linear-gradient(to top, 
+                        rgba(159, 0, 11),
+                        rgba(111, 0, 229),
+                        rgba(0, 235, 252))1;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}.signContainer .button::before{
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 0 0 20% 20%;
+    background: linear-gradient(to bottom, 
+                            rgba(159, 0, 11, 0.5),
+                            rgba(111, 0, 229, 0.5),
+                            rgba(0, 235, 252, 0.5),
+                            rgba(0, 228, 42, 0.5),
+                            rgba(225, 255, 0, 0.5));
+    transition: height 0.5s ease;
+}.signContainer .button:hover::before{
+    height: 180%;
+}
+
+.registerContainer .button{
+     background: #303f;
+     color: #fff;
+     border: none;
+}
