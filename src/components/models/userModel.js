@@ -1,40 +1,48 @@
-import { createUser } from "../firebase/create.js";
 import { isFoundEmail } from "../firebase/query.js";
-import {customAlert, messageEmailUsed, messageUserSubmitted, selectIcon} from "../utils/alerts.js";
-import { cleanInputRegister } from "../utils/tools/clean.js";
+import {customAlert, selectIcon} from "../utils/alerts.js";
 
 export async function registerUser(name, email, password, access) {
     try {
+        const getAlert=await import('../utils/alerts.js');
+
         if (await isFoundEmail(email)) {
-            const {title, message, typeAlert} = messageEmailUsed();
+            const {title, message, typeAlert} = getAlert.messageEmailUsed();
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
 
-        createUser(name, email, password, access);
+        await (await import('../firebase/create.js')).createUser(name, email, password, access);
 
-        const {title, message, typeAlert} = messageUserSubmitted();
+        const {title, message, typeAlert} = getAlert.messageUserSubmitted();
         customAlert(title, message, selectIcon(typeAlert));
-
-        cleanInputRegister();
+        (await import('../utils/tools/cleaner.js')).cleanInputRegister();
+        
     } catch (error) {
         console.log(error);
     }
 }
 export async function loginUser(user, password) {
     try {
-        if (!(await isFoundEmail(email))) {
-            const {title, message, typeAlert} = messageEmailUsed();
+        const getQuery=await import('../firebase/query.js');
+        const getAlert=await import('../utils/alerts.js');
+
+        if (!(await isFoundEmail(user))) {
+            const {title, message, typeAlert} = getAlert.messageUserNotFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (!(await getQuery.isCredentialValid(user, password))){
+            const {title, message, typeAlert} = getAlert.messagePasswordIncorrect();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (!(await getQuery.isFoundAccess(user))) {
+            const {title, message, typeAlert} = getAlert.messageUserWithoutAccess();
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
 
-        queryCredentials(password);
-        
-        const {title, message, typeAlert} = messageUserSubmitted();
-        customAlert(title, message, selectIcon(typeAlert));
-
-        cleanInputRegister();
+        //...
     } catch (error) {
         console.log(error);
     }

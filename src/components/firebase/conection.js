@@ -17,13 +17,3 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 export const db = getFirestore(app);
 export {collection, doc, addDoc, getDocs, setDoc, query, where};
-
-/*--------------------------------------------------source--------------------------------------------------*/
-// async function loadUser(name) {
-//     const userDoc = doc(db, `user/${name}`);
-//     const snapshot = await getDocs(userDoc);
-//     return {
-//         id: snapshot.id,
-//         ...snapshot.data(),
-//     };
-// }

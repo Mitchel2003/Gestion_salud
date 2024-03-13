@@ -6,7 +6,7 @@ export function getInputRegister() {
     return {name, email, password, access};
 }
 export function getInputLogin() {
-    const name=document.querySelector('.signContainer input[type="text"]').value;
+    const user=document.querySelector('.signContainer input[type="text"]').value;
     const password=document.querySelector('.signContainer input[type="password"]').value;
-    return {name, password};
+    return {user, password};
 }

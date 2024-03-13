@@ -8,14 +8,14 @@ export async function createUser(name, email, password, access) {
         email: email,
         password: password,
         access: access,
-        key: "false"
+        key: false
     });
 }
 export async function createTokenPassword(email, token) {
     await addDoc(getCollection("tokenPassword"), {
         userEmail: email,
         token: token,
-        isUsed: "false",
+        isUsed: false,
         date: new Date().getTime()
     });
 }

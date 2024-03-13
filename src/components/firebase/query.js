@@ -9,7 +9,7 @@ export async function isFoundEmail(emailContext) {
 export async function isFoundToken(emailContext) {
     const ask = query(getCollection("tokenPassword"),
         where("userEmail", "==", emailContext),
-        where("isUsed", "==", "false"),
+        where("isUsed", "==", false),
         where("date", ">=", TIME_WITH_SUBTRACTION()));
     const querySnapshot = await getDocs(ask);
 
@@ -17,6 +17,20 @@ export async function isFoundToken(emailContext) {
         return !querySnapshot.empty;
     }
     return querySnapshot;
+}
+export async function isFoundAccess(emailContext) {
+    const ask = query(getCollection("user"),
+        where("email", "==", emailContext),
+        where("key", "==", true));
+    const querySnapshot = await getDocs(ask);
+    return !querySnapshot.empty;
+}
+export async function isCredentialValid(user, password) {
+    const ask = query(getCollection("user"),
+        where("email", "==", user),
+        where("password", "==", password));
+    const querySnapshot = await getDocs(ask);
+    return !querySnapshot.empty;
 }
 /*--------------------------------------------------getters--------------------------------------------------*/
 export async function getTokenPassword(querySnapshot) {//async await AC #202

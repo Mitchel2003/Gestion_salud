@@ -61,7 +61,7 @@
                                 rgb(150, 80, 150));
     transition: height 0.7s ease;
 }.mainContainer.loaded {
-    animation: animEntry 2s ease; /*addNote "code #201"*/
+    animation: animEntry 2s ease; /*AC #201*/
     opacity: 1;
 }
 

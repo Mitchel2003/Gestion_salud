@@ -19,7 +19,8 @@ export async function registerTokenPassword(event) {
             const { title, message, typeAlert } = messageTokenFound();
             customAlert(title, message, selectIcon(typeAlert));
             return;
-        }
+        }    
+
 
         //get token...
 
