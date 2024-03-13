@@ -6,18 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <!-- dependency -->
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>  <!-- icons -->
   <!-- local resource -->
-  <link rel="icon" type="image/x-icon" href="imag/logo.ico">
-  <link rel="stylesheet" href="styles/loginStyle.css">
-  <script type="module" src="scripts/loginFunction.js"></script>
+  <link rel="icon" type="image/x-icon" href="./src/components/images/logo.ico">
+  <link rel="stylesheet" href="./src/controller/style.css">
+  <script type="module" src="./src/controller/index.js"></script>
 </head>
 
 <body>
 
   <div class="mainContainer">
     <div class="signContainer">
-      <header>Sign</header>
+      <header>Login</header>
       <form>
         <input type="text" placeholder="User" required>
         <input type="password" placeholder="Password" required>    
@@ -32,7 +32,7 @@
         <input type="text" placeholder="Name" required>
         <input type="email" placeholder="Email" required>
         <input type="password" placeholder="Password" required>
-        <label for="position">Position</label>
+        <label id="position">Position</label>
         <select id="userPosition">
           <option value="auditor">Auditor</option>
           <option value="admin">Administrator</option>
@@ -44,7 +44,7 @@
   </div>
 
   <!-- dependency -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  <!-- sweetAlert -->
 </body>
 
 </html>

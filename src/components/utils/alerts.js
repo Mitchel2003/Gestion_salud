@@ -1,0 +1,72 @@
+export function customAlert(title, message, icon) {//alert default
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        toast: true,
+    });
+}
+export async function alertInput(title, message, icon) {
+    const {value:email} = await Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        toast: true,
+
+        confirmButtonText:"send token",
+        input: "email",
+        inputValue: ""
+    });
+    return email;
+}
+export function selectIcon(item) {
+    if(item==="s")
+        return "success";
+    else if(item==="w")
+        return "warning";
+    else
+        return "error";
+}
+/*--------------------------------------------------text--------------------------------------------------*/
+export function messageEmailUsed() {
+    const title="Email is used";
+    const message="Please, retry with other email address";
+    const typeAlert="e";
+    return {title, message, typeAlert};
+}
+export function messageUserNotExist() {//working here...
+    const title="Email is used";
+    const message="Please, retry with other email address";
+    const typeAlert="e";
+    return {title, message, typeAlert};
+}
+export function messageUserSubmitted() {
+    const title="User submitted";
+    const message="Now, contact the administrator to give you access";
+    const typeAlert="s";
+    return {title, message, typeAlert};
+}
+export function messageRestorePassword() {
+    const title="Restore password";
+    const message="Enter a registered email to send token";
+    const typeAlert="w";
+    return {title, message, typeAlert};
+}
+export function messageUserNotFound() {
+    const title="User not found";
+    const message="This user not has been registered, try restore another moment";
+    const typeAlert="w";
+    return {title, message, typeAlert};
+}
+export function messageTokenFound() {
+    const title="A token has been found";
+    const message="Chech your email";
+    const typeAlert="w";
+    return {title, message, typeAlert};
+}
+export function messageTokenExpired() {
+    const title="Expired";
+    const message="Try to generate another token";
+    const typeAlert="w";
+    return {title, message, typeAlert};
+}

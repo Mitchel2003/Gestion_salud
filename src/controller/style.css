@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 /*--------------------------------------------------animation custom--------------------------------------------------*/
 @keyframes animEntry {
     from {
@@ -9,6 +8,7 @@
         transform: translateY(0);
     }
 }
+
 /*anim spawn of register*/
 .mainContainer.active .registerContainer{
     bottom: -14%;
@@ -41,8 +41,6 @@
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
-}a{
-    text-decoration: none;
 }
 
 /*--------------------------------------------------styles for containers--------------------------------------------------*/
@@ -115,11 +113,11 @@
 .mainContainer form{
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 15px;
+    gap: 10px;
+    margin-top: calc(100% - 105%);
 }.registerContainer form{
-    gap: 8px;
-    margin-top: 0px;
+    margin-top: calc(100% - 110%);
+    gap: 4px;
 }
 
 /*--------------------inputs and select--------------------*/
@@ -137,7 +135,7 @@ form input, form select{
 }
 
 .signContainer input{
-    height: 7vh;
+    height: 6vh;
     width: calc(100% - 10%);
     margin-left: calc(100% - 95%);
     color: #ddd2d2;
@@ -146,23 +144,26 @@ form input, form select{
     transition: 0.3s ease;
 }.signContainer input:hover{
     font-size: 18px;
-    height: 8vh;
+    height: 7vh;
     width: calc(100% - 5%);
     margin-left: calc(100% - 97.5%);
+    margin-top: -2.5px;
     margin-bottom: -6.5px;
     border: 1px solid rgba(40, 5, 40, 0.9);
     background: rgba(5, 7, 12, 0.1);
 }.signContainer input[type="password"]:hover{
     margin-top: -6.5px;
-    margin-bottom: 0;
+    margin-bottom: -2.5px;
 }.signContainer input::placeholder{
     color: #909090;
 }
 
 .registerContainer input, .registerContainer select{
-    height: 7vh;
+    height: 5vh;
     width: calc(100% - 5%);
     margin-left: calc(100% - 97.5%);
+    margin-top: 0px;
+    margin-bottom: 0px;
     background-color: rgb(255, 248, 255);
     transition: 0.3s ease;
 }.registerContainer select{
@@ -170,27 +171,23 @@ form input, form select{
     padding: 10px 15px;
 }.registerContainer input:hover, .registerContainer select:hover{
     font-size: 18px;
-    height: 8vh;
+    height: 5.5vh;
     width: calc(100% - 2.5%);
     margin-left: calc(100% - 98.75%);
     border: 1px solid rgb(190, 90, 190);
 }.registerContainer input:hover{
-    margin-top: -3.25px;
-    margin-bottom: -3.25px;
+    margin-top: -2.37px;
+    margin-bottom: -2.37px;
 }.registerContainer select:hover{
-    margin-bottom: -6.5px;
+    margin-bottom: -4.5px;
 }
 
-.registerContainer label{
-    font-size: 18px;
-    margin-left: 20px;
-    font-weight: 400;
-}
+
 
 /*--------------------link text--------------------*/
 .signContainer button[type="button"]{
     color: #333;
-    margin-top: -12px;
+    margin-top: -5px;
     margin-left: calc(100% - 80%);/*translate to left - relation: this ++1, width --2*/
     width: calc(100% - 40%);/*translate to rigth - relation: this --2, margin-left ++1*/
     font-size: 15px;
@@ -204,6 +201,13 @@ form input, form select{
     font-size: 16px;
 }
 
+.registerContainer label{
+    font-size: 18px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
 /*--------------------buttons--------------------*/
 form .button{
     margin-top: 15px;
@@ -216,8 +220,8 @@ form .button{
 }
 
 .signContainer .button{
-    font-size: 17px;
-    height: 7vh;
+    font-size: 18px;
+    height: 6vh;/*7vh*/
     width: calc(100% - 50%);
     margin-left: calc(100% - 75%);
     color: rgb(230, 200, 230);
@@ -234,11 +238,11 @@ form .button{
     overflow: hidden;
 }.signContainer .button:hover{
     font-size: 20px;
-    height: 8vh;
+    height: 6.5vh;/*8vh*/
     width: calc(100% - 40%);
     margin-left: calc(100% - 80%);
+    margin-bottom: -4px;
     color: #000;
-    margin-bottom: -6px;
     border-radius: 0px;
     border-image: linear-gradient(to top, 
                         rgba(159, 0, 11),
@@ -264,27 +268,24 @@ form .button{
     height: 180%;
 }
 
-.registerContainer .button{/*working here... (gradient buttom)*/
+.registerContainer .button{
     font-size: 17px;
-    height: 7vh;
+    height: 5vh;
     width: calc(100% - 50%);
     margin-left: calc(100% - 75%);
     color: rgb(193, 113, 255);
     border: 2px solid rgb(208, 146, 255);
     background: linear-gradient(to bottom, 
-                                rgb(255, 255, 255),
-                                rgb(251, 242, 255),
-                                rgb(245, 225, 255),
-                                rgb(239, 207, 255),
-                                rgb(230, 179, 255),
-                                rgb(217, 142, 255),
-                                rgb(204, 101, 255));
+                                rgb(213, 162, 255),
+                                rgb(230, 201, 255),
+                                rgb(234, 213, 252),
+                                rgb(243, 228, 255));
     transition: 0.5s ease;
     position: relative;
     overflow: hidden;
 }.registerContainer .button:hover{
     font-size: 20px;
-    height: 8vh;
+    height: 6vh;
     width: calc(100% - 40%);
     margin-left: calc(100% - 80%);
     color: #000;
@@ -313,8 +314,3 @@ form .button{
 }.registerContainer .button:hover::before{
     height: 180%;
 }
-
-/*--------------------------------------------------implements--------------------------------------------------*/
-/*--------------------alerts--------------------*/
-
-

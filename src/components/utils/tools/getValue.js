@@ -1,0 +1,12 @@
+export function getInputRegister() {
+    const name=document.querySelector('.registerContainer input[type="text"]').value;
+    const email=document.querySelector('.registerContainer input[type="email"]').value;
+    const password=document.querySelector('.registerContainer input[type="password"]').value;
+    const access=document.querySelector('.registerContainer select').value;
+    return {name, email, password, access};
+}
+export function getInputLogin() {
+    const name=document.querySelector('.signContainer input[type="text"]').value;
+    const password=document.querySelector('.signContainer input[type="password"]').value;
+    return {name, password};
+}
