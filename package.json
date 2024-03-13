@@ -1,0 +1,12 @@
+{
+  "name": "gestion_salud",
+  "version": "1.0.0",
+  "description": "//for initializing webpack of server: webpack-dev-server --mode development yes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

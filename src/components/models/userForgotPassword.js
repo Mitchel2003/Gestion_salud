@@ -1,31 +1,31 @@
-import { createTokenPassword } from "../firebase/create.js";
 import { isFoundEmail, isFoundToken } from "../firebase/query.js";
-import { alertInput, customAlert, messageRestorePassword, messageTokenFound, messageUserNotFound, selectIcon } from "../utils/alerts.js";
+import { customAlert, selectIcon } from "../utils/alerts.js";
+import { createTokenPassword } from "../firebase/create.js";
 
-export async function registerTokenPassword(event) {
-    event.preventDefault();
-
+export async function registerTokenPassword() {
     try {
-        const { title, message, typeAlert } = messageRestorePassword();
-        const email = await alertInput(title, message, selectIcon(typeAlert));
+        const getAlert = await import('../utils/alerts.js');
+
+        const { title, message, typeAlert } = getAlert.messageRestorePassword();
+        const email = await getAlert.alertInput(title, message, selectIcon(typeAlert));
 
         if (!(await isFoundEmail(email))) {
-            const { title, message, typeAlert } = messageUserNotFound();
+            const { title, message, typeAlert } = getAlert.messageUserNotFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (await isFoundToken(email)) {
+            const { title, message, typeAlert } = getAlert.messageTokenFound();
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
 
-        if (await isFoundToken(email)) {
-            const { title, message, typeAlert } = messageTokenFound();
-            customAlert(title, message, selectIcon(typeAlert));
-            return;
-        }    
-
-
-        //get token...
-
+        //token generated with UID...
+        const token = await (await import('../firebase/query.js')).getUID_User(email);
         await createTokenPassword(email, token); //need token for continue...
 
+        const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
+        customAlert(title2, message2, selectIcon(typeAlert2));
     } catch (error) {
         console.log(error);
     }

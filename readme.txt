@@ -77,6 +77,20 @@ Swal.fire({
 	// imageAlt:
 });
 
+
+//----------setDocument in Firebase----------
+import { doc, addDoc, setDoc } from "./conection.js";
+export async function createUser(name, email, password, access) {
+    const documentReference = doc(getCollection("user"), email);
+    await setDoc(documentReference, {
+        name: name,
+        email: email,
+        password: password,
+        access: access,
+        key: false
+    });
+}
+
 /*--------------------------------------------------addComentary in code--------------------------------------------------*/
 #201: el hecho de que haya una animacion explicita que señale un comportamiento, no cambia el estado estandar del elemento en referencia;
 es decir, si ponemos en contexto la siguiente animacion 

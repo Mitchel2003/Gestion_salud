@@ -1,5 +1,4 @@
 import { db, collection, getDocs, query, where } from "./conection.js";
-import { TIME_WITH_SUBTRACTION } from "../models/userForgotPassword.js";
 /*--------------------------------------------------booleans--------------------------------------------------*/
 export async function isFoundEmail(emailContext) {
     const ask = query(getCollection("user"), where("email", "==", emailContext));
@@ -7,10 +6,12 @@ export async function isFoundEmail(emailContext) {
     return !querySnapshot.empty;
 }
 export async function isFoundToken(emailContext) {
+    const getForgotPassword = (await import('../models/userForgotPassword.js'));
+
     const ask = query(getCollection("tokenPassword"),
         where("userEmail", "==", emailContext),
         where("isUsed", "==", false),
-        where("date", ">=", TIME_WITH_SUBTRACTION()));
+        where("date", ">=", getForgotPassword.TIME_WITH_SUBTRACTION()));
     const querySnapshot = await getDocs(ask);
 
     if (querySnapshot.empty) {
@@ -43,7 +44,16 @@ export async function getTokenPassword(querySnapshot) {//async await AC #202
     });
     return { valueToken, valueIsUsed };
 }
-/*--------------------------------------------------tools query--------------------------------------------------*/
+export async function getUID_User(userContext) {
+    const ask = query(getCollection("user"), where("email", "==", userContext));
+    const querySnapshot = await getDocs(ask);
+
+    if (querySnapshot.empty) {
+        return;
+    }
+    return querySnapshot.docs[0].id;
+}
+/*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection(context) {
     const collectionReference = collection(db, context);
     return collectionReference;

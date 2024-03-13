@@ -21,6 +21,7 @@ export async function registerUser(name, email, password, access) {
         console.log(error);
     }
 }
+
 export async function loginUser(user, password) {
     try {
         const getQuery=await import('../firebase/query.js');

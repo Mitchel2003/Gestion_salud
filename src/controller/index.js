@@ -2,8 +2,6 @@
 import { loadElements } from "../components/utils/view.js";
 import { addActive, removeActive } from "../components/utils/anim.js";
 import { loginUser, registerUser } from "../components/models/userModel.js";
-import { registerTokenPassword } from "../components/models/userForgotPassword.js";
-
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
 const signButton = document.querySelector('.signContainer header');
@@ -38,5 +36,5 @@ registerContainer.addEventListener('submit', async function (event) {
 });
 forgotPassword.addEventListener('click', async function (event) {
     event.preventDefault();
-    await registerTokenPassword();
+    await (await import('../components/models/userForgotPassword.js')).registerTokenPassword();
 });

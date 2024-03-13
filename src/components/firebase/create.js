@@ -1,9 +1,8 @@
-import { doc, addDoc, setDoc } from "./conection.js";
+import { addDoc } from "./conection.js";
 import { getCollection } from "./query.js";
 
 export async function createUser(name, email, password, access) {
-    const documentReference = doc(getCollection("user"), email);
-    await setDoc(documentReference, {
+    await addDoc(getCollection("user"), {
         name: name,
         email: email,
         password: password,

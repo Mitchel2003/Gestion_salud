@@ -34,6 +34,12 @@ export function messageUserSubmitted() {
     const typeAlert="s";
     return {title, message, typeAlert};
 }
+export function messageTokenSubmitted() {
+    const title2="Token generated";
+    const message2="Check your email to continue reset password";
+    const typeAlert2="s";
+    return {title2, message2, typeAlert2};
+}
 
 export function messageRestorePassword() {
     const title="Restore password";
@@ -42,8 +48,8 @@ export function messageRestorePassword() {
     return {title, message, typeAlert};
 }
 export function messageTokenFound() {
-    const title="A token has been found";
-    const message="Chech your email";
+    const title="A token has already been found";
+    const message="Please, chech your email";
     const typeAlert="w";
     return {title, message, typeAlert};
 }
