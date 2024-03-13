@@ -70,13 +70,13 @@ Swal.fire({
 	// showCloseButton:
 	// closeButtonAriaLabel:
 
-
 	// imageUrl:
 	// imageWidth:
 	// imageHeight:
 	// imageAlt:
 });
 
+<<<<<<< HEAD
 
 //----------setDocument in Firebase----------
 import { doc, addDoc, setDoc } from "./conection.js";
@@ -90,6 +90,17 @@ export async function createUser(name, email, password, access) {
         key: false
     });
 }
+=======
+//----------get userData from firebase----------
+// async function loadUser(name) {
+//     const userDoc = doc(db, `user/${name}`);
+//     const snapshot = await getDocs(userDoc);
+//     return {
+//         id: snapshot.id,
+//         ...snapshot.data(),
+//     };
+// }
+>>>>>>> master
 
 /*--------------------------------------------------addComentary in code--------------------------------------------------*/
 #201: el hecho de que haya una animacion explicita que señale un comportamiento, no cambia el estado estandar del elemento en referencia;
@@ -185,6 +196,18 @@ export async function isFoundToken(emailContext) {
     const result = await getTokenPassword(querySnapshot);
 
     return result;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#203: al  importar dentro de un metodo "carga diferida" necesitamos poner await, luego una vez finalizada esa llegada, se importa el modulo en especifico
+
+const {name, email, password, access} = (await import('../components/utils/tools/getValue.js')).getInputRegister();
+
+export function getInputRegister() {
+    const name=document.querySelector('.registerContainer input[type="text"]').value;
+    const email=document.querySelector('.registerContainer input[type="email"]').value;
+    const password=document.querySelector('.registerContainer input[type="password"]').value;
+    const access=document.querySelector('.registerContainer select').value;
+    return {name, email, password, access};
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------tips--------------------------------------------------*/
