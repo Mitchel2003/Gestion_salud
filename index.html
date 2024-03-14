@@ -22,7 +22,9 @@
         <input name="user" type="text" placeholder="User" required>
         <input name="password" type="password" placeholder="Password" required>    
         <button type="submit" class="button">Login</button>
-        <button type="button">¿Forgot your password?</button>
+        <form action="/send-email" method="post">
+          <button type="button">¿Forgot your password?</button>
+        </form>        
       </form>
     </div>
 

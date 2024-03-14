@@ -1,3 +1,19 @@
+import {express} from "express";
+import {path} from "path";
+const app=express();
+
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+
+app.use(require('./components/routes/router'));
+
+app.use(express.static(path.join(__dirname, 'controller')));
+
+app.listen(3000);
+console.log('Server on port 3000')
+
+
+
 // imports
 import { loadElements } from "../components/utils/view.js";
 import { addActive, removeActive } from "../components/utils/anim.js";

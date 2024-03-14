@@ -30,7 +30,6 @@ export async function registerTokenPassword() {
         console.log(error);
     }
 }
-
 /*statics*/
 export function TIME_WITH_SUBTRACTION() {//return timeContext - 15 min
     const timeContext = new Date().getTime();
