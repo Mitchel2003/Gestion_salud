@@ -2,17 +2,14 @@ import { Router } from 'express';
 import { createTransport, getTestMessageUrl } from 'nodemailer';
 const router = Router();
 
-router.post('/send-email', async (req, res) => {//working here...
-    const { name, email, phone, message } = req.body;//in this part, nor request data, need await for get email input by user
+router.post('/send-email', async (req, res) => {//working here... api fetch javascript
+    const { email } = req.body;
 
     contentHTML = `
         <h1>User Information</h1>
         <ul>
-            <li>Username: ${name}</li>
             <li>User Email: ${email}</li>
-            <li>PhoneNumber: ${phone}</li>
         </ul>
-        <p>${message}</p>
     `;
 
     let transporter = createTransport({

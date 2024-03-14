@@ -4,12 +4,16 @@
   "description": "//for initializing webpack of server: webpack-dev-server --mode development yes",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/"
+    "dev": "nodemon src/controller/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemailer": "^6.9.12",
+    "nodemon": "^3.1.0"
   }
 }
