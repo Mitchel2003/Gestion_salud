@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <!-- dependency -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- icons -->
+  <!-- local resource -->
+  <link rel="icon" type="image/x-icon" href="./src/components/images/logo.ico">
+  <link rel="stylesheet" href="./src/controller/style.css">
+  <script type="module" src="./src/controller/index.js"></script>
+</head>
+
+<body>
+
+  <div class="mainContainer">
+    <div class="signContainer">
+      <header>Login</header>
+      <form>
+        <input name="user" type="text" placeholder="User" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <button type="submit" class="button">Login</button>
+        <button type="button">¿Forgot your password?</button>
+      </form>
+    </div>
+
+    <div class="registerContainer">
+      <header>Register</header>
+      <form>
+        <input name="user" type="text" placeholder="Name" required>
+        <input name="mail" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <label id="position">Position</label>
+        <select id="userPosition">
+          <option value="auditor">Auditor</option>
+          <option value="admin">Administrator</option>
+          <option value="auxiliary">Auxiliary</option>
+        </select>
+        <button type="submit" class="button">Send request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- dependency -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- sweetAlert -->
+</body>
+
+</html>
