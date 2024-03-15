@@ -22,6 +22,10 @@ export async function isCredentialValid(user, password) {
 export async function resetPassword (email) {
     return await (await import('../firebase/conection.js')).sendPasswordResetEmail((await import('./conection.js')).auth, email);
 }
+export async function validateResetPassword(obbCode, newPassword){
+    if(!obbCode && !newPassword){return;}
+    return await (await import('../firebase/conection.js')).confirmPasswordReset((await import('../firebase/conection.js')).auth, obbCode, newPassword);
+}
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
     const collectionReference = (await import('../firebase/conection.js')).collection((await import('./conection.js')).db, context);

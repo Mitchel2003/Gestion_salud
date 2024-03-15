@@ -15,7 +15,7 @@
 //         });
 // }
 
-//----------work with sweetAlert----------
+//------------------work with sweet Alert------------------
 Swal.fire({
 	// title:
 	// text:
@@ -78,7 +78,7 @@ Swal.fire({
 
 <<<<<<< HEAD
 
-//----------setDocument in Firebase----------
+//-----------------setDocument in Firebase-----------------
 import { doc, addDoc, setDoc } from "./conection.js";
 export async function createUser(name, email, password, access) {
     const documentReference = doc(getCollection("user"), email);
@@ -91,7 +91,7 @@ export async function createUser(name, email, password, access) {
     });
 }
 =======
-//----------get userData from firebase----------
+//---------------get user Data from firebase---------------
 // async function loadUser(name) {
 //     const userDoc = doc(db, `user/${name}`);
 //     const snapshot = await getDocs(userDoc);
@@ -102,7 +102,7 @@ export async function createUser(name, email, password, access) {
 // }
 >>>>>>> master
 
-//----------get tokenPassword code for firebase----------
+//-----------get tokenPassword code for firebase-----------
 export async function getTokenPassword(querySnapshot) {//async await AC #202
     let valueToken;
     let valueIsUsed;
@@ -114,7 +114,7 @@ export async function getTokenPassword(querySnapshot) {//async await AC #202
     return { valueToken, valueIsUsed };
 }
 
-//----------get UID of user in firebase----------
+//---------------get UID of user in firebase---------------
 export async function getUID_User(userContext) {
     const ask = query(getCollection("user"), where("email", "==", userContext));
     const querySnapshot = await getDocs(ask);
@@ -122,13 +122,13 @@ export async function getUID_User(userContext) {
     return querySnapshot.docs[0].id;
 }
 
-//----------get data (context:getTokenPassword)----------
+//-----------get data (context:getTokenPassword)-----------
 export function getDocumentQuery(query) {
     const array = query.docs.map(doc => doc.data());
     return array;
 }
 
-//----------logic createToken with 15 minuts for expire----------
+//-------logic createToken with 15 minuts for expire-------
 export async function registerTokenPassword() {
     try {
         const getAlert = await import('../utils/alerts.js');
@@ -166,7 +166,14 @@ export function TIME_WITH_SUBTRACTION() {//return timeContext - 15 min
     return timeSubtraction;
 }
 
-//----------------------------------
+//-----------resetPassword with firebase (steps)-----------
+https://codingpr.com/react-firebase-password-reset-feature/
+//---------------------------------------------------------
+
+
+
+
+
 
 
 
