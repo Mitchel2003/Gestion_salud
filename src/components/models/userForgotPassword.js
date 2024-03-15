@@ -1,9 +1,9 @@
-import { isFoundEmail, isFoundToken } from "../firebase/query.js";
+import { isFoundEmail } from "../firebase/query.js";
 import { customAlert, selectIcon } from "../utils/alerts.js";
-import { createTokenPassword } from "../firebase/create.js";
+import { resetPassword } from "../firebase/query.js";
 
-export async function registerTokenPassword() {
-    try {
+export async function changePassword(){
+    try{
         const getAlert = await import('../utils/alerts.js');
 
         const { title, message, typeAlert } = getAlert.messageRestorePassword();
@@ -14,27 +14,13 @@ export async function registerTokenPassword() {
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
-        if (await isFoundToken(email)) {
-            const { title, message, typeAlert } = getAlert.messageTokenFound();
-            customAlert(title, message, selectIcon(typeAlert));
-            return;
-        }
 
-        //token generated with UID...
-        const token = await (await import('../firebase/query.js')).getUID_User(email);
-        await createTokenPassword(email, token); //need token for continue...
+        await resetPassword(email);
 
         const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
         customAlert(title2, message2, selectIcon(typeAlert2));
-    } catch (error) {
+
+    }catch(error){
         console.log(error);
     }
 }
-/*statics*/
-export function TIME_WITH_SUBTRACTION() {//return timeContext - 15 min
-    const timeContext = new Date().getTime();
-    const timeSubtraction = timeContext - (15 * 60 * 1000);
-    return timeSubtraction;
-}
-
-

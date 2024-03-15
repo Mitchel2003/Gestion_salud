@@ -2,7 +2,7 @@ import { addDoc } from "./conection.js";
 import { getCollection } from "./query.js";
 
 export async function createUser(name, email, password, access) {
-    await addDoc(getCollection("user"), {
+    await addDoc(await getCollection("user"), {
         name: name,
         email: email,
         password: password,
@@ -11,7 +11,7 @@ export async function createUser(name, email, password, access) {
     });
 }
 export async function createTokenPassword(email, token) {
-    await addDoc(getCollection("tokenPassword"), {
+    await addDoc(await getCollection("tokenPassword"), {
         userEmail: email,
         token: token,
         isUsed: false,

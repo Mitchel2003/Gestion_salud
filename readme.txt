@@ -102,6 +102,75 @@ export async function createUser(name, email, password, access) {
 // }
 >>>>>>> master
 
+//----------get tokenPassword code for firebase----------
+export async function getTokenPassword(querySnapshot) {//async await AC #202
+    let valueToken;
+    let valueIsUsed;
+
+    getDocumentQuery(querySnapshot).forEach(({ token, isUsed }) => {
+        valueToken = token;
+        valueIsUsed = isUsed;
+    });
+    return { valueToken, valueIsUsed };
+}
+
+//----------get UID of user in firebase----------
+export async function getUID_User(userContext) {
+    const ask = query(getCollection("user"), where("email", "==", userContext));
+    const querySnapshot = await getDocs(ask);
+    if (querySnapshot.empty) {return;}
+    return querySnapshot.docs[0].id;
+}
+
+//----------get data (context:getTokenPassword)----------
+export function getDocumentQuery(query) {
+    const array = query.docs.map(doc => doc.data());
+    return array;
+}
+
+//----------logic createToken with 15 minuts for expire----------
+export async function registerTokenPassword() {
+    try {
+        const getAlert = await import('../utils/alerts.js');
+
+        const { title, message, typeAlert } = getAlert.messageRestorePassword();
+        const email = await getAlert.alertInput(title, message, selectIcon(typeAlert));
+
+        if (!(await isFoundEmail(email))) {
+            const { title, message, typeAlert } = getAlert.messageUserNotFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (await isFoundToken(email)) {
+            const { title, message, typeAlert } = getAlert.messageTokenFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+
+        // //token generated with UID...
+        // const token = await (await import('../firebase/query.js')).getUID_User(email);
+        // await createTokenPassword(email, token); //need token for continue...
+
+        await app.auth().sendPasswordResetEmail(email);
+
+        const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
+        customAlert(title2, message2, selectIcon(typeAlert2));
+    } catch (error) {
+        console.log(error);
+    }
+}
+/*statics*/
+export function TIME_WITH_SUBTRACTION() {//return timeContext - 15 min
+    const timeContext = new Date().getTime();
+    const timeSubtraction = timeContext - (15 * 60 * 1000);
+    return timeSubtraction;
+}
+
+//----------------------------------
+
+
+
+
 /*--------------------------------------------------addComentary in code--------------------------------------------------*/
 #201: el hecho de que haya una animacion explicita que señale un comportamiento, no cambia el estado estandar del elemento en referencia;
 es decir, si ponemos en contexto la siguiente animacion 

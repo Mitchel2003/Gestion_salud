@@ -1,7 +1,7 @@
 /*--------------------------------------------------conecction with database--------------------------------------------------*/
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
 import { getFirestore, collection, doc, addDoc, getDocs, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCjKw582WVzAgwxfsYqQsi-2j0wCxtvHAo",
@@ -15,5 +15,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-export const db = getFirestore(app);
-export {collection, doc, addDoc, getDocs, setDoc, query, where};
+const db = getFirestore(app);
+export { db, auth, collection, doc, addDoc, getDocs, setDoc, query, where, sendPasswordResetEmail };
