@@ -36,7 +36,9 @@
 
 </body>
 <script>
-
+    function checkout(item_1, item_2) {
+        if(item_1 !== item_2){return;}
+    }
     function getCodeObb() {
         const queryString = window.location.search;
         const searchParams = new URLSearchParams(queryString);
@@ -46,10 +48,24 @@
     const oobCode = getCodeObb();
 
     if (oobCode == null) {
-        console('No se recibió el parámetro oobCode o es nulo');   
+        console('No se recibió el parámetro oobCode o es nulo');
     }
 
     console.log('oobCode recibido:', oobCode);
+
+
+
+    document.getElementById('resetPasswordForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const newPassword = document.getElementById('newPassword').value;
+
+        console.log('Nueva contraseña:', newPassword);
+        console.log('oobCode:', oobCode);
+
+    });
+
+
 </script>
 
 </html>
