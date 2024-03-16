@@ -56,10 +56,10 @@ export function messageTokenSubmitted() {
     return {title2, message2, typeAlert2};
 }
 export function messageResetPasswordSuccess() {
-    const title2="Reset password success";
-    const message2="Now, you can entry to app";
-    const typeAlert2="s";
-    return {title2, message2, typeAlert2};
+    const title="Reset password success";
+    const message="Now, you can entry to app";
+    const typeAlert="s";
+    return {title, message, typeAlert};
 }
 
 /*---------------warning---------------*/
