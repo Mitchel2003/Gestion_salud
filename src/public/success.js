@@ -11,7 +11,7 @@ try {
         
         const password = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        if(checkoutPassword(password, confirmPassword)){return;}
+        await checkoutPassword(password, confirmPassword);
 
         console.log("first checkpoint");
 
@@ -38,8 +38,8 @@ async function checkoutPassword(item_1, item_2) {
     if (item_1 !== item_2) { 
         const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messagePasswordNotSame();
         customAlert(title, message, selectIcon(typeAlert));
-        return true; 
-    }return false;
+        return; 
+    }
 }
 function getCodeObb() {
     const queryString = window.location.search;
