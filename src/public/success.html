@@ -5,26 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--renderizado moderno para edge-->
-    <title>Sitio Web</title>
+    <title>Reset password</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
 </head>
 
 <body>
-
     <div class="container p-4">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body text-center">
                         <h2 class="mb-4">Enter your new password</h2>
-                        <form action="/confirm-password" method="post">
+                        <form id="resetPassword_form">
                             <div class="form-group">
-                                <input type="password" class="form-control" id="newPassword" placeholder="Password"
-                                    required>
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" id="confirmPassword"
-                                    placeholder="Confirm password" required>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
                         </form>
@@ -33,39 +30,8 @@
             </div>
         </div>
     </div>
-
+    <script src="./success.js"></script>
 </body>
-<script>
-    function checkout(item_1, item_2) {
-        if(item_1 !== item_2){return;}
-    }
-    function getCodeObb() {
-        const queryString = window.location.search;
-        const searchParams = new URLSearchParams(queryString);
-        return searchParams.get('oobCode');
-    }
 
-    const oobCode = getCodeObb();
-
-    if (oobCode == null) {
-        console('No se recibió el parámetro oobCode o es nulo');
-    }
-
-    console.log('oobCode recibido:', oobCode);
-
-
-
-    document.getElementById('resetPasswordForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const newPassword = document.getElementById('newPassword').value;
-
-        console.log('Nueva contraseña:', newPassword);
-        console.log('oobCode:', oobCode);
-
-    });
-
-
-</script>
 
 </html>

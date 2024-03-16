@@ -41,6 +41,12 @@ export function messageTokenSubmitted() {
     const typeAlert2="s";
     return {title2, message2, typeAlert2};
 }
+export function messageResetPasswordSuccess() {
+    const title2="Reset password success";
+    const message2="Now, you can entry to app";
+    const typeAlert2="s";
+    return {title2, message2, typeAlert2};
+}
 
 /*---------------warning---------------*/
 export function messageUserNotFound() {
@@ -84,6 +90,12 @@ export function messagePasswordIncorrect() {
 export function messageEmailUsed() {
     const title="Email is used";
     const message="Please, retry with other email address";
+    const typeAlert="e";
+    return {title, message, typeAlert};
+}
+export function messagePasswordNotSame() {
+    const title="Passwords not same";
+    const message="Please, retry";
     const typeAlert="e";
     return {title, message, typeAlert};
 }
