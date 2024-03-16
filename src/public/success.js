@@ -1,5 +1,5 @@
-import { validateResetPassword } from '../components/firebase/query';
-import { customAlert, selectIcon } from '../components/utils/alerts';
+import { validateResetPassword } from '../components/firebase/query.js';
+import { customAlert, selectIcon } from '../components/utils/alerts.js';
 
 try {
     console.log("message receive")
