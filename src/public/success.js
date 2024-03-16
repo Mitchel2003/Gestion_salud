@@ -2,6 +2,8 @@ import { validateResetPassword } from '../components/firebase/query';
 import { customAlert, selectIcon } from '../components/utils/alerts';
 
 try {
+    console.log("message receive")
+
     const form=document.getElementById('resetPassword_form');
 
     form.addEventListener('submit', async function (event) {
