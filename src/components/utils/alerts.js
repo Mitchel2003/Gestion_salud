@@ -81,18 +81,6 @@ export function messageRestorePassword() {
     const typeAlert="w";
     return {title, message, typeAlert};
 }
-export function messageTokenFound() {
-    const title="A token has already been found";
-    const message="Please, chech your email";
-    const typeAlert="w";
-    return {title, message, typeAlert};
-}
-export function messageTokenExpired() {
-    const title="Expired";
-    const message="Try to generate another token";
-    const typeAlert="w";
-    return {title, message, typeAlert};
-}
 
 /*---------------error---------------*/
 export function messagePasswordIncorrect() {
@@ -110,6 +98,12 @@ export function messageEmailUsed() {
 export function messagePasswordNotSame() {
     const title="Passwords not same";
     const message="Please, retry";
+    const typeAlert="e";
+    return {title, message, typeAlert};
+}
+export function messageTokenExpired() {
+    const title="Expired";
+    const message="Try to generate another token";
     const typeAlert="e";
     return {title, message, typeAlert};
 }

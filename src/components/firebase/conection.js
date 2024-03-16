@@ -19,3 +19,10 @@ const db = getFirestore(app);
 export { db, auth, collection, doc, addDoc, getDocs, setDoc, query, where,    //first level
         sendPasswordResetEmail, confirmPasswordReset    //second level
     };
+
+// export async function updatePassword(auth){//working here...
+//     const get = (await import('https://www.gstatic.com/firebasejs/10.1.0/firebase-functions.js'));
+//     const functions=get.functions();
+
+//     return functions.auth.user().on
+// }
