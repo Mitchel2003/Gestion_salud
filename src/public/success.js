@@ -13,6 +13,7 @@ try {
 
         if (!(await validateResetPassword(obbCode, password))) {
             console.log("something whats wrong");
+            return;
         }
 
         const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageResetPasswordSuccess();
