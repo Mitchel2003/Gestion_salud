@@ -19,6 +19,20 @@ export async function alertInput(title, message, icon) {
     });
     return email;
 }
+// export async function alertAction(title, message, icon) {
+//     const {value:email} = await Swal.fire({
+//         title: title,
+//         text: message,
+//         icon: icon,
+//         toast: true,
+
+//         confirmButtonText:"send token",
+//         input: "email",
+//         inputValue: ""
+//     });
+//     return email;
+// }
+
 export function selectIcon(item) {
     if(item==="s")
         return "success";

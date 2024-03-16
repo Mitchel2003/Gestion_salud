@@ -19,8 +19,8 @@ try {
         const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageResetPasswordSuccess();
         customAlert(title, message, selectIcon(typeAlert));
 
-        //send to login
-        window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
+        // //send to login with sweetAlert message, button to go
+        // window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
     });
 
 } catch (error) {
