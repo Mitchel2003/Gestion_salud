@@ -6,6 +6,15 @@ export function customAlert(title, message, icon) {//alert default
         toast: true,
     });
 }
+export function selectIcon(item) {
+    if(item==="s")
+        return "success";
+    else if(item==="w")
+        return "warning";
+    else
+        return "error";
+}
+/*--------------------------------------------------utilies--------------------------------------------------*/
 export async function alertInput(title, message, icon) {
     const {value:email} = await Swal.fire({
         title: title,
@@ -19,31 +28,21 @@ export async function alertInput(title, message, icon) {
     });
     return email;
 }
-// export async function alertAction(title, message, icon) {
-//     const {value:email} = await Swal.fire({
-//         title: title,
-//         text: message,
-//         icon: icon,
-//         toast: true,
+export async function alertButtonAction(title, message, icon) {
+    const {value:email} = await Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        toast: true,
 
-//         confirmButtonText:"send token",
-//         input: "email",
-//         inputValue: ""
-//     });
-//     return email;
-// }
-
-export function selectIcon(item) {
-    if(item==="s")
-        return "success";
-    else if(item==="w")
-        return "warning";
-    else
-        return "error";
+        confirmButtonText:"send token",
+        input: "email",
+        inputValue: ""
+    });
+    return email;
 }
 /*--------------------------------------------------text--------------------------------------------------*/
-/*---------------success---------------*/
-export function messageUserSubmitted() {
+export function messageUserSubmitted() {//successfull
     const title="User submitted";
     const message="Now, contact the administrator to give you access";
     const typeAlert="s";
@@ -62,8 +61,7 @@ export function messageResetPasswordSuccess() {
     return {title, message, typeAlert};
 }
 
-/*---------------warning---------------*/
-export function messageUserNotFound() {
+export function messageUserNotFound() {//warning
     const title="User not found";
     const message="This user not has been registered, try restore another moment";
     const typeAlert="w";
@@ -82,8 +80,7 @@ export function messageRestorePassword() {
     return {title, message, typeAlert};
 }
 
-/*---------------error---------------*/
-export function messagePasswordIncorrect() {
+export function messagePasswordIncorrect() {//error
     const title="Password incorrect";
     const message="Please, check field";
     const typeAlert="e";

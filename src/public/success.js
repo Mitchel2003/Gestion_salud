@@ -1,53 +1,51 @@
 import { validateResetPassword } from '../components/firebase/query.js';
 import { customAlert, selectIcon } from '../components/utils/alerts.js';
 
-try {
-    const form = document.getElementById('resetPassword_form');
+const form = document.getElementById('resetPassword_form');
 
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const getAlerts = await import('../components/utils/alerts.js');
+form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const getAlerts = await import('../components/utils/alerts.js');
 
-        const oobCode = getCodeOob();
-        const password = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+    const oobCode = getCodeOob();
+    const password = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
-        if (checkEqualsPasswords(password, confirmPassword)) {
-            const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
-            customAlert(title, message, selectIcon(typeAlert));
-            return;
-        }
-        if (checkAllowedSize(password)) {
-            const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
-            customAlert(title, message, selectIcon(typeAlert));
-            return;
-        }
+    if (checkSamePasswords(password, confirmPassword)) {
+        const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    if (checkSizeAllowed(password)) {
+        const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
 
+    try {
         if (oobCode) {
             await validateResetPassword(oobCode, password);
         }
-
-        const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
+    } catch (error) {
+        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
         customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
 
-
-
-        // //send to login with sweetAlert message, button to go
-        // window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
-    });
-} catch (error) {
-    const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
+    const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
     customAlert(title, message, selectIcon(typeAlert));
 
-    console.log(error);
-}
+    // //send to login with sweetAlert message, button to go
+    // window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
+});
 
 
-function checkEqualsPasswords(item_1, item_2) {
-    if (item_1 !== item_2) {return item_1;}
+/*--------------------------------------------------tools--------------------------------------------------*/
+function checkSamePasswords(item_1, item_2) {
+    if (item_1 !== item_2) { return item_1; }
 }
-function checkAllowedSize(newPassword) {
-    if (newPassword.length <= 6) {return newPassword;}
+function checkSizeAllowed(newPassword) {
+    if (newPassword.length <= 6) { return newPassword; }
 }
 function getCodeOob() {
     const queryString = window.location.search;

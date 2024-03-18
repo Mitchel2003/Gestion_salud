@@ -1,6 +1,6 @@
 import { isFoundEmail } from "../firebase/query.js";
 import { customAlert, selectIcon } from "../utils/alerts.js";
-import { resetPassword } from "../firebase/query.js";
+import { sendToEmailResetPassword } from "../firebase/query.js";
 
 export async function requestResetPassword(){
     try{
@@ -15,7 +15,7 @@ export async function requestResetPassword(){
             return;
         }
 
-        await resetPassword(email);
+        await sendToEmailResetPassword(email);
 
         const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
         customAlert(title2, message2, selectIcon(typeAlert2));

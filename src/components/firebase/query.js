@@ -14,23 +14,14 @@ export async function isFoundAccess(emailContext) {
 }
 
 /*--------------------------------------------------functions--------------------------------------------------*/
-export async function resetPassword(email) {
+export async function sendToEmailResetPassword(email) {
     return await (await import('../firebase/conection.js')).sendPasswordResetEmail((await import('./conection.js')).auth, email);
 }
 export async function validateResetPassword(obbCode, newPassword) {
     if (!obbCode && !newPassword) { return }
     return await (await import('../firebase/conection.js')).confirmPasswordReset((await import('./conection.js')).auth, obbCode, newPassword);
 }
-export async function onSession(email, password) {
-    await (await import('../firebase/conection.js')).signInWithEmailAndPassword((await import('./conection.js')).auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            window.location.href = './src/public/session.html';
-        })
-        .catch((error) => {
-            console.log(error.message + error.code);
-        });
-}
+
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
     const collectionReference = (await import('../firebase/conection.js')).collection((await import('./conection.js')).db, context);
