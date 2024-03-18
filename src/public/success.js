@@ -45,13 +45,13 @@ try {
 
 async function areEqualsPasswords(item_1, item_2) {
     if (item_1 !== item_2) {
-        return true;
-    } return false;
+        return false;
+    } return true;
 }
 async function isAllowedSize(newPassword) {
     if (newPassword.length <= 6) {
-        return true;
-    } return false;
+        return false;
+    } return true;
 }
 async function checkoutError(error) {
     if (error.code === 'auth/invalid-action-code') {
