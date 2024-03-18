@@ -6,14 +6,16 @@ try {
 
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
+        const getAlerts=await import('../components/utils/alerts.js');
+
         const obbCode = getCodeObb();
         const password = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        await areEqualsPasswords(password, confirmPassword);
-        await isAllowedSize(password);
+        await areEqualsPasswords(password, confirmPassword, getAlerts);
+        await isAllowedSize(password, getAlerts);
 
         if (await validateResetPassword(obbCode, password)) {
-            const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageResetPasswordSuccess();
+            const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
             customAlert(title, message, selectIcon(typeAlert)); 
         }
 
@@ -29,16 +31,16 @@ try {
 }
 
 
-async function areEqualsPasswords(item_1, item_2) {
+async function areEqualsPasswords(item_1, item_2, alerts) {
     if (item_1 !== item_2) {
-        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messagePasswordNotSame();
+        const { title, message, typeAlert } = alerts.messagePasswordNotSame();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
 }
-async function isAllowedSize(newPassword) {
+async function isAllowedSize(newPassword, alerts) {
     if (newPassword.length <= 6) {
-        const { title, message, typeAlert } =(await import('../components/utils/alerts.js')).messagePasswordSizeShort();
+        const { title, message, typeAlert } = alerts.messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
