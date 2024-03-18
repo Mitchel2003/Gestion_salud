@@ -38,7 +38,7 @@ async function areEqualsPasswords(item_1, item_2) {
 }
 async function isAllowedSize(newPassword) {
     if (newPassword.length <= 6) {
-        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messagePasswordSizeShort();
+        const { title, message, typeAlert } =(await import('../components/utils/alerts.js')).messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
@@ -54,11 +54,6 @@ function getCodeObb() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
     return searchParams.get('oobCode');
-}
-function getEmail() {
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
-    return searchParams.get('');
 }
 
 
