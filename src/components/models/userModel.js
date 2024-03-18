@@ -11,7 +11,8 @@ export async function registerUser(name, email, password, access) {
             return;
         }
 
-        await (await import('../firebase/create.js')).createUser(name, email, password, access);
+        await (await import('../firebase/create.js')).saveUserData(name, email, access);
+        await (await import('../firebase/create.js')).createUser( (await import('../firebase/conection.js')).auth, email, password);
 
         const {title, message, typeAlert} = getAlert.messageUserSubmitted();
         customAlert(title, message, selectIcon(typeAlert));
@@ -32,17 +33,15 @@ export async function loginUser(user, password) {
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
-        if (!(await getQuery.isCredentialValid(user, password))){
-            const {title, message, typeAlert} = getAlert.messagePasswordIncorrect();
-            customAlert(title, message, selectIcon(typeAlert));
-            return;
-        }
         if (!(await getQuery.isFoundAccess(user))) {
             const {title, message, typeAlert} = getAlert.messageUserWithoutAccess();
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
 
+        await (await import('../firebase/query.js')).onSession(user, password);
+        
+        
         //...
     } catch (error) {
         console.log(error);

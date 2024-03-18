@@ -1,4 +1,4 @@
-import { changeUserPassword, validateResetPassword } from '../components/firebase/query.js';
+import { validateResetPassword } from '../components/firebase/query.js';
 import { customAlert, selectIcon } from '../components/utils/alerts.js';
 
 try {
@@ -25,7 +25,6 @@ try {
 
         if (oobCode) {
             await validateResetPassword(oobCode, password);
-            await changeUserPassword(email, password);
         }
 
         const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
@@ -49,13 +48,6 @@ function checkEqualsPasswords(item_1, item_2) {
 }
 function checkAllowedSize(newPassword) {
     if (newPassword.length <= 6) {return newPassword;}
-}
-async function checkoutError(error) {
-    if (error.code === 'auth/invalid-action-code') {
-        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
 }
 function getCodeOob() {
     const queryString = window.location.search;

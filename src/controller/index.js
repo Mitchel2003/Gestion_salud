@@ -33,5 +33,5 @@ registerContainer.addEventListener('submit', async function (event) {
 });
 forgotPassword.addEventListener('click', async function (event) {
     event.preventDefault();
-    await (await import('../components/models/userForgotPassword.js')).changePassword();
+    await (await import('../components/models/userForgotPassword.js')).requestResetPassword();
 });
