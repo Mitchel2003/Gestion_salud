@@ -6,44 +6,52 @@ try {
 
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
-        const getAlerts=await import('../components/utils/alerts.js');
+        const getAlerts = await import('../components/utils/alerts.js');
 
-        const obbCode = getCodeObb();
+        const oobCode = getCodeOob();
         const password = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        await areEqualsPasswords(password, confirmPassword, getAlerts);
-        await isAllowedSize(password, getAlerts);
 
-        if (await validateResetPassword(obbCode, password)) {
-            const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
-            customAlert(title, message, selectIcon(typeAlert)); 
+        if (!(await areEqualsPasswords(password, confirmPassword))) {
+            const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (!(await isAllowedSize(password))) {
+            const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
         }
 
-        // const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
-        // customAlert(title, message, selectIcon(typeAlert)); 
+        if (oobCode) {
+            await validateResetPassword(oobCode, password);
+        }
+
+        const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
+        customAlert(title, message, selectIcon(typeAlert));
+
+
 
         // //send to login with sweetAlert message, button to go
         // window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
     });
 } catch (error) {
-    checkoutError(error);
+    const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
+    customAlert(title, message, selectIcon(typeAlert));
+
     console.log(error);
 }
 
 
-async function areEqualsPasswords(item_1, item_2, alerts) {
+async function areEqualsPasswords(item_1, item_2) {
     if (item_1 !== item_2) {
-        const { title, message, typeAlert } = alerts.messagePasswordNotSame();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
+        return true;
+    } return false;
 }
-async function isAllowedSize(newPassword, alerts) {
+async function isAllowedSize(newPassword) {
     if (newPassword.length <= 6) {
-        const { title, message, typeAlert } = alerts.messagePasswordSizeShort();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
+        return true;
+    } return false;
 }
 async function checkoutError(error) {
     if (error.code === 'auth/invalid-action-code') {
@@ -52,7 +60,7 @@ async function checkoutError(error) {
         return;
     }
 }
-function getCodeObb() {
+function getCodeOob() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
     return searchParams.get('oobCode');
