@@ -6,35 +6,39 @@ try {
 
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
-
         const obbCode = getCodeObb();
-        const email = getEmail();
-        console.log(obbCode);
-        console.log(email);
-
         const password = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        await checkoutPassword(password, confirmPassword);
+        await areEqualsPasswords(password, confirmPassword);
+        await isAllowedSize(password);
 
         if (await validateResetPassword(obbCode, password)) {
             const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageResetPasswordSuccess();
             customAlert(title, message, selectIcon(typeAlert)); 
         }
 
-        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
-        customAlert(title, message, selectIcon(typeAlert)); 
+        // const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
+        // customAlert(title, message, selectIcon(typeAlert)); 
 
         // //send to login with sweetAlert message, button to go
         // window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
     });
 } catch (error) {
     checkoutError(error);
+    console.log(error);
 }
 
 
-async function checkoutPassword(item_1, item_2) {
+async function areEqualsPasswords(item_1, item_2) {
     if (item_1 !== item_2) {
         const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messagePasswordNotSame();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+}
+async function isAllowedSize(newPassword) {
+    if (newPassword.length <= 6) {
+        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
@@ -54,7 +58,7 @@ function getCodeObb() {
 function getEmail() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
-    return searchParams.get('UID');
+    return searchParams.get('');
 }
 
 

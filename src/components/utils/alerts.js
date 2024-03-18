@@ -101,6 +101,12 @@ export function messagePasswordNotSame() {
     const typeAlert="e";
     return {title, message, typeAlert};
 }
+export function messagePasswordSizeShort() {
+    const title="Password so short";
+    const message="Please, retry with 6 or more caracters";
+    const typeAlert="e";
+    return {title, message, typeAlert};
+}
 export function messageTokenExpired() {
     const title="Expired";
     const message="Try to generate another token";
