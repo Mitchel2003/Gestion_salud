@@ -1,5 +1,15 @@
 //for initializing webpack of server: webpack-dev-server --mode development yes
 
+bcrypt
+jsonwebtoken
+dotenv
+
+
+
+
+
+
+
 /*--------------------------------------------------tools and source--------------------------------------------------*/
 // function getImportAnim(action) {//load difered
 //     import('./components/anim.js')
