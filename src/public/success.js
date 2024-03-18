@@ -1,4 +1,4 @@
-import { validateResetPassword } from '../components/firebase/query.js';
+import { changeUserPassword, validateResetPassword } from '../components/firebase/query.js';
 import { customAlert, selectIcon } from '../components/utils/alerts.js';
 
 try {
@@ -12,12 +12,12 @@ try {
         const password = document.getElementById('newPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
-        if (!(await areEqualsPasswords(password, confirmPassword))) {
+        if (checkEqualsPasswords(password, confirmPassword)) {
             const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
-        if (!(await isAllowedSize(password))) {
+        if (checkAllowedSize(password)) {
             const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
             customAlert(title, message, selectIcon(typeAlert));
             return;
@@ -25,6 +25,7 @@ try {
 
         if (oobCode) {
             await validateResetPassword(oobCode, password);
+            await changeUserPassword(email, password);
         }
 
         const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
@@ -43,15 +44,11 @@ try {
 }
 
 
-async function areEqualsPasswords(item_1, item_2) {
-    if (item_1 !== item_2) {
-        return false;
-    } return true;
+function checkEqualsPasswords(item_1, item_2) {
+    if (item_1 !== item_2) {return item_1;}
 }
-async function isAllowedSize(newPassword) {
-    if (newPassword.length <= 6) {
-        return false;
-    } return true;
+function checkAllowedSize(newPassword) {
+    if (newPassword.length <= 6) {return newPassword;}
 }
 async function checkoutError(error) {
     if (error.code === 'auth/invalid-action-code') {

@@ -19,6 +19,8 @@ export async function isCredentialValid(user, password) {
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
 }
+
+/*--------------------------------------------------functions--------------------------------------------------*/
 export async function resetPassword (email) {
     return await (await import('../firebase/conection.js')).sendPasswordResetEmail((await import('./conection.js')).auth, email);
 }
