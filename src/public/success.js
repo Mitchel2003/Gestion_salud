@@ -54,7 +54,7 @@ function getCodeObb() {
 function getEmail() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
-    return searchParams.get('email');
+    return searchParams.get('UID');
 }
 
 
