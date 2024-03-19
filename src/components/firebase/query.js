@@ -13,23 +13,16 @@ export async function isFoundAccess(emailContext) {
     return !querySnapshot.empty;
 }
 
-/*--------------------------------------------------signIn and signOut--------------------------------------------------*/
+/*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
     await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-            window.location.href = './src/public/session.html';
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        .then(() => {window.location.href = './src/public/session.html';})
+        .catch((error) => {console.log(error);});
 }
 export async function offSession() {
     await (await import('../firebase/conection.js')).signOut(auth)
-    .then(() => {
-        window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
-    }).catch((error) => {
-        console.log(error); 
-    });
+        .then(() => {/*nothing*/})
+        .catch((error) => {console.log(error);});
 }
 
 /*--------------------------------------------------resetPassword--------------------------------------------------*/

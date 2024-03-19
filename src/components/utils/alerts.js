@@ -14,7 +14,7 @@ export function selectIcon(item) {
     else
         return "error";
 }
-/*--------------------------------------------------utilies--------------------------------------------------*/
+/*--------------------------------------------------user action--------------------------------------------------*/
 export async function alertInput(title, message, icon) {
     const { value: email } = await Swal.fire({
         title: title,

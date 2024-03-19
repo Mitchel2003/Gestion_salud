@@ -1,4 +1,4 @@
-import { addActive, removeActive } from "../components/utils/anim.js";
+import { addActive, removeActive } from "../components/utils/view.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
 const signButton = document.querySelector('.signContainer header');
@@ -23,15 +23,15 @@ const forgotPassword = document.querySelector('.signContainer button[type="butto
 
 signContainer.addEventListener('submit', async function (event) {
     event.preventDefault();
-    const { user, password } = (await import('../components/utils/tools/values.js')).getInputLogin();
+    const { user, password } = (await import('../components/utils/values.js')).getInputLogin();
     await (await import('../components/models/userModel.js')).loginUser(user, password);
 });
 registerContainer.addEventListener('submit', async function (event) {
     event.preventDefault();
-    const { name, email, password, access } = (await import('../components/utils/tools/values.js')).getInputRegister();//AC #203
+    const { name, email, password, access } = (await import('../components/utils/values.js')).getInputRegister();//AC #203
     await (await import('../components/models/userModel.js')).registerUser(name, email, password, access);
 });
 forgotPassword.addEventListener('click', async function (event) {
     event.preventDefault();
-    await (await import('../components/models/userForgotPassword.js')).requestResetPassword();
+    await (await import('../components/models/userModel.js')).requestResetPassword();
 });

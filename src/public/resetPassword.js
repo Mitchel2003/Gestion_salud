@@ -1,4 +1,4 @@
-import { validateResetPassword } from '../components/firebase/query.js';
+import { validateResetPassword, offSession } from '../components/firebase/query.js';
 import { customAlert, selectIcon } from '../components/utils/alerts.js';
 
 const form = document.getElementById('resetPassword_form');
@@ -35,9 +35,9 @@ form.addEventListener('submit', async function (event) {
     const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
     const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
     if (request) {
-        await (await import('../components/firebase/query.js')).offSession();
-        goToHome();
+        (await import('../components/utils/view.js')).goToHome();
     }
+    await offSession();
 });
 /*--------------------------------------------------tools--------------------------------------------------*/
 function checkSamePasswords(item_1, item_2) {
@@ -51,10 +51,3 @@ function getCodeOob() {
     const searchParams = new URLSearchParams(queryString);
     return searchParams.get('oobCode');
 }
-function goToHome() {
-    window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
-}
-
-
-
-
