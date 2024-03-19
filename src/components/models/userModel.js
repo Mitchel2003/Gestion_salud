@@ -1,6 +1,5 @@
 import { isFoundEmail } from "../firebase/query.js";
 import { customAlert, selectIcon } from "../utils/alerts.js";
-import { auth } from "../firebase/conection.js";
 
 export async function loginUser(user, password) {
     try {
@@ -30,8 +29,7 @@ export async function registerUser(name, email, password, access) {
             customAlert(title, message, selectIcon(typeAlert));
             return;
         }
-        await (await import('../firebase/create.js')).saveUserData(name, email, access);
-        await (await import('../firebase/create.js')).createUser(auth, email, password);
+        await (await import('../firebase/create.js')).createUser(name, email, password, access);
 
         (await import('../utils/cleaner.js')).cleanInputRegister();
         const { title, message, typeAlert } = getAlert.messageUserSubmitted();

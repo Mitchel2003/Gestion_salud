@@ -1,4 +1,4 @@
-import { addDoc } from "./conection.js";
+import { auth, createUserWithEmailAndPassword } from "./conection.js";//working here...
 import { getCollection } from "./query.js";
 
 export async function saveUserData(name, email, access) {
@@ -9,12 +9,29 @@ export async function saveUserData(name, email, access) {
         key: false
     });
 }
-export async function createUser(auth, email, password) {
+export async function createUser(name, email, password, access) {
     await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
+        .then(() => {
+            updateUserProfile(name, access);
         })
         .catch((error) => {
-            console.log(error.message + error.code);
+            throw new Error(error);
         });
+}
+/*--------------------------------------------------tools modularization--------------------------------------------------*/
+async function updateUserProfile(name, access) {
+    await (await import('./conection.js')).updateProfile(auth.currentUser, {
+        name: name, access:access, key:false
+    }).then(() => {
+        // Profile updated!
+        // ...
+    }).catch((error) => {
+        // An error occurred
+        // ...
+    });
+
+
+    const name = userCredential.user;
+    const access = userCredential.user;
+    const key = userCredential.user;
 }
