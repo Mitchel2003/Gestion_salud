@@ -35,6 +35,7 @@ form.addEventListener('submit', async function (event) {
     const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
     const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
     if (request) {
+        await (await import('../components/firebase/query.js')).offSession();
         goToHome();
     }
 });
@@ -53,6 +54,7 @@ function getCodeOob() {
 function goToHome() {
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }
+
 
 
 

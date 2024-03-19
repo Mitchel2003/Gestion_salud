@@ -38,20 +38,9 @@ export async function loginUser(user, password) {
             return;
         }
 
-        await onSession(auth, user, password);
+        await (await import('../firebase/query.js')).onSession(user, password);
 
     } catch (error) {
         console.log(error);
     }
-}
-/*--------------------------------------------------tools--------------------------------------------------*/
-export async function onSession(auth, email, password) {
-    await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            window.location.href = './src/public/session.html';
-        })
-        .catch((error) => {
-            console.log(error);
-        });
 }

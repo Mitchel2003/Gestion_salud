@@ -1,4 +1,4 @@
-import { getDocs, query, where } from "./conection.js";
+import { auth, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans--------------------------------------------------*/
 export async function isFoundEmail(emailContext) {
     const ask = query(await getCollection("user"), where("email", "==", emailContext));
@@ -13,13 +13,32 @@ export async function isFoundAccess(emailContext) {
     return !querySnapshot.empty;
 }
 
-/*--------------------------------------------------functions--------------------------------------------------*/
+/*--------------------------------------------------signIn and signOut--------------------------------------------------*/
+export async function onSession(email, password) {
+    await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            window.location.href = './src/public/session.html';
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+export async function offSession() {
+    await (await import('../firebase/conection.js')).signOut(auth)
+    .then(() => {
+        window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
+    }).catch((error) => {
+        console.log(error); 
+    });
+}
+
+/*--------------------------------------------------resetPassword--------------------------------------------------*/
 export async function sendToEmailResetPassword(email) {
-    return await (await import('../firebase/conection.js')).sendPasswordResetEmail((await import('./conection.js')).auth, email);
+    return await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
 }
 export async function validateResetPassword(obbCode, newPassword) {
     if (!obbCode && !newPassword) { return }
-    return await (await import('../firebase/conection.js')).confirmPasswordReset((await import('./conection.js')).auth, obbCode, newPassword);
+    return await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
 
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
