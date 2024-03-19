@@ -32,7 +32,7 @@ form.addEventListener('submit', async function (event) {
     } catch (error) {
         const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
         customAlert(title, message, selectIcon(typeAlert));
-        throw new alert('Token expired');
+        throw new Error('Token expired');
     }
 });
 /*--------------------------------------------------tools--------------------------------------------------*/
