@@ -22,14 +22,10 @@ form.addEventListener('submit', async function (event) {
         return;
     }
 
-    try {
-        if (oobCode) {
-            await validateResetPassword(oobCode, password);
-        }
-    } catch (error) {
+    if (!(await validateResetPassword(oobCode, password))) {
         const { title, message, typeAlert } = getAlerts.messageTokenExpired();
         customAlert(title, message, selectIcon(typeAlert));
-        return;
+        throw new Error('Token expired');
     }
 
     const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
