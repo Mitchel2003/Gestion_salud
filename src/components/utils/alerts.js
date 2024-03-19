@@ -31,8 +31,8 @@ export async function alertInput(title, message, icon) {
     });
     return email;
 }
-export function alertButtonAction(title, message, icon) {
-    const { value: request } = Swal.fire({
+export async function alertButtonAction(title, message, icon) {
+    const { value: request } = await Swal.fire({
         title: title,
         text: message,
         icon: icon,
