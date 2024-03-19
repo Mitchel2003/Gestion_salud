@@ -22,24 +22,30 @@ export async function alertInput(title, message, icon) {
         icon: icon,
         toast: true,
 
-        confirmButtonText:"send token",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText:"Send token",
         input: "email",
         inputValue: ""
     });
     return email;
 }
-export async function alertButtonAction(title, message, icon) {
-    const {value:email} = await Swal.fire({
+export function alertButtonAction(title, message, icon, action) {
+    Swal.fire({
         title: title,
         text: message,
         icon: icon,
-        toast: true,
 
-        confirmButtonText:"send token",
-        input: "email",
-        inputValue: ""
-    });
-    return email;
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Go to home"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          action();
+        }
+      });
 }
 /*--------------------------------------------------text--------------------------------------------------*/
 export function messageUserSubmitted() {//successfull

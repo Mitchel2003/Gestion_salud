@@ -33,10 +33,7 @@ form.addEventListener('submit', async function (event) {
     }
 
     const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
-    customAlert(title, message, selectIcon(typeAlert));
-
-    // //send to login with sweetAlert message, button to go
-    // window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
+    (await import('../components/utils/alerts.js')).alertButtonAction(title, message, selectIcon(typeAlert), goToHome());
 });
 
 
@@ -51,6 +48,9 @@ function getCodeOob() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
     return searchParams.get('oobCode');
+}
+export function goToHome(){
+    window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }
 
 
