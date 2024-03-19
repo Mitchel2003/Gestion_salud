@@ -16,22 +16,23 @@ export async function isFoundAccess(emailContext) {
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
     await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password)
-        .then(() => {window.location.href = './src/public/session.html';})
-        .catch((error) => {console.log(error);});
+        .then(() => { window.location.href = './src/public/session.html'; })
+        .catch((error) => { console.log(error); });
 }
 export async function offSession() {
     await (await import('../firebase/conection.js')).signOut(auth)
-        .then(() => {/*nothing*/})
-        .catch((error) => {console.log(error);});
+        .then(() => {/*nothing*/ })
+        .catch((error) => { console.log(error); });
 }
 
 /*--------------------------------------------------resetPassword--------------------------------------------------*/
 export async function sendToEmailResetPassword(email) {
-    return await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
+    await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
 }
 export async function validateResetPassword(obbCode, newPassword) {
     if (!obbCode && !newPassword) { return }
-    return await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
+    try { await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword); }
+    catch (error) { throw new Error('Token expired, generate a new token'); }
 }
 
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
