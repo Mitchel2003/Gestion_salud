@@ -4,36 +4,36 @@ import { customAlert, selectIcon } from '../components/utils/alerts.js';
 const form = document.getElementById('resetPassword_form');
 
 form.addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const getAlerts = await import('../components/utils/alerts.js');
+    try {
+        event.preventDefault();
+        const getAlerts = await import('../components/utils/alerts.js');
 
-    const oobCode = getCodeOob();
-    const password = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
+        const oobCode = getCodeOob();
+        const password = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (checkSamePasswords(password, confirmPassword)) {
-        const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+        if (checkSamePasswords(password, confirmPassword)) {
+            const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (checkSizeAllowed(password)) {
+            const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        await validateResetPassword(oobCode, password);
+
+        const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
+        const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
+        if (request) { (await import('../components/utils/view.js')).goToHome(); }
+        await offSession();
+
+    } catch (error) {
+        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
         customAlert(title, message, selectIcon(typeAlert));
-        return;
+        throw new alert('Token expired');
     }
-    if (checkSizeAllowed(password)) {
-        const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
-
-    if (!(await validateResetPassword(oobCode, password))) {
-        const { title, message, typeAlert } = getAlerts.messageTokenExpired();
-        customAlert(title, message, selectIcon(typeAlert));
-        throw new Error('Token expired');
-    }
-
-    const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
-    const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
-    if (request) {
-        (await import('../components/utils/view.js')).goToHome();
-    }
-    await offSession();
 });
 /*--------------------------------------------------tools--------------------------------------------------*/
 function checkSamePasswords(item_1, item_2) {
