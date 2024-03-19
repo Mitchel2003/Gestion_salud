@@ -31,8 +31,7 @@ export async function sendToEmailResetPassword(email) {
 }
 export async function validateResetPassword(obbCode, newPassword) {
     if (!obbCode && !newPassword) { return }
-    try { await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword); }
-    catch (error) { throw new Error('Token expired, generate a new token'); }
+    await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
 
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
