@@ -27,16 +27,17 @@ form.addEventListener('submit', async function (event) {
             await validateResetPassword(oobCode, password);
         }
     } catch (error) {
-        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
+        const { title, message, typeAlert } = getAlerts.messageTokenExpired();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
 
     const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
-    (await import('../components/utils/alerts.js')).alertButtonAction(title, message, selectIcon(typeAlert), goToHome());
+    const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
+    if(request){
+        goToHome();
+    }
 });
-
-
 /*--------------------------------------------------tools--------------------------------------------------*/
 function checkSamePasswords(item_1, item_2) {
     if (item_1 !== item_2) { return item_1; }
@@ -49,7 +50,7 @@ function getCodeOob() {
     const searchParams = new URLSearchParams(queryString);
     return searchParams.get('oobCode');
 }
-export function goToHome(){
+function goToHome(){
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }
 

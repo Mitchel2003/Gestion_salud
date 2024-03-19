@@ -5,7 +5,6 @@ import { sendToEmailResetPassword } from "../firebase/query.js";
 export async function requestResetPassword(){
     try{
         const getAlert = await import('../utils/alerts.js');
-
         const { title, message, typeAlert } = getAlert.messageRestorePassword();
         const email = await getAlert.alertInput(title, message, selectIcon(typeAlert));
 
@@ -19,7 +18,6 @@ export async function requestResetPassword(){
 
         const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
         customAlert(title2, message2, selectIcon(typeAlert2));
-
     }catch(error){
         console.log(error);
     }
