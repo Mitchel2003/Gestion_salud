@@ -25,21 +25,16 @@ export async function loginUser(user, password) {
 }
 export async function registerUser(name, email, password, access) {
     try {
-        const getQuery = await import('../firebase/query.js');
         const getCreate = await import('../firebase/create.js');
         const getAlert = await import('../utils/alerts.js');
 
         await getCreate.createUser(name, email, password, access);
-        await getQuery.offSession();
 
         (await import('../utils/cleaner.js')).cleanInputRegister();
         const { title, message, typeAlert } = getAlert.messageUserSubmitted();
         customAlert(title, message, selectIcon(typeAlert));
     } catch (error) {
-        if(error.code === 'auth/email-already-in-use'){
-            const { title, message, typeAlert } = getAlert.messageEmailUsed();
-            customAlert(title, message, selectIcon(typeAlert));
-        }
+        console.log(error.code);
     }
 }
 export async function requestResetPassword() {

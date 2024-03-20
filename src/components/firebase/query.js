@@ -13,7 +13,7 @@ export async function onSession(email, password) {
 }
 export async function offSession() {
     await (await import('../firebase/conection.js')).signOut(auth)
-        .then(() => { /*nothing*/ })
+        .then(() => { /*session closed*/ })
         .catch((error) => { throw new Error(error); });
 }
 /*--------------------------------------------------resetPassword--------------------------------------------------*/

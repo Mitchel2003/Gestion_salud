@@ -113,3 +113,24 @@ export function messageTokenExpired() {
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
+export function messageTempUnknow() {
+    const title = "Exception Unknow";
+    const typeAlert = "e";
+    return { title, typeAlert };
+}
+
+/*--------------------------------------------------exceptions--------------------------------------------------*/
+export function exceptionsCreateUser(error) {
+    if (error.code === 'auth/email-already-in-use') {
+        const { title, message, typeAlert } = messageEmailUsed();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error.code, selectIcon(typeAlert));
+}
+export function exceptionsCreateUserProfile(error) {
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error.code, selectIcon(typeAlert));
+    return;
+}
