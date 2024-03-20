@@ -4,12 +4,6 @@ bcrypt
 jsonwebtoken
 dotenv
 
-
-
-
-
-
-
 /*--------------------------------------------------tools and source--------------------------------------------------*/
 // function getImportAnim(action) {//load difered
 //     import('./components/anim.js')
@@ -86,7 +80,15 @@ Swal.fire({
 	// imageAlt:
 });
 
-<<<<<<< HEAD
+//-----------------addDocument in Firebase-----------------
+export async function saveUserData(name, email, access) {
+    await addDoc(await getCollection("user"), {
+        name: name,
+        email: email,
+        access: access,
+        key: false
+    });
+}
 
 //-----------------setDocument in Firebase-----------------
 import { doc, addDoc, setDoc } from "./conection.js";
@@ -100,17 +102,16 @@ export async function createUser(name, email, password, access) {
         key: false
     });
 }
-=======
+
 //---------------get user Data from firebase---------------
-// async function loadUser(name) {
-//     const userDoc = doc(db, `user/${name}`);
-//     const snapshot = await getDocs(userDoc);
-//     return {
-//         id: snapshot.id,
-//         ...snapshot.data(),
-//     };
-// }
->>>>>>> master
+ async function loadUser(name) {
+     const userDoc = doc(db, `user/${name}`);
+     const snapshot = await getDocs(userDoc);
+     return {
+         id: snapshot.id,
+         ...snapshot.data(),
+     };
+ }
 
 //-----------get tokenPassword code for firebase-----------
 export async function getTokenPassword(querySnapshot) {//async await AC #202
@@ -179,12 +180,6 @@ export function TIME_WITH_SUBTRACTION() {//return timeContext - 15 min
 //-----------resetPassword with firebase (steps)-----------
 https://codingpr.com/react-firebase-password-reset-feature/
 //---------------------------------------------------------
-
-
-
-
-
-
 
 
 
