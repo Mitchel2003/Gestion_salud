@@ -86,6 +86,13 @@ export async function isFoundEmail(emailContext) {
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
 }
+export async function isFoundAccess(emailContext) {
+    const ask = query(await getCollection("user"),
+        where("email", "==", emailContext),
+        where("key", "==", true));
+    const querySnapshot = await getDocs(ask);
+    return !querySnapshot.empty;
+}
 
 //-----------------addDocument in Firebase-----------------
 export async function saveUserData(name, email, access) {

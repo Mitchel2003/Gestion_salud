@@ -17,3 +17,6 @@ export function removeActive(container) {
 export function goToHome() {
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }
+export function goToSession() {
+    window.location.href = './src/public/session.html';
+}

@@ -1,22 +1,20 @@
-import { auth, getDocs, query, where } from "./conection.js";
+import { auth } from "./conection.js";
 /*--------------------------------------------------booleans--------------------------------------------------*/
-export async function isFoundAccess(emailContext) {
-    const ask = query(await getCollection("user"),
-        where("email", "==", emailContext),
-        where("key", "==", true));
-    const querySnapshot = await getDocs(ask);
-    return !querySnapshot.empty;
+export async function isFoundAccess() {
+    const user = await auth.currentUser;
+    const key = user.key;
+    return key;
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
     await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password)
-        .then(() => { window.location.href = './src/public/session.html'; })
-        .catch((error) => { console.log(error); });
+        .then(() => { return true; })
+        .catch(() => { return false; });
 }
 export async function offSession() {
     await (await import('../firebase/conection.js')).signOut(auth)
-        .then(() => {/*nothing*/ })
-        .catch((error) => { console.log(error); });
+        .then(() => { /*nothing*/ })
+        .catch((error) => { throw new Error(error); });
 }
 /*--------------------------------------------------resetPassword--------------------------------------------------*/
 export async function sendToEmailResetPassword(email) {
