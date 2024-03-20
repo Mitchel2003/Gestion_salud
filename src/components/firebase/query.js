@@ -1,10 +1,5 @@
 import { auth, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans--------------------------------------------------*/
-export async function isFoundEmail(emailContext) {
-    const ask = query(await getCollection("user"), where("email", "==", emailContext));
-    const querySnapshot = await getDocs(ask);
-    return !querySnapshot.empty;
-}
 export async function isFoundAccess(emailContext) {
     const ask = query(await getCollection("user"),
         where("email", "==", emailContext),

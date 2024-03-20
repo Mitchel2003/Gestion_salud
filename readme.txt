@@ -80,6 +80,13 @@ Swal.fire({
 	// imageAlt:
 });
 
+//-----------------where in Firebase-----------------
+export async function isFoundEmail(emailContext) {
+    const ask = query(await getCollection("user"), where("email", "==", emailContext));
+    const querySnapshot = await getDocs(ask);
+    return !querySnapshot.empty;
+}
+
 //-----------------addDocument in Firebase-----------------
 export async function saveUserData(name, email, access) {
     await addDoc(await getCollection("user"), {
