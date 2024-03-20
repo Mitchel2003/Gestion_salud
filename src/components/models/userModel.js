@@ -28,13 +28,16 @@ export async function registerUser(name, email, password, access) {
         const getCreate = await import('../firebase/create.js');
         const getAlert = await import('../utils/alerts.js');
 
-        await getCreate.createUser(name, email, password, access);
+        if(!(await getCreate.createUser(name, email, password, access))){
+            (await import('../utils/alerts.js')).exceptionsCreateUser();
+        }
 
         (await import('../utils/cleaner.js')).cleanInputRegister();
         const { title, message, typeAlert } = getAlert.messageUserSubmitted();
         customAlert(title, message, selectIcon(typeAlert));
     } catch (error) {
         console.log(error.code);
+        console.log(error);
     }
 }
 export async function requestResetPassword() {
