@@ -1,3 +1,5 @@
+import { auth, createUserWithEmailAndPassword, updateProfile } from "../firebase/conection.js";
+import { exceptionsRegisterUser } from "../utils/alerts.js";
 import { customAlert, selectIcon } from "../utils/alerts.js";
 
 export async function loginUser(user, password) {
@@ -25,19 +27,27 @@ export async function loginUser(user, password) {
 }
 export async function registerUser(name, email, password, access) {
     try {
-        const getCreate = await import('../firebase/create.js');
+        const getAuthMethod = await import('../firebase/authentication.js');
         const getAlert = await import('../utils/alerts.js');
 
-        if(!(await getCreate.createUser(name, email, password, access))){
-            (await import('../utils/alerts.js')).exceptionsCreateUser();
-        }
+        const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+        const userProfile = await updateProfile(auth.currentUser, { displayName: name });
+        console.log(userCredentials);
 
+        //clean view
         (await import('../utils/cleaner.js')).cleanInputRegister();
+        (await import('../utils/view.js')).removeActive(document.querySelector('.mainContainer'));
+
+        if (!(await getAuthMethod.checkEmailAddress(auth))) {
+            const { title, message, typeAlert } = getAlert.messageEmailCheckout();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
         const { title, message, typeAlert } = getAlert.messageUserSubmitted();
         customAlert(title, message, selectIcon(typeAlert));
+
     } catch (error) {
-        console.log(error.code);
-        console.log(error);
+        exceptionsRegisterUser(error);
     }
 }
 export async function requestResetPassword() {

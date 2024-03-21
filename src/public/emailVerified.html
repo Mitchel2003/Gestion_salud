@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--renderizado moderno para edge-->
+    <title>Email verified</title>
+    <!-- dependency -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert -->
+    <!-- local resource -->
+    <link rel="icon" type="image/x-icon" href="../components/images/logo.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
+    <script type="module">
+        import { offSession } from '../components/firebase/query.js';
+        import { alertButtonAction, selectIcon, messageUserSubmitted } from '../components/utils/alerts.js';
+
+        const { title, message, typeAlert } = messageUserSubmitted();//working here...
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+        if (response) { (await import('../components/utils/view.js')).goToHome(); }
+        await offSession();
+    </script>
+</head>
+
+<body>
+    <div id="actionElement">
+        <div class="mdl-card mdl-shadow--2dp firebaseui-container firebaseui-id-page-email-verification-success">
+            <div class="firebaseui-card-header">
+                <h1 class="firebaseui-title">Your email has been verified</h1>
+            </div>
+            <div class="firebaseui-card-content">
+                <p class="firebaseui-text">You can now sign in with your new account</p>
+            </div>
+            <div class="firebaseui-card-actions"></div>
+        </div>
+    </div>
+    <!-- dependency -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- sweetAlert -->
+</body>
+
+
+</html>

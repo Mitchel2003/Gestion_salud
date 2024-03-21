@@ -1,7 +1,7 @@
 /*--------------------------------------------------conecction with database--------------------------------------------------*/
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
 import { getFirestore, collection, doc, addDoc, getDocs, setDoc, query, where } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-import { getAuth, signOut,signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+import { getAuth, signOut,signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCjKw582WVzAgwxfsYqQsi-2j0wCxtvHAo",
@@ -17,6 +17,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 export { db, auth, collection, doc, addDoc, getDocs, setDoc, query, where,    //first level
-        signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile,    //second level
+        signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification,    //second level
         sendPasswordResetEmail, confirmPasswordReset    //third level
     };

@@ -51,17 +51,17 @@ export function messageUserSubmitted() {//successfull
     const typeAlert = "s";
     return { title, message, typeAlert };
 }
-export function messageTokenSubmitted() {
-    const title2 = "Token generated";
-    const message2 = "Check your email to continue reset password";
-    const typeAlert2 = "s";
-    return { title2, message2, typeAlert2 };
-}
 export function messageResetPasswordSuccess() {
     const title = "Reset password success";
     const message = "Now, you can entry to app";
     const typeAlert = "s";
     return { title, message, typeAlert };
+}
+export function messageTokenSubmitted() {
+    const title2 = "Token generated";
+    const message2 = "Check your email to continue reset password";
+    const typeAlert2 = "s";
+    return { title2, message2, typeAlert2 };
 }
 
 export function messageUserNotFound() {//warning
@@ -76,6 +76,12 @@ export function messageUserWithoutAccess() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
+export function messageEmailCheckout() {
+    const title = "Checkout your mailbox";
+    const message = "Go to email and validate this user to continue";
+    const typeAlert = "w";
+    return { title, message, typeAlert };
+}
 export function messageRestorePassword() {
     const title = "Restore password";
     const message = "Enter a registered email to send token";
@@ -83,15 +89,22 @@ export function messageRestorePassword() {
     return { title, message, typeAlert };
 }
 
-export function messagePasswordIncorrect() {//error
-    const title = "Password incorrect";
-    const message = "Please, check field";
+
+export function messageEmailUsed() {//error
+    const title = "Email is used";
+    const message = "Please, retry with other email address";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
-export function messageEmailUsed() {
-    const title = "Email is used";
-    const message = "Please, retry with other email address";
+export function messageEmailStrange() {
+    const title = "Email invalid";
+    const message = "checkout and retry with a email valid";
+    const typeAlert = "e";
+    return { title, message, typeAlert };
+}
+export function messagePasswordIncorrect() {
+    const title = "Password incorrect";
+    const message = "Please, check field";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
@@ -120,9 +133,19 @@ export function messageTempUnknow() {
 }
 
 /*--------------------------------------------------exceptions--------------------------------------------------*/
-export function exceptionsCreateUser(error) {
+export function exceptionsRegisterUser(error) {
     if (error.code === 'auth/email-already-in-use') {
         const { title, message, typeAlert } = messageEmailUsed();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    if(error.code === 'auth/invalid-email'){
+        const { title, message, typeAlert } = messageEmailStrange();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    if(error.code === 'auth/weak-password'){
+        const { title, message, typeAlert } = messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
