@@ -26,7 +26,7 @@ export async function registerUser(name, email, password, access) {
 
         const { title, message, typeAlert } = getAlert.messageEmailCheckout();
         customAlert(title, message, selectIcon(typeAlert));
-        await (await import('../firebase/query.js')).offSession();
+        // await (await import('../firebase/query.js')).offSession();
     } catch (error) { exceptionsRegisterUser(error); }
 }
 export async function requestResetPassword() {
@@ -37,8 +37,6 @@ export async function requestResetPassword() {
         const email = await getAlert.alertInput(title, message, selectIcon(typeAlert));
 
         //await onSession();
-
-
 
         await (await import('../firebase/query.js')).sendToEmailResetPassword(email);
 

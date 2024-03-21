@@ -16,7 +16,8 @@
         import { alertButtonAction, selectIcon, messageUserSubmitted } from '../components/utils/alerts.js';
         import { auth } from '../components/firebase/conection.js';
 
-        console.log(auth.currentUser);
+        const user=auth.currentUser;
+        console.log(user);
 
         const { title, message, typeAlert } = messageUserSubmitted();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
