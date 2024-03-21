@@ -20,8 +20,17 @@
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
         if (response) { (await import('../components/utils/view.js')).goToHome(); }
         //regist user
-        console.log(auth.currentUser);
+        const value=getUser();
+        console.log(value);
         await offSession();
+
+
+
+        function getUser() {
+            const queryString = window.location.search;
+            const searchParams = new URLSearchParams(queryString);
+            return searchParams.get('user');
+        }
     </script>
 </head>
 
