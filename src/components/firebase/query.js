@@ -7,16 +7,14 @@ export async function isFoundAccess() {
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
-    await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password)
-        .then(() => { return true; })
-        .catch(() => { return false; });
+    return await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password);
 }
 export async function offSession() {
     return await (await import('../firebase/conection.js')).signOut(auth);
 }
 /*--------------------------------------------------resetPassword--------------------------------------------------*/
 export async function sendToEmailResetPassword(email) {
-    await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
+    return await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
 }
 export async function validateResetPassword(obbCode, newPassword) {
     if (!obbCode && !newPassword) { return }

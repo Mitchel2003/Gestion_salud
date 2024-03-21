@@ -82,6 +82,12 @@ export function messageEmailCheckout() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
+export function messageManyLoginRequests() {
+    const title = "Too many attempts";
+    const message = "Retry in other moment";
+    const typeAlert = "w";
+    return { title, message, typeAlert };
+}
 export function messageRestorePassword() {
     const title = "Restore password";
     const message = "Enter a registered email to send token";
@@ -102,9 +108,9 @@ export function messageEmailStrange() {
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
-export function messagePasswordIncorrect() {
-    const title = "Password incorrect";
-    const message = "Please, check field";
+export function messageCredentialsIncorrects() {
+    const title = "Credentials incorrects";
+    const message = "The email or password may not be correct";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
@@ -133,9 +139,9 @@ export function messageTempUnknow() {
 }
 
 /*--------------------------------------------------exceptions--------------------------------------------------*/
-export function exceptionsRegisterUser(error) {
-    if (error.code === 'auth/email-already-in-use') {
-        const { title, message, typeAlert } = messageEmailUsed();
+export function exceptionsLoginUser(error) {
+    if(error.code === 'auth/invalid-login-credentials'){
+        const { title, message, typeAlert } = messageCredentialsIncorrects();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
@@ -144,16 +150,36 @@ export function exceptionsRegisterUser(error) {
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
-    if(error.code === 'auth/weak-password'){
+    if(error.code === 'auth/too-many-requests'){
+        const { title, message, typeAlert } = messageManyLoginRequests();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error.code, selectIcon(typeAlert));
+}
+export function exceptionsRegisterUser(error) {
+    if (error.code === 'auth/email-already-in-use') {
+        const { title, message, typeAlert } = messageEmailUsed();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    if (error.code === 'auth/invalid-email') {
+        const { title, message, typeAlert } = messageEmailStrange();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    if (error.code === 'auth/weak-password') {
         const { title, message, typeAlert } = messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
     const { title, typeAlert } = messageTempUnknow();
-    customAlert(title,error.code + error, selectIcon(typeAlert));
+    customAlert(title, error.code, selectIcon(typeAlert));
 }
 export function exceptionsCreateUserProfile(error) {
     const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code + error, selectIcon(typeAlert));
+    customAlert(title, error.code, selectIcon(typeAlert));
     return;
 }
