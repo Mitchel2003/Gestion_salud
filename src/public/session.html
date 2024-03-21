@@ -11,7 +11,14 @@
     <!-- local resource -->
     <link rel="icon" type="image/x-icon" href="../components/images/logo.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
-    <script type="module" src="./session.js"></script>
+    <script type="module">
+        const container = document.querySelector('.card');
+        container.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            await (await import('../components/firebase/query.js')).offSession();
+            (await import('../components/utils/view.js')).goToHome();
+        });
+    </script>
 </head>
 
 <body>
@@ -30,7 +37,7 @@
         </div>
     </div>
     <!-- dependency -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- sweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- sweetAlert -->
 </body>
 
 

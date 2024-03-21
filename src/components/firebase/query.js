@@ -12,9 +12,7 @@ export async function onSession(email, password) {
         .catch(() => { return false; });
 }
 export async function offSession() {
-    await (await import('../firebase/conection.js')).signOut(auth)
-        .then(() => { /*session closed*/ })
-        .catch((error) => { throw new Error(error); });
+    return await (await import('../firebase/conection.js')).signOut(auth);
 }
 /*--------------------------------------------------resetPassword--------------------------------------------------*/
 export async function sendToEmailResetPassword(email) {
@@ -28,6 +26,6 @@ export async function validateResetPassword(obbCode, newPassword) {
 //access: access, key: false
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
-    const collectionReference = (await import('../firebase/conection.js')).collection((await import('./conection.js')).db, context);
+    const collectionReference = (await import('./conection.js')).collection((await import('./conection.js')).db, context);
     return collectionReference;
 }

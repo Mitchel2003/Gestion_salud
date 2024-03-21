@@ -150,10 +150,10 @@ export function exceptionsRegisterUser(error) {
         return;
     }
     const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code, selectIcon(typeAlert));
+    customAlert(title,error.code + error, selectIcon(typeAlert));
 }
 export function exceptionsCreateUserProfile(error) {
     const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code, selectIcon(typeAlert));
+    customAlert(title, error.code + error, selectIcon(typeAlert));
     return;
 }
