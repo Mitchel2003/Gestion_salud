@@ -17,22 +17,20 @@
         import { offSession } from '../components/firebase/query.js';
         import { auth } from '../components/firebase/conection.js';
 
-        try {
-            const query = getQueryParams();
-            const continueURL = query.continueUrl;
-            const decodeURL = decodeURIComponent(continueURL);
-            const url = new URL(decodeURL);
-            const userEmail = url.searchParams.get('email');
-            const userAccess = url.searchParams.get('access');
-            console.log(userEmail);
-            console.log(userAccess);
+        const query = getQueryParams();
+        const continueURL = query.continueUrl;
+        const decodeURL = decodeURIComponent(continueURL);
+        const url = new URL(decodeURL);
+        const userEmail = url.searchParams.get('email');
+        const userAccess = url.searchParams.get('access');
+        console.log(userEmail);
+        console.log(userAccess);
 
-            const request = await appenedDocumentReference(userEmail, userAccess);
+        const request = await appenedDocumentReference(userEmail, userAccess);
 
-            const { title, message, typeAlert } = messageUserSubmitted();
-            const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-            if (response) { (await import('../components/utils/view.js')).goToHome(); }
-        } catch (error) { exceptionsEmailVerified(error); }
+        const { title, message, typeAlert } = messageUserSubmitted();
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+        if (response) { (await import('../components/utils/view.js')).goToHome(); }
 
         function getQueryParams() {
             const queryString = window.location.search;
