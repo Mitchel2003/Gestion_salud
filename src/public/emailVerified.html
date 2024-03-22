@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
     <script type="module">
         import { alertButtonAction, selectIcon, messageUserSubmitted, messageTokenVerifyExpired, exceptionsEmailVerified } from '../components/utils/alerts.js';
-        import { appenedDocumentReference } from '../components/firebase/authentication.js';
         import { offSession, isFoundDocumentReference } from '../components/firebase/query.js';
+        import { appenedDocumentReference } from '../components/firebase/authentication.js';
         import { auth } from '../components/firebase/conection.js';
 
         try {
@@ -28,7 +28,7 @@
             if(await isFoundDocumentReference(userEmail)){
                 const { title, message, typeAlert } = messageTokenVerifyExpired();
                 const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-                return;
+                throw new Error('account verified');
             }
             const request = await appenedDocumentReference(userEmail, userAccess);
 
