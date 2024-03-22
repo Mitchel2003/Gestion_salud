@@ -17,14 +17,18 @@
         import { auth } from '../components/firebase/conection.js';
 
         const query = getQueryParams();
-        console.log(query);
-        console.log(query.continueUrl);
         const continueURL=query.continueUrl;
+        const decodeURL= decodeURIComponent(continueURL);
+        const url=new URL(decodeURL);
+        const userEmail = url.searchParams.get('email');
+        const userAccess = url.searchParams.get('access');
+        console.log(userEmail);
+        console.log(userAccess);
 
-        const decode= decodeURIComponent(continueURL);
-        const url=new URL(decode);
-        const  get = url.searchParams.get('email');
-        console.log(get);
+        //create documentReference
+        appenedDocumentReference(userEmail, userAccess);
+
+
 
         const { title, message, typeAlert } = messageUserSubmitted();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));

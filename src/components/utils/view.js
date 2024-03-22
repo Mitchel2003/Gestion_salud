@@ -14,9 +14,20 @@ export function removeActive(container) {
     container.classList.remove('active');
 }
 
+//actions
 export function goToHome() {
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }
 export function goToSession() {
     window.location.href = './src/public/session.html';
+}
+
+//clean inputs
+export function cleanInputRegister() {
+    const name=document.querySelector('.registerContainer input[type="text"]');
+    const email=document.querySelector('.registerContainer input[type="email"]');
+    const password=document.querySelector('.registerContainer input[type="password"]');
+    name.value="";
+    email.value="";
+    password.value="";
 }
