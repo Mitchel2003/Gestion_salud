@@ -16,23 +16,22 @@
         import { alertButtonAction, selectIcon, messageUserSubmitted } from '../components/utils/alerts.js';
         import { auth } from '../components/firebase/conection.js';
 
-        const query = getQueryParams();
-        const continueURL=query.continueUrl;
-        const decodeURL= decodeURIComponent(continueURL);
-        const url=new URL(decodeURL);
-        const userEmail = url.searchParams.get('email');
-        const userAccess = url.searchParams.get('access');
-        console.log(userEmail);
-        console.log(userAccess);
+        try {
+            const query = getQueryParams();
+            const continueURL = query.continueUrl;
+            const decodeURL = decodeURIComponent(continueURL);
+            const url = new URL(decodeURL);
+            const userEmail = url.searchParams.get('email');
+            const userAccess = url.searchParams.get('access');
+            console.log(userEmail);
+            console.log(userAccess);
 
-        //create documentReference
-        // appenedDocumentReference(userEmail, userAccess);
+            await (await import('../components/firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
 
-
-
-        const { title, message, typeAlert } = messageUserSubmitted();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-        if (response) { (await import('../components/utils/view.js')).goToHome(); }
+            const { title, message, typeAlert } = messageUserSubmitted();
+            const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+            if (response) { (await import('../components/utils/view.js')).goToHome(); }
+        } catch (error) { (await import('../components/utils/alerts.js')).exceptionsEmailVerified(error); }
 
         function getQueryParams() {
             const queryString = window.location.search;

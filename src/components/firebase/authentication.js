@@ -11,5 +11,5 @@ export async function verificationEmailAddress(auth, userEmail, userAccess) {
     return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, { url: redirect });
 }
 export async function appenedDocumentReference(email, access) {
-    await (await import('./conection.js')).addDoc(getCollection("userInfo"), { email: email, access: access, key: false });
+    return await (await import('./conection.js')).addDoc(getCollection("userInfo"), { email: email, access: access, key: false });
 }
