@@ -1,7 +1,7 @@
 import { getCollection } from './query.js';
 
 export async function verificationEmailAddress(auth, userEmail) {
-    return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, {url: userEmail});
+    return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, {userEmail: userEmail});
 }
 export async function createUser(auth, email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
