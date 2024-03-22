@@ -36,7 +36,7 @@
             const response = await alertButtonAction(title, message, selectIcon(typeAlert));
             if (response) { (await import('../components/utils/view.js')).goToHome(); }
             await offSession();
-        } catch (error) { exceptionsEmailVerified(error); }
+        } catch (error) { exceptionsEmailVerified(error); console.log(error) }
 
         function getQueryParams() {
             const queryString = window.location.search;
