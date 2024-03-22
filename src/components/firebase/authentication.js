@@ -1,7 +1,7 @@
 import { getCollection } from './query.js';
 
 export async function verificationEmailAddress(auth, userEmail) {
-    const redirect= 'https://mitchel2003.github.io/Gestion_salud/src/public/emailVerified.html?email=${'+userEmail+'}';
+    const redirect= 'https://mitchel2003.github.io/Gestion_salud/src/public/emailVerified.html?mode=verifyEmail&email=${'+userEmail+'}';
     return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, {url: redirect});
 }
 export async function createUser(auth, email, password) {
