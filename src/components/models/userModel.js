@@ -18,7 +18,6 @@ export async function registerUser(name, email, password, access) {
 
         await getAuthMethod.createUser(auth, email, password);
         await getAuthMethod.updateDataUser(auth, name, access);
-        // await getAuthMethod.appenedDocumentReference(email, access);
         await getAuthMethod.verificationEmailAddress(auth);
 
         (await import('../utils/cleaner.js')).cleanInputRegister();
@@ -26,7 +25,6 @@ export async function registerUser(name, email, password, access) {
 
         const { title, message, typeAlert } = getAlert.messageEmailCheckout();
         customAlert(title, message, selectIcon(typeAlert));
-        // await (await import('../firebase/query.js')).offSession();
     } catch (error) { exceptionsRegisterUser(error); }
 }
 export async function requestResetPassword() {
