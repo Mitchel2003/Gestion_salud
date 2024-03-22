@@ -185,6 +185,6 @@ export function exceptionsCreateUserProfile(error) {
 }
 export function exceptionsEmailVerified(error) {
     const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code, selectIcon(typeAlert));
+    customAlert(title, error.code +' NEXT '+error+' NEXT '+error.message, selectIcon(typeAlert));
     return;
 }

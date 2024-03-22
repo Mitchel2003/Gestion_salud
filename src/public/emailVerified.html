@@ -12,8 +12,9 @@
     <link rel="icon" type="image/x-icon" href="../components/images/logo.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
     <script type="module">
-        import { offSession } from '../components/firebase/query.js';
         import { alertButtonAction, selectIcon, messageUserSubmitted, exceptionsEmailVerified } from '../components/utils/alerts.js';
+        import { appenedDocumentReference } from '../components/firebase/authentication.js';
+        import { offSession } from '../components/firebase/query.js';
         import { auth } from '../components/firebase/conection.js';
 
         try {
@@ -26,7 +27,7 @@
             console.log(userEmail);
             console.log(userAccess);
 
-            await (await import('../components/firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
+            await appenedDocumentReference(userEmail, userAccess);
 
             const { title, message, typeAlert } = messageUserSubmitted();
             const response = await alertButtonAction(title, message, selectIcon(typeAlert));
