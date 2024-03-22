@@ -1,6 +1,6 @@
 import { customAlert, selectIcon, exceptionsLoginUser, exceptionsRegisterUser } from "../utils/alerts.js";
+import { offSession, onSession } from "../firebase/query.js";
 import { auth } from "../firebase/conection.js";
-import { onSession } from "../firebase/query.js";
 
 export async function loginUser(user, password) {
     try {
@@ -25,6 +25,7 @@ export async function registerUser(name, email, password, access) {
 
         const { title, message, typeAlert } = getAlert.messageEmailCheckout();
         customAlert(title, message, selectIcon(typeAlert));
+        // await offSession();
     } catch (error) { exceptionsRegisterUser(error); }
 }
 export async function requestResetPassword() {
