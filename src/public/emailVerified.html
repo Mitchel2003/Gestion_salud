@@ -28,6 +28,7 @@
             if(await isFoundDocumentReference(userEmail)){
                 const { title, message, typeAlert } = messageTokenVerifyExpired();
                 const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+                if (response) { (await import('../components/utils/view.js')).goToHome(); }
                 throw new Error('account verified');
             }
             const request = await appenedDocumentReference(userEmail, userAccess);

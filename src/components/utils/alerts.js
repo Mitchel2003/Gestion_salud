@@ -127,13 +127,13 @@ export function messagePasswordSizeShort() {
     return { title, message, typeAlert };
 }
 export function messageTokenExpired() {
-    const title = "Expired";
+    const title = "Token expired";
     const message = "Try to generate another token";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
 export function messageTokenVerifyExpired() {
-    const title = "Expired";
+    const title = "Token expired";
     const message = "This account has already been verified";
     const typeAlert = "e";
     return { title, message, typeAlert };
