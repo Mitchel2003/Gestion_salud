@@ -18,7 +18,7 @@ export async function registerUser(name, email, password, access) {
 
         await getAuthMethod.createUser(auth, email, password);
         await getAuthMethod.updateDataUser(auth, name, access);
-        await getAuthMethod.verificationEmailAddress(auth);
+        await getAuthMethod.verificationEmailAddress(auth, email);
 
         (await import('../utils/cleaner.js')).cleanInputRegister();
         (await import('../utils/view.js')).removeActive(document.querySelector('.mainContainer'));
