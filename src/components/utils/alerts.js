@@ -70,6 +70,8 @@ export function messageTokenSubmitted() {
     return { title2, message2, typeAlert2 };
 }
 
+/*--------------------------------------------------*/
+
 export function messageUserNotFound() {//warning
     const title = "User not found";
     const message = "This user not has been registered, try restore another moment";
@@ -95,10 +97,17 @@ export function messageRestorePassword() {
     return { title, message, typeAlert };
 }
 
+/*--------------------------------------------------*/
 
 export function messageEmailUsed() {//error
     const title = "Email is used";
     const message = "Please, retry with other email address";
+    const typeAlert = "e";
+    return { title, message, typeAlert };
+}
+export function messageEmailNotFound() {
+    const title = "Email unknow";
+    const message = "If has been registered, checkout you mailbox and validate the account";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
@@ -143,7 +152,6 @@ export function messageTempUnknow() {
     const typeAlert = "e";
     return { title, typeAlert };
 }
-
 /*--------------------------------------------------exceptions--------------------------------------------------*/
 export function exceptionsLoginUser(error) {
     if(error.code === 'auth/invalid-login-credentials'){
@@ -184,7 +192,7 @@ export function exceptionsRegisterUser(error) {
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
 }
-export function exceptionsCreateUserProfile(error) {
+export function exceptionsResetPassword(error) {
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
     return;

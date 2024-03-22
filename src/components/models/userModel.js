@@ -26,20 +26,20 @@ export async function registerUser(name, email, password, access) {
         await offSession();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsRegisterUser(error); }
 }
-export async function requestResetPassword() {
+export async function requestResetPassword() {//working here... debugging
     try {
         const getAlert = await import('../utils/alerts.js');
-
         const { title, message, typeAlert } = getAlert.messageRestorePassword();
         const email = await getAlert.alertInput(title, message, selectIcon(typeAlert));
 
-        //await onSession();
-
+        if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(email))) {
+            const { title, message, typeAlert } = getAlert.messageEmailNotFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
         await (await import('../firebase/query.js')).sendToEmailResetPassword(email);
 
         const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
         customAlert(title2, message2, selectIcon(typeAlert2));
-    } catch (error) {
-        throw new Error('request_resetPassword: ' + error);
-    }
+    } catch (error) { (await import('../utils/alerts.js')).exceptionsResetPassword(error); }
 }
