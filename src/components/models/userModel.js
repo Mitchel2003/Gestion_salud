@@ -21,7 +21,7 @@ export async function registerUser(name, email, password, access) {
         (await import('../utils/view.js')).cleanInputRegister();
         (await import('../utils/view.js')).removeActive(document.querySelector('.mainContainer'));
 
-        const { title, message, typeAlert } = getAlert.messageEmailCheckout();
+        const { title, message, typeAlert } = getAlert.messageEmailVerify();
         customAlert(title, message, selectIcon(typeAlert));
         await offSession();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsRegisterUser(error); }

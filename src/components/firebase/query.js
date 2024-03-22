@@ -1,9 +1,14 @@
-import { auth } from "./conection.js";
+import { auth, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans--------------------------------------------------*/
 export async function isFoundAccess() {
     const user = await auth.currentUser;
     const key = user.key;
     return key;
+}
+export async function isFoundDocumentReference(user) {
+    const ask = query(await getCollection("userInfo"), where("email", "==", user));
+    const querySnapshot = await getDocs(ask);
+    return !querySnapshot.empty;
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {

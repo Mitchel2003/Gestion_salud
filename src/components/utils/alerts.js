@@ -51,6 +51,12 @@ export function messageUserSubmitted() {//successfull
     const typeAlert = "s";
     return { title, message, typeAlert };
 }
+export function messageEmailVerify() {
+    const title = "Pre-registration successfull";
+    const message = "Checkout your mailbox and validate this email to continue";
+    const typeAlert = "s";
+    return { title, message, typeAlert };
+}
 export function messageResetPasswordSuccess() {
     const title = "Reset password success";
     const message = "Now, you can entry to app";
@@ -73,12 +79,6 @@ export function messageUserNotFound() {//warning
 export function messageUserWithoutAccess() {
     const title = "Without access";
     const message = "Please, comunicate with the management";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageEmailCheckout() {
-    const title = "Checkout your mailbox";
-    const message = "Go to email and validate this user to continue";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
@@ -129,6 +129,12 @@ export function messagePasswordSizeShort() {
 export function messageTokenExpired() {
     const title = "Expired";
     const message = "Try to generate another token";
+    const typeAlert = "e";
+    return { title, message, typeAlert };
+}
+export function messageTokenVerifyExpired() {
+    const title = "Expired";
+    const message = "This account has already been verified";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
