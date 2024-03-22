@@ -20,8 +20,6 @@ export async function validateResetPassword(obbCode, newPassword) {
     if (!obbCode && !newPassword) { return }
     await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
-/*--------------------------------------------------tools creation--------------------------------------------------*/
-//access: access, key: false
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
     const collectionReference = await (await import('./conection.js')).collection((await import('./conection.js')).db, context);
