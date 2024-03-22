@@ -27,7 +27,7 @@
             console.log(userEmail);
             console.log(userAccess);
 
-            await appenedDocumentReference(userEmail, userAccess);
+            const request = await appenedDocumentReference(userEmail, userAccess);
 
             const { title, message, typeAlert } = messageUserSubmitted();
             const response = await alertButtonAction(title, message, selectIcon(typeAlert));
