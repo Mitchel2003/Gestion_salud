@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
     <script type="module">
         import { offSession } from '../components/firebase/query.js';
-        import { alertButtonAction, selectIcon, messageUserSubmitted } from '../components/utils/alerts.js';
+        import { alertButtonAction, selectIcon, messageUserSubmitted, exceptionsEmailVerified } from '../components/utils/alerts.js';
         import { auth } from '../components/firebase/conection.js';
 
         try {
@@ -31,7 +31,7 @@
             const { title, message, typeAlert } = messageUserSubmitted();
             const response = await alertButtonAction(title, message, selectIcon(typeAlert));
             if (response) { (await import('../components/utils/view.js')).goToHome(); }
-        } catch (error) { (await import('../components/utils/alerts.js')).exceptionsEmailVerified(error); }
+        } catch (error) { exceptionsEmailVerified(error); }
 
         function getQueryParams() {
             const queryString = window.location.search;
