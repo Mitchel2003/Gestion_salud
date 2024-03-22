@@ -18,7 +18,6 @@
 
         const query = getQueryParams();
         console.log(query);
-        console.log(query.email);
 
         const { title, message, typeAlert } = messageUserSubmitted();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
