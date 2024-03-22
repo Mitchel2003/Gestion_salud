@@ -16,13 +16,19 @@
         import { alertButtonAction, selectIcon, messageUserSubmitted } from '../components/utils/alerts.js';
         import { auth } from '../components/firebase/conection.js';
 
-        const user=auth.currentUser;
+        const query = getQueryParams();
+        const user= query.email;
         console.log(user);
 
         const { title, message, typeAlert } = messageUserSubmitted();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
         if (response) { (await import('../components/utils/view.js')).goToHome(); }
 
+        function getQueryParams() {
+            const queryString = window.location.search;
+            const searchParams = new URLSearchParams(queryString);
+            return Object.fromEntries(searchParams.entries());
+        }
     </script>
 </head>
 

@@ -25,7 +25,7 @@ export async function registerUser(name, email, password, access) {
 
         const { title, message, typeAlert } = getAlert.messageEmailCheckout();
         customAlert(title, message, selectIcon(typeAlert));
-        // await offSession();
+        await offSession();
     } catch (error) { exceptionsRegisterUser(error); }
 }
 export async function requestResetPassword() {
