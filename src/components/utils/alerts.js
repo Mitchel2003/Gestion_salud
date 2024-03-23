@@ -192,7 +192,12 @@ export function exceptionsRegisterUser(error) {
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
 }
-export function exceptionsResetPassword(error) {
+export function exceptionsRequestResetPassword(error) {
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error.code, selectIcon(typeAlert));
+    return;
+}
+export function exceptionsVerifyResetPassword(error) {
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
     return;
