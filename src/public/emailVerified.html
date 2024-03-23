@@ -37,7 +37,7 @@
         await (await import('../components/firebase/query.js')).offSession();
         /*--------------------------------------------------tools--------------------------------------------------*/
         function selectWay(data) { 
-            if (data === null) { 
+            if (!data) { 
                 window.location.href = './resetPassword.html'; 
                 throw new Error('verify successful');
             } 
