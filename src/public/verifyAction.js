@@ -1,0 +1,116 @@
+//verifyEmail
+import { alertButtonAction, customAlert, selectIcon } from '../components/utils/alerts.js';
+
+const query = getQueryParams();
+const continueURL = query.continueUrl;
+const pageContext = setContext(continueURL);
+document.q
+
+const decodeURL = decodeURIComponent(continueURL);
+const url = new URL(decodeURL);
+const userEmail = url.searchParams.get('email');
+const userAccess = url.searchParams.get('access');
+
+if (await (await import('../components/firebase/query.js')).isFoundDocumentReference(userEmail)) {
+    const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenVerifyExpired();
+    const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+    if (response) { (await import('../components/utils/view.js')).goToHome(); }
+    throw new Error('Account verified');
+}
+const request = await (await import('../components/firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
+
+const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageUserSubmitted();
+const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+if (response) { (await import('../components/utils/view.js')).goToHome(); }
+await (await import('../components/firebase/query.js')).offSession();
+/*--------------------------------------------------tools--------------------------------------------------*/
+function setContext(data) {//AC #205
+    if (data) {
+        return `   
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="mb-4">Your email has been verified</h2>
+                        <p class="mb-0">You can now sign in with your new account</p>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        `;
+    } else {
+        return `
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="mb-4">Enter your new password</h2>
+                        <form id="resetPassword_form">
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        `;
+    }
+}
+function getQueryParams() {
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    return Object.fromEntries(searchParams.entries());
+}
+
+//resetPassword
+const form = document.getElementById('resetPassword_form');
+form.addEventListener('submit', async function (event) {//AC #204
+    try {
+        event.preventDefault();
+        const getAlerts = await import('../components/utils/alerts.js');
+
+        const oobCode = getCodeOob();
+        const password = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (checkSamePasswords(password, confirmPassword)) {
+            const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        if (checkSizeAllowed(password)) {
+            const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
+            customAlert(title, message, selectIcon(typeAlert));
+            return;
+        }
+        await (await import('../components/firebase/query.js')).validateResetPassword(oobCode, password);
+
+        const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
+        const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
+        if (request) { (await import('../components/utils/view.js')).goToHome(); }
+        await (await import('../components/firebase/query.js')).offSession();
+
+    } catch (error) {
+        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenExpired();
+        customAlert(title, message, selectIcon(typeAlert));
+        throw new Error('Token expired, generate a new token');
+    }
+});
+/*--------------------------------------------------tools--------------------------------------------------*/
+function checkSamePasswords(item_1, item_2) {
+    if (item_1 !== item_2) { return item_1; }
+}
+function checkSizeAllowed(newPassword) {
+    if (newPassword.length <= 6) { return newPassword; }
+}
+function getCodeOob() {
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    return searchParams.get('oobCode');
+}
+

@@ -309,7 +309,7 @@ por tanto, vi necesario el uso de metodos para comprobar las entradas; queda el 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #205: en este metodo recibo un parametro "data" el cual refiere al valor de "continueUrl" el cual se halla intrinseco en el link que devuelve FireBase para
 la verificacion de email; entonces, la logica es la siguiente "if const continueUrl=null" si se cumple lo anterior entonces es que estamos en el contexto de
-de una solicitud de resetPassword y no en una confirmacion de email; en base ha estos fu
+de una solicitud de resetPassword y no en una confirmacion de email; en este orden de ideas pensé en esta alternativa.
 /*--------------------------------------------------tips--------------------------------------------------*/
 				OPTIMIZAR PAGINA WEB
 
