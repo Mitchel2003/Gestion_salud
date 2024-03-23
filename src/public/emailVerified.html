@@ -36,11 +36,13 @@
         if (response) { (await import('../components/utils/view.js')).goToHome(); }
         await (await import('../components/firebase/query.js')).offSession();
         /*--------------------------------------------------tools--------------------------------------------------*/
-        function selectWay(data) { 
+        function selectWay(data) {//AC #205
             if (!data) { 
                 window.location.href = './resetPassword.html'; 
                 throw new Error('verify successful');
-            } 
+            }else{
+                document.querySelector('.container p-4').style.display = "block";
+            }
         }
         function getQueryParams() {
             const queryString = window.location.search;
@@ -51,7 +53,7 @@
 </head>
 
 <body>
-    <div class="container p-4">
+    <div class="container p-4" style="display: none;">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
