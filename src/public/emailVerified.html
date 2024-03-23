@@ -12,31 +12,36 @@
     <link rel="icon" type="image/x-icon" href="../components/images/logo.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
     <script type="module">
-        import { alertButtonAction, selectIcon, messageUserSubmitted, messageTokenVerifyExpired } from '../components/utils/alerts.js';
-        import { offSession, isFoundDocumentReference } from '../components/firebase/query.js';
-        import { appenedDocumentReference } from '../components/firebase/authentication.js';
-        import { auth } from '../components/firebase/conection.js';
+        import { alertButtonAction, selectIcon } from '../components/utils/alerts.js';
 
         const query = getQueryParams();
         const continueURL = query.continueUrl;
+        selectWay(continueURL);
+        
         const decodeURL = decodeURIComponent(continueURL);
         const url = new URL(decodeURL);
         const userEmail = url.searchParams.get('email');
         const userAccess = url.searchParams.get('access');
 
-        if (await isFoundDocumentReference(userEmail)) {
-            const { title, message, typeAlert } = messageTokenVerifyExpired();
+        if (await (await import('../components/firebase/query.js')).isFoundDocumentReference(userEmail)) {
+            const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageTokenVerifyExpired();
             const response = await alertButtonAction(title, message, selectIcon(typeAlert));
             if (response) { (await import('../components/utils/view.js')).goToHome(); }
             throw new Error('Account verified');
         }
-        const request = await appenedDocumentReference(userEmail, userAccess);
+        const request = await (await import('../components/firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
 
-        const { title, message, typeAlert } = messageUserSubmitted();
+        const { title, message, typeAlert } = (await import('../components/utils/alerts.js')).messageUserSubmitted();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
         if (response) { (await import('../components/utils/view.js')).goToHome(); }
-        await offSession();
-
+        await (await import('../components/firebase/query.js')).offSession();
+        /*--------------------------------------------------tools--------------------------------------------------*/
+        function selectWay(data) { 
+            if (data === null) { 
+                window.location.href = './resetPassword.html'; 
+                throw new Error('verify successful');
+            } 
+        }
         function getQueryParams() {
             const queryString = window.location.search;
             const searchParams = new URLSearchParams(queryString);

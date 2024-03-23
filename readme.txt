@@ -1,9 +1,5 @@
 //for initializing webpack of server: webpack-dev-server --mode development yes
-
-bcrypt
-jsonwebtoken
-dotenv
-
+bcrypt, jsonwebtoken, dotenv
 /*--------------------------------------------------tools and source--------------------------------------------------*/
 // function getImportAnim(action) {//load difered
 //     import('./components/anim.js')
@@ -198,6 +194,7 @@ https://codingpr.com/react-firebase-password-reset-feature/
 
 
 /*--------------------------------------------------addComentary in code--------------------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #201: el hecho de que haya una animacion explicita que señale un comportamiento, no cambia el estado estandar del elemento en referencia;
 es decir, si ponemos en contexto la siguiente animacion 
 
@@ -304,6 +301,11 @@ export function getInputRegister() {
     const access=document.querySelector('.registerContainer select').value;
     return {name, email, password, access};
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#204: en esta porcion de codigo he optado por el empleo de metodos para formalizar excepciones; entrando contexto, diferentes partes de codigo precisamente
+poseen un metodo personalizado de excepciones "exceptions... from alerts.js", en este caso en particular es un poco diferente; al momento notificar al usuario
+puntos tales como passwordSizeShort o passwordNotSame, el backend de firebase no me lanza una excepcion especifica como para yo poder captarla en un metodo "if"
+por tanto, vi necesario el uso de metodos para comprobar las entradas; queda el codigo un poco mas largo pero todo sea por un bien mayor...
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------tips--------------------------------------------------*/
 				OPTIMIZAR PAGINA WEB
