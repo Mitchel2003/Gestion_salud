@@ -41,5 +41,5 @@ export async function requestResetPassword() {//working here... debugging
 
         const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
         customAlert(title2, message2, selectIcon(typeAlert2));
-    } catch (error) { (await import('../utils/alerts.js')).exceptionsRequestResetPassword(error); }
+    } catch (error) { (await import('../utils/alerts.js')).exceptionsResetPassword(error); }
 }
