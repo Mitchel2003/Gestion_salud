@@ -22,8 +22,7 @@ export async function sendToEmailResetPassword(email) {
     return await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
 }
 export async function validateResetPassword(obbCode, newPassword) {
-    if (!obbCode && !newPassword) { return }
-    await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
+    return await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
