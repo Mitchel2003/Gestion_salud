@@ -12,15 +12,14 @@ export async function loginUser(user, password) {//working here...
             await offSession();
             return;
         }
-        if (!({ key } = await (await import('../firebase/query.js')).getDocumentUser(user))) {
+        const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
+        if (!key) {
             const { title, message, typeAlert } = getAlert.messageEmailWithoutAccess();
             customAlert(title, message, selectIcon(typeAlert));
             await offSession();
             return;
         }
-
         console.log("signIn successfull");//working here...
-
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
 }
 export async function registerUser(name, email, password, access) {
