@@ -78,7 +78,13 @@ export function messageUserNotFound() {//warning
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
-export function messageUserWithoutAccess() {
+export function messageEmailWithoutVerify() {
+    const title = "Without verify";
+    const message = "This email account not has been verified, check your mailbox";
+    const typeAlert = "w";
+    return { title, message, typeAlert };
+}
+export function messageEmailWithoutAccess() {
     const title = "Without access";
     const message = "Please, comunicate with the management";
     const typeAlert = "w";

@@ -1,5 +1,5 @@
 import { auth, getDocs, query, where } from "./conection.js";
-/*--------------------------------------------------booleans--------------------------------------------------*/
+/*--------------------------------------------------booleans and getters--------------------------------------------------*/
 export async function isFoundAccess() {
     const user = await auth.currentUser;
     const key = user.key;
@@ -10,6 +10,12 @@ export async function isFoundDocumentReference(user) {
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
 }
+export async function getDocumentUser(user) {
+    const ask = query(await getCollection("userInfo"), where("email", "==", user));
+    const querySnapshot = await getDocs(ask);
+    return { access: querySnapshot.access, key: querySnapshot.key };
+}
+
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
     return await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password);
