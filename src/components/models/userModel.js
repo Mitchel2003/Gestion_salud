@@ -1,11 +1,13 @@
 import { customAlert, selectIcon } from "../utils/alerts.js";
 import { offSession, onSession } from "../firebase/query.js";
-import { auth } from "../firebase/conection.js";
 
 export async function loginUser(user, password) {//working here...
     try {
-        const userContext = await onSession(user, password);
-        console.log(userContext);
+        await onSession(user, password);
+        
+        if(await (await import('../firebase/query.js')).isFoundDocumentReference(user)){
+
+        }
 
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
 }
@@ -14,9 +16,9 @@ export async function registerUser(name, email, password, access) {
         const getAuthMethod = await import('../firebase/authentication.js');
         const getAlert = await import('../utils/alerts.js');
 
-        await getAuthMethod.createUser(auth, email, password);
-        await getAuthMethod.updateDataUser(auth, name);
-        await getAuthMethod.verificationEmailAddress(auth, email, access);
+        await getAuthMethod.createUser(email, password);
+        await getAuthMethod.updateDataUser(name);
+        await getAuthMethod.verificationEmailAddress(email, access);
 
         (await import('../utils/view.js')).cleanInputRegister();
         (await import('../utils/view.js')).removeActive(document.querySelector('.mainContainer'));

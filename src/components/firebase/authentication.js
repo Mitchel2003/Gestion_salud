@@ -1,12 +1,13 @@
 import { getCollection } from './query.js';
+import { auth } from "./conection.js";
 
-export async function createUser(auth, email, password) {
+export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
 }
-export async function updateDataUser(auth, name) {
+export async function updateDataUser(name) {
     return await (await import('./conection.js')).updateProfile(auth.currentUser, { displayName: name });
 }
-export async function verificationEmailAddress(auth, userEmail, userAccess) {
+export async function verificationEmailAddress(userEmail, userAccess) {
     const redirect = `https://mitchel2003.github.io/Gestion_salud/src/public/emailVerified.html?mode=verifyEmail&email=${encodeURIComponent(userEmail)}&access=${encodeURIComponent(userAccess)}`;
     return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, { url: redirect });
 }

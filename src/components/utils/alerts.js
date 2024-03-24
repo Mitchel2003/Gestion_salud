@@ -169,7 +169,6 @@ export function exceptionsLoginUser(error) {
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
-    
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
 }
