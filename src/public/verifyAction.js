@@ -9,6 +9,7 @@ await setFunctions(continueURL);
 
 function setContext(res) {//AC #205
     if (res) {
+        document.title = "Verify email";
         return `   
         <div class="container p-4">
             <div class="row">
@@ -24,6 +25,7 @@ function setContext(res) {//AC #205
         </div>
         `;
     } else {
+        document.title = "Reset password";
         return `
         <div class="container p-4">
             <div class="row">
