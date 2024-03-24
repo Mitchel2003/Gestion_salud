@@ -1,25 +1,22 @@
 import { customAlert, selectIcon } from "../utils/alerts.js";
 import { offSession, onSession } from "../firebase/query.js";
 
-export async function loginUser(user, password) {//working here...
+export async function loginUser(user, password) {
     try {
         const getAlert = await import('../utils/alerts.js');
-        await onSession(user, password);
-
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
-            const { title, message, typeAlert } = getAlert.messageEmailWithoutVerify();
-            customAlert(title, message, selectIcon(typeAlert));
-            await offSession();
+            const { title, message, typeAlert } = getAlert.messageEmailNotFound();
+            customAlert(title, message, selectIcon(typeAlert)); 
             return;
         }
         const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!key) {
             const { title, message, typeAlert } = getAlert.messageEmailWithoutAccess();
-            customAlert(title, message, selectIcon(typeAlert));
-            await offSession();
+            customAlert(title, message, selectIcon(typeAlert)); 
             return;
         }
-        console.log("signIn successfull");//working here...
+        await onSession(user, password);
+        console.log("signIn successfull");
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
 }
 export async function registerUser(name, email, password, access) {

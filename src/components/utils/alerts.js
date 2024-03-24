@@ -78,9 +78,9 @@ export function messageUserNotFound() {//warning
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
-export function messageEmailWithoutVerify() {
-    const title = "Without verify";
-    const message = "This email account not has been verified, check your mailbox";
+export function messageEmailNotFound() {
+    const title = "Email unknow";
+    const message = "If has been registered, checkout you mailbox and validate the account";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
@@ -108,12 +108,6 @@ export function messageRestorePassword() {
 export function messageEmailUsed() {//error
     const title = "Email is used";
     const message = "Please, retry with other email address";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageEmailNotFound() {
-    const title = "Email unknow";
-    const message = "If has been registered, checkout you mailbox and validate the account";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
@@ -160,11 +154,6 @@ export function messageTempUnknow() {
 }
 /*--------------------------------------------------exceptions--------------------------------------------------*/
 export function exceptionsLoginUser(error) {
-    if(error.code === 'auth/invalid-login-credentials'){
-        const { title, message, typeAlert } = messageCredentialsIncorrects();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
     if(error.code === 'auth/invalid-email'){
         const { title, message, typeAlert } = messageEmailStrange();
         customAlert(title, message, selectIcon(typeAlert));
