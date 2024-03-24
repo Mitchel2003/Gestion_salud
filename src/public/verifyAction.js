@@ -3,44 +3,48 @@ import { alertButtonAction, customAlert, selectIcon } from '../components/utils/
 const query = getQueryParams();
 const continueURL = query.continueUrl;
 const pageContext = setContext(continueURL);
-document.querySelector('.container p-4').innerHTML = pageContext;
+document.body.innerHTML = pageContext;
 
 await setFunctions(continueURL);
 
 function setContext(res) {//AC #205
     if (res) {
         return `   
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h2 class="mb-4">Your email has been verified</h2>
-                        <p class="mb-0">You can now sign in with your new account</p>
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h2 class="mb-4">Your email has been verified</h2>
+                            <p class="mb-0">You can now sign in with your new account</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>    
+            </div>    
+        </div>
         `;
     } else {
         return `
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h2 class="mb-4">Enter your new password</h2>
-                        <form id="resetPassword_form">
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
-                        </form>
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h2 class="mb-4">Enter your new password</h2>
+                            <form id="resetPassword_form">
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div> 
+            </div> 
+        </div>
         `;
     }
 }
