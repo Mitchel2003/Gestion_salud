@@ -108,7 +108,7 @@ function checkSamePasswords(item_1, item_2) {
     if (item_1 !== item_2) { return item_1; }
 }
 function checkSizeAllowed(newPassword) {
-    if (newPassword.length <= 6) { return newPassword; }
+    if (newPassword.length < 6) { return newPassword; }
 }
 function getQueryParams() {
     const queryString = window.location.search;
