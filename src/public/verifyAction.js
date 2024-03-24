@@ -3,7 +3,7 @@ import { alertButtonAction, customAlert, selectIcon } from '../components/utils/
 const query = getQueryParams();
 const continueURL = query.continueUrl;
 const pageContext = setContext(continueURL);
-document.querySelector('.container p-4').innerHTML(pageContext);
+document.querySelector('.container p-4').innerHTML = pageContext;
 
 await setFunctions(continueURL);
 
