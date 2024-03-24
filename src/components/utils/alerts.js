@@ -72,21 +72,15 @@ export function messageTokenSubmitted() {
 
 /*--------------------------------------------------*/
 
-export function messageUserNotFound() {//warning
-    const title = "User not found";
-    const message = "This user not has been registered, try restore another moment";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageEmailNotFound() {
+export function messageEmailNotFound() {//warning
     const title = "Email unknow";
     const message = "If has been registered, checkout you mailbox and validate the account";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
-export function messageEmailWithoutAccess() {
+export function messageAccessNotFound() {
     const title = "Without access";
-    const message = "Please, comunicate with the management";
+    const message = "It has been found that this account does not have access; comunicate with the management";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }

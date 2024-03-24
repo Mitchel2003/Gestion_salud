@@ -4,18 +4,19 @@ import { offSession, onSession } from "../firebase/query.js";
 export async function loginUser(user, password) {
     try {
         const getAlert = await import('../utils/alerts.js');
+        const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
             const { title, message, typeAlert } = getAlert.messageEmailNotFound();
             customAlert(title, message, selectIcon(typeAlert)); 
             return;
         }
-        const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!key) {
-            const { title, message, typeAlert } = getAlert.messageEmailWithoutAccess();
+            const { title, message, typeAlert } = getAlert.messageAccessNotFound();
             customAlert(title, message, selectIcon(typeAlert)); 
             return;
         }
         await onSession(user, password);
+        
         console.log("signIn successfull");
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
 }
