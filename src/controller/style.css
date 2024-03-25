@@ -162,10 +162,10 @@ form input, form select, .input-box{
     display: flex;
     align-items: center;
     padding: 0px 0px;
-}.signContainer input[type="password"]{
+}.signContainer #password-login{
     margin-left: 0%;
     background: #00000000;
-}.signContainer input[type="password"]:hover{
+}.signContainer #password-login:hover{
     height: 7vh;
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.0);

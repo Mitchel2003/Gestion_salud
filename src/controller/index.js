@@ -16,10 +16,10 @@ registerButton.addEventListener('click', () => {
 signButton.addEventListener('click', () => {
     removeActive(container);
 });
-eyeIcon.onclick = function (){//working here...
+eyeIcon.onclick = function (){
     const input = document.querySelector('.input-box input');
-    if (input.type === "password") { input.type = "text"; }
-    else { input.type = "password"; }
+    if (input.type === "password") { input.type = "text"; eyeIcon.src = "./src/components/images/eye-open.png"; }
+    else { input.type = "password"; eyeIcon.src = "./src/components/images/eye-close.png"; }
 };
 
 /*--------------------------------------------------tools--------------------------------------------------*/
