@@ -1,9 +1,8 @@
-import { addActive, removeActive } from "../components/utils/view.js";
+import { addActive, removeActive, setInputPassword } from "../components/utils/view.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
 const signButton = document.querySelector('.signContainer header');
 const registerButton = document.querySelector('.registerContainer header');
-const eyeIcon = document.getElementById('eyeIcon');
 //view
 window.addEventListener("load", async () => {
     (await import('../components/utils/view.js')).loadElements(container);
@@ -12,16 +11,15 @@ window.addEventListener("load", async () => {
 //anim onClick
 registerButton.addEventListener('click', () => {
     addActive(container);
-});
-signButton.addEventListener('click', () => {
+}); signButton.addEventListener('click', () => {
     removeActive(container);
 });
-eyeIcon.onclick = function (){
-    const input = document.querySelector('.input-box input');
-    if (input.type === "password") { input.type = "text"; eyeIcon.src = "./src/components/images/eye-open.png"; }
-    else { input.type = "password"; eyeIcon.src = "./src/components/images/eye-close.png"; }
-};
 
+const containerPassword = document.querySelector('.input-box');
+const eyeIcon = document.getElementById('eyeIcon');
+containerPassword.addEventListener('mouseover', () => { eyeIcon.classList.remove('hide'); });
+containerPassword.addEventListener('mouseout', () => { eyeIcon.classList.add('hide'); });
+eyeIcon.addEventListener('click', () => { setInputPassword(eyeIcon); });
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');

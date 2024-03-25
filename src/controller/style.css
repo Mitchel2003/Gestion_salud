@@ -26,6 +26,11 @@
     font-size: 34px;
 }
 
+/*anim setVisible*/
+.hide{
+    display: none;
+}
+
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;
@@ -164,6 +169,7 @@ form input, form select, .input-box{
     padding: 0px 0px;
 }.signContainer #password-login{
     margin-left: 0%;
+    border: 0;
     background: #00000000;
 }.signContainer #password-login:hover{
     height: 7vh;
@@ -171,7 +177,7 @@ form input, form select, .input-box{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.0);
 }.input-box img{
     margin-right: 9px;
-    width: 30px;
+    width: 20px;
     cursor: pointer;
 }
 
