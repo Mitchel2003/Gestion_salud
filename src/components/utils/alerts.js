@@ -74,7 +74,7 @@ export function messageTokenSubmitted() {
 
 export function messageEmailNotFound() {//warning
     const title = "Email unknow";
-    const message = "If has been registered, checkout you mailbox and validate the account";
+    const message = "Check the user field; If the account has been registered, checkout you mailbox";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
@@ -90,6 +90,12 @@ export function messageManyLoginRequests() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
+export function messageCredentialsIncorrects() {
+    const title = "Credentials incorrects";
+    const message = "The email or password may not be correct";
+    const typeAlert = "w";
+    return { title, message, typeAlert };
+}
 export function messageRestorePassword() {
     const title = "Restore password";
     const message = "Enter a registered email to send token";
@@ -102,18 +108,6 @@ export function messageRestorePassword() {
 export function messageEmailUsed() {//error
     const title = "Email is used";
     const message = "Please, retry with other email address";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageEmailStrange() {
-    const title = "Email invalid";
-    const message = "checkout and retry with a email valid";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageCredentialsIncorrects() {
-    const title = "Credentials incorrects";
-    const message = "The email or password may not be correct";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
@@ -148,8 +142,8 @@ export function messageTempUnknow() {
 }
 /*--------------------------------------------------exceptions--------------------------------------------------*/
 export function exceptionsLoginUser(error) {
-    if(error.code === 'auth/invalid-email'){
-        const { title, message, typeAlert } = messageEmailStrange();
+    if(error.code === 'auth/invalid-login-credentials'){
+        const { title, message, typeAlert } = messageCredentialsIncorrects();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }

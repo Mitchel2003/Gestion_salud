@@ -9,15 +9,14 @@ export async function loginUser(user, password) {
             const { title, message, typeAlert } = getAlert.messageEmailNotFound();
             customAlert(title, message, selectIcon(typeAlert)); 
             return;
-        }
+        }await onSession(user, password);
         if (!key) {
             const { title, message, typeAlert } = getAlert.messageAccessNotFound();
-            customAlert(title, message, selectIcon(typeAlert)); 
+            customAlert(title, message, selectIcon(typeAlert));
+            await offSession();
             return;
         }
-        await onSession(user, password);
-        
-        console.log("signIn successfull");
+        //go to session
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
 }
 export async function registerUser(name, email, password, access) {
