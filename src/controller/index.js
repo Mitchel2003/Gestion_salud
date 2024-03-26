@@ -1,35 +1,21 @@
-import { addActive, removeActive, setInputPassword } from "../components/utils/view.js";
+import { addActive, removeActive, controllerIconEye } from "../components/utils/view.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
-const signButton = document.querySelector('.signContainer header');
-const registerButton = document.querySelector('.registerContainer header');
 //view
-window.addEventListener("load", async () => {
-    (await import('../components/utils/view.js')).loadElements(container);
-});
-
-//anim onClick
-registerButton.addEventListener('click', () => {
-    addActive(container);
-}); signButton.addEventListener('click', () => {
-    removeActive(container);
-});
-
-const containerPassword = document.querySelector('.input-box');
-const eyeIcon = document.getElementById('eyeIcon');
-containerPassword.addEventListener('mouseover', () => { eyeIcon.classList.remove('hide'); });
-containerPassword.addEventListener('mouseout', () => { eyeIcon.classList.add('hide'); });
-eyeIcon.addEventListener('click', () => { setInputPassword(eyeIcon); });
+window.addEventListener("load", async () => { (await import('../components/utils/view.js')).loadElements(container); });
+//elements to iterate
+document.querySelector('.registerContainer header').addEventListener('click', () => { addActive(container); });
+document.querySelector('.signContainer header').addEventListener('click', () => { removeActive(container); });
+controllerIconEye();
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');
 const forgotPassword = document.querySelector('.signContainer button[type="button"]');
-
 signContainer.addEventListener('submit', async function (event) {
     event.preventDefault();
     const { user, password } = (await import('../components/utils/values.js')).getInputLogin();
     await (await import('../components/models/userModel.js')).loginUser(user, password);
-});
+}); 
 registerContainer.addEventListener('submit', async function (event) {
     event.preventDefault();
     const { name, email, password, access } = (await import('../components/utils/values.js')).getInputRegister();//AC #203

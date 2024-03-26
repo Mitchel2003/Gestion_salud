@@ -20,9 +20,9 @@
       <header>Login</header>
       <form>
         <input name="user" type="email" placeholder="User" required>
-        <div class="input-box">
+        <div class="input-box-login">
           <input id="password-login" name="password" type="password" placeholder="Password" required>
-          <img src="./src/components/images/eye-close.png" id="eyeIcon">
+          <img src="./src/components/images/eye-close.png" id="eyeIcon-login">
         </div>
         <button type="submit" class="button">Login</button>
         <button type="button">¿Forgot your password?</button>
@@ -34,7 +34,10 @@
       <form>
         <input name="user" type="text" placeholder="Name" required>
         <input name="mail" type="email" placeholder="Email" required>
-        <input name="password" type="password" placeholder="Password" required>
+        <div class="input-box-register">
+          <input id="password-register" name="password" type="password" placeholder="Password" required>
+          <img src="./src/components/images/eye-close.png" id="eyeIcon-register">
+        </div>
         <label id="position">Position</label>
         <select id="userPosition">
           <option value="auditor">Auditor</option>

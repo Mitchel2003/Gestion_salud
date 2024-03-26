@@ -126,7 +126,7 @@
 }
 
 /*--------------------inputs and select--------------------*/
-form input, form select, .input-box{
+form input, form select, .input-box-login, .input-box-register{
     outline: none;
     border: none;
     padding: 10px 20px;
@@ -135,11 +135,11 @@ form input, form select, .input-box{
     font-weight: 400;
     border: 1px solid #aaa;
     border-radius: 8px;
-}form input:hover, form select:hover, .input-box{
+}form input:hover, form select:hover, .input-box-login:hover, .input-box-register:hover{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.signContainer input, .input-box{
+.signContainer input, .input-box-login{
     height: 6vh;
     width: calc(100% - 10%);
     margin-left: calc(100% - 95%);
@@ -147,7 +147,7 @@ form input, form select, .input-box{
     border: 1px solid rgba(5, 7, 12, 0.1);
     background: rgba(5, 7, 12, 0.2);
     transition: 0.3s ease;
-}.signContainer input[type="email"]:hover, .input-box:hover{
+}.signContainer input[type="email"]:hover, .input-box-login:hover{
     font-size: 18px;
     height: 7vh;
     width: calc(100% - 5%);
@@ -156,14 +156,14 @@ form input, form select, .input-box{
     margin-bottom: -6.5px;
     border: 1px solid rgba(40, 5, 40, 0.9);
     background: rgba(5, 7, 12, 0.1);
-}.input-box:hover{
+}.input-box-login:hover{
     margin-top: -6.5px;
     margin-bottom: -2.5px;
 }.signContainer input::placeholder{
     color: #909090;
 }
 
-.input-box{/*complement*/
+.input-box-login{/*eyeIcon-login*/
     display: flex;
     align-items: center;
     padding: 0px 0px;
@@ -175,14 +175,13 @@ form input, form select, .input-box{
     height: 7vh;
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.0);
-}.input-box img{
+}.input-box-login img{
     margin-right: 9px;
     width: 20px;
     cursor: pointer;
 }
 
-
-.registerContainer input, .registerContainer select{
+.registerContainer input, .registerContainer select, .input-box-register{
     height: 5vh;
     width: calc(100% - 5%);
     margin-left: calc(100% - 97.5%);
@@ -193,21 +192,36 @@ form input, form select, .input-box{
 }.registerContainer select{
     margin-top: -10px;
     padding: 10px 15px;
-}.registerContainer input:hover, .registerContainer select:hover{
+}.registerContainer input:hover, .registerContainer select:hover, .input-box-register:hover{
     font-size: 18px;
     height: 5.5vh;
     width: calc(100% - 2.5%);
     margin-left: calc(100% - 98.75%);
     border: 1px solid rgb(190, 90, 190);
-}.registerContainer input:hover{
+}.registerContainer input:hover, .input-box-register:hover{
     margin-top: -2.37px;
     margin-bottom: -2.37px;
 }.registerContainer select:hover{
     margin-bottom: -4.5px;
 }
 
-
-
+.input-box-register{/*eyeIcon-register*/
+    display: flex;
+    align-items: center;
+    padding: 0px 0px;
+}.registerContainer #password-register{
+    margin-left: 0%;
+    border: 0;
+    background: #00000000;
+}.registerContainer #password-register:hover{
+    height: 5.5vh;
+    font-size: 18px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.0);
+}.input-box-register img{
+    margin-right: 9px;
+    width: 20px;
+    cursor: pointer;
+}
 /*--------------------link text--------------------*/
 .signContainer button[type="button"]{
     color: #333;
