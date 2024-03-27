@@ -8,10 +8,15 @@ export function loadElements(container) {//init()
         container.classList.add('loaded');//animStart
     };
 };
+export function onLoadWhile() {
+    document.querySelector('.loadContainer').classList.add('show');
+} export function offLoadWhile() {
+    document.querySelector('.loadContainer').classList.remove('show');
+}
 //appened anim
 export function addActive(container) {
     container.classList.add('active');
-}export function removeActive(container) {
+} export function removeActive(container) {
     container.classList.remove('active');
 }
 export function controllerIconEye() {
@@ -28,7 +33,7 @@ export function setInputPasswordLogin(icon) {
     const input = document.querySelector('.input-box-login input');
     if (input.type === "password") { input.type = "text"; icon.src = "./src/components/images/eye-open.png"; }
     else { input.type = "password"; icon.src = "./src/components/images/eye-close.png"; }
-}export function setInputPasswordRegister(icon) {
+} export function setInputPasswordRegister(icon) {
     const input = document.querySelector('.input-box-register input');
     if (input.type === "password") { input.type = "text"; icon.src = "./src/components/images/eye-open.png"; }
     else { input.type = "password"; icon.src = "./src/components/images/eye-close.png"; }

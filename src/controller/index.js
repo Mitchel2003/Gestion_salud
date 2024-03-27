@@ -1,4 +1,4 @@
-import { addActive, removeActive, controllerIconEye } from "../components/utils/view.js";
+import { addActive, removeActive } from "../components/utils/view.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
 //view
@@ -6,7 +6,7 @@ window.addEventListener("load", async () => { (await import('../components/utils
 //elements to iterate
 document.querySelector('.registerContainer header').addEventListener('click', () => { addActive(container); });
 document.querySelector('.signContainer header').addEventListener('click', () => { removeActive(container); });
-controllerIconEye();
+(await import('../components/utils/view.js')).controllerIconEye();
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');

@@ -84,7 +84,7 @@ export function messageAccessNotFound() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
-export function messageManyLoginRequests() {
+export function messageManyRequests() {
     const title = "Too many attempts";
     const message = "Retry in other moment";
     const typeAlert = "w";
@@ -148,7 +148,7 @@ export function exceptionsLoginUser(error) {
         return;
     }
     if(error.code === 'auth/too-many-requests'){
-        const { title, message, typeAlert } = messageManyLoginRequests();
+        const { title, message, typeAlert } = messageManyRequests();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
@@ -175,6 +175,11 @@ export function exceptionsRegisterUser(error) {
     customAlert(title, error.code, selectIcon(typeAlert));
 }
 export function exceptionsResetPassword(error) {
+    if (error.code === 'auth/too-many-requests') {
+        const { title, message, typeAlert } = messageManyRequests();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
     return;
