@@ -7,12 +7,9 @@ export function customAlert(title, message, icon) {//alert default
     });
 }
 export function selectIcon(item) {
-    if (item === "s")
-        return "success";
-    else if (item === "w")
-        return "warning";
-    else
-        return "error";
+    if (item === "s"){return "success";}
+    else if (item === "w"){return "warning";}
+    else {return "error";}
 }
 /*--------------------------------------------------user action--------------------------------------------------*/
 export async function alertInput(title, message, icon) {
@@ -69,9 +66,7 @@ export function messageTokenSubmitted() {
     const typeAlert2 = "s";
     return { title2, message2, typeAlert2 };
 }
-
 /*--------------------------------------------------*/
-
 export function messageEmailNotFound() {//warning
     const title = "Email unknow";
     const message = "Check the user field; If the account has been registered, checkout you mailbox";
@@ -102,15 +97,19 @@ export function messageRestorePassword() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
-
 /*--------------------------------------------------*/
-
 export function messageEmailUsed() {//error
     const title = "Email is used";
     const message = "Please, retry with other email address";
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
+export function messageEmailUnknow(){
+    const title = "Email invalid";
+    const message = "Please check email, retry with an email valid";
+    const typeAlert = "e";
+    return { title, message, typeAlert };
+} 
 export function messagePasswordNotSame() {
     const title = "Passwords not same";
     const message = "Please, retry";
@@ -162,7 +161,7 @@ export function exceptionsRegisterUser(error) {
         return;
     }
     if (error.code === 'auth/invalid-email') {
-        const { title, message, typeAlert } = messageEmailStrange();
+        const { title, message, typeAlert } = messageEmailUnknow();
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }

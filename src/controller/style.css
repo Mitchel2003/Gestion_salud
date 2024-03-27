@@ -1,24 +1,17 @@
 /*--------------------------------------------------animation custom--------------------------------------------------*/
-@keyframes animEntry {/*anim login-register*/
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+@keyframes animEntry { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); }}/*animation soft displacement to init()*/
+@keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
+@keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
+@keyframes addSpawn{ from { opacity: 0; } to { opacity: 1; }}/*softSpawn load*/
+@keyframes removeSpawn{ from { opacity: 1; } to { opacity: 0; }}
 
-@keyframes load_1{/*anim loading*/
-    0%{ transform: rotate(0deg); }
-    100%{ transform: rotate(360deg); }
-}@keyframes load_2{
-    0%{ transform: rotate(0deg); }
-    100%{ transform: rotate(-360deg); }
-}@keyframes softSpawn{/*working here...*/
-    from{ opacity: 0; }
-    to{ opacity: 1; }
-}
+/*fix load animation*/
 .loadContainer{
     position: fixed;
     display: none;
     justify-content: center;/*align x*/
     align-items: center;/*align y*/
+    opacity: 0;
     left: 0;
     top: 0;
     height: 100%;
@@ -69,12 +62,10 @@
 }
 
 /*class setVisible*/
-.hide{
-    display: none;
-}
-.show{
-    display: flex;
-}
+.hide{ display: none; }
+.show{ display: flex; }
+.onSoft{ animation: addSpawn 0.7s ease; opacity: 1; }
+.offSoft{ animation: removeSpawn 0.7s ease; opacity: 0; }
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;

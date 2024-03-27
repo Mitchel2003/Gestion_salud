@@ -9,9 +9,12 @@ export function loadElements(container) {//init()
     };
 };
 export function onLoadWhile() {
-    document.querySelector('.loadContainer').classList.add('show');
+    const load = document.querySelector('.loadContainer');
+    load.classList.add('show'); load.classList.add('onSoft');
 } export function offLoadWhile() {
-    document.querySelector('.loadContainer').classList.remove('show');
+    const load = document.querySelector('.loadContainer');
+    load.classList.add('offSoft');
+    setTimeout(() => { load.classList.remove('show'); load.classList.remove('onSoft'); load.classList.remove('offSoft'); }, 1000);
 }
 //appened anim
 export function addActive(container) {
