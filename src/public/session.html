@@ -5,20 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--renderizado moderno para edge-->
-    <title>Reset password</title>
+    <title>Gestion salud</title>
     <!-- dependency -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css"> <!-- bootstrap -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert -->
     <!-- local resource -->
     <link rel="icon" type="image/x-icon" href="../components/images/logo.ico">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
-    <script type="module">
-        const container = document.querySelector('.card');
-        container.addEventListener('submit', async function (event) {
-            event.preventDefault();
-            await (await import('../components/firebase/query.js')).offSession();
-            (await import('../components/utils/view.js')).goToHome();
-        });
-    </script>
+    <script type="module" src="./session.js"></script>
 </head>
 
 <body>

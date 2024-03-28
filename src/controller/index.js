@@ -3,7 +3,7 @@ import { addActive, removeActive } from "../components/utils/view.js";
 const container = document.querySelector('.mainContainer');
 //view
 window.addEventListener("load", async () => { (await import('../components/utils/view.js')).loadElements(container); });
-//elements to iterate
+//iterators
 document.querySelector('.registerContainer header').addEventListener('click', () => { addActive(container); });
 document.querySelector('.signContainer header').addEventListener('click', () => { removeActive(container); });
 (await import('../components/utils/view.js')).controllerIconEye();

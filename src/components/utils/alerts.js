@@ -79,6 +79,12 @@ export function messageAccessNotFound() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
+export function messageSessionFailed(){
+    const title = "User session expired";
+    const message = "Redirecting...";
+    const typeAlert = "w";
+    return { title, message, typeAlert };
+}
 export function messageManyRequests() {
     const title = "Too many attempts";
     const message = "Retry in other moment";

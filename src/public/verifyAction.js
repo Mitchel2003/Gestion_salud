@@ -112,14 +112,13 @@ function checkSamePasswords(item_1, item_2) {
 function checkSizeAllowed(newPassword) {
     if (newPassword.length < 6) { return newPassword; }
 }
-function getQueryParams() {
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
-    return Object.fromEntries(searchParams.entries());
-}
 function getCodeOob() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
     return searchParams.get('oobCode');
 }
-
+function getQueryParams() {
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    return Object.fromEntries(searchParams.entries());
+}

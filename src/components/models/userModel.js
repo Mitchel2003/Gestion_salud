@@ -9,16 +9,17 @@ export async function loginUser(user, password) {
         const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
             const { title, message, typeAlert } = getAlert.messageEmailNotFound();
-            customAlert(title, message, selectIcon(typeAlert)); offLoadWhile();
+            customAlert(title, message, selectIcon(typeAlert));
+            offLoadWhile();
             return;
         } await onSession(user, password);
         if (!key) {
             const { title, message, typeAlert } = getAlert.messageAccessNotFound();
             customAlert(title, message, selectIcon(typeAlert));
-            await offSession(); offLoadWhile();
+            await offSession();
+            offLoadWhile();
             return;
         }
-        //go to session
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }
 }
@@ -36,7 +37,7 @@ export async function registerUser(name, email, password, access) {
 
         const { title, message, typeAlert } = getAlert.messageEmailVerify();
         customAlert(title, message, selectIcon(typeAlert));
-        await offSession();
+        await offSession(); 
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsRegisterUser(error); offLoadWhile(); }
 }
@@ -49,7 +50,8 @@ export async function requestResetPassword() {
 
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(email))) {
             const { title, message, typeAlert } = getAlert.messageEmailNotFound();
-            customAlert(title, message, selectIcon(typeAlert)); offLoadWhile();
+            customAlert(title, message, selectIcon(typeAlert)); 
+            offLoadWhile();
             return;
         }
         await (await import('../firebase/query.js')).sendToEmailResetPassword(email);
