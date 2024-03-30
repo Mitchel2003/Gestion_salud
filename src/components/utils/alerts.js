@@ -185,6 +185,7 @@ export function exceptionsResetPassword(error) {
         customAlert(title, message, selectIcon(typeAlert));
         return;
     }
+    if (error.code === 'invalid-argument') {/*nothing*/ return;}
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
     return;

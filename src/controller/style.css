@@ -2,13 +2,11 @@
 @keyframes animEntry { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); }}/*animation soft displacement to init()*/
 @keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
 @keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
-@keyframes addSpawn{ from { opacity: 0; } to { opacity: 1; }}/*softSpawn load*/
-@keyframes removeSpawn{ from { opacity: 1; } to { opacity: 0; }}
 
 /*fix load animation*/
 .loadContainer{
     position: fixed;
-    display: none;
+    display: flex;
     justify-content: center;/*align x*/
     align-items: center;/*align y*/
     opacity: 0;
@@ -16,8 +14,9 @@
     top: 0;
     height: 100%;
     width: 100%;
-    z-index: 999;
+    z-index: -1;
     background-color: rgba(0, 0, 0, 0.3);
+    transition: 0.7s ease;
 }.load{
     position: relative;
     width: 60px;
@@ -62,10 +61,7 @@
 }
 
 /*class setVisible*/
-.hide{ display: none; }
-.show{ display: flex; }
-.onSoft{ animation: addSpawn 0.7s ease; opacity: 1; }
-.offSoft{ animation: removeSpawn 0.7s ease; opacity: 0; }
+.spawnSoft{ opacity: 1; z-index: 999; }
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;
@@ -207,13 +203,15 @@ form input, form select, .input-box-login, .input-box-register{
     border: 0;
     background: #00000000;
 }.signContainer #password-login:hover{
-    height: 7vh;
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.0);
 }.input-box-login img{
     margin-right: 9px;
     width: 20px;
+    opacity: 0;
     cursor: pointer;
+}.input-box-login:hover img{
+    opacity: 1;
 }
 
 .registerContainer input, .registerContainer select, .input-box-register{
@@ -249,13 +247,15 @@ form input, form select, .input-box-login, .input-box-register{
     border: 0;
     background: #00000000;
 }.registerContainer #password-register:hover{
-    height: 5.5vh;
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.0);
 }.input-box-register img{
     margin-right: 9px;
     width: 20px;
+    opacity: 0;
     cursor: pointer;
+}.input-box-register:hover img{
+    opacity: 1;
 }
 /*--------------------link text--------------------*/
 .signContainer button[type="button"]{
@@ -387,5 +387,3 @@ form .button{
 }.registerContainer .button:hover::before{
     height: 180%;
 }
-
-/*loader*/

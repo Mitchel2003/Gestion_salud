@@ -6,7 +6,7 @@ window.addEventListener("load", async () => { (await import('../components/utils
 //iterators
 document.querySelector('.registerContainer header').addEventListener('click', () => { addActive(container); });
 document.querySelector('.signContainer header').addEventListener('click', () => { removeActive(container); });
-(await import('../components/utils/view.js')).controllerIconEye();
+(await import('../components/utils/view.js')).changeStatusIconEye();
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');
@@ -15,7 +15,7 @@ signContainer.addEventListener('submit', async function (event) {
     event.preventDefault();
     const { user, password } = (await import('../components/utils/values.js')).getInputLogin();
     await (await import('../components/models/userModel.js')).loginUser(user, password);
-}); 
+});
 registerContainer.addEventListener('submit', async function (event) {
     event.preventDefault();
     const { name, email, password, access } = (await import('../components/utils/values.js')).getInputRegister();//AC #203

@@ -1,81 +1,22 @@
+/*--------------------------------------------------tips--------------------------------------------------*/
 //for initializing webpack of server: webpack-dev-server --mode development yes
-bcrypt, jsonwebtoken, dotenv
+//implements: bcrypt, jsonwebtoken, dotenv
+//page for find backgrounds hd: uhdpaper.com
+
 /*--------------------------------------------------tools and source--------------------------------------------------*/
-// function getImportAnim(action) {//load difered
-//     import('./components/anim.js')
-//         .then((anim) => {
-//             if(action==="addActive"){
-//                 anim.addActive();
-//             }else{
-//                 anim.removeActive();
-//             }
-//         })
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// }
-
-//------------------work with sweet Alert------------------
-Swal.fire({
-	// title:
-	// text:
-	// html:
-	// icon:
-	// confirmButtonText:
-	// footer:
-	// width:
-	// padding:
-	// background:
-	// grow:
-	// backdrop:
-	// timer:
-	// timerProgressBar:
-	// toast:
-	// position:
-	// allowOutsideClick:
-	// allowEscapeKey:
-	// allowEnterKey:
-	// stopKeydownPropagation:
-
-	// input:
-	// inputPlaceholder:
-	// inputValue:
-	// inputOptions:
-	
-	//  customClass:
-	// 	container:
-	// 	popup:
-	// 	header:
-	// 	title:
-	// 	closeButton:
-	// 	icon:
-	// 	image:
-	// 	content:
-	// 	input:
-	// 	actions:
-	// 	confirmButton:
-	// 	cancelButton:
-	// 	footer:	
-
-	// showConfirmButton:
-	// confirmButtonColor:
-	// confirmButtonAriaLabel:
-
-	// showCancelButton:
-	// cancelButtonText:
-	// cancelButtonColor:
-	// cancelButtonAriaLabel:
-	
-	// buttonsStyling:
-	// showCloseButton:
-	// closeButtonAriaLabel:
-
-	// imageUrl:
-	// imageWidth:
-	// imageHeight:
-	// imageAlt:
-});
-
+function getImportAnim(action) {//load difered
+    import('./components/anim.js')
+        .then((anim) => {
+            if(action==="addActive"){
+                anim.addActive();
+            }else{
+                anim.removeActive();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 //-----------------where in Firebase-----------------
 export async function isFoundEmail(emailContext) {
     const ask = query(await getCollection("user"), where("email", "==", emailContext));
@@ -260,8 +201,6 @@ señalo la importancia de especificar en el "loaded" como queremos que este el c
     		animation: animEntry 2s ease;/*addNote "code #201"*/
     		opacity: 1;
 	}
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #202: async without await: en esta ilustracion vemos la funcion con el async pero sin el await; lo que sucede es que esta es una funcion 
 que pretende usar como parametro un elemento "promesa", el parametro que le introducimos es un getDocs de FireBase "querySnapshot";
@@ -310,6 +249,20 @@ por tanto, vi necesario el uso de metodos para comprobar las entradas; queda el 
 #205: en este metodo recibo un parametro "data" el cual refiere al valor de "continueUrl" el cual se halla intrinseco en el link que devuelve FireBase para
 la verificacion de email; entonces, la logica es la siguiente "if const continueUrl=null" si se cumple lo anterior entonces es que estamos en el contexto de
 de una solicitud de resetPassword y no en una confirmacion de email; en este orden de ideas pensé en esta alternativa.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#206: en la implementacion visual de metodos como addActive;
+
+    export function addActive(container) {//fix anim transition login-register
+        container.classList.add('active');
+    } export function removeActive(container) {
+        container.classList.remove('active');
+    }
+
+cuya funcionalidad es la de ocultar y mostrar la session de registro, encontramos clave el uso overflow:hiden; en ese orden de ideas, ocurre
+que elemento que se encuentra oculto "hide" se desplaza y es presentado al usuario en una suave transicion; ahora bien, en un caso particular
+como en el de eyeIcon encontramos el uso del "display:none", entonces es aqui querido amigo cuando se complica la cosa; porque antes de la
+transicion hay que ajustar el display, recuerda esto, las animaciones no funcionan muy bien con un display.
+no es solo un comentario, es un detalle que puede ahorrar un dolor de cabeza.
 /*--------------------------------------------------tips--------------------------------------------------*/
 				OPTIMIZAR PAGINA WEB
 
