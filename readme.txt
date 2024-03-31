@@ -3,6 +3,17 @@
 //implements: bcrypt, jsonwebtoken, dotenv
 //page for find backgrounds hd: uhdpaper.com
 
+Para mejorar la fluidez y optimización de la animación, te recomendaría seguir los siguientes pasos:
+
+1. En lugar de animar propiedades como `height` y `width`, utiliza `transform` para escalar el tamaño del input. Esto es más eficiente en términos de rendimiento ya que `transform` no afecta al flujo del documento.
+2. Evita usar propiedades como `margin-left`, `margin-top` y `margin-bottom` para mover el input. En su lugar, utiliza `transform` con `translate` para realizar desplazamientos.
+3. En lugar de cambiar la propiedad `border` en el hover, considera aplicar un efecto de sombra utilizando `box-shadow` para mejorar la apariencia visual.
+4. Utiliza valores absolutos o relativos en lugar de porcentajes en propiedades como `width` y `margin-left` para que la animación sea más predecible y no dependa del tamaño del contenedor.
+5. Experimenta con la función `cubic-bezier` en lugar de `ease` para lograr una animación más suave y personalizada.
+
+Siguiendo estas recomendaciones y optimizando el código CSS, deberías poder lograr una animación más fluida y profesional. ¡Espero que estos consejos te sean útiles y te ayuden a alcanzar tus objetivos! ¡Mucho ánimo en tu trabajo!
+
+
 /*--------------------------------------------------tools and source--------------------------------------------------*/
 function getImportAnim(action) {//load difered
     import('./components/anim.js')
