@@ -2,64 +2,22 @@
 @keyframes animEntry { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); }}/*animation soft displacement to init()*/
 @keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
 @keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
-
-/*fix load animation*/
-.loadContainer{
-    position: fixed;
-    display: flex;
-    justify-content: center;/*align x*/
-    align-items: center;/*align y*/
-    opacity: 0;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: opacity 0.7s ease;
-}.load{
-    position: relative;
-    width: 60px;
-    height: 60px;
-}.load .frame_1{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 4px solid #c258ff;
-    border-left-color: transparent;
-    border-bottom: none;
-    border-radius: 50%;
-    animation: load_1 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
-}.load .frame_2{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border: 4px solid #da9aff;
-    border-top-color: transparent;
-    border-right: none;
-    border-radius: 50%;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
-    animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
-}
-
 /*fix transition login-register*/
 .mainContainer.active .registerContainer{
     transform: translate(-50%, -41%);
-    border-radius: 200px;
+    border-radius: 150px;
     box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
 }.mainContainer.active{
     height: 70%;
 }.mainContainer.active .registerContainer header{
-    font-size: 34px;
+    transform: scale(1.1);
     opacity: 1;
 }.mainContainer.active .signContainer header{
-    font-size: 30px;
+    transform: scale(0.9);
     opacity: 0.6;
 }.mainContainer.active .signContainer header:hover{
-    font-size: 34px;
+    transform: scale(1);
 }
-
 /*class setVisible*/
 .spawnSoft{ opacity: 1; z-index: 999; }
 /*--------------------------------------------------Generaly--------------------------------------------------*/
@@ -78,24 +36,18 @@
     background-attachment: fixed;
     background-size: cover;
 }
-
 /*--------------------------------------------------styles for containers--------------------------------------------------*/
 .mainContainer{
     position: relative;
+    overflow: hidden;
     width: 400px;/* max-width: 400px; */
     height: 55%;
     opacity: 0;
     padding: 8px 30px 120px;
     border-radius: 12px;
-    overflow: hidden;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(to bottom, 
-                                rgba(50, 0, 50, 0.3),
-                                rgba(80, 0, 80, 0.9),
-                                rgb(100, 30, 100),
-                                rgb(130, 50, 130),
-                                rgb(150, 80, 150));
-    transition: height 0.7s ease ;
+    background: linear-gradient(to bottom, rgba(50, 0, 50, 0.3),rgba(80, 0, 80, 0.9),rgb(100, 30, 100),rgb(130, 50, 130),rgb(150, 80, 150));
+    transition: height 0.7s ease;
 }.mainContainer.loaded {
     animation: animEntry 2s ease; /*AC #201*/
     opacity: 1;
@@ -103,43 +55,32 @@
 
 .registerContainer{
     position: absolute;
-    height: 100%;
-    width: calc(100% + 180px);
-    padding: 5px 140px;
     left: 50%;
-    background: linear-gradient(to bottom,
-                                rgb(250, 250, 250),
-                                rgb(245, 240, 245),
-                                rgb(245, 235, 245),
-                                rgb(240, 230, 240),
-                                rgb(230, 210, 230),
-                                rgb(225, 190, 225),
-                                rgb(200, 135, 245));
-    border-radius: 300px;
+    height: 100%;
+    width: 125%;
+    padding: 7px 100px;
+    border-radius: 200px;
+    background: linear-gradient(to bottom,rgb(250, 250, 250),rgb(245, 240, 245),rgb(245, 235, 245),rgb(240, 230, 240),rgb(230, 210, 230),rgb(225, 190, 225),rgb(200, 135, 245));
     transform: translate(-50%, 17%);/*x and y*/
     transition: transform 0.7s ease, border-radius 0.7s ease, box-shadow 0.7s ease;
 }
-/*--------------------custom header--------------------*/
-.signContainer header, .registerContainer header{
+/*--------------------------------------------------custom header--------------------------------------------------*/
+header{
     text-align: center;
-    font-size: 34px;
-    height: 9vh;
-    width: calc(100% - 50%);
-    margin-left: calc(100% - 75%);
-    color: #fff;
-    font-weight: 600;
     cursor: pointer;
-    transition: 0.3s ease;
+    font-weight: 600;
+    font-size: 36px;
+    height: 9vh;
+    color: #fff;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }.registerContainer header{
-    font-size: 30px;
-    width: calc(100% - 45%);
-    margin-left: calc(100% - 77.5%);
     color: #333;
     opacity: 0.6;
+    transform: scale(0.9);
 }.registerContainer header:hover{
-    font-size: 34px;
+    transform: scale(1);
 }
-/*--------------------custom form of container--------------------*/
+/*--------------------------------------------------form container--------------------------------------------------*/
 .mainContainer form{
     display: flex;
     flex-direction: column;
@@ -147,7 +88,7 @@
 }.registerContainer form{
     gap: 10px;
 }
-/*--------------------inputs and select--------------------*/
+/*--------------------------------------------------input, select--------------------------------------------------*/
 form input, form select, .input-box-login, .input-box-register{
     outline: none;
     border: none;
@@ -233,11 +174,11 @@ form input, form select, .input-box-login, .input-box-register{
 }.input-box-register:hover img{
     opacity: 1;
 }
-/*--------------------link text--------------------*/
+/*--------------------------------------------------text, link--------------------------------------------------*/
 .signContainer button[type="button"]{
-    font-size: 15px;
     text-align: center;
     border: none;
+    font-size: 15px;
     color: rgb(205, 170, 205);
     background: rgba(0, 0, 0, 0);
     transition: transform 0.3s ease;
@@ -251,107 +192,102 @@ form input, form select, .input-box-login, .input-box-register{
     margin-top: 10px;
     font-weight: 400;
 }
-/*--------------------buttons--------------------*/
+/*--------------------------------------------------buttons--------------------------------------------------*/
 form .button{
-    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
     border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
+    height: 6vh;
+    width: 50%;
     font-size: 18px;
     font-weight: 600;
-    cursor: pointer;
-}
-
-.signContainer .button{
-    position: relative;
-    overflow: hidden;
-    font-size: 18px;
-    height: 6vh;
-    width: calc(100% - 50%);
     margin-left: calc(100% - 75%);
-    color: rgb(230, 200, 230);
-    background: linear-gradient(to bottom, 
-                            rgba(159, 0, 93, 0.5),
-                            rgba(159, 0, 110, 0.5),
-                            rgba(159, 0, 135, 0.5),
-                            rgba(159, 0, 150, 0.5),
-                            rgba(159, 0, 165, 0.5),
-                            rgba(159, 0, 180, 0.5),
-                            rgba(159, 0, 200, 0.5),
-                            rgba(159, 0, 220, 0.5),
-                            rgba(159, 0, 240, 0.5));
-    transform: scale(1);
+    margin-top: 15px;
+    padding: 8px 15px;
+    border-radius: 8px;
     transition: transform 0.5s ease, font-size 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-}.signContainer .button:hover{
-    transform: scale(1.1);
-    font-size: 20px;
-    color: #000;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}.signContainer .button::before{
-    content: "";
-    position: absolute;
-    height: 250%;/*space ocuped above button*/
-    width: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 80% 80% 0 0;
-    background: linear-gradient(to bottom, 
-                        rgba(159, 0, 240, 0.3),
-                        rgba(165, 20, 240, 0.3),
-                        rgba(175, 40, 241, 0.3),
-                        rgba(185, 60, 244, 0.3),
-                        rgba(195, 80, 245, 0.3),
-                        rgba(205, 100, 247, 0.3),
-                        rgba(215, 120, 248, 0.3),
-                        rgba(225, 140, 250, 0.3),
-                        rgba(235, 160, 252, 0.3),
-                        rgba(245, 180, 253, 0.3),
-                        rgba(255, 200, 254, 0.3),
-                        rgba(255, 220, 255, 0.3),
-                        rgba(255, 240, 255, 0.3),
-                        rgba(255, 255, 255, 0.3));
-    transform: translateY(100%);/*translate filter to down*/
-    transition: transform 0.7s ease;
-}.signContainer .button:hover::before{
-    transform: translateY(-50%);
-}
-
-.registerContainer .button{
-    position: relative;
-    overflow: hidden;
-    font-size: 17px;
-    height: 5vh;
-    width: calc(100% - 50%);
-    margin-left: calc(100% - 75%);
-    color: rgb(193, 113, 255);
-    background: linear-gradient(to bottom, 
-                                rgb(213, 162, 255),
-                                rgb(230, 201, 255),
-                                rgb(234, 213, 252),
-                                rgb(243, 228, 255));
-    transform: scale(1);
-    transition: transform 0.5s ease, font-size 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-}.registerContainer .button:hover{
-    transform: scale(1.1);
-    font-size: 19px;
-    color: #000;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}.registerContainer .button::before{
+}form .button::before{
     content: "";
     position: absolute;
     height: 200%;
     width: 100%;
     top: 0;
     left: 0;
-    border-radius: 0 0 80% 80%;
-    background: linear-gradient(to bottom, 
-                            rgba(159, 0, 11, 0.5),
-                            rgba(111, 0, 229, 0.5),
-                            rgba(0, 235, 252, 0.5),
-                            rgba(0, 228, 42, 0.5),
-                            rgba(225, 255, 0, 0.5));
-    transform: translateY(-100%);/*translate filter to down*/
     transition: transform 0.7s ease;
+}
+
+.signContainer .button{
+    color: rgb(230, 200, 230);
+    background: linear-gradient(to bottom, rgba(159, 0, 93, 0.5),rgba(159, 0, 110, 0.5),rgba(159, 0, 135, 0.5),rgba(159, 0, 150, 0.5),rgba(159, 0, 165, 0.5),rgba(159, 0, 180, 0.5),rgba(159, 0, 200, 0.5),rgba(159, 0, 220, 0.5),rgba(159, 0, 240, 0.5));
+    transform: scale(1);
+}.signContainer .button:hover{
+    transform: scale(1.1);
+    font-size: 20px;
+    color: #000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}.signContainer .button::before{
+    border-radius: 80% 80% 0 0;
+    background: linear-gradient(to bottom, rgba(159, 0, 240, 0.3),rgba(165, 20, 240, 0.3),rgba(175, 40, 241, 0.3),rgba(185, 60, 244, 0.3),rgba(195, 80, 245, 0.3),rgba(205, 100, 247, 0.3),rgba(215, 120, 248, 0.3),rgba(225, 140, 250, 0.3),rgba(235, 160, 252, 0.3),rgba(245, 180, 253, 0.3),rgba(255, 200, 254, 0.3),rgba(255, 220, 255, 0.3),rgba(255, 240, 255, 0.3),rgba(255, 255, 255, 0.3));
+    transform: translateY(100%);/*translate filter to down*/
+}.signContainer .button:hover::before{
+    transform: translateY(-40%);
+}
+
+.registerContainer .button{
+    padding: 0;
+    color: rgb(193, 113, 255);
+    background: linear-gradient(to bottom, rgb(213, 162, 255),rgb(230, 201, 255),rgb(234, 213, 252),rgb(243, 228, 255));
+    transform: scale(1);
+}.registerContainer .button:hover{
+    transform: scale(1.1);
+    font-size: 19px;
+    color: #000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}.registerContainer .button::before{
+    border-radius: 0 0 80% 80%;
+    background: linear-gradient(to bottom, rgba(159, 0, 11, 0.5),rgba(111, 0, 229, 0.5),rgba(0, 235, 252, 0.5),rgba(0, 228, 42, 0.5),rgba(225, 255, 0, 0.5));
+    transform: translateY(-100%);/*translate filter to down*/
 }.registerContainer .button:hover::before{
     transform: translateY(0);
+}
+
+/*--------------------container--------------------*/
+.loadContainer{
+    position: fixed;
+    display: flex;
+    justify-content: center;/*align x*/
+    align-items: center;/*align y*/
+    opacity: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: opacity 0.7s ease;
+}.load{
+    position: relative;
+    width: 60px;
+    height: 60px;
+}.load .frame_1{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #c258ff;
+    border-left-color: transparent;
+    border-bottom: none;
+    border-radius: 50%;
+    animation: load_1 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
+}.load .frame_2{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #da9aff;
+    border-top-color: transparent;
+    border-right: none;
+    border-radius: 50%;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
 }
