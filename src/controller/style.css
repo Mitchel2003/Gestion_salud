@@ -40,8 +40,8 @@
 .mainContainer{
     position: relative;
     overflow: hidden;
+    height: 50%;/* height: 400px; */
     width: 300px;
-    /* height: 350px; */
     opacity: 0;
     padding: 8px 30px 120px;
     border-radius: 12px;
@@ -56,12 +56,12 @@
 .registerContainer{
     position: absolute;
     left: 50%;
-    height: 90%;
+    height: 100%;
     width: calc(100% + 125px);
     padding: 7px 100px;
     border-radius: 200px;
     background: linear-gradient(to bottom,rgb(250, 250, 250),rgb(245, 240, 245),rgb(245, 235, 245),rgb(240, 230, 240),rgb(230, 210, 230),rgb(225, 190, 225),rgb(200, 135, 245));
-    transform: translate(-50%, 17%);/*x and y*/
+    transform: translate(-50%, 8%);/*x and y*/
     transition: transform 0.7s ease, border-radius 0.7s ease, box-shadow 0.7s ease;
 }
 /*--------------------------------------------------custom header--------------------------------------------------*/
@@ -70,7 +70,7 @@ header{
     cursor: pointer;
     font-weight: 600;
     font-size: 36px;
-    height: 9vh;
+    height: 7vh;
     color: #fff;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }.registerContainer header{
@@ -117,7 +117,7 @@ form input, form select, .input-box-login, .input-box-register{
 }
 
 input, select, .input-box-login, .input-box-register{/*fix inputs*/
-    height: 6vh;
+    height: 6vh;/* height: 50px; */
     width: calc(100% - 10%);
     margin-left: calc(100% - 95%);
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
@@ -148,7 +148,7 @@ form .button{
     overflow: hidden;
     cursor: pointer;
     border: none;
-    height: 6vh;
+    height: 6vh;/* height: 50px; */
     width: 50%;
     font-size: 18px;
     font-weight: 600;
@@ -259,4 +259,22 @@ form .button{
     left: calc(50% - 20px);
     top: calc(50% - 20px);
     animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
+}
+@media (min-width: 720px){
+    .mainContainer{
+        width: 42vw;
+        max-width: 400px;
+    }
+}
+/* @media (max-height: 570px){
+    .mainContainer{
+        height: 100vh;
+        max-width: 600px;
+    }
+} */
+@media (min-height: 570px){
+    .mainContainer{
+        /* height: 40vh; */
+        /* max-width: 600px; */
+    }
 }
