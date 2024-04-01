@@ -4,12 +4,13 @@
   "description": "//for initializing webpack of server: webpack-dev-server --mode development yes",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/controller/index.js"
+    "dev": "vite"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^10.9.0"
+    "firebase": "^10.9.0",
+    "vite": "^5.2.7"
   }
 }

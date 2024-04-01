@@ -1,6 +1,7 @@
 /*--------------------------------------------------tips--------------------------------------------------*/
 //for initializing webpack of server: webpack-dev-server --mode development yes
 //implements: bcrypt, jsonwebtoken, dotenv
+//production: react router, stackblitz, vite
 //page for find backgrounds hd: uhdpaper.com
 
 Para mejorar la fluidez y optimización de la animación, te recomendaría seguir los siguientes pasos:
