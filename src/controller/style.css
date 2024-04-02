@@ -2,13 +2,12 @@
 @keyframes animEntry { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); }}/*animation soft displacement to init()*/
 @keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
 @keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
-/*fix transition login-register*/
-.mainContainer.active .registerContainer{
-    transform: translate(-50%, -41%);
+.mainContainer.active .registerContainer{/*fix transition login-register*/
+    transform: translate(-50%, -70%);
     border-radius: 150px;
     box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
 }.mainContainer.active{
-    height: 70%;
+    height: 60%;
 }.mainContainer.active .registerContainer header{
     transform: scale(1.1);
     opacity: 1;
@@ -18,8 +17,7 @@
 }.mainContainer.active .signContainer header:hover{
     transform: scale(1);
 }
-/*class setVisible*/
-.spawnSoft{ opacity: 1; z-index: 999; }
+.spawnSoft{ opacity: 1; z-index: 999; }/*class setVisible*/
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;
@@ -40,7 +38,7 @@
 .mainContainer{
     position: relative;
     overflow: hidden;
-    height: 50%;/* height: 400px; */
+    height: 50%;
     width: 300px;
     opacity: 0;
     padding: 8px 30px 120px;
@@ -52,11 +50,11 @@
     animation: animEntry 2s ease; /*AC #201*/
     opacity: 1;
 }
-
 .registerContainer{
     position: absolute;
     left: 50%;
     height: 100%;
+    top: 80%;
     width: calc(100% + 125px);
     padding: 7px 100px;
     border-radius: 200px;
@@ -116,8 +114,8 @@ form input, form select, .input-box-login, .input-box-register{
     opacity: 1;
 }
 
-input, select, .input-box-login, .input-box-register{/*fix inputs*/
-    height: 6vh;/* height: 50px; */
+input, select, .input-box-login, .input-box-register{/*fix inputs (generaly)*/
+    height: 6vh;
     width: calc(100% - 10%);
     margin-left: calc(100% - 95%);
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
@@ -129,14 +127,14 @@ input, select, .input-box-login, .input-box-register{/*fix inputs*/
     font-size: 18px;
 }
 
-.signContainer input, .input-box-login{
+.signContainer input, .input-box-login{/*fix inputs (login)*/
     color: #ddd2d2;
     background-color: rgba(5, 7, 12, 0.2);
 }.signContainer input:hover, .input-box-login:hover{
     background-color: rgba(5, 7, 12, 0.1);
 }
 
-.registerContainer input, select, .input-box-register{
+.registerContainer input, select, .input-box-register{/*fix inputs (register)*/
     background-color: rgb(255, 248, 255);
 } select{
     color: #666666;
@@ -148,7 +146,7 @@ form .button{
     overflow: hidden;
     cursor: pointer;
     border: none;
-    height: 6vh;/* height: 50px; */
+    height: 6vh;
     width: 50%;
     font-size: 18px;
     font-weight: 600;
@@ -167,7 +165,7 @@ form .button{
     transition: transform 0.7s ease;
 }
 
-.signContainer .button{
+.signContainer .button{/*fix buttons (login)*/
     color: rgb(230, 200, 230);
     background: linear-gradient(to bottom, rgba(159, 0, 93, 0.5),rgba(159, 0, 110, 0.5),rgba(159, 0, 135, 0.5),rgba(159, 0, 150, 0.5),rgba(159, 0, 165, 0.5),rgba(159, 0, 180, 0.5),rgba(159, 0, 200, 0.5),rgba(159, 0, 220, 0.5),rgba(159, 0, 240, 0.5));
     transform: scale(1);
@@ -184,7 +182,7 @@ form .button{
     transform: translateY(-40%);
 }
 
-.registerContainer .button{
+.registerContainer .button{/*fix buttons (register)*/
     padding: 0;
     color: rgb(193, 113, 255);
     background: linear-gradient(to bottom, rgb(213, 162, 255),rgb(230, 201, 255),rgb(234, 213, 252),rgb(243, 228, 255));
@@ -197,7 +195,7 @@ form .button{
 }.registerContainer .button::before{
     border-radius: 0 0 80% 80%;
     background: linear-gradient(to bottom, rgba(159, 0, 11, 0.5),rgba(111, 0, 229, 0.5),rgba(0, 235, 252, 0.5),rgba(0, 228, 42, 0.5),rgba(225, 255, 0, 0.5));
-    transform: translateY(-100%);/*translate filter to down*/
+    transform: translateY(-100%);/*translate filter to up*/
 }.registerContainer .button:hover::before{
     transform: translateY(0);
 }
@@ -260,21 +258,14 @@ form .button{
     top: calc(50% - 20px);
     animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
 }
-@media (min-width: 720px){
-    .mainContainer{
-        width: 42vw;
-        max-width: 400px;
-    }
-}
-/* @media (max-height: 570px){
-    .mainContainer{
-        height: 100vh;
-        max-width: 600px;
-    }
-} */
-@media (min-height: 570px){
-    .mainContainer{
-        /* height: 40vh; */
-        /* max-width: 600px; */
-    }
-}
+@media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
+
+@media (max-height: 850px) {.mainContainer.active .registerContainer{transform: translate(-50%, -69%);}}
+@media (max-height: 800px) {.registerContainer {top: 79%;} .mainContainer.active .registerContainer{transform: translate(-50%, -68%);}}
+@media (max-height: 750px) {.registerContainer {top: 78%;} .mainContainer.active .registerContainer{transform: translate(-50%, -67%);}}
+@media (max-height: 700px) {.registerContainer {top: 77%;} .mainContainer.active .registerContainer{transform: translate(-50%, -64%); height: 102%;} .mainContainer.active{height: 62%;}}
+@media (max-height: 650px) {.registerContainer {top: 76%;} .mainContainer.active .registerContainer{transform: translate(-50%, -62%); height: 104%;} .mainContainer.active{height: 64%;}}
+@media (max-height: 600px) {.registerContainer {top: 75%;} .mainContainer.active .registerContainer{transform: translate(-50%, -60%); height: 106%;} .mainContainer.active{height: 66%;} .mainContainer{height: 300px;}}
+@media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, -58%); height: 108%;} .mainContainer.active{height: 68%;}}
+@media (max-height: 500px) {.mainContainer.active .registerContainer{transform: translate(-50%, -57%); height: 110%;} .mainContainer.active{height: 70%}}
+@media (max-height: 450px) {.mainContainer.active .registerContainer{transform: translate(-50%, -56%); height: 112%;} .mainContainer.active{height: 72%}}
