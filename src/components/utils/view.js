@@ -8,10 +8,10 @@ export function loadElements(container) {//init()
 }
 export function onLoadWhile() {//fix anim loading...
     const load = document.querySelector('.loadContainer');
-    load.classList.add('spawnSoft');
+    load.classList.add('showScreen');
 } export function offLoadWhile() {
     const load = document.querySelector('.loadContainer');
-    load.classList.remove('spawnSoft');
+    load.classList.remove('showScreen');
 }
 export function addActive(container) {//fix anim transition login-register
     container.classList.add('active');

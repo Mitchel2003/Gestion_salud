@@ -17,7 +17,7 @@
 }.mainContainer.active .signContainer header:hover{
     transform: scale(1);
 }
-.spawnSoft{ opacity: 1; z-index: 999; }/*class setVisible*/
+.showScreen{ opacity: 1; z-index: 999; }/*class setVisible*/
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;

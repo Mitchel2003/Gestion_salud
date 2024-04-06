@@ -4,24 +4,23 @@ import { onLoadWhile, offLoadWhile } from "../utils/view.js";
 
 export async function loginUser(user, password) {
     try {
-        (await import('../utils/view.js')).goToSession();
-        // onLoadWhile();
-        // const getAlert = await import('../utils/alerts.js');
-        // const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
-        // if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
-        //     const { title, message, typeAlert } = getAlert.messageEmailNotFound();
-        //     customAlert(title, message, selectIcon(typeAlert));
-        //     offLoadWhile();
-        //     return;
-        // } await onSession(user, password);
-        // if (!key) {
-        //     const { title, message, typeAlert } = getAlert.messageAccessNotFound();
-        //     customAlert(title, message, selectIcon(typeAlert));
-        //     await offSession();
-        //     offLoadWhile();
-        //     return;
-        // }
-        // offLoadWhile();
+        onLoadWhile();
+        const getAlert = await import('../utils/alerts.js');
+        const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
+        if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
+            const { title, message, typeAlert } = getAlert.messageEmailNotFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            offLoadWhile();
+            return;
+        } await onSession(user, password);
+        if (!key) {
+            const { title, message, typeAlert } = getAlert.messageAccessNotFound();
+            customAlert(title, message, selectIcon(typeAlert));
+            await offSession();
+            offLoadWhile();
+            return;
+        }
+        offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }
 }
 export async function registerUser(name, email, password, access) {

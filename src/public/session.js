@@ -6,7 +6,6 @@ document.getElementById('menu-action').addEventListener('click', () => { documen
 document.getElementById('close-action').addEventListener('click', () => {  document.querySelector('.side-bar').classList.remove('spawn'); });
 
 
-
 // const userContext = await auth.currentUser;
 // await validateSession(userContext);
 // const { access } = getUserInfo(userContext);
