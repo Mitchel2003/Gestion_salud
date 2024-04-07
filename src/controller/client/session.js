@@ -1,5 +1,5 @@
-import { customAlert, selectIcon } from '../components/utils/alerts.js';
-import { auth } from '../components/firebase/conection.js';
+import { customAlert, selectIcon } from '../../components/utils/alerts.js';
+import { auth } from '../../components/firebase/conection.js';
 
 //side bar
 document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });

@@ -272,9 +272,19 @@ de una solicitud de resetPassword y no en una confirmacion de email; en este ord
 
 cuya funcionalidad es la de ocultar y mostrar la session de registro, encontramos clave el uso overflow:hiden; en ese orden de ideas, ocurre
 que elemento que se encuentra oculto "hide" se desplaza y es presentado al usuario en una suave transicion; ahora bien, en un caso particular
-como en el de eyeIcon encontramos el uso del "display:none", entonces es aqui querido amigo cuando se complica la cosa; porque antes de la
-transicion hay que ajustar el display, recuerda esto, las animaciones no funcionan muy bien con un display.
+como en el de eyeIcon encontrabamos el uso del "display:none", entonces es aqui querido amigo cuando se complica la cosa; porque antes de la
+transicion hay que ajustar el display, recuerda esto, las animaciones no funcionan muy bien con cambios en el display.
 no es solo un comentario, es un detalle que puede ahorrar un dolor de cabeza.
+
+he simplificado las cosas, he puesto un hover para el container del input, al momento de "mouseover" sobre el container entonces muestra el icono,
+en javaScript tan solo me he encargado de operar el cambio del tipo de input, para que muestre u oculte la conttraseña
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#207: en este apartado se me presentaba un problema; resulta que cuando utilizaba la alerta default de sweetAlert, el contenido de la pantalla
+se desajustaba; me veia obligado a utilizar el atributo "toast: true", este presentaba un screen informativo mas pequeño, me ayudo a huir del problema;
+
+pero no bastó, yo necesitaba el alert normal, el detalle era que al momento de solicitar la alerta, se añadia a mi pagina unos styles propios de la
+documentacion de sweetAlert, estos modificaban el contenido con un class "body.swal2-height-auto {height: auto !important;}" que se interponía con ese
+!important; la solucion fue poner el atributo height desde el body, para lograr de este modo interponerme en el efecto del class de sweetAlert. 
 /*--------------------------------------------------tips--------------------------------------------------*/
 				OPTIMIZAR PAGINA WEB
 

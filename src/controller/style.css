@@ -2,22 +2,16 @@
 @keyframes animEntry { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); }}/*animation soft displacement to init()*/
 @keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
 @keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
-.mainContainer.active .registerContainer{/*fix transition login-register*/
-    transform: translate(-50%);
-    border-radius: 150px;
-    box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
-}.mainContainer.active{
-    height: 60%;
-}.mainContainer.active .registerContainer header{
-    transform: scale(1.1);
-    opacity: 1;
-}.mainContainer.active .signContainer header{
-    transform: scale(0.9);
-    opacity: 0.6;
-}.mainContainer.active .signContainer header:hover{
-    transform: scale(1);
-}
-.showScreen{ opacity: 1; z-index: 999; }/*class setVisible*/
+
+/*fix transition login-register*/
+.mainContainer.active .registerContainer{transform: translate(-50%); border-radius: 150px; box-shadow: 0 -5px 10px rgba(0,0,0,0.3);}
+.mainContainer.active{height: 60%;}
+.mainContainer.active .registerContainer header{transform: scale(1.1); opacity: 1;}
+.mainContainer.active .signContainer header{transform: scale(0.9); opacity: 0.6;}
+.mainContainer.active .signContainer header:hover{transform: scale(1);}
+
+/*fix sweetAlert*/
+.customAlert{border-radius: 20px; background: linear-gradient(to top left,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.2),rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.8),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.8),rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.2),rgba(255, 255, 255, 0));}
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;
@@ -28,7 +22,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
@@ -257,7 +250,8 @@ form .button{
     left: calc(50% - 20px);
     top: calc(50% - 20px);
     animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
-}
+}.show{ opacity: 1; z-index: 999; }/*class setVisible*/
+
 @media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
 @media (min-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 10%);}}
 

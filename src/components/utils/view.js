@@ -8,18 +8,19 @@ export function loadElements(container) {//init()
 }
 export function onLoadWhile() {//fix anim loading...
     const load = document.querySelector('.loadContainer');
-    load.classList.add('showScreen');
+    load.classList.add('show');
 } export function offLoadWhile() {
     const load = document.querySelector('.loadContainer');
-    load.classList.remove('showScreen');
+    load.classList.remove('show');
 }
 export function addActive(container) {//fix anim transition login-register
     container.classList.add('active');
 } export function removeActive(container) {
     container.classList.remove('active');
 }
-export function changeStatusIconEye() {//fix anim on/off iconEye
-    const iconLogin = document.getElementById('eyeIcon-login'), iconRegister = document.getElementById('eyeIcon-register');
+export function changeStatusIconEye() {//fix anim on/off iconEye (AC #206)
+    const iconLogin = document.getElementById('eyeIcon-login');
+    const iconRegister = document.getElementById('eyeIcon-register');
     iconLogin.addEventListener('click', () => { setInputPassword(document.querySelector('.input-box-login input'), iconLogin); });
     iconRegister.addEventListener('click', () => { setInputPassword(document.querySelector('.input-box-register input'), iconRegister); });
 } function setInputPassword(input, icon) {

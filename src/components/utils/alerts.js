@@ -3,12 +3,17 @@ export function customAlert(title, message, icon) {//alert default
         title: title,
         text: message,
         icon: icon,
-        toast: true,
+        allowOutsideClick: false,
+        allowEscapeKey: true,
+        allowEnterKey: false,
+        customClass: {popup: 'customAlert'},
     });
 }
 export function selectIcon(item) {
     if (item === "s"){return "success";}
     else if (item === "w"){return "warning";}
+    else if (item === "q"){return "question";}
+    else if (item === "i"){return "info";}
     else {return "error";}
 }
 /*--------------------------------------------------user action--------------------------------------------------*/
@@ -20,10 +25,11 @@ export async function alertInput(title, message, icon) {
         toast: true,
 
         showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#ff6d6d",
+        confirmButtonColor: "#6eb5f8",
         confirmButtonText: "Send token",
         input: "email",
+        inputPlaceholder: "Email",
         inputValue: ""
     });
     return email;
@@ -69,7 +75,7 @@ export function messageTokenSubmitted() {
 /*--------------------------------------------------*/
 export function messageEmailNotFound() {//warning
     const title = "Email unknow";
-    const message = "Check the user field; If the account has been registered, checkout you mailbox";
+    const message = "If the account has been registered, checkout you mailbox";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
@@ -100,7 +106,7 @@ export function messageCredentialsIncorrects() {
 export function messageRestorePassword() {
     const title = "Restore password";
     const message = "Enter a registered email to send token";
-    const typeAlert = "w";
+    const typeAlert = "q";
     return { title, message, typeAlert };
 }
 /*--------------------------------------------------*/
