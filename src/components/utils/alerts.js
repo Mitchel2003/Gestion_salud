@@ -6,15 +6,15 @@ export function customAlert(title, message, icon) {//alert default
         allowOutsideClick: false,
         allowEscapeKey: true,
         allowEnterKey: false,
-        customClass: {popup: 'customAlert'},
+        customClass: { popup: 'customAlert' },
     });
 }
 export function selectIcon(item) {
-    if (item === "s"){return "success";}
-    else if (item === "w"){return "warning";}
-    else if (item === "q"){return "question";}
-    else if (item === "i"){return "info";}
-    else {return "error";}
+    if (item === "s") { return "success"; }
+    else if (item === "w") { return "warning"; }
+    else if (item === "q") { return "question"; }
+    else if (item === "i") { return "info"; }
+    else { return "error"; }
 }
 /*--------------------------------------------------user action--------------------------------------------------*/
 export async function alertInput(title, message, icon) {
@@ -30,8 +30,7 @@ export async function alertInput(title, message, icon) {
         input: "email",
         inputPlaceholder: "Email",
         inputValue: ""
-    });
-    return email;
+    });return email;
 }
 export async function alertButtonAction(title, message, icon) {
     const { value: request } = await Swal.fire({
@@ -42,8 +41,7 @@ export async function alertButtonAction(title, message, icon) {
         cancelButtonColor: "#d33",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Go to home"
-    });
-    return request;
+    });return request;
 }
 /*--------------------------------------------------text--------------------------------------------------*/
 export function messageUserSubmitted() {//successfull
@@ -83,7 +81,7 @@ export function messageAccessNotFound() {
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
-export function messageSessionFailed(){
+export function messageSessionFailed() {
     const title = "User session expired";
     const message = "Redirecting...";
     const typeAlert = "w";
@@ -114,12 +112,12 @@ export function messageEmailUsed() {//error
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
-export function messageEmailUnknow(){
+export function messageEmailUnknow() {
     const title = "Email invalid";
     const message = "Please check email, retry with an email valid";
     const typeAlert = "e";
     return { title, message, typeAlert };
-} 
+}
 export function messagePasswordNotSame() {
     const title = "Passwords not same";
     const message = "Please, retry";
@@ -151,11 +149,11 @@ export function messageTempUnknow() {
 }
 /*--------------------------------------------------exceptions--------------------------------------------------*/
 export function exceptionsLoginUser(error) {
-    if(error.code === 'auth/invalid-login-credentials'){
+    if (error.code === 'auth/invalid-login-credentials') {
         const { title, message, typeAlert } = messageCredentialsIncorrects();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }if(error.code === 'auth/too-many-requests'){
+    } if (error.code === 'auth/too-many-requests') {
         const { title, message, typeAlert } = messageManyRequests();
         customAlert(title, message, selectIcon(typeAlert));
         return;
@@ -168,11 +166,11 @@ export function exceptionsRegisterUser(error) {
         const { title, message, typeAlert } = messageEmailUsed();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }if (error.code === 'auth/invalid-email') {
+    } if (error.code === 'auth/invalid-email') {
         const { title, message, typeAlert } = messageEmailUnknow();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }if (error.code === 'auth/weak-password') {
+    } if (error.code === 'auth/weak-password') {
         const { title, message, typeAlert } = messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
@@ -185,7 +183,7 @@ export function exceptionsResetPassword(error) {
         const { title, message, typeAlert } = messageManyRequests();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }if (error.code === 'invalid-argument') {/*nothing*/ return;}
+    } if (error.code === 'invalid-argument') {/*nothing*/ return; }
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
     return;

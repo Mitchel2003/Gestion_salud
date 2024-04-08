@@ -20,8 +20,8 @@ export async function loginUser(user, password) {
             offLoadWhile();
             return;
         }
-
         //user found with access
+        //need edit html for appened date of "key"; then send user to page assigned
         await (await import('../routes/routes.js')).fixContext();
 
         offLoadWhile();
@@ -35,13 +35,11 @@ export async function registerUser(name, email, password, access) {
         await getAuthMethod.createUser(email, password);
         await getAuthMethod.updateDataUser(name);
         await getAuthMethod.verificationEmailAddress(email, access);
-
         (await import('../utils/view.js')).cleanInputRegister();
-        (await import('../utils/view.js')).removeActive(document.querySelector('.mainContainer'));
 
         const { title, message, typeAlert } = getAlert.messageEmailVerify();
         customAlert(title, message, selectIcon(typeAlert));
-        await offSession(); 
+        await offSession();
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsRegisterUser(error); offLoadWhile(); }
 }
@@ -54,7 +52,7 @@ export async function requestResetPassword() {
 
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(email))) {
             const { title, message, typeAlert } = getAlert.messageEmailNotFound();
-            customAlert(title, message, selectIcon(typeAlert)); 
+            customAlert(title, message, selectIcon(typeAlert));
             offLoadWhile();
             return;
         }
@@ -65,12 +63,12 @@ export async function requestResetPassword() {
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsResetPassword(error); offLoadWhile(); }
 }
-export async function getKeyAuxiliary(){
+export async function getKeyAuxiliary() {
 
 }
-export async function getKeyAuditor(){
-    
+export async function getKeyAuditor() {
+
 }
-export async function getKeyAdmin(){
-    
+export async function getKeyAdmin() {
+
 }
