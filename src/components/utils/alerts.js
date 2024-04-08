@@ -23,7 +23,6 @@ export async function alertInput(title, message, icon) {
         text: message,
         icon: icon,
         toast: true,
-
         showCancelButton: true,
         cancelButtonColor: "#ff6d6d",
         confirmButtonColor: "#6eb5f8",
@@ -39,7 +38,6 @@ export async function alertButtonAction(title, message, icon) {
         title: title,
         text: message,
         icon: icon,
-
         showCancelButton: true,
         cancelButtonColor: "#d33",
         confirmButtonColor: "#3085d6",
@@ -157,8 +155,7 @@ export function exceptionsLoginUser(error) {
         const { title, message, typeAlert } = messageCredentialsIncorrects();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }
-    if(error.code === 'auth/too-many-requests'){
+    }if(error.code === 'auth/too-many-requests'){
         const { title, message, typeAlert } = messageManyRequests();
         customAlert(title, message, selectIcon(typeAlert));
         return;
@@ -171,13 +168,11 @@ export function exceptionsRegisterUser(error) {
         const { title, message, typeAlert } = messageEmailUsed();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }
-    if (error.code === 'auth/invalid-email') {
+    }if (error.code === 'auth/invalid-email') {
         const { title, message, typeAlert } = messageEmailUnknow();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }
-    if (error.code === 'auth/weak-password') {
+    }if (error.code === 'auth/weak-password') {
         const { title, message, typeAlert } = messagePasswordSizeShort();
         customAlert(title, message, selectIcon(typeAlert));
         return;
@@ -190,8 +185,7 @@ export function exceptionsResetPassword(error) {
         const { title, message, typeAlert } = messageManyRequests();
         customAlert(title, message, selectIcon(typeAlert));
         return;
-    }
-    if (error.code === 'invalid-argument') {/*nothing*/ return;}
+    }if (error.code === 'invalid-argument') {/*nothing*/ return;}
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
     return;

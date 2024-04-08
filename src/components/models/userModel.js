@@ -20,6 +20,10 @@ export async function loginUser(user, password) {
             offLoadWhile();
             return;
         }
+
+        //user found with access
+        await (await import('../routes/routes.js')).fixContext();
+
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }
 }
@@ -60,4 +64,13 @@ export async function requestResetPassword() {
         customAlert(title2, message2, selectIcon(typeAlert2));
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsResetPassword(error); offLoadWhile(); }
+}
+export async function getKeyAuxiliary(){
+
+}
+export async function getKeyAuditor(){
+    
+}
+export async function getKeyAdmin(){
+    
 }
