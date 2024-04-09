@@ -11,21 +11,20 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert -->
     <!-- local resource -->
     <link rel="icon" type="image/x-icon" href="../components/images/gs_icon.ico">
+    <link rel="stylesheet" href="./verifyAction.css">
     <script type="module" src="../components/routes/routes.js"></script>
-    <style>.show{ opacity: 1; z-index: 999; }</style>
 </head>
 
 <body>
     <!-- screen loading... -->
-  <div  class="loadContainer" style="position: fixed; display: flex; justify-content: center; align-items: center;  opacity: 0;  left: 0;  top: 0;  height: 100%;  width: 100%;  z-index: -1;  background-color: rgba(0, 0, 0, 0.3);  transition: opacity 0.7s ease;">
-    <div class="load" style="position: relative; width: 60px; height: 60px;">
-      <div class="frame_1" style="position: absolute; width: 100%; height: 100%; border: 4px solid #c258ff; border-left-color: transparent; border-bottom: none; border-radius: 50%; animation: load_1 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;"></div>
-      <div class="frame_2" style="position: absolute; width: 40px; height: 40px; border: 4px solid #da9aff; border-top-color: transparent; border-right: none; border-radius: 50%; left: calc(50% - 20px); top: calc(50% - 20px); animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;"></div>
+  <div  class="loadContainer">
+    <div class="load">
+      <div class="frame_1"></div>
+      <div class="frame_2"></div>
     </div>
   </div>
     <!-- dependency -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- sweetAlert -->
 </body>
-
 
 </html>
