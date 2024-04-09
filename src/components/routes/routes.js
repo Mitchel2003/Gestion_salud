@@ -1,4 +1,6 @@
 import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
+import { onLoadWhile, offLoadWhile } from '../utils/view.js';
+onLoadWhile();
 await fixContext();    
 
 async function fixContext(){
@@ -112,6 +114,7 @@ async function modeVerifyEmail(res){
         const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenVerifyExpired();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
         if (response) { (await import('../utils/view.js')).goToHome(); }
+        offLoadWhile();
         return;
     }
     await (await import('../firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
@@ -120,8 +123,10 @@ async function modeVerifyEmail(res){
     const response = await alertButtonAction(title, message, selectIcon(typeAlert));
     if (response) { (await import('../utils/view.js')).goToHome(); }
     await (await import('../firebase/query.js')).offSession();
+    offLoadWhile();
 }
 async function modeChangePassword(){
+    offLoadWhile();
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
             event.preventDefault();

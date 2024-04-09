@@ -1,15 +1,16 @@
-/*--------------------------------------------------loadWhile--------------------------------------------------*/
+@keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
+@keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
 .loadContainer{
     position: fixed;
     display: flex;
     justify-content: center;/*align x*/
     align-items: center;/*align y*/
-    opacity: 1;
+    opacity: 0;
     left: 0;
     top: 0;
     height: 100%;
     width: 100%;
-    z-index: 999;
+    z-index: -1;
     background-color: rgba(0, 0, 0, 0.3);
     transition: opacity 0.7s ease;
 }.load{
