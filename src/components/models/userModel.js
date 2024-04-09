@@ -13,7 +13,7 @@ export async function loginUser(user, password) {
             offLoadWhile();
             return;
         } await onSession(user, password);
-        if (!key) {
+        if (key == false || key == null) {
             const { title, message, typeAlert } = getAlert.messageAccessNotFound();
             customAlert(title, message, selectIcon(typeAlert));
             await offSession();
