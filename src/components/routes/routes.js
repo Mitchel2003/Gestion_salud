@@ -1,7 +1,6 @@
 import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
 await fixContext();    
 
-
 async function fixContext(){
     const query = getQueryParams();
     const verify = query.continueUrl;
@@ -34,6 +33,14 @@ function applyContext(res) {//AC #205
                     </div>
                 </div>
             </div>    
+        </div>
+
+        <!-- screen loading... -->
+        <div class="loadContainer">
+          <div class="load">
+            <div class="frame_1"></div>
+            <div class="frame_2"></div>
+          </div>
         </div>
         `;
     }
