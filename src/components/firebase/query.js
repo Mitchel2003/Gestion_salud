@@ -6,9 +6,11 @@ export async function isFoundDocumentReference(user) {
     return !querySnapshot.empty;
 }
 export async function getDocumentUser(user) {
+    let access, key;
     const ask = query(await getCollection("userInfo"), where("email", "==", user));
     const querySnapshot = await getDocs(ask);
-    return { access: querySnapshot.access, key: querySnapshot.key };
+    querySnapshot.forEach((doc)=>{ const value = doc.data(); access = value.access; key = value.key; });
+    return { access, key };
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {

@@ -159,7 +159,7 @@ export function exceptionsLoginUser(error) {
         return;
     }
     const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code, selectIcon(typeAlert));
+    customAlert(title, error, selectIcon(typeAlert));
 }
 export function exceptionsRegisterUser(error) {
     if (error.code === 'auth/email-already-in-use') {

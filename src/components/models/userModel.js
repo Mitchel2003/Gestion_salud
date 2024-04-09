@@ -6,14 +6,14 @@ export async function loginUser(user, password) {
     try {
         onLoadWhile();
         const getAlert = await import('../utils/alerts.js');
-        const { key: permission, access: typeAccess } = await (await import('../firebase/query.js')).getDocumentUser(user);
+        const { access, key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
             const { title, message, typeAlert } = getAlert.messageEmailNotFound();
             customAlert(title, message, selectIcon(typeAlert));
             offLoadWhile();
             return;
         } await onSession(user, password);
-        if (permission == false || permission == null) {
+        if (!key) {
             const { title, message, typeAlert } = getAlert.messageAccessNotFound();
             customAlert(title, message, selectIcon(typeAlert));
             await offSession();
@@ -22,7 +22,7 @@ export async function loginUser(user, password) {
         }
         //user found with access
         //need edit html for appened date of "key"; then send user to page assigned
-        (await import('../utils/view.js')).goToSession(typeAccess);
+        (await import('../utils/view.js')).goToSession(access);
 
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }
