@@ -1,6 +1,5 @@
 import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
-onLoadWhile();
 await fixContext();    
 
 async function fixContext(){
@@ -104,7 +103,8 @@ function applyContext(res) {//AC #205
         `;
     }
 }
-async function modeVerifyEmail(res){
+async function modeVerifyEmail(res){ 
+    onLoadWhile();
     const decodeURL = decodeURIComponent(res);
     const url = new URL(decodeURL);
     const userEmail = url.searchParams.get('email');
@@ -126,9 +126,9 @@ async function modeVerifyEmail(res){
     offLoadWhile();
 }
 async function modeChangePassword(){
-    offLoadWhile();
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
+            onLoadWhile();
             event.preventDefault();
             const getAlerts = await import('../utils/alerts.js');
             const oobCode = getCodeOob();
@@ -138,10 +138,12 @@ async function modeChangePassword(){
             if (checkSamePasswords(password, confirmPassword)) {
                 const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
                 customAlert(title, message, selectIcon(typeAlert));
+                offLoadWhile();
                 return;
             }if (checkSizeAllowed(password)) {
                 const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
                 customAlert(title, message, selectIcon(typeAlert));
+                offLoadWhile();
                 return;
             }
             await (await import('../firebase/query.js')).validateResetPassword(oobCode, password);
@@ -150,9 +152,11 @@ async function modeChangePassword(){
             const request = await alertButtonAction(title, message, selectIcon(typeAlert));
             if (request) { (await import('../utils/view.js')).goToHome(); }
             await (await import('../firebase/query.js')).offSession();
+            offLoadWhile();
         } catch (error) {
             const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenExpired();
             customAlert(title, message, selectIcon(typeAlert));
+            offLoadWhile();
         }
     });
 }
