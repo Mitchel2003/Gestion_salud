@@ -22,7 +22,7 @@ export async function loginUser(user, password) {
         }
         //user found with access
         //need edit html for appened date of "key"; then send user to page assigned
-        await (await import('../routes/routes.js')).fixContext();
+        (await import('../utils/view.js')).goToSession(key);
 
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }

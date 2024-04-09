@@ -44,8 +44,7 @@ function applyContext(res) {//AC #205
           </div>
         </div>
         `;
-    }
-    if (res === 'reset') {
+    } if (res === 'reset') {
         document.title = "Reset password";
         return `
         <div class="container p-4">
@@ -77,8 +76,7 @@ function applyContext(res) {//AC #205
           </div>
         </div>
         `;
-    }
-    if (res === 'auxiliary') {
+    } if (res === 'auxiliary') {
         document.title = "Session";
         return `
         <nav>
@@ -105,14 +103,12 @@ function applyContext(res) {//AC #205
           </div>
         </div>
         `;
-    }
-    if (res === 'auditor') {
+    } if (res === 'auditor') {
         document.title = "Session";
         return `
         
         `;
-    }
-    if (res === 'admin') {
+    } if (res === 'admin') {
         document.title = "Session";
         return `
         
@@ -142,28 +138,26 @@ async function modeVerifyEmail(res){
     offLoadWhile();
 }
 async function modeChangePassword(){
-    document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
+    const resetButton = document.getElementById('resetPassword_form');
+    resetButton.addEventListener('submit', async function (event) {//AC #204
         try { event.preventDefault();
             onLoadWhile();
-            const getAlerts = await import('../utils/alerts.js');
             const oobCode = getCodeOob();
             const password = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
             if (checkSamePasswords(password, confirmPassword)) {
-                const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+                const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordNotSame();
                 customAlert(title, message, selectIcon(typeAlert));
-                offLoadWhile();
-                return;
+                offLoadWhile(); return;
             }if (checkSizeAllowed(password)) {
-                const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
+                const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordSizeShort();
                 customAlert(title, message, selectIcon(typeAlert));
-                offLoadWhile();
-                return;
+                offLoadWhile(); return;
             }
             await (await import('../firebase/query.js')).validateResetPassword(oobCode, password);
             
-            const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
+            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageResetPasswordSuccess();
             const request = await alertButtonAction(title, message, selectIcon(typeAlert));
             if (request) { (await import('../utils/view.js')).goToHome(); }
             await (await import('../firebase/query.js')).offSession();
