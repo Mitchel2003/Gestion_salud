@@ -1,4 +1,4 @@
-import { auth, getDocs, query, where } from "./conection.js";
+import { db, auth, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
 export async function isFoundDocumentReference(user) {
     const ask = query(await getCollection("userInfo"), where("email", "==", user));
@@ -24,6 +24,6 @@ export async function sendToEmailResetPassword(email) {
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
-    const collectionReference = await (await import('./conection.js')).collection((await import('./conection.js')).db, context);
+    const collectionReference = await (await import('./conection.js')).collection(db, context);
     return collectionReference;
 }
