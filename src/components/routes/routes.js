@@ -1,12 +1,9 @@
 import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
-import { onLoadWhile, offLoadWhile } from '../utils/view.js';
-try {
-    await fixContext();    
-} catch (error) {
-    console.log(error.error);
-}
+await fixContext();    
 
-async function fixContext(){onLoadWhile();
+
+async function fixContext(){
+    document.querySelector('.loadContainer').classList.add('show');
     const query = getQueryParams();
     const verify = query.continueUrl;
     const reset = query.oobCode;
@@ -109,7 +106,7 @@ async function modeVerifyEmail(res){
         const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenVerifyExpired();
         const response = await alertButtonAction(title, message, selectIcon(typeAlert));
         if (response) { (await import('../utils/view.js')).goToHome(); }
-        offLoadWhile();
+        document.querySelector('.loadContainer').classList.remove('show');
         return;
     }
     await (await import('../firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
@@ -118,10 +115,10 @@ async function modeVerifyEmail(res){
     const response = await alertButtonAction(title, message, selectIcon(typeAlert));
     if (response) { (await import('../utils/view.js')).goToHome(); }
     await (await import('../firebase/query.js')).offSession();
-    offLoadWhile();
+    document.querySelector('.loadContainer').classList.remove('show');
 }
 async function modeChangePassword(){
-    offLoadWhile();
+    document.querySelector('.loadContainer').classList.remove('show');
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
             event.preventDefault();
