@@ -1,10 +1,12 @@
 import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
+try {
+    await fixContext();    
+} catch (error) {
+    console.log(error.error);
+}
 
-onLoadWhile();
-await fixContext();
-
-async function fixContext(){
+async function fixContext(){onLoadWhile();
     const query = getQueryParams();
     const verify = query.continueUrl;
     const reset = query.oobCode;
