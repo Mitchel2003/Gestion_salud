@@ -143,9 +143,8 @@ async function modeVerifyEmail(res){
 }
 async function modeChangePassword(){
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
-        try {
+        try { event.preventDefault();
             onLoadWhile();
-            event.preventDefault();
             const getAlerts = await import('../utils/alerts.js');
             const oobCode = getCodeOob();
             const password = document.getElementById('newPassword').value;
