@@ -30,8 +30,8 @@ export function changeStatusIconEye() {//fix anim on/off iconEye (AC #206)
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
-} export function goToSession() {
-    window.location.href = './src/public/session.html';
+} export function goToVerifyAction() {
+    window.location.href = './src/public/verifyAction.html';
 }
 export function cleanInputRegister() {
     const name = document.querySelector('.registerContainer input[type="text"]');

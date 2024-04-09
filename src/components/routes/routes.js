@@ -1,7 +1,10 @@
-import { alertButtonAction, customAlert, selectIcon } from '../utils/alerts.js';
+import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
+import { onLoadWhile, offLoadWhile } from '../utils/view.js';
+
+onLoadWhile();
 await fixContext();
 
-export async function fixContext(){
+async function fixContext(){
     const query = getQueryParams();
     const verify = query.continueUrl;
     const reset = query.oobCode;
@@ -10,62 +13,13 @@ export async function fixContext(){
     await managementSession(access);
 }
 async function managementAccount(compare){
-    if (compare) { const getContext = applyContext('verify'); document.body.innerHTML = getContext; await verifyEmail(compare); 
-    }else { const getContext = applyContext('reset'); document.body.innerHTML =  getContext; await changePassword(); }
+    if (compare) { const getContext = applyContext('verify'); document.body.innerHTML = getContext; await modeVerifyEmail(compare); 
+    }else { const getContext = applyContext('reset'); document.body.innerHTML =  getContext; await modeChangePassword(); }
 }async function managementSession(access){
-    if (access === 'auxiliary') { const getContext = applyContext('auxiliary'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).getKeyAuxiliary(); }
-    else if (access === 'auditor') { const getContext = applyContext('auditor'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).getKeyAuditor(); }
-    else { const getContext =  applyContext('admin'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).getKeyAdmin(); }
-}
-async function verifyEmail(res){
-    const decodeURL = decodeURIComponent(res);
-    const url = new URL(decodeURL);
-    const userEmail = url.searchParams.get('email');
-    const userAccess = url.searchParams.get('access');
-
-    if (await (await import('../firebase/query.js')).isFoundDocumentReference(userEmail)) {
-        const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenVerifyExpired();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-        if (response) { (await import('../utils/view.js')).goToHome(); }
-        return;
-    }
-    await (await import('../firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
-
-    const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageUserSubmitted();
-    const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-    if (response) { (await import('../utils/view.js')).goToHome(); }
-    await (await import('../firebase/query.js')).offSession();
-}
-async function changePassword(){
-    const form = document.getElementById('resetPassword_form');
-    form.addEventListener('submit', async function (event) {//AC #204
-        try {
-            event.preventDefault();
-            const getAlerts = await import('../utils/alerts.js');
-            const oobCode = getCodeOob();
-            const password = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (checkSamePasswords(password, confirmPassword)) {
-                const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
-                customAlert(title, message, selectIcon(typeAlert));
-                return;
-            }if (checkSizeAllowed(password)) {
-                const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
-                customAlert(title, message, selectIcon(typeAlert));
-                return;
-            }
-            await (await import('../firebase/query.js')).validateResetPassword(oobCode, password);
-            
-            const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
-            const request = await getAlerts.alertButtonAction(title, message, selectIcon(typeAlert));
-            if (request) { (await import('../utils/view.js')).goToHome(); }
-            await (await import('../firebase/query.js')).offSession();
-        } catch (error) {
-            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenExpired();
-            customAlert(title, message, selectIcon(typeAlert));
-        }
-    });
+    const getUserModel = await import('../models/userModel.js');
+    if (access === 'auxiliary') { const getContext = applyContext('auxiliary'); document.body.innerHTML = getContext; await getUserModel.modeAuxiliary(); }
+    else if (access === 'auditor') { const getContext = applyContext('auditor'); document.body.innerHTML = getContext; await getUserModel.modeAuditor(); }
+    else { const getContext =  applyContext('admin'); document.body.innerHTML = getContext; await getUserModel.modeAdmin(); }
 }
 function applyContext(res) {//AC #205
     if (res === 'verify') {
@@ -142,6 +96,58 @@ function applyContext(res) {//AC #205
         
         `;
     }
+}
+async function modeVerifyEmail(res){
+    const decodeURL = decodeURIComponent(res);
+    const url = new URL(decodeURL);
+    const userEmail = url.searchParams.get('email');
+    const userAccess = url.searchParams.get('access');
+
+    if (await (await import('../firebase/query.js')).isFoundDocumentReference(userEmail)) {
+        const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenVerifyExpired();
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+        if (response) { (await import('../utils/view.js')).goToHome(); }
+        offLoadWhile();
+        return;
+    }
+    await (await import('../firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
+
+    const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageUserSubmitted();
+    const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+    if (response) { (await import('../utils/view.js')).goToHome(); }
+    await (await import('../firebase/query.js')).offSession();
+    offLoadWhile();
+}
+async function modeChangePassword(){
+    offLoadWhile();
+    document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
+        try {
+            event.preventDefault();
+            const getAlerts = await import('../utils/alerts.js');
+            const oobCode = getCodeOob();
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (checkSamePasswords(password, confirmPassword)) {
+                const { title, message, typeAlert } = getAlerts.messagePasswordNotSame();
+                customAlert(title, message, selectIcon(typeAlert));
+                return;
+            }if (checkSizeAllowed(password)) {
+                const { title, message, typeAlert } = getAlerts.messagePasswordSizeShort();
+                customAlert(title, message, selectIcon(typeAlert));
+                return;
+            }
+            await (await import('../firebase/query.js')).validateResetPassword(oobCode, password);
+            
+            const { title, message, typeAlert } = getAlerts.messageResetPasswordSuccess();
+            const request = await alertButtonAction(title, message, selectIcon(typeAlert));
+            if (request) { (await import('../utils/view.js')).goToHome(); }
+            await (await import('../firebase/query.js')).offSession();
+        } catch (error) {
+            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenExpired();
+            customAlert(title, message, selectIcon(typeAlert));
+        }
+    });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 function checkSamePasswords(item_1, item_2) {

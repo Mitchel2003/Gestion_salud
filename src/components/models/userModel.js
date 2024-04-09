@@ -63,12 +63,14 @@ export async function requestResetPassword() {
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsResetPassword(error); offLoadWhile(); }
 }
-export async function getKeyAuxiliary() {
+
+
+export async function modeAuxiliary() {
 
 }
-export async function getKeyAuditor() {
+export async function modeAuditor() {
 
 }
-export async function getKeyAdmin() {
+export async function modeAdmin() {
 
 }
