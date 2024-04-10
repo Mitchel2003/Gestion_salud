@@ -145,7 +145,8 @@ async function modeChangePassword(){
     resetButton.addEventListener('submit', async function (event) {//AC #204
         try { event.preventDefault();
             onLoadWhile();
-            const oobCode = getCodeOob();
+            const query = getQueryParams(); 
+            const oobCode = query.oobCode;
             const password = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -176,13 +177,8 @@ async function modeChangePassword(){
 function checkSamePasswords(item_1, item_2) {
     if (item_1 !== item_2) { return item_1; }
 }
-function checkSizeAllowed(newPassword) {
-    if (newPassword.length < 6) { return newPassword; }
-}
-function getCodeOob() {
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
-    return searchParams.get('oobCode');
+function checkSizeAllowed(item) {
+    if (item.length < 6) { return item; }
 }
 function getQueryParams() {
     const queryString = window.location.search;

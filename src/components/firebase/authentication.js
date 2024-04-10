@@ -23,7 +23,7 @@ export function preparateSessionWithAccess(value) {
 }
 export async function checkSessionActive() {
     onAuthStateChanged(auth, async (user) => { 
-        try { let data = user.uid; console.log(data); }
+        try { let data = user.uid; }
         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); } 
     });
 }
