@@ -3,7 +3,7 @@
  padding: 0;
 }body{
     min-height: 100vh;
-    background-image: url(./src/components/images/background_login.webp);
+    background-image: url(../components/images/background_login.webp);
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
