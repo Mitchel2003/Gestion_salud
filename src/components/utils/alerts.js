@@ -82,7 +82,7 @@ export function messageAccessNotFound() {
     return { title, message, typeAlert };
 }
 export function messageSessionFailed() {
-    const title = "User session expired";
+    const title = "Session expired";
     const message = "Redirecting...";
     const typeAlert = "w";
     return { title, message, typeAlert };
@@ -189,8 +189,8 @@ export function exceptionsResetPassword(error) {
     return;
 }
 export async function exceptionsSignOut(error) {
-    const { title, typeAlert } = messageTempUnknow();
-    await alertButtonAction(title, error.code, selectIcon(typeAlert));
+    const { title, message, typeAlert } = messageSessionFailed();
+    await alertButtonAction(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome();
     return;
 }

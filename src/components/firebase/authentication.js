@@ -27,10 +27,6 @@ export async function checkSessionActive() {
         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); } 
     });
 }
-// const {title, message, typeAlert} = (await import('../utils/alerts.js')).messageSessionFailed();
-// await alertButtonAction(title, message, selectIcon(typeAlert));
-// (await import('../utils/view.js')).goToHome();
-
 export function resetTimeInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => {

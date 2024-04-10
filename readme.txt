@@ -4,8 +4,6 @@
 //production: react router, stackblitz, vite
 //page for find backgrounds hd: uhdpaper.com
 
-
-
 para css= widt = 20 dvw;
 
 Para mejorar la fluidez y optimización de la animación, te recomendaría seguir los siguientes pasos:
@@ -294,6 +292,10 @@ documentacion de sweetAlert, estos modificaban el contenido con un class "body.s
 la cuestion es la siguiente; si es if() de consultar "key" (true or false) se evalua primero que el onSession(), entonces primero se evaluará la existencia
 de acceso para ese email ingresado, en caso de estar la contraseña incorrecta es un problema, porque entonces tiene que ser usuario habilitado para que le 
 aparezca mensaje de contraseña incorrecta.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#209: la presencia de este metodo a instantes del inicio parece redundancia; la verdad es que el objetivo es otro; busco que al momento en que se acceda
+a la direccion url con la clave "key", sea indispenzable la  comprobacion de la session del usuario, porque cualquier persona podria acceder con tan solo
+poner la direccion mas el atributo "key", he aqui la magia  
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------tips--------------------------------------------------*/
 				OPTIMIZAR PAGINA WEB
