@@ -1,5 +1,5 @@
 import { getCollection } from './query.js';
-import { auth } from "./conection.js";
+import { auth, onAuthStateChanged } from "./conection.js";
 
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
@@ -20,7 +20,6 @@ export function preparateSessionWithAccess(value) {
     url.searchParams.set('key', value);
     window.location.href = url.toString();
 }
-export async function checkSessionActive(){
-    let userContext = await auth.currentUser;
-    if(!userContext || userContext == null){ (await import('../utils/alerts.js')).messageSessionFailed(); (await import('../utils/view.js')).goToHome(); return;}
+export async function checkSessionActive(){ //auth error
+    onAuthStateChanged(auth, async (user) => { if(!user || user == null){ (await import('../utils/alerts.js')).messageSessionFailed(); (await import('../utils/view.js')).goToHome(); return;} });
 }
