@@ -14,3 +14,9 @@ export async function verificationEmailAddress(userEmail, userAccess) {
 export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
+export function preparateSessionWithAccess(value) {
+    let url = new URL(window.location.href);
+    url.pathname = './src/public/verifyAction.html';
+    url.searchParams.set('key', value);
+    window.location.href = url.toString();
+}

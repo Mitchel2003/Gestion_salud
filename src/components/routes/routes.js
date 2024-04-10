@@ -78,6 +78,7 @@ function applyContext(res) {//AC #205
         `;
     } if (res === 'auxiliary') {
         document.title = "Session";
+        appenedStyles('../controller/client/session.css');
         return `
         <nav>
             <ul class="side-bar">
@@ -185,4 +186,10 @@ function getQueryParams() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);
     return Object.fromEntries(searchParams.entries());
+}
+function appenedStyles(src){
+    const style = document.createElement('link');
+    style.rel = "stylesheet";
+    style.href = src;
+    document.head.appendChild(style);
 }

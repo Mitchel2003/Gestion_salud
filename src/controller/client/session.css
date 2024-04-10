@@ -1,8 +1,7 @@
 *{
  margin: 0;   
  padding: 0;
-}
-body{
+}body{
     min-height: 100vh;
     background-image: url(../components/images/background_session.webp);
     background-repeat: no-repeat;
@@ -11,33 +10,29 @@ body{
     background-size: cover;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 nav{
     background-color: white;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-}
-nav ul{
+}nav ul{
     width: 100%;
     list-style: none;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-}
-nav li{
+}nav li{
     height: 50px;
-}
-nav a{
+}nav li:first-child{
+    margin-right: auto;
+}nav a{
     height: 100%;
     padding: 0px 30px;
     text-decoration: none;
     display: flex;
     align-items: center;
     color: black;
-}
-nav a:hover{
+}nav a:hover{
     background-color: #f0f0f0;
-}
-nav li:first-child{
-    margin-right: auto;
 }
 
 .side-bar{

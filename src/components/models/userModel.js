@@ -5,25 +5,23 @@ import { onLoadWhile, offLoadWhile } from "../utils/view.js";
 export async function loginUser(user, password) {
     try {
         onLoadWhile();
-        const getAlert = await import('../utils/alerts.js');
         const { access, key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
-            const { title, message, typeAlert } = getAlert.messageEmailNotFound();
+            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageEmailNotFound();
             customAlert(title, message, selectIcon(typeAlert));
             offLoadWhile();
             return;
-        } await onSession(user, password);
+        } 
+        await onSession(user, password);//AC #208
+
         if (!key) {
-            const { title, message, typeAlert } = getAlert.messageAccessNotFound();
+            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageAccessNotFound();
             customAlert(title, message, selectIcon(typeAlert));
             await offSession();
             offLoadWhile();
             return;
-        }
-        //user found with access
-        //need edit html for appened date of "key"; then send user to page assigned
-        (await import('../utils/view.js')).goToSession(access);
-
+        } 
+        (await import('../firebase/authentication.js')).preparateSessionWithAccess(access);
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }
 }
