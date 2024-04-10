@@ -11,7 +11,7 @@ export async function loginUser(user, password) {
             customAlert(title, message, selectIcon(typeAlert));
             offLoadWhile();
             return;
-        } 
+        }
         await onSession(user, password);//AC #208
 
         if (!key) {
@@ -20,7 +20,7 @@ export async function loginUser(user, password) {
             await offSession();
             offLoadWhile();
             return;
-        } 
+        }
         (await import('../firebase/authentication.js')).preparateSessionWithAccess(access);
         offLoadWhile();
     } catch (error) { (await import('../utils/alerts.js')).exceptionsLoginUser(error); offLoadWhile(); }
@@ -64,7 +64,9 @@ export async function requestResetPassword() {
 
 
 export async function modeAuxiliary() {
-
+    //side bar
+    document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
+    document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 }
 export async function modeAuditor() {
 

@@ -13,11 +13,12 @@ async function fixContext(){
 async function managementAccount(compare){
     if (compare) { const getContext = applyContext('verify'); document.body.innerHTML = getContext; await modeVerifyEmail(compare); 
     }else { const getContext = applyContext('reset'); document.body.innerHTML =  getContext; await modeChangePassword(); }
-}async function managementSession(access){
-    const getUserModel = await import('../models/userModel.js');
-    if (access === 'auxiliary') { const getContext = applyContext('auxiliary'); document.body.innerHTML = getContext; await getUserModel.modeAuxiliary(); }
-    else if (access === 'auditor') { const getContext = applyContext('auditor'); document.body.innerHTML = getContext; await getUserModel.modeAuditor(); }
-    else { const getContext =  applyContext('admin'); document.body.innerHTML = getContext; await getUserModel.modeAdmin(); }
+}
+async function managementSession(access){
+    (await import('../firebase/authentication.js')).checkSessionActive();
+    if (access === 'auxiliary') { const getContext = applyContext('auxiliary'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); }
+    else if (access === 'auditor') { const getContext = applyContext('auditor'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuditor(); }
+    else { const getContext =  applyContext('admin'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAdmin(); }
 }
 function applyContext(res) {//AC #205
     if (res === 'verify') {

@@ -20,3 +20,7 @@ export function preparateSessionWithAccess(value) {
     url.searchParams.set('key', value);
     window.location.href = url.toString();
 }
+export async function checkSessionActive(){
+    let userContext = await auth.currentUser;
+    if(!userContext || userContext == null){ (await import('../utils/alerts.js')).messageSessionFailed(); (await import('../utils/view.js')).goToHome(); return;}
+}
