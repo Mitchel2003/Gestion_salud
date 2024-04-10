@@ -16,7 +16,7 @@ export async function appenedDocumentReference(email, access) {
 }
 export function preparateSessionWithAccess(value) {
     let url = new URL(window.location.href);
-    url.pathname = './src/public/verifyAction.html';
+    url.pathname = './Gestion_salud/src/public/verifyAction.html';
     url.searchParams.set('key', value);
     window.location.href = url.toString();
 }
