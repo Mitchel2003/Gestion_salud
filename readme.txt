@@ -4,6 +4,10 @@
 //production: react router, stackblitz, vite
 //page for find backgrounds hd: uhdpaper.com
 
+
+
+para css= widt = 20 dvw;
+
 Para mejorar la fluidez y optimización de la animación, te recomendaría seguir los siguientes pasos:
 
 1. En lugar de animar propiedades como `height` y `width`, utiliza `transform` para escalar el tamaño del input. Esto es más eficiente en términos de rendimiento ya que `transform` no afecta al flujo del documento.

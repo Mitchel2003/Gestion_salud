@@ -79,7 +79,7 @@ function applyContext(res) {//AC #205
         `;
     } if (res === 'auxiliary') {
         document.title = "Session";
-        appenedStyles('../controller/client/session.css');
+        appenedStyles('../controller/session.css');
         appenedBackgroundImage("../../components/images/background_session.webp");
         return `
         <nav>

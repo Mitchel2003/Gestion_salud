@@ -256,11 +256,8 @@ form .button{
 @media (min-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 10%);}}
 
 @media (max-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 10%);}}
-@media (max-height: 900px) {}
 @media (max-height: 850px) {.mainContainer.active .registerContainer{transform: translate(-50%, 11%);}}
-@media (max-height: 800px) {}
 @media (max-height: 750px) {.mainContainer.active .registerContainer{transform: translate(-50%, 12%);} .mainContainer form{padding: 5px 0;} .mainContainer.active{height: 65%;}}
-@media (max-height: 700px) {}
 @media (max-height: 650px) {.mainContainer.active .registerContainer{transform: translate(-50%, 13%);} .mainContainer form{padding: 10px 0;} .mainContainer.active{height: 70%;}}
 @media (max-height: 600px) {.registerContainer{transform: translate(-50%, 80%);} .mainContainer{height: 300px;}}/*convert to static*/
 @media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}}

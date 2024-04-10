@@ -1,5 +1,5 @@
-import { customAlert, selectIcon } from '../../components/utils/alerts.js';
-import { auth } from '../../components/firebase/conection.js';
+import { customAlert, selectIcon } from '../components/utils/alerts.js';
+import { auth } from '../components/firebase/conection.js';
 
 //side bar
 document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
@@ -22,9 +22,6 @@ container.addEventListener('submit', async function (event) {
     (await import('../components/utils/view.js')).goToHome();
 });
 
-async function validateSession(user) {
-    if (!user) { (await import('../../components/utils/alerts.js')).messageSessionFailed(); (await import('../../components/utils/view.js')).goToHome(); return; }
-}
 function getUserInfo(user) { return { email: user.email, access: user.access, key: user.key }; }
 function setPageAccess(access) {
     if (access === 'admin') { giveAccessAdmin(); }

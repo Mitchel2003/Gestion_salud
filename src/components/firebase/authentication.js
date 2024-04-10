@@ -1,5 +1,6 @@
 import { getCollection } from './query.js';
 import { auth, onAuthStateChanged } from "./conection.js";
+import { alertButtonAction, selectIcon } from '../utils/alerts.js';
 
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
@@ -21,5 +22,13 @@ export function preparateSessionWithAccess(value) {
     window.location.href = url.toString();
 }
 export async function checkSessionActive(){ //auth error
-    onAuthStateChanged(auth, async (user) => { if(!user || user == null){ (await import('../utils/alerts.js')).messageSessionFailed(); (await import('../utils/view.js')).goToHome(); return;} });
+    onAuthStateChanged(auth, async (user) => {
+        let data = user.uid;
+        if(!data){
+            const {title, message, typeAlert} = (await import('../utils/alerts.js')).messageSessionFailed();
+            await alertButtonAction(title, message, selectIcon(typeAlert));
+            (await import('../utils/view.js')).goToHome();
+            return;
+        }
+    });
 }
