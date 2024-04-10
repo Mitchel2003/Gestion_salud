@@ -22,9 +22,10 @@ export function preparateSessionWithAccess(value) {
     window.location.href = url.toString();
 }
 export async function checkSessionActive() {
-    try {
-        onAuthStateChanged(auth, async (user) => { let data = user.uid; console.log(data); });
-    } catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); }
+    onAuthStateChanged(auth, async (user) => { 
+        try { let data = user.uid; console.log(data); }
+        catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); } 
+    });
 }
 // const {title, message, typeAlert} = (await import('../utils/alerts.js')).messageSessionFailed();
 // await alertButtonAction(title, message, selectIcon(typeAlert));
@@ -34,7 +35,7 @@ export function resetTimeInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => {
         await logOutUser();
-    }, 60000);
+    }, 30000);
 }
 async function logOutUser() {
     return await signOut(auth);
