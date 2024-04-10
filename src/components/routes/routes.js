@@ -83,17 +83,17 @@ function applyContext(res) {//AC #205
         return `
         <nav>
             <ul class="side-bar">
-                <li id="close-action"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
-                <li><a href="#">inicio</a></li>
-                <li><a href="#">about</a></li>
-                <li><a href="#">blog</a></li>
+                <li id="close-action"><a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+                <li><a>inicio</a></li>
+                <li><a>about</a></li>
+                <li><a>blog</a></li>
             </ul>
             <ul>
-                <li><a href="#">coding</a></li>
-                <li><a href="#">inicio</a></li>
-                <li><a href="#">about</a></li>
-                <li><a href="#">blog</a></li>
-                <li id="menu-action"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                <li><a>coding</a></li>
+                <li><a>inicio</a></li>
+                <li><a>about</a></li>
+                <li><a>blog</a></li>
+                <li id="menu-action"><a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
             </ul>
         </nav>
 
