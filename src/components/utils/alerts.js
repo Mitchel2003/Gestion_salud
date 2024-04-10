@@ -188,3 +188,9 @@ export function exceptionsResetPassword(error) {
     customAlert(title, error.code, selectIcon(typeAlert));
     return;
 }
+export async function exceptionsSignOut(error) {
+    const { title, typeAlert } = messageTempUnknow();
+    await alertButtonAction(title, error.code, selectIcon(typeAlert));
+    (await import('./view.js')).goToHome();
+    return;
+}

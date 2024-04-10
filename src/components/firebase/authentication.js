@@ -1,6 +1,5 @@
 import { getCollection } from './query.js';
 import { auth, signOut, onAuthStateChanged } from "./conection.js";
-import { alertButtonAction, selectIcon } from '../utils/alerts.js';
 
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
@@ -22,23 +21,21 @@ export function preparateSessionWithAccess(value) {
     url.searchParams.set('key', value);
     window.location.href = url.toString();
 }
-export async function checkSessionActive(){
-    onAuthStateChanged(auth, async (user) => {
-        let data = user.uid;
-        if(!data){
-            const {title, message, typeAlert} = (await import('../utils/alerts.js')).messageSessionFailed();
-            await alertButtonAction(title, message, selectIcon(typeAlert));
-            (await import('../utils/view.js')).goToHome();
-            return;
-        }
-    });
+export async function checkSessionActive() {
+    try {
+        onAuthStateChanged(auth, async (user) => { let data = user.uid; console.log(data); });
+    } catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); }
 }
+// const {title, message, typeAlert} = (await import('../utils/alerts.js')).messageSessionFailed();
+// await alertButtonAction(title, message, selectIcon(typeAlert));
+// (await import('../utils/view.js')).goToHome();
+
 export function resetTimeInactivity(temp) {
-  clearTimeout(temp);
-  temp = setTimeout( async () => {
-    await logOutUser();
-  }, 60000);
+    clearTimeout(temp);
+    temp = setTimeout(async () => {
+        await logOutUser();
+    }, 60000);
 }
-async function logOutUser(){
+async function logOutUser() {
     return await signOut(auth);
 }
