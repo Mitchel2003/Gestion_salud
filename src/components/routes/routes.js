@@ -79,8 +79,8 @@ function applyContext(res) {//AC #205
         `;
     } if (res === 'auxiliary') {
         document.title = "Session";
-        appenedStyles('../controller/session.css');
-        appenedBackgroundImage("../components/images/background_session.webp");
+        appenedStyles('../controller/styles/session.css');
+        appenedBackgroundImage("./src/components/images/background_session.webp");
         return `
         <nav>
             <ul class="side-bar">
