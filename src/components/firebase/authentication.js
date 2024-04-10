@@ -1,5 +1,5 @@
 import { getCollection } from './query.js';
-import { auth, onAuthStateChanged } from "./conection.js";
+import { auth, signOut, onAuthStateChanged } from "./conection.js";
 import { alertButtonAction, selectIcon } from '../utils/alerts.js';
 
 export async function createUser(email, password) {
@@ -15,13 +15,14 @@ export async function verificationEmailAddress(userEmail, userAccess) {
 export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
+/*--------------------------------------------------in session--------------------------------------------------*/
 export function preparateSessionWithAccess(value) {
     let url = new URL(window.location.href);
     url.pathname = './Gestion_salud/src/public/verifyAction.html';
     url.searchParams.set('key', value);
     window.location.href = url.toString();
 }
-export async function checkSessionActive(){ //auth error
+export async function checkSessionActive(){
     onAuthStateChanged(auth, async (user) => {
         let data = user.uid;
         if(!data){
@@ -31,4 +32,13 @@ export async function checkSessionActive(){ //auth error
             return;
         }
     });
+}
+export function resetTimeInactivity(temp) {
+  clearTimeout(temp);
+  temp = setTimeout( async () => {
+    await logOutUser();
+  }, 60000);
+}
+async function logOutUser(){
+    return await signOut(auth);
 }

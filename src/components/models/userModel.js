@@ -64,9 +64,17 @@ export async function requestResetPassword() {
 
 
 export async function modeAuxiliary() {
+    const getAuthentication = await import('../firebase/authentication.js');
+    let inactivityTime;
+
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
     document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
+
+    //inactivity time
+    getAuthentication.resetTimeInactivity(inactivityTime);
+    document.addEventListener('mousemove', getAuthentication.resetTimeInactivity(inactivityTime));
+    document.addEventListener('keypress', getAuthentication.resetTimeInactivity(inactivityTime));
 }
 export async function modeAuditor() {
 
