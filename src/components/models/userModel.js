@@ -65,16 +65,35 @@ export async function requestResetPassword() {
 /*--------------------------------------------------on session--------------------------------------------------*/
 export async function modeAuxiliary() {
     const getAuthentication = await import('../firebase/authentication.js');
-    let inactivityTime;
+    // let inactivityTime;
 
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
     document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 
     //inactivity time
-    getAuthentication.resetTimeInactivity(inactivityTime);
-    document.addEventListener('mousemove', getAuthentication.resetTimeInactivity(inactivityTime));
-    document.addEventListener('keypress', getAuthentication.resetTimeInactivity(inactivityTime));
+    // getAuthentication.resetTimeInactivity(inactivityTime);
+    // document.addEventListener('mousemove', getAuthentication.resetTimeInactivity(inactivityTime));
+    // document.addEventListener('keypress', getAuthentication.resetTimeInactivity(inactivityTime));
+
+
+
+    initInactivityTimer();
+
+    // Función para manejar el cambio de visibilidad
+
+
+    // Inicializador de la funcionalidad
+    function initInactivityTimer() {
+        let inactivityTime = null;
+
+        // Esto asegura que solo se establezca un temporizador a la vez
+        document.removeEventListener('visibilitychange', () => handleVisibilityChange(inactivityTime));
+        document.addEventListener('visibilitychange', () => handleVisibilityChange(inactivityTime));
+        resetTimeInactivity(inactivityTime);
+    }
+
+
 }
 export async function modeAuditor() {
 
@@ -82,7 +101,10 @@ export async function modeAuditor() {
 export async function modeAdmin() {
 
 }
-
+function handleVisibilityChange(temp) {
+    if (document.visibilityState === 'visible') { getAuthentication.resetTimeInactivity(temp); }
+    else { getAuthentication.resetTimeInactivity(temp); }
+}
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();
