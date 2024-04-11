@@ -79,6 +79,7 @@ function applyContext(res) {//AC #205
     } if (res === 'auxiliary') {
         document.title = "Session";
         appenedStyles('../controller/styles/session.css');
+        appenedBackgroundImage('../src/components/images/background_session.webp');
         return `
         <nav>
             <ul class="side-bar">
@@ -122,6 +123,11 @@ function appenedStyles(src){
     style.rel = "stylesheet";
     style.href = src;
     document.head.appendChild(style);
+}
+function appenedBackgroundImage(address){
+    const background = new Image();
+    background.src = address;
+    document.body.style.backgroundImage = `url(${background.src})`;
 }
 export function getQueryParams() {
     const queryString = window.location.search;
