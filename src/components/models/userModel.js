@@ -83,7 +83,7 @@ export async function modeAdmin() {
 
 }
 
-/*--------------------------------------------------actions of user--------------------------------------------------*/
+/*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();
     const decodeURL = decodeURIComponent(res);
