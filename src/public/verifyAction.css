@@ -1,5 +1,6 @@
 @keyframes load_1{ 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}/*anim load*/
 @keyframes load_2{ 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); }}
+.customAlert{border-radius: 20px; background: linear-gradient(to top left,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.2),rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.8),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.9),rgba(255, 255, 255, 0.8),rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.2),rgba(255, 255, 255, 0));}
 .loadContainer{
     position: fixed;
     display: flex;

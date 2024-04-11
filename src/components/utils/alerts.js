@@ -3,10 +3,24 @@ export function customAlert(title, message, icon) {//alert default
         title: title,
         text: message,
         icon: icon,
+        allowEscapeKey: true,
+        allowEnterKey: false,
+        allowOutsideClick: false,
+        customClass: { popup: 'customAlert' },
+    });
+}
+export function alertTimer(title, message, icon) {
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
         allowOutsideClick: false,
         allowEscapeKey: true,
         allowEnterKey: false,
-        customClass: { popup: 'customAlert' },
+        timerProgressVar: true,
+        timer: 5000,
+        footer: 'Redirecting...',
+        customClass: { popup: 'customAlert' }
     });
 }
 export function selectIcon(item) {
@@ -27,8 +41,8 @@ export async function alertInput(title, message, icon) {
         cancelButtonColor: "#ff6d6d",
         confirmButtonColor: "#6eb5f8",
         confirmButtonText: "Send token",
-        input: "email",
         inputPlaceholder: "Email",
+        input: "email",
         inputValue: ""
     });return email;
 }
@@ -43,7 +57,8 @@ export async function alertButtonAction(title, message, icon) {
         showCancelButton: true,
         cancelButtonColor: "#d33",
         confirmButtonColor: "#3085d6",
-        confirmButtonText: "Go to home"
+        confirmButtonText: "Go to home",
+        customClass: { popup: 'customAlert' }
     });return request;
 }
 /*--------------------------------------------------text--------------------------------------------------*/
@@ -86,7 +101,7 @@ export function messageAccessNotFound() {
 }
 export function messageSessionFailed() {
     const title = "Session expired";
-    const message = "Redirecting...";
+    const message = "Try login again";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
@@ -200,7 +215,7 @@ export async function exceptionsChangePassword(error) {
 }
 export async function exceptionsSignOut(error) {
     const { title, message, typeAlert } = messageSessionFailed();
-    await alertButtonAction(title, message, selectIcon(typeAlert));
+    alertTimer(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome();
     return;
 }
