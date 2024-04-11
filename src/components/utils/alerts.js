@@ -9,8 +9,8 @@ export function customAlert(title, message, icon) {//alert default
         customClass: { popup: 'customAlert' },
     });
 }
-export function alertTimer(title, message, icon) {
-    Swal.fire({
+export async function alertTimer(title, message, icon) {
+    const {value: endTimer } = await Swal.fire({
         title: title,
         text: message,
         icon: icon,
@@ -22,6 +22,7 @@ export function alertTimer(title, message, icon) {
         footer: 'Redirecting...',
         customClass: { popup: 'customAlert' }
     });
+    return endTimer;
 }
 export function selectIcon(item) {
     if (item === "s") { return "success"; }
@@ -215,7 +216,7 @@ export async function exceptionsChangePassword(error) {
 }
 export async function exceptionsSignOut(error) {
     const { title, message, typeAlert } = messageSessionFailed();
-    alertTimer(title, message, selectIcon(typeAlert));
+    await alertTimer(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome();
     return;
 }
