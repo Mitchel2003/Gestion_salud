@@ -31,7 +31,7 @@ export function resetTimeInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => {
         await offSession();
-    }, 30000);
+    }, 10000);
 }
 
 /*--------------------------------------------------on/off session--------------------------------------------------*/
