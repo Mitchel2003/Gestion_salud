@@ -1,5 +1,3 @@
-import { customAlert, selectIcon, alertButtonAction } from '../utils/alerts.js';
-import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 await fixContext();    
 
 async function fixContext(){
@@ -10,9 +8,10 @@ async function fixContext(){
     if (verify || reset) { await managementAccount(verify); return; }
     await managementSession(access);
 }
+
 async function managementAccount(compare){
-    if (compare) { const getContext = applyContext('verify'); document.body.innerHTML = getContext; await modeVerifyEmail(compare); 
-    }else { const getContext = applyContext('reset'); document.body.innerHTML =  getContext; await modeChangePassword(); }
+    if (compare) { const getContext = applyContext('verify'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeVerifyEmail(compare); 
+    }else { const getContext = applyContext('reset'); document.body.innerHTML =  getContext; await (await import('../models/userModel.js')).modeChangePassword(); }
 }
 async function managementSession(access){
     (await import('../firebase/authentication.js')).checkSessionActive();//AC #209
@@ -80,7 +79,6 @@ function applyContext(res) {//AC #205
     } if (res === 'auxiliary') {
         document.title = "Session";
         appenedStyles('../controller/styles/session.css');
-        appenedBackgroundImage("../components/images/background_session.webp");
         return `
         <nav>
             <ul class="side-bar">
@@ -118,81 +116,15 @@ function applyContext(res) {//AC #205
         `;
     }
 }
-async function modeVerifyEmail(res){ 
-    onLoadWhile();
-    const decodeURL = decodeURIComponent(res);
-    const url = new URL(decodeURL);
-    const userEmail = url.searchParams.get('email');
-    const userAccess = url.searchParams.get('access');
-
-    if (await (await import('../firebase/query.js')).isFoundDocumentReference(userEmail)) {
-        const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenVerifyExpired();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-        if (response) { (await import('../utils/view.js')).goToHome(); }
-        offLoadWhile();
-        return;
-    }
-    await (await import('../firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
-
-    const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageUserSubmitted();
-    const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-    if (response) { (await import('../utils/view.js')).goToHome(); }
-    await (await import('../firebase/query.js')).offSession();
-    offLoadWhile();
-}
-async function modeChangePassword(){
-    const resetButton = document.getElementById('resetPassword_form');
-    resetButton.addEventListener('submit', async function (event) {//AC #204
-        try { event.preventDefault();
-            onLoadWhile();
-            const query = getQueryParams(); 
-            const oobCode = query.oobCode;
-            const password = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (checkSamePasswords(password, confirmPassword)) {
-                const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordNotSame();
-                customAlert(title, message, selectIcon(typeAlert));
-                offLoadWhile(); return;
-            }if (checkSizeAllowed(password)) {
-                const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordSizeShort();
-                customAlert(title, message, selectIcon(typeAlert));
-                offLoadWhile(); return;
-            }
-            await (await import('../firebase/query.js')).validateResetPassword(oobCode, password);
-            
-            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageResetPasswordSuccess();
-            const request = await alertButtonAction(title, message, selectIcon(typeAlert));
-            if (request) { (await import('../utils/view.js')).goToHome(); }
-            await (await import('../firebase/query.js')).offSession();
-            offLoadWhile();
-        } catch (error) {
-            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenExpired();
-            customAlert(title, message, selectIcon(typeAlert));
-            offLoadWhile();
-        }
-    });
-}
 /*--------------------------------------------------tools--------------------------------------------------*/
-function checkSamePasswords(item_1, item_2) {
-    if (item_1 !== item_2) { return item_1; }
-}
-function checkSizeAllowed(item) {
-    if (item.length < 6) { return item; }
-}
-function getQueryParams() {
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
-    return Object.fromEntries(searchParams.entries());
-}
 function appenedStyles(src){
     const style = document.createElement('link');
     style.rel = "stylesheet";
     style.href = src;
     document.head.appendChild(style);
 }
-function appenedBackgroundImage(address){
-    const background = new Image();
-    background.src = address;
-    document.body.style.backgroundImage = `url(${background.src})`;
+export function getQueryParams() {
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    return Object.fromEntries(searchParams.entries());
 }

@@ -12,18 +12,6 @@ export async function getDocumentUser(user) {
     querySnapshot.forEach((doc)=>{ const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-/*--------------------------------------------------on/off session--------------------------------------------------*/
-export async function onSession(email, password) {
-    return await (await import('../firebase/conection.js')).signInWithEmailAndPassword(auth, email, password);
-}export async function offSession() {
-    return await (await import('../firebase/conection.js')).signOut(auth);
-}
-/*--------------------------------------------------resetPassword--------------------------------------------------*/
-export async function sendToEmailResetPassword(email) {
-    return await (await import('../firebase/conection.js')).sendPasswordResetEmail(auth, email);
-}export async function validateResetPassword(obbCode, newPassword) {
-    return await (await import('../firebase/conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
-}
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
     const collectionReference = await (await import('./conection.js')).collection(db, context);

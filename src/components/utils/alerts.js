@@ -160,6 +160,7 @@ export function exceptionsLoginUser(error) {
     }
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error, selectIcon(typeAlert));
+    return;
 }
 export function exceptionsRegisterUser(error) {
     if (error.code === 'auth/email-already-in-use') {
@@ -177,6 +178,7 @@ export function exceptionsRegisterUser(error) {
     }
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
+    return;
 }
 export function exceptionsResetPassword(error) {
     if (error.code === 'auth/too-many-requests') {
@@ -186,6 +188,11 @@ export function exceptionsResetPassword(error) {
     } if (error.code === 'invalid-argument') {/*nothing*/ return; }
     const { title, typeAlert } = messageTempUnknow();
     customAlert(title, error.code, selectIcon(typeAlert));
+    return;
+}
+export async function exceptionsChangePassword(error) {
+    const { title, message, typeAlert } = messageTokenExpired();
+    customAlert(title, message, selectIcon(typeAlert));
     return;
 }
 export async function exceptionsSignOut(error) {

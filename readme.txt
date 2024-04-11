@@ -4,6 +4,31 @@
 //production: react router, stackblitz, vite
 //page for find backgrounds hd: uhdpaper.com
 
+
+//analizing this... working here...
+
+const userContext = await auth.currentUser;
+await validateSession(userContext);
+const { access } = getUserInfo(userContext);
+setPageAccess(access);
+
+//need get userCurrent, get from firestore the access for take a way
+
+const container = document.querySelector('.card');
+container.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    await (await import('../components/firebase/query.js')).offSession();
+    (await import('../components/utils/view.js')).goToHome();
+});
+
+function getUserInfo(user) { return { email: user.email, access: user.access, key: user.key }; }
+function setPageAccess(access) {
+    if (access === 'admin') { giveAccessAdmin(); }
+    else if (access === 'auditor') { giveAccessAuditor(); }
+    else { giveAccessAuxiliary(); }
+}
+
+
 para css= widt = 20 dvw;
 
 Para mejorar la fluidez y optimización de la animación, te recomendaría seguir los siguientes pasos:

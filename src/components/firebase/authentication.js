@@ -1,5 +1,5 @@
 import { getCollection } from './query.js';
-import { auth, signOut, onAuthStateChanged } from "./conection.js";
+import { auth, onAuthStateChanged } from "./conection.js";
 
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
@@ -30,9 +30,19 @@ export async function checkSessionActive() {
 export function resetTimeInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => {
-        await logOutUser();
+        await offSession();
     }, 30000);
 }
-async function logOutUser() {
-    return await signOut(auth);
+
+/*--------------------------------------------------on/off session--------------------------------------------------*/
+export async function onSession(email, password) {
+    return await (await import('./conection.js')).signInWithEmailAndPassword(auth, email, password);
+}export async function offSession() {
+    return await (await import('./conection.js')).signOut(auth);
+}
+/*--------------------------------------------------resetPassword--------------------------------------------------*/
+export async function sendToEmailResetPassword(email) {
+    return await (await import('./conection.js')).sendPasswordResetEmail(auth, email);
+}export async function validateResetPassword(obbCode, newPassword) {
+    return await (await import('./conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
