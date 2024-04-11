@@ -64,36 +64,27 @@ export async function requestResetPassword() {
 
 /*--------------------------------------------------on session--------------------------------------------------*/
 export async function modeAuxiliary() {
-    const getAuthentication = await import('../firebase/authentication.js');
-    // let inactivityTime;
+    await initTimer();
 
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
     document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 
-    //inactivity time
-    // getAuthentication.resetTimeInactivity(inactivityTime);
-    // document.addEventListener('mousemove', getAuthentication.resetTimeInactivity(inactivityTime));
-    // document.addEventListener('keypress', getAuthentication.resetTimeInactivity(inactivityTime));
 
 
-
-    initInactivityTimer();
+    
 
     // Función para manejar el cambio de visibilidad
 
 
-    // Inicializador de la funcionalidad
-    function initInactivityTimer() {
-        let inactivityTime = null;
-
+    async function initTimer() {
+        let timeInactivity = null;
+        const getAuthentication = await import('../firebase/authentication.js');
         // Esto asegura que solo se establezca un temporizador a la vez
-        document.removeEventListener('visibilitychange', () => handleVisibilityChange(inactivityTime));
-        document.addEventListener('visibilitychange', () => handleVisibilityChange(inactivityTime));
-        resetTimeInactivity(inactivityTime);
+        document.removeEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+        document.addEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+        getAuthentication.resetTimeInactivity(timeInactivity);
     }
-
-
 }
 export async function modeAuditor() {
 
@@ -166,3 +157,26 @@ function checkSamePasswords(item_1, item_2) {
 function checkSizeAllowed(item) {
     if (item.length < 6) { return item; }
 }
+
+
+
+
+
+
+class UIManager {
+  constructor() {
+    this.initListeners();
+  }
+
+  initListeners() {
+    document.getElementById('menu-action').addEventListener('click', this.toggleSideBar.bind(this, true));
+    document.getElementById('close-action').addEventListener('click', this.toggleSideBar.bind(this, false));
+  }
+
+  toggleSideBar(open) {
+    const sideBar = document.querySelector('.side-bar');
+    open ? sideBar.classList.add('spawn') : sideBar.classList.remove('spawn');
+  }
+}
+
+export default UIManager;

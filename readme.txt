@@ -4,7 +4,6 @@
 //production: react router, stackblitz, vite
 //page for find backgrounds hd: uhdpaper.com
 
-
 //analizing this... working here...
 
 const userContext = await auth.currentUser;
@@ -55,6 +54,13 @@ function getImportAnim(action) {//load difered
         .catch((error) => {
             console.log(error);
         });
+}
+//-----------------appened styles to html-----------------
+function appenedStyles(src){
+    const style = document.createElement('link');
+    style.rel = "stylesheet";
+    style.href = src;
+    document.head.appendChild(style);
 }
 //-----------------where in Firebase-----------------
 export async function isFoundEmail(emailContext) {
@@ -323,9 +329,10 @@ a la direccion url con la clave "key", sea indispenzable la  comprobacion de la 
 poner la direccion mas el atributo "key", he aqui la magia  
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------tips--------------------------------------------------*/
-				OPTIMIZAR PAGINA WEB
+### OPTIMIZAR PAGINA WEB
 
-Optimizar un proyecto web implica mejorar su rendimiento, eficiencia y experiencia del usuario. Aquí hay algunas estrategias generales para lograr una optimización efectiva:
+Optimizar un proyecto web implica mejorar su rendimiento, eficiencia y experiencia del usuario. Aquí hay algunas estrategias generales para lograr una
+optimización efectiva:
 
 1. **Carga Asincrónica de Recursos:**
    - Utiliza el atributo `async` para cargar scripts de manera asíncrona.
@@ -367,13 +374,11 @@ Optimizar un proyecto web implica mejorar su rendimiento, eficiencia y experienc
     - Utiliza herramientas como Lighthouse, PageSpeed Insights y WebPageTest para evaluar el rendimiento.
     - Realiza pruebas de carga y mide el tiempo de carga en condiciones del mundo real.
 
-Recuerda que la optimización es un proceso continuo y puede depender de las características específicas de tu aplicación. Profundizar en cada uno de estos puntos y adaptarlos a las necesidades de tu proyecto puede mejorar significativamente el rendimiento general.
+Recuerda que la optimización es un proceso continuo y puede depender de las características específicas de tu aplicación. Profundizar en cada uno de estos
+puntos y adaptarlos a las necesidades de tu proyecto puede mejorar significativamente el rendimiento general.
 
 
-
-
-
-OPTIMIZAR FIRESTORE
+### OPTIMIZAR FIRESTORE
 
 Firestore está diseñado para ser escalable y manejar eficientemente consultas, incluso cuando
 hay una gran cantidad de documentos. Sin embargo, siempre es bueno considerar las mejores prácticas y optimizar cuando sea posible.
@@ -395,3 +400,65 @@ tu estructura de datos para facilitar las consultas frecuentes.
 
 Recuerda que en Firestore, la eficiencia y el rendimiento suelen depender de la forma en que estructuras tus datos y cómo realizas tus
 consultas. Es una buena práctica ajustar la estructura de tus datos según las necesidades de consulta específicas de tu aplicación.
+
+
+/*--------------------------------------------------patrones de diseño--------------------------------------------------*/
+### Singleton
+
+La lógica detrás del patrón Singleton es asegurar que una clase tenga única y exclusivamente una instancia y proporcionar un punto
+de acceso global a dicha instancia. El ejemplo anterior logra esto mediante:
+
+1. **Encapsulamiento de la Creación:** El constructor es esencialmente privado (se utiliza un truco mediante el chequeo de la 
+existencia de una instancia) para que no se pueda instanciar la clase libremente.
+
+2. **Acceso Controlado:** Se proporciona un acceso global mediante la exposición de la instancia única a través de la misma clase.
+
+En el contexto de JavaScript, esto implica que cualquier tipo de propiedad o método que quieras que sea compartido y único a través
+de tu aplicación, puede ser parte del Singleton. Algunos ejemplos incluyen:
+
+- Configuraciones globales (por ejemplo, configuraciones de una aplicación).
+- Conexiones a bases de datos (por ejemplo, una conexión única a MongoDB).
+- Manejadores de cache.
+- Factories que crean objetos específicos y deben ser únicos para garantizar consistencia.
+
+### Consejos al Usar Singleton
+
+- **Uso Justificado:** Asegúrate de que el uso del Singleton es justificado. El mal uso puede llevar a problemas de diseño, como
+dificultades en testing dado que el estado persiste entre tests, y puede aumentar el acoplamiento entre clases.
+- **Inmutabilidad:** Considera hacer inmutables las propiedades del Singleton si es posible, para evitar cambios de estado no deseados.
+- **Lazy Initialization:** En algunos casos, es útil crear la instancia del Singleton solo cuando es realmente necesitada. Esto se
+puede lograr mediante la verificación de la existencia de la instancia dentro de un método estático que cree y retorne la instancia en
+caso de ser necesario.
+
+class Singleton {
+  // La instancia del Singleton se guarda en una variable estática.
+  static instancia;
+
+  // El constructor es privado para evitar la creación directa de objetos.
+  constructor() {
+    if(Singleton.instancia) {
+      return Singleton.instancia;
+    }
+    
+    // Inicializa cualquier lógica o propiedades aquí.
+    this.estado = 'inicial';
+    // Guarda la primera (y única) instancia creada.
+    Singleton.instancia = this;
+  }
+
+  // Métodos o propiedades adicionales aquí.
+  mostrarEstado() {
+    console.log(this.estado);
+  }
+
+  // Otros métodos...
+}
+
+// Probando el Singleton.
+const instanciaA = new Singleton();
+const instanciaB = new Singleton();
+
+console.log(instanciaA === instanciaB); // true, ambas variables apuntan al mismo objeto.
+
+instanciaA.mostrarEstado(); // Muestra 'inicial'.
+

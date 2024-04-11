@@ -1,84 +1,25 @@
-await fixContext();    
+import { modeAuxiliary, modeAuditor, modeAdmin } from '../models/userModel.js';
+import { checkSessionActive } from '../firebase/authentication.js';
 
+initPage();
+/*--------------------------------------------------methods--------------------------------------------------*/
+function initPage(){
+    document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
+}
 async function fixContext(){
     const query = getQueryParams();
-    const verify = query.continueUrl;
-    const reset = query.oobCode;
     const access = query.key;
-    if (verify || reset) { await managementAccount(verify); return; }
     await managementSession(access);
 }
-
-async function managementAccount(compare){
-    if (compare) { const getContext = applyContext('verify'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeVerifyEmail(compare); 
-    }else { const getContext = applyContext('reset'); document.body.innerHTML =  getContext; await (await import('../models/userModel.js')).modeChangePassword(); }
-}
 async function managementSession(access){
-    (await import('../firebase/authentication.js')).checkSessionActive();//AC #209
-    if (access === 'auxiliary') { const getContext = applyContext('auxiliary'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); }
-    else if (access === 'auditor') { const getContext = applyContext('auditor'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuditor(); }
-    else { const getContext =  applyContext('admin'); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAdmin(); }
+    checkSessionActive();//AC #209
+    if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await modeAuxiliary(); }
+    else if (access === 'auditor') { const getContext = userContext(access); document.body.innerHTML = getContext; await modeAuditor(); }
+    else { const getContext = userContext(access); document.body.innerHTML = getContext; await modeAdmin(); }
 }
-function applyContext(res) {//AC #205
-    if (res === 'verify') {
-        document.title = "Verify email";
-        return `   
-        <div class="container p-4">
-            <div class="row">
-                <div class="col-md-6 offset-md-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h2 class="mb-4">Your email has been verified</h2>
-                            <p class="mb-0">You can now sign in with your new account</p>
-                        </div>
-                    </div>
-                </div>
-            </div>    
-        </div>
-
-        <!-- screen loading... -->
-        <div class="loadContainer">
-          <div class="load">
-            <div class="frame_1"></div>
-            <div class="frame_2"></div>
-          </div>
-        </div>
-        `;
-    } if (res === 'reset') {
-        document.title = "Reset password";
-        return `
-        <div class="container p-4">
-            <div class="row">
-                <div class="col-md-6 offset-md-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h2 class="mb-4">Enter your new password</h2>
-                            <form id="resetPassword_form">
-                                <div class="form-group">
-                                    <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-
-        <!-- screen loading... -->
-        <div class="loadContainer">
-          <div class="load">
-            <div class="frame_1"></div>
-            <div class="frame_2"></div>
-          </div>
-        </div>
-        `;
-    } if (res === 'auxiliary') {
+function userContext(res) {//AC #205
+    if (res === 'auxiliary') {
         document.title = "Session";
-        appenedStyles('../controller/styles/session.css');
         appenedBackgroundImage('../components/images/background_session.webp');
         return `
         <nav>
@@ -117,13 +58,9 @@ function applyContext(res) {//AC #205
         `;
     }
 }
+
+
 /*--------------------------------------------------tools--------------------------------------------------*/
-function appenedStyles(src){
-    const style = document.createElement('link');
-    style.rel = "stylesheet";
-    style.href = src;
-    document.head.appendChild(style);
-}
 function appenedBackgroundImage(address){
     const background = new Image();
     background.src = address;

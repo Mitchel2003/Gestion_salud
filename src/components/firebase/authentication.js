@@ -17,11 +17,11 @@ export async function appenedDocumentReference(email, access) {
 /*--------------------------------------------------in session--------------------------------------------------*/
 export function preparateSessionWithAccess(value) {
     let url = new URL(window.location.href);
-    url.pathname = './Gestion_salud/src/public/verifyAction.html';
+    url.pathname = './Gestion_salud/src/public/session.html';
     url.searchParams.set('key', value);
     window.location.href = url.toString();
 }
-export async function checkSessionActive() {
+export function checkSessionActive() {
     onAuthStateChanged(auth, async (user) => { 
         try { let data = user.uid; }
         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); } 
