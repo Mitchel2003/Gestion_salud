@@ -73,9 +73,10 @@ export async function modeAuxiliary() {
     let timeInactivity;
     const getAuthentication = await import('../firebase/authentication.js');
     // Esto asegura que solo se establezca un temporizador a la vez
-    document.removeEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
-    document.addEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
     getAuthentication.resetTimeInactivity(timeInactivity);
+    document.addEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+    document.removeEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+    
 }
 export async function modeAuditor() {
 
