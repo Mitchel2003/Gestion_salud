@@ -27,14 +27,11 @@ export function checkSessionActive() {
         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); } 
     });
 }
-export function enableTimeInactivity(temp) {
+export function clockTimerInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => {
         await offSession();
-    }, 5000);
-}
-export function disableTimeInactivity(temp) {
-    clearTimeout(temp);
+    }, 10000);
 }
 
 /*--------------------------------------------------on/off session--------------------------------------------------*/
