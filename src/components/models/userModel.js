@@ -64,13 +64,12 @@ export async function requestResetPassword() {
 
 /*--------------------------------------------------on session--------------------------------------------------*/
 export async function modeAuxiliary() {
+    let time;
+    document.addEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });
+
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
     document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
-
-    // timeOut
-    let time;
-    document.addEventListener('visibilitychange', async () => { await handleTimeOut(time); });
 }
 export async function modeAuditor() {
 
@@ -78,10 +77,7 @@ export async function modeAuditor() {
 export async function modeAdmin() {
 
 }
-async function handleTimeOut(temp) {
-    if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
-    else { (await import('../firebase/authentication.js')).clockTimerInactivity(temp); }
-}
+
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();

@@ -22,27 +22,28 @@ export function preparateSessionWithAccess(value) {
     window.location.href = url.toString();
 }
 export function checkSessionActive() {
-    onAuthStateChanged(auth, async (user) => { 
+    onAuthStateChanged(auth, async (user) => {
         try { let data = user.uid; }
-        catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); } 
+        catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); }
     });
 }
-export function clockTimerInactivity(temp) {
+export async function handleTimeOut(temp) {
+    if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
+    else { clockTimerInactivity(temp); }
+} 
+function clockTimerInactivity(temp) {
     clearTimeout(temp);
-    temp = setTimeout(async () => {
-        await offSession();
-    }, 10000);
+    temp = setTimeout(async () => { await offSession(); }, 10000);
 }
-
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
     return await (await import('./conection.js')).signInWithEmailAndPassword(auth, email, password);
-}export async function offSession() {
+} export async function offSession() {
     return await (await import('./conection.js')).signOut(auth);
 }
 /*--------------------------------------------------resetPassword--------------------------------------------------*/
 export async function sendToEmailResetPassword(email) {
     return await (await import('./conection.js')).sendPasswordResetEmail(auth, email);
-}export async function validateResetPassword(obbCode, newPassword) {
+} export async function validateResetPassword(obbCode, newPassword) {
     return await (await import('./conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
