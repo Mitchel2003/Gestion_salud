@@ -64,21 +64,18 @@ export async function requestResetPassword() {
 
 /*--------------------------------------------------on session--------------------------------------------------*/
 export async function modeAuxiliary() {
-    await initTimer();
 
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
     document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 
     // Función para manejar el cambio de visibilidad
-    async function initTimer() {
-        let timeInactivity = null;
-        const getAuthentication = await import('../firebase/authentication.js');
-        // Esto asegura que solo se establezca un temporizador a la vez
-        document.removeEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
-        document.addEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
-        getAuthentication.resetTimeInactivity(timeInactivity);
-    }
+    let timeInactivity;
+    const getAuthentication = await import('../firebase/authentication.js');
+    // Esto asegura que solo se establezca un temporizador a la vez
+    document.removeEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+    document.addEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+    getAuthentication.resetTimeInactivity(timeInactivity);
 }
 export async function modeAuditor() {
 
