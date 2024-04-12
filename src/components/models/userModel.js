@@ -1,5 +1,5 @@
 import { customAlert, selectIcon, alertButtonAction } from "../utils/alerts.js";
-import { onSession, offSession } from "../firebase/authentication.js";
+import { onSession, offSession, resetTimeInactivity } from "../firebase/authentication.js";
 import { onLoadWhile, offLoadWhile } from "../utils/view.js";
 
 export async function loginUser(user, password) {
@@ -71,17 +71,19 @@ export async function modeAuxiliary() {
 
     // timeOut
     let timeInactivity;
-    const getAuthentication = await import('../firebase/authentication.js');
-
-    getAuthentication.resetTimeInactivity(timeInactivity);
-    document.addEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
-    // document.removeEventListener('visibilitychange', () => getAuthentication.resetTimeInactivity(timeInactivity));
+    document.addEventListener('visibilitychange', () => handleTimeOut(timeInactivity));
+    document.removeEventListener('visibilitychange', () => handleTimeOut(timeInactivity));
+    resetTimeInactivity(timeInactivity);
 }
 export async function modeAuditor() {
 
 }
 export async function modeAdmin() {
 
+}
+function handleTimeOut(temp) {
+    if (document.visibilityState === 'visible') { resetTimeInactivity(temp); }
+    else { resetTimeInactivity(temp); }
 }
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
@@ -148,16 +150,13 @@ function checkSizeAllowed(item) {
 //   constructor() {
 //     this.initListeners();
 //   }
-
 //   initListeners() {
 //     document.getElementById('menu-action').addEventListener('click', this.toggleSideBar.bind(this, true));
 //     document.getElementById('close-action').addEventListener('click', this.toggleSideBar.bind(this, false));
 //   }
-
 //   toggleSideBar(open) {
 //     const sideBar = document.querySelector('.side-bar');
 //     open ? sideBar.classList.add('spawn') : sideBar.classList.remove('spawn');
 //   }
 // }
-
 // export default UIManager;

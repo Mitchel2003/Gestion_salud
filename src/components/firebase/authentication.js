@@ -28,9 +28,7 @@ export function checkSessionActive() {
     });
 }
 export function resetTimeInactivity(temp) {
-    console.log(temp);
     clearTimeout(temp);
-    console.log(temp);
     temp = setTimeout(async () => {
         await offSession();
     }, 5000);
