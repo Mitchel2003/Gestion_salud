@@ -1,5 +1,5 @@
 import { customAlert, selectIcon, alertButtonAction } from "../utils/alerts.js";
-import { onSession, offSession, resetTimeInactivity } from "../firebase/authentication.js";
+import { onSession, offSession } from "../firebase/authentication.js";
 import { onLoadWhile, offLoadWhile } from "../utils/view.js";
 
 export async function loginUser(user, password) {
@@ -70,10 +70,10 @@ export async function modeAuxiliary() {
     document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 
     // timeOut
-    let timeInactivity;
-    document.addEventListener('visibilitychange', () => handleTimeOut(timeInactivity));
-    document.removeEventListener('visibilitychange', () => handleTimeOut(timeInactivity));
-    resetTimeInactivity(timeInactivity);
+    let time;
+    document.addEventListener('visibilitychange', async () => await handleTimeOut(time));
+    document.removeEventListener('visibilitychange', async () => await handleTimeOut(time));
+    // resetTimeInactivity(timeInactivity);
 }
 export async function modeAuditor() {
 
@@ -81,9 +81,9 @@ export async function modeAuditor() {
 export async function modeAdmin() {
 
 }
-function handleTimeOut(temp) {
-    if (document.visibilityState === 'visible') { resetTimeInactivity(temp); }
-    else { resetTimeInactivity(temp); }
+async function handleTimeOut(temp) {
+    if (document.visibilityState === 'visible') { (await import('../firebase/authentication.js')).disableTimeInactivity(temp); }
+    else { (await import('../firebase/authentication.js')).enableTimeInactivity(temp); }
 }
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
