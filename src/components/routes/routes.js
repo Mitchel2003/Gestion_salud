@@ -1,21 +1,22 @@
-import { modeAuxiliary, modeAuditor, modeAdmin } from '../models/userModel.js';
+import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 import { checkSessionActive } from '../firebase/authentication.js';
+import { getDocumentUser } from '../firebase/query.js';
 
+//working here...
 initPage();
 /*--------------------------------------------------methods--------------------------------------------------*/
 function initPage(){
     document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
 }
 async function fixContext(){
-    const query = getQueryParams();
-    const access = query.key;
+    const user = checkSessionActive();//AC #209
+    const { access } = await getDocumentUser(user);
     await managementSession(access);
 }
 async function managementSession(access){
-    checkSessionActive();//AC #209
-    if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await modeAuxiliary(); }
-    else if (access === 'auditor') { const getContext = userContext(access); document.body.innerHTML = getContext; await modeAuditor(); }
-    else { const getContext = userContext(access); document.body.innerHTML = getContext; await modeAdmin(); }
+    if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); }
+    else if (access === 'auditor') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuditor(); }
+    else { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAdmin(); }
 }
 function userContext(res) {//AC #205
     if (res === 'auxiliary') {
@@ -26,14 +27,14 @@ function userContext(res) {//AC #205
             <ul class="side-bar">
                 <li id="close-action"><a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
                 <li><a>inicio</a></li>
-                <li><a>about</a></li>
-                <li><a>blog</a></li>
+                <li><a>Management accounts</a></li>
+                <li><a>Settings</a></li>
             </ul>
             <ul>
-                <li><a>coding</a></li>
-                <li><a>inicio</a></li>
-                <li><a>about</a></li>
-                <li><a>blog</a></li>
+                <li><a>Dashboard</a></li>
+                <li class="options"><a>Home</a></li>
+                <li class="options"><a>Manager</a></li>
+                <li class="options"><a>blog</a></li>
                 <li id="menu-action"><a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
             </ul>
         </nav>

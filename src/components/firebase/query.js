@@ -1,4 +1,4 @@
-import { db, auth, getDocs, query, where } from "./conection.js";
+import { db, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
 export async function isFoundDocumentReference(user) {
     const ask = query(await getCollection("userInfo"), where("email", "==", user));

@@ -55,6 +55,14 @@ function getImportAnim(action) {//load difered
             console.log(error);
         });
 }
+
+//-----------------add values to url-----------------
+export function preparateSessionWithAccess(value) {
+    let url = new URL(window.location.href);
+    url.pathname = './Gestion_salud/src/public/session.html';
+    url.searchParams.set('key', value);
+    window.location.href = url.toString();
+}
 //-----------------appened styles to html-----------------
 function appenedStyles(src){
     const style = document.createElement('link');

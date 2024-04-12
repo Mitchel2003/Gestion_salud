@@ -15,23 +15,16 @@ export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
 /*--------------------------------------------------in session--------------------------------------------------*/
-export function preparateSessionWithAccess(value) {
-    let url = new URL(window.location.href);
-    url.pathname = './Gestion_salud/src/public/session.html';
-    url.searchParams.set('key', value);
-    window.location.href = url.toString();
-}
 export function checkSessionActive() {
     onAuthStateChanged(auth, async (user) => {
-        try { let data = user.uid; }
+        try { const data = user.email; return data; }
         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); }
     });
 }
 export async function handleTimeOut(temp) {
     if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
     else { clockTimerInactivity(temp); }
-} 
-function clockTimerInactivity(temp) {
+} function clockTimerInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => { await offSession(); }, 10000);
 }

@@ -14,17 +14,23 @@
 nav{
     background-color: white;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-}nav ul{
+}
+
+nav ul{
     width: 100%;
     list-style: none;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-}nav li{
+}
+
+nav li{
     height: 50px;
 }nav li:first-child{
     margin-right: auto;
-}nav a{
+}
+
+nav a{
     height: 100%;
     padding: 0px 30px;
     text-decoration: none;
@@ -50,10 +56,16 @@ nav{
     z-index: 999;
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
     transform: translateX(100%);
     transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.side-bar li,
+.side-bar a{
+    width: 100%;
 }.spawn{
     transform: translateX(0);
     opacity: 1;
 }
+@media(min-width: 800px){ nav ul #menu-action{display: none;} }
+@media(max-width: 800px){ .options{display: none;} } /*for phones: page <= 800px*/

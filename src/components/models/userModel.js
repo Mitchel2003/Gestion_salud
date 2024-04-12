@@ -21,7 +21,7 @@ export async function loginUser(user, password) {
             offLoadWhile();
             return;
         }
-        (await import('../firebase/authentication.js')).preparateSessionWithAccess(access);
+        (await import('../utils/view.js')).goToSession();
         offLoadWhile();
     } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
 }
