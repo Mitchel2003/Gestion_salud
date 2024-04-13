@@ -3,7 +3,7 @@ import { checkSessionActive } from '../firebase/authentication.js';
 import { getDocumentUser } from '../firebase/query.js';
 
 //working here...
-// document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
+fixContext();
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     onLoadWhile();
@@ -57,16 +57,9 @@ function userContext(res) {//AC #205
         `;
     }
 }
-
-
 /*--------------------------------------------------tools--------------------------------------------------*/
 function appenedBackgroundImage(address){
     const background = new Image();
     background.src = address;
     document.body.style.backgroundImage = `url(${background.src})`;
-}
-export function getQueryParams() {
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
-    return Object.fromEntries(searchParams.entries());
 }

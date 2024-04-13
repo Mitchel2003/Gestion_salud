@@ -17,3 +17,8 @@ export async function getCollection(context) {
     const collectionReference = await (await import('./conection.js')).collection(db, context);
     return collectionReference;
 }
+export function getQueryParams() {
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    return Object.fromEntries(searchParams.entries());
+}
