@@ -17,7 +17,7 @@ export async function appenedDocumentReference(email, access) {
 /*--------------------------------------------------in session--------------------------------------------------*/
 export async function checkSessionActive() { 
     const res = await onAuthStateChanged(auth, async (user) => {
-        if(user) { const data = user.email; return data;}
+        if(user) { const data = user.email; console.log(data); return data;}
         else { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
     });
     return res;
