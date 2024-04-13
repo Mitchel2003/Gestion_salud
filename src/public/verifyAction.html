@@ -1,96 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--renderizado moderno para edge-->
-<title>verify action</title>
-<!-- dependency -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
-<!-- bootstrap -->
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert -->
-<!-- local resource -->
-<link rel="icon" type="image/x-icon" href="../components/images/gs_icon.ico">
-<link rel="stylesheet" href="../controller/styles/verifyAction.css">
-<script type="module">
-    import { modeVerifyEmail, modeChangePassword } from '../components/models/userModel.js';
-    import { getQueryParams } from '../components/firebase/query.js';
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!--renderizado moderno para edge-->
+    <title>verify action</title>
+    <!-- dependency -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/litera/bootstrap.min.css">
+    <!-- bootstrap -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert -->
+    <!-- local resource -->
+    <link rel="icon" type="image/x-icon" href="../components/images/gs_icon.ico">
+    <link rel="stylesheet" href="../controller/styles/verifyAction.css">
+    <script type="module">
+        import { modeVerifyEmail, modeChangePassword } from '../components/models/userModel.js';
+        import { getQueryParams } from '../components/firebase/query.js';
 
-    await fixContext();
+        await fixContext();
 
-    async function fixContext() {
-        const query = getQueryParams();
-        const verify = query.continueUrl;
-        const reset = query.oobCode;
-        if (verify || reset) { await managementAccount(verify); return; }
-    }
-
-    async function managementAccount(compare) {
-        if (compare) { const getContext = requestContext('verify'); document.body.innerHTML = getContext; await modeVerifyEmail(compare); }
-        else { const getContext = requestContext('reset'); document.body.innerHTML = getContext; await modeChangePassword(); }
-    }
-
-    function requestContext(res) {//AC #205
-        if (res === 'verify') {
-            document.title = "Verify email";
-            return `   
-            <div class="container p-4">
-                <div class="row">
-                    <div class="col-md-6 offset-md-3">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h2 class="mb-4">Your email has been verified</h2>
-                                <p class="mb-0">You can now sign in with your new account</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>    
-            </div>  
-
-            <!-- screen loading... -->
-            <div class="loadContainer">
-                <div class="load">
-                    <div class="frame_1"></div>
-                    <div class="frame_2"></div>
-                </div>
-            </div>
-            `;
-        } if (res === 'reset') {
-            document.title = "Reset password";
-            return `
-            <div class="container p-4">
-                <div class="row">
-                    <div class="col-md-6 offset-md-3">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h2 class="mb-4">Enter your new password</h2>
-                                <form id="resetPassword_form">
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-            </div>
-
-            <!-- screen loading... -->
-            <div class="loadContainer">
-                <div class="load">
-                    <div class="frame_1"></div>
-                    <div class="frame_2"></div>
-                </div>
-            </div>
-            `;
+        async function fixContext() {
+            const query = getQueryParams();
+            const verify = query.continueUrl;
+            const reset = query.oobCode;
+            if (verify || reset) { await managementAccount(verify); return; }
         }
-    }
-</script>
+
+        async function managementAccount(compare) {
+            if (compare) { const getContext = requestContext('verify'); document.body.innerHTML = getContext; await modeVerifyEmail(compare); }
+            else { const getContext = requestContext('reset'); document.body.innerHTML = getContext; await modeChangePassword(); }
+        }
+
+        function requestContext(res) {//AC #205
+            if (res === 'verify') {
+                document.title = "Verify email";
+                return `   
+                <div class="container p-4">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h2 class="mb-4">Your email has been verified</h2>
+                                    <p class="mb-0">You can now sign in with your new account</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>  
+
+                <!-- screen loading... -->
+                <div class="loadContainer">
+                    <div class="load">
+                        <div class="frame_1"></div>
+                        <div class="frame_2"></div>
+                    </div>
+                </div>
+                `;
+            } if (res === 'reset') {
+                document.title = "Reset password";
+                return `
+                <div class="container p-4">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h2 class="mb-4">Enter your new password</h2>
+                                    <form id="resetPassword_form">
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+                <!-- screen loading... -->
+                <div class="loadContainer">
+                    <div class="load">
+                        <div class="frame_1"></div>
+                        <div class="frame_2"></div>
+                    </div>
+                </div>
+                `;
+            }
+        }
+    </script>
 </head>
 
 <body>
