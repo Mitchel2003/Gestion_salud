@@ -199,7 +199,7 @@ export async function exceptionsChangePassword(error) {
     customAlert(title, message, selectIcon(typeAlert));
     return;
 }
-export async function exceptionsSignOut(error) {
+export async function exceptionsSignOut() {
     const { title, message, typeAlert } = messageSessionFailed();
     await alertButtonAction(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome();

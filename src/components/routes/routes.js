@@ -7,7 +7,7 @@ await fixContext();
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     onLoadWhile();
-    const user = checkSessionActive();//AC #209
+    const user = await checkSessionActive();//AC #209
     const { access } = await getDocumentUser(user);
     await managementSession(access);
 }
