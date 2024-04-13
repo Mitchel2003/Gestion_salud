@@ -3,20 +3,18 @@ import { checkSessionActive } from '../firebase/authentication.js';
 import { getDocumentUser } from '../firebase/query.js';
 
 //working here...
-initPage();
+document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
 /*--------------------------------------------------methods--------------------------------------------------*/
-function initPage(){
-    document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
-}
 async function fixContext(){
+    onLoadWhile();
     const user = checkSessionActive();//AC #209
     const { access } = await getDocumentUser(user);
     await managementSession(access);
 }
 async function managementSession(access){
-    if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); }
-    else if (access === 'auditor') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuditor(); }
-    else { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAdmin(); }
+    if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); offLoadWhile(); }
+    else if (access === 'auditor') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuditor(); offLoadWhile(); }
+    else { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAdmin(); offLoadWhile(); }
 }
 function userContext(res) {//AC #205
     if (res === 'auxiliary') {
