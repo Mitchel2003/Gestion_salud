@@ -16,12 +16,12 @@ export async function appenedDocumentReference(email, access) {
 }
 /*--------------------------------------------------in session--------------------------------------------------*/
 export function checkSessionActive() { 
-    let data;
+
     onAuthStateChanged(auth, async (user) => {
-        try { data = user.email; }
+        try { data = user.email; return data;}
         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(error); }
     });  
-    return data;
+    
 }
 export async function handleTimeOut(temp) {
     if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
