@@ -14,23 +14,17 @@
 nav{
     background-color: white;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-}
-
-nav ul{
+}nav ul{
     width: 100%;
     list-style: none;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-}
-
-nav li{
+}nav li{
     height: 50px;
 }nav li:first-child{
     margin-right: auto;
-}
-
-nav a{
+}nav a{
     height: 100%;
     padding: 0px 30px;
     text-decoration: none;
@@ -59,13 +53,49 @@ nav a{
     background-color: rgba(255, 255, 255, 0.1);
     transform: translateX(100%);
     transition: transform 0.5s ease, opacity 0.5s ease;
-}
-.side-bar li,
-.side-bar a{
+}.side-bar li, .side-bar a{
     width: 100%;
-}.spawn{
-    transform: translateX(0);
-    opacity: 1;
-}
+}.spawn{ transform: translateX(0); opacity: 1; }/*class spawn side-bar*/
+
+/*--------------------------------------------------loadWhile--------------------------------------------------*/
+.loadContainer{
+    position: fixed;
+    display: flex;
+    justify-content: center;/*align x*/
+    align-items: center;/*align y*/
+    opacity: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: opacity 0.7s ease;
+}.load{
+    position: relative;
+    width: 60px;
+    height: 60px;
+}.load .frame_1{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #c258ff;
+    border-left-color: transparent;
+    border-bottom: none;
+    border-radius: 50%;
+    animation: load_1 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
+}.load .frame_2{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #da9aff;
+    border-top-color: transparent;
+    border-right: none;
+    border-radius: 50%;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
+}.show{ opacity: 1; z-index: 999; }/*class setVisible*/
+
 @media(min-width: 800px){ nav ul #menu-action{display: none;} }
 @media(max-width: 800px){ .options{display: none;} } /*for phones: page <= 800px*/
