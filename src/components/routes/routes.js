@@ -3,7 +3,7 @@ import { checkSessionActive } from '../firebase/authentication.js';
 import { getDocumentUser } from '../firebase/query.js';
 
 //working here...
-document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
+// document.addEventListener('DOMContentLoaded', async () => { await fixContext(); });
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     onLoadWhile();
