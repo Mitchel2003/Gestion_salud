@@ -24,9 +24,6 @@ export async function checkSessionActive() {//AC #209
     });
 }
 export class timerOut {
-    constructor() {
-        let value = this.document.visibilityState === 'visible' ? this.cancelTimerOut() : this.startTimeOut();
-    }
     startTimeOut(){
         this.timer = setTimeout(async () => { await offSession(); }, 5000);
     }
