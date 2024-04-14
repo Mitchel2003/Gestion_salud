@@ -7,10 +7,10 @@ onLoadWhile();
 await fixContext();
 
 //timeOut
-const time = new timerOut();
+
 document.addEventListener('visibilitychange', async () => {
-    if (document.visibilityState === 'visible') { time.cancelTimerOut(); }
-    else { time.startTimeOut(); }
+    const time = new timerOut();
+    if (document.visibilityState !== 'visible') { time.cancelTimerOut(); }
 });
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
