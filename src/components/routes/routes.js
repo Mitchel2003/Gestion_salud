@@ -9,7 +9,7 @@ await fixContext();
 let timeInactivity;
 document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'visible') { clearTimeout(timeInactivity); }
-    else { (await import('../firebase/authentication.js')).startTimerInactivity(); }
+    else { (await import('../firebase/authentication.js')).startTimerInactivity(timeInactivity); }
 });
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
