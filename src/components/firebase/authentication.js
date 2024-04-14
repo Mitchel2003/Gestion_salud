@@ -16,8 +16,11 @@ export async function appenedDocumentReference(email, access) {
 }
 /*--------------------------------------------------in session--------------------------------------------------*/
 export async function checkSessionActive() {//AC #209
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, (user) => { if (user) { resolve(user.email); } else { reject(null); } });
+    return new Promise((resolve) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) { resolve(user.email); }
+            else { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
+        });
     });
 }
 export async function handleTimeOut(temp) {

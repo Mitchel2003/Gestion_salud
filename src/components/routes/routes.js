@@ -8,7 +8,6 @@ await fixContext();
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     const user = await checkSessionActive();
-    if (!user) { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
     const { access } = await getDocumentUser(user);
     await managementSession(access);
 }
