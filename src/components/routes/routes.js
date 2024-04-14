@@ -7,7 +7,7 @@ onLoadWhile();
 await fixContext();
 
 //timeOut
-const timer = new timerOut();
+let timer = new timerOut();
 document.addEventListener('visibilitychange', () => { 
     if(document.visibilityState === 'visible'){
         timer.startTimeOut();
