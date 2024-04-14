@@ -3,19 +3,19 @@ import { checkSessionActive } from '../firebase/authentication.js';
 import { getDocumentUser } from '../firebase/query.js';
 
 //working here...
+onLoadWhile();
 await fixContext();
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
-    onLoadWhile();
     const user = await checkSessionActive();//AC #209
-    if(user){ const { access } = await getDocumentUser(user); await managementSession(access); }
+    if (user) { const { access } = await getDocumentUser(user); await managementSession(access); }
 }
 async function managementSession(access){
-    if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); offLoadWhile(); }
-    else if (access === 'auditor') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuditor(); offLoadWhile(); }
-    else { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAdmin(); offLoadWhile(); }
+    if (access === 'auxiliary') { const road = getUserContext(access); insertHtml(road); await (await import('../models/userModel.js')).modeAuxiliary(); offLoadWhile(); }
+    else if (access === 'auditor') { const road = getUserContext(access); insertHtml(road); await (await import('../models/userModel.js')).modeAuditor(); offLoadWhile(); }
+    else { const road = getUserContext(access); insertHtml(road); await (await import('../models/userModel.js')).modeAdmin(); offLoadWhile(); }
 }
-function userContext(res) {//AC #205
+function getUserContext(res) {//AC #205
     if (res === 'auxiliary') {
         document.title = "Session";
         appenedBackgroundImage('../components/images/background_session.webp');
@@ -35,14 +35,6 @@ function userContext(res) {//AC #205
                 <li id="menu-action"><a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
             </ul>
         </nav>
-
-        <!-- screen loading... -->
-        <div class="loadContainer">
-          <div class="load">
-            <div class="frame_1"></div>
-            <div class="frame_2"></div>
-          </div>
-        </div>
         `;
     } if (res === 'auditor') {
         document.title = "Session";
@@ -57,6 +49,9 @@ function userContext(res) {//AC #205
     }
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
+function insertHtml(data){
+    document.body.insertAdjacentHTML('afterbegin', data);
+}
 function appenedBackgroundImage(address){
     const background = new Image();
     background.src = address;
