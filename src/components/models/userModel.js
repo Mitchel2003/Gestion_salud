@@ -64,8 +64,9 @@ export async function requestResetPassword() {
 
 /*--------------------------------------------------on session--------------------------------------------------*/
 export async function modeAuxiliary() {
-    let time;
+    
     document.addEventListener('visibilitychange', async () => {
+        let time;
         if (document.visibilityState === 'visible') { clearTimeout(time); }
         else { (await import('../firebase/authentication.js')).startTimerInactivity(time); }
     });

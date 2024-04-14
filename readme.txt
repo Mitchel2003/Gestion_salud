@@ -4,17 +4,6 @@
 //production: react router, stackblitz, vite
 //page for find backgrounds hd: uhdpaper.com
 
-
-mira, estoy intentando hacer un cierre de session cuando el usuario permanezca cierto tiempo fuera de la pestaña, ya sea que se encuentre en otra pestaña del navegador o se esté la pagina en segundo plano, estaba manejando eso de este modo "let time; document.addEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });"  este metodo handleTimeOut es este "export async function handleTimeOut(temp) {
-    if (document.visibilityState === 'visible') { }
-    else { clockTimerInactivity(temp); }
-} function clockTimerInactivity(temp) {
-    clearTimeout(temp);
-    temp = setTimeout(async () => { await offSession(); }, 10000);
-}" la verdad no se si pueda lograr esto usando este simple metodo de visibilitychange, quizas halla un mejor modo de hacer las cosas, necesito que cuando salga de la pagina, empieze el contador y que si regresa antes de que se cumpla el tiempo de expiracion entonces el temporalizador se apage, de este modo cuando vuelva a abandonar, el temporalizador empieze desde cero !animo, necesito tu 100%, dame todo tu potencial!
-
-
-
 //analizing this... working here...
 
 const userContext = await auth.currentUser;
