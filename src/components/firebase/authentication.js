@@ -25,7 +25,7 @@ export async function checkSessionActive() {//AC #209
 }
 export class timerOut {
     constructor() {
-      this.startTimeOut();
+        this.document.visibilityState === 'visible' ? this.cancelTimerOut() : this.startTimeOut();
     }
     startTimeOut(){
         this.timer = setTimeout(async () => { await offSession(); }, 5000);
@@ -35,36 +35,6 @@ export class timerOut {
         delete this.timer;
     }
 }
-class Singleton {
-    // La instancia del Singleton se guarda en una variable estática.
-    static instancia;
-  
-    // El constructor es privado para evitar la creación directa de objetos.
-    constructor() {
-      if(Singleton.instancia) {
-        return Singleton.instancia;
-      }
-      
-      // Inicializa cualquier lógica o propiedades aquí.
-      this.estado = 'inicial';
-      // Guarda la primera (y única) instancia creada.
-      Singleton.instancia = this;
-    }
-  
-    // Métodos o propiedades adicionales aquí.
-    mostrarEstado() {
-      console.log(this.estado);
-    }
-  
-    // Otros métodos...
-  }
-  const instanciaA = new Singleton();
-  const instanciaB = new Singleton();
-  
-  console.log(instanciaA === instanciaB); // true, ambas variables apuntan al mismo objeto.
-  
-  instanciaA.mostrarEstado(); // Muestra 'inicial'.
-  
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
     return await (await import('./conection.js')).signInWithEmailAndPassword(auth, email, password);

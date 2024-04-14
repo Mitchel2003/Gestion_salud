@@ -7,11 +7,7 @@ onLoadWhile();
 await fixContext();
 
 //timeOut
-
-document.addEventListener('visibilitychange', async () => {
-    const time = new timerOut();
-    if (document.visibilityState !== 'visible') { time.cancelTimerOut(); }
-});
+document.addEventListener('visibilitychange', () => { const timer = new timerOut(); console.log(timer) });
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     const user = await checkSessionActive();
