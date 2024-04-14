@@ -1,15 +1,16 @@
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 import { checkSessionActive } from '../firebase/authentication.js';
 import { getDocumentUser } from '../firebase/query.js';
+import { timerOut } from '../firebase/authentication.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
 onLoadWhile();
 await fixContext();
 
 //timeOut
-let timeInactivity;
+const time = new timerOut();
 document.addEventListener('visibilitychange', async () => {
-    if (document.visibilityState === 'visible') { clearTimeout(timeInactivity); }
-    else { (await import('../firebase/authentication.js')).startTimerInactivity(timeInactivity); }
+    if (document.visibilityState === 'visible') { time.cancelTimerOut(); }
+    else { time.startTimeOut(); }
 });
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){

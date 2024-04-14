@@ -23,9 +23,17 @@ export async function checkSessionActive() {//AC #209
         });
     });
 }
-export function startTimerInactivity(time) {
-    clearTimeout(time);
-    time = setTimeout(async () => { await offSession(); }, 10000);
+export class timerOut {
+    constructor() {
+        this.cancelTimerOut();
+    }
+    startTimeOut(){
+        this.time = setTimeout(async () => { await offSession(); }, 10000);
+    }
+    cancelTimerOut(){
+        clearTimeout(this.time);
+        delete this.time;
+    }
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
