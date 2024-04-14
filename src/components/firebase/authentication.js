@@ -24,6 +24,10 @@ export async function checkSessionActive() {//AC #209
     });
 }
 export class timerOut {
+    constructor(){
+        this.cancelTimerOut();
+    }
+
     startTimeOut(){
         this.timer = setTimeout(async () => { await offSession(); }, 5000);
     }
