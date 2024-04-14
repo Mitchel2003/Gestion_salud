@@ -1,10 +1,16 @@
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 import { checkSessionActive } from '../firebase/authentication.js';
 import { getDocumentUser } from '../firebase/query.js';
-
-//working here...
+/*--------------------------------------------------runtime--------------------------------------------------*/
 onLoadWhile();
 await fixContext();
+
+//timeOut
+let timeInactivity;
+document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible') { clearTimeout(timeInactivity); }
+    else { (await import('../firebase/authentication.js')).startTimerInactivity(); }
+});
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     const user = await checkSessionActive();
