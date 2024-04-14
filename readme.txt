@@ -55,7 +55,12 @@ function getImportAnim(action) {//load difered
             console.log(error);
         });
 }
-
+//-----------------appened background image-----------------
+function appenedBackgroundImage(address){
+    const background = new Image();
+    background.src = address;
+    document.body.style.backgroundImage = `url(${background.src})`;
+}
 //-----------------add values to url-----------------
 export function preparateSessionWithAccess(value) {
     let url = new URL(window.location.href);
@@ -332,13 +337,10 @@ la cuestion es la siguiente; si es if() de consultar "key" (true or false) se ev
 de acceso para ese email ingresado, en caso de estar la contraseña incorrecta es un problema, porque entonces tiene que ser usuario habilitado para que le 
 aparezca mensaje de contraseña incorrecta.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#209: la presencia de este metodo a instantes del inicio parece redundancia; la verdad es que el objetivo es otro; busco que al momento en que se acceda
-a la direccion url con la clave "key", sea indispenzable la  comprobacion de la session del usuario, porque cualquier persona podria acceder con tan solo
-poner la direccion mas el atributo "key", he aqui la magia  
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#210: en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario, sino un método para
+#209: en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario, sino un método para
 desuscribirse del listener. Este comportamiento es típico de los observadores, donde `onAuthStateChanged` está diseñado para ejecutarse cada vez que
 el estado de autenticación cambia, lo que no se alinea directamente con el patrón `async/await;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------tips--------------------------------------------------*/
 ### OPTIMIZAR PAGINA WEB
 

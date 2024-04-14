@@ -7,18 +7,22 @@ onLoadWhile();
 await fixContext();
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
-    const user = await checkSessionActive();//AC #209
-    if (user) { const { access } = await getDocumentUser(user); await managementSession(access); }
+    const user = await checkSessionActive();
+    if (!user) { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
+    const { access } = await getDocumentUser(user);
+    await managementSession(access);
 }
 async function managementSession(access){
-    if (access === 'auxiliary') { const road = getUserContext(access); insertHtml(road); await (await import('../models/userModel.js')).modeAuxiliary(); offLoadWhile(); }
-    else if (access === 'auditor') { const road = getUserContext(access); insertHtml(road); await (await import('../models/userModel.js')).modeAuditor(); offLoadWhile(); }
-    else { const road = getUserContext(access); insertHtml(road); await (await import('../models/userModel.js')).modeAdmin(); offLoadWhile(); }
+    const road = getUserContext(access); 
+    insertHtml(road);
+    if (access === 'auxiliary') { await (await import('../models/userModel.js')).modeAuxiliary(); }
+    else if (access === 'auditor') { await (await import('../models/userModel.js')).modeAuditor(); }
+    else if (access === 'admin') { await (await import('../models/userModel.js')).modeAdmin(); }
+    offLoadWhile();
 }
 function getUserContext(res) {//AC #205
     if (res === 'auxiliary') {
         document.title = "Session";
-        appenedBackgroundImage('../components/images/background_session.webp');
         return `
         <nav>
             <ul class="side-bar">
@@ -51,9 +55,4 @@ function getUserContext(res) {//AC #205
 /*--------------------------------------------------tools--------------------------------------------------*/
 function insertHtml(data){
     document.body.insertAdjacentHTML('afterbegin', data);
-}
-function appenedBackgroundImage(address){
-    const background = new Image();
-    background.src = address;
-    document.body.style.backgroundImage = `url(${background.src})`;
 }

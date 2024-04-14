@@ -15,12 +15,9 @@ export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
 /*--------------------------------------------------in session--------------------------------------------------*/
-export async function checkSessionActive() {//AC #210
+export async function checkSessionActive() {//AC #209
     return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, async (user) => {
-            try { resolve(user.email); }
-            catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(); reject(null); }
-        });
+        onAuthStateChanged(auth, (user) => { if (user) { resolve(user.email); } else { reject(null); } });
     });
 }
 export async function handleTimeOut(temp) {

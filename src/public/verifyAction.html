@@ -27,8 +27,8 @@
         }
 
         async function managementAccount(compare) {
-            if (compare) { const getContext = requestContext('verify'); document.body.innerHTML = getContext; await modeVerifyEmail(compare); }
-            else { const getContext = requestContext('reset'); document.body.innerHTML = getContext; await modeChangePassword(); }
+            if (compare) { const road = requestContext('verify'); document.body.insertAdjacentHTML('afterbegin', road); await modeVerifyEmail(compare); }
+            else { const road = requestContext('reset'); document.body.insertAdjacentHTML('afterbegin', road); await modeChangePassword(); }
         }
 
         function requestContext(res) {//AC #205
@@ -46,14 +46,6 @@
                             </div>
                         </div>
                     </div>    
-                </div>  
-
-                <!-- screen loading... -->
-                <div class="loadContainer">
-                    <div class="load">
-                        <div class="frame_1"></div>
-                        <div class="frame_2"></div>
-                    </div>
                 </div>
                 `;
             } if (res === 'reset') {
@@ -79,14 +71,6 @@
                         </div>
                     </div> 
                 </div>
-
-                <!-- screen loading... -->
-                <div class="loadContainer">
-                    <div class="load">
-                        <div class="frame_1"></div>
-                        <div class="frame_2"></div>
-                    </div>
-                </div>
                 `;
             }
         }
@@ -94,6 +78,13 @@
 </head>
 
 <body>
+    <!-- screen loading... -->
+    <div class="loadContainer">
+        <div class="load">
+            <div class="frame_1"></div>
+            <div class="frame_2"></div>
+        </div>
+    </div>
     <!-- dependency -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- sweetAlert -->
 </body>
