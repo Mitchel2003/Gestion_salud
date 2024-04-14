@@ -66,7 +66,6 @@ export async function requestResetPassword() {
 export async function modeAuxiliary() {
     let time;
     document.addEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });
-    document.removeEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });
 
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
