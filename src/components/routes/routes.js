@@ -1,12 +1,11 @@
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
-import { checkSessionActive, offSession } from '../firebase/authentication.js';
+import { checkSessionActive } from '../firebase/authentication.js';
 import { TimerOut } from '../firebase/authentication.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
 onLoadWhile();
 await fixContext();
 
-//timeOut
-const time = new TimerOut(10000, await offSession());
+let time = new TimerOut(5000);//timeOut
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     const user = await checkSessionActive();
