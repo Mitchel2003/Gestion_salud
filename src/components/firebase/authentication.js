@@ -21,7 +21,7 @@ export async function checkSessionActive() {//AC #209
     });
 }
 export async function handleTimeOut(temp) {
-    if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
+    if (document.visibilityState === 'visible') { }
     else { clockTimerInactivity(temp); }
 } function clockTimerInactivity(temp) {
     clearTimeout(temp);
