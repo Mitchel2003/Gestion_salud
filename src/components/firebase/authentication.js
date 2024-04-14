@@ -15,13 +15,21 @@ export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
 /*--------------------------------------------------in session--------------------------------------------------*/
-export async function checkSessionActive() { 
-    const res = onAuthStateChanged(auth, async (user) => {
-        try { const data = user.email; console.log(data); return data; } 
-        catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
+export async function checkSessionActive() {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            try { resolve(user.email); }
+            catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(); reject(null); }
+        });
     });
-    return res;
 }
+// export async function checkSessionActive() { 
+//     const res = onAuthStateChanged(auth, async (user) => {
+//         try { const data = user.email; console.log(data); return data; } 
+//         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
+//     });
+//     return res;
+// }
 export async function handleTimeOut(temp) {
     if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
     else { clockTimerInactivity(temp); }
@@ -43,67 +51,45 @@ export async function sendToEmailResetPassword(email) {
 }
 
 
-export async function checkSessionActive() {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // Al usar unsubscribe(), nos aseguramos de no seguir escuchando a cambios
-      // en el estado de autenticación después de haber obtenido el resultado deseado.
-      unsubscribe();
+// Para lograr retornar el dato `user.email` desde la función `checkSessionActive()` y utilizarlo fuera de ella sin recurrir directamente al uso de `new Promise` para envolver el llamado a `onAuthStateChanged`, puedes mantener el patrón `async/await` mediante la adecuación de tu función para que retorne explícitamente lo que necesitas. Sin embargo, en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario, sino un método para desuscribirse del listener. Este comportamiento es típico de los observadores, donde `onAuthStateChanged` está diseñado para ejecutarse cada vez que el estado de autenticación cambia, lo que no se alinea directamente con el patrón `async/await`.
 
-      if (user) {
-        const data = user.email;
-        console.log(data);
-        resolve(data); // Resuelve la promesa con el dato deseado.
-      } else {
-        (async () => {
-          await (await import('../utils/alerts.js')).exceptionsSignOut();
-          reject(new Error('No user is signed in')); // Rechaza la promesa si no hay usuario.
-        })();
-      }
-    });
+// A pesar de tu preferencia por evitar `new Promise`, este es precisamente uno de los casos en los que su uso es adecuado para convertir un patrón basado en eventos o callbacks a promesas, lo que facilita el uso de `async/await`. A continuación, una manera de hacerlo que mantiene tu estructura de código limpia y permite esperar por el resultado de `user.email`:
 
-  });
+// ```javascript
+// export async function checkSessionActive() {
+//     // Retorna una nueva promesa
+//     return new Promise((resolve, reject) => {
+//         onAuthStateChanged(auth, async (user) => {
+//             if(user) {
+//                 // Si hay usuario, resuelve la promesa con el email del usuario
+//                 resolve(user.email);
+//             } else {
+//                 // Si no hay usuario, maneja el caso como prefieras (p. ej., resolviendo con null)
+//                 // Aquí realizas la llamada a exceptionsSignOut y luego rechazas o resuelves según corresponda
+//                 await (await import('../utils/alerts.js')).exceptionsSignOut();
+//                 resolve(null); // O rechaza con un error si prefieres manejarlo de esa forma
+//             }
+//         });
+//     });
+// }
+// ```
 
-}
-Para lograr retornar el dato `user.email` desde la función `checkSessionActive()` y utilizarlo fuera de ella sin recurrir directamente al uso de `new Promise` para envolver el llamado a `onAuthStateChanged`, puedes mantener el patrón `async/await` mediante la adecuación de tu función para que retorne explícitamente lo que necesitas. Sin embargo, en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario, sino un método para desuscribirse del listener. Este comportamiento es típico de los observadores, donde `onAuthStateChanged` está diseñado para ejecutarse cada vez que el estado de autenticación cambia, lo que no se alinea directamente con el patrón `async/await`.
+// Con esto, puedes utilizar `checkSessionActive()` en otro lugar de tu código de la siguiente manera:
 
-A pesar de tu preferencia por evitar `new Promise`, este es precisamente uno de los casos en los que su uso es adecuado para convertir un patrón basado en eventos o callbacks a promesas, lo que facilita el uso de `async/await`. A continuación, una manera de hacerlo que mantiene tu estructura de código limpia y permite esperar por el resultado de `user.email`:
+// ```javascript
+// async function otroContexto() {
+//     try {
+//         const userEmail = await checkSessionActive();
+//         if (userEmail) {
+//             console.log(`El email del usuario es: ${userEmail}`);
+//             // Aquí puedes usar userEmail como necesites
+//         } else {
+//             console.log('No hay un usuario activo.');
+//         }
+//     } catch (error) {
+//         console.error('Ocurrió un error:', error);
+//     }
+// }
+// ```
 
-```javascript
-export async function checkSessionActive() {
-    // Retorna una nueva promesa
-    return new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, async (user) => {
-            if(user) {
-                // Si hay usuario, resuelve la promesa con el email del usuario
-                resolve(user.email);
-            } else {
-                // Si no hay usuario, maneja el caso como prefieras (p. ej., resolviendo con null)
-                // Aquí realizas la llamada a exceptionsSignOut y luego rechazas o resuelves según corresponda
-                await (await import('../utils/alerts.js')).exceptionsSignOut();
-                resolve(null); // O rechaza con un error si prefieres manejarlo de esa forma
-            }
-        });
-    });
-}
-```
-
-Con esto, puedes utilizar `checkSessionActive()` en otro lugar de tu código de la siguiente manera:
-
-```javascript
-async function otroContexto() {
-    try {
-        const userEmail = await checkSessionActive();
-        if (userEmail) {
-            console.log(`El email del usuario es: ${userEmail}`);
-            // Aquí puedes usar userEmail como necesites
-        } else {
-            console.log('No hay un usuario activo.');
-        }
-    } catch (error) {
-        console.error('Ocurrió un error:', error);
-    }
-}
-```
-
-Este enfoque aprovecha `async/await` para trabajar de manera más intuitiva con operaciones asincrónicas, manteniendo tus intenciones iniciales. Aunque prefieras evitar promesas explícitas, en algunos casos como este, son una herramienta adecuada para adaptar ciertas APIs a un flujo de trabajo más declarativo y lineal.
+// Este enfoque aprovecha `async/await` para trabajar de manera más intuitiva con operaciones asincrónicas, manteniendo tus intenciones iniciales. Aunque prefieras evitar promesas explícitas, en algunos casos como este, son una herramienta adecuada para adaptar ciertas APIs a un flujo de trabajo más declarativo y lineal.

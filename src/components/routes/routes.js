@@ -8,8 +8,7 @@ await fixContext();
 async function fixContext(){
     onLoadWhile();
     const user = await checkSessionActive();//AC #209
-    const { access } = await getDocumentUser(user);
-    await managementSession(access);
+    if(user){ const { access } = await getDocumentUser(user); await managementSession(access); }
 }
 async function managementSession(access){
     if (access === 'auxiliary') { const getContext = userContext(access); document.body.innerHTML = getContext; await (await import('../models/userModel.js')).modeAuxiliary(); offLoadWhile(); }
