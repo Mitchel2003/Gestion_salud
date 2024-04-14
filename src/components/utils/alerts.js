@@ -30,7 +30,7 @@ export async function alertInput(title, message, icon) {
         inputPlaceholder: "Email",
         input: "email",
         inputValue: ""
-    });return email;
+    }); return email;
 }
 export async function alertButtonAction(title, message, icon) {
     const { value: request } = await Swal.fire({
@@ -45,7 +45,7 @@ export async function alertButtonAction(title, message, icon) {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Go to home",
         customClass: { popup: 'customAlert' }
-    });return request;
+    }); return request;
 }
 /*--------------------------------------------------text--------------------------------------------------*/
 export function messageUserSubmitted() {//successfull
@@ -201,7 +201,7 @@ export async function exceptionsChangePassword(error) {
 }
 export async function exceptionsSignOut() {
     const { title, message, typeAlert } = messageSessionFailed();
-    await alertButtonAction(title, message, selectIcon(typeAlert));
-    (await import('./view.js')).goToHome();
+    const res = await alertButtonAction(title, message, selectIcon(typeAlert));
+    if (res) { (await import('./view.js')).goToHome(); }
     return;
 }

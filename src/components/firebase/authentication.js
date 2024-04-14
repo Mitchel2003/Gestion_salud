@@ -23,9 +23,9 @@ export async function checkSessionActive() {//AC #209
         });
     });
 }
-export function startTimerInactivity(temp) {
-    clearTimeout(temp);
-    temp = setTimeout(async () => { await offSession(); }, 10000);
+export function startTimerInactivity() {
+    let time; clearTimeout(time);
+    time = setTimeout(async () => { await offSession(); }, 10000);
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
