@@ -23,10 +23,7 @@ export async function checkSessionActive() {//AC #209
         });
     });
 }
-export async function handleTimeOut(temp) {
-    if (document.visibilityState === 'visible') { clearTimeout(temp) }
-    else { startTimerInactivity(temp); }
-} function startTimerInactivity(temp) {
+export function startTimerInactivity(temp) {
     clearTimeout(temp);
     temp = setTimeout(async () => { await offSession(); }, 10000);
 }

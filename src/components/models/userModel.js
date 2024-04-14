@@ -65,7 +65,10 @@ export async function requestResetPassword() {
 /*--------------------------------------------------on session--------------------------------------------------*/
 export async function modeAuxiliary() {
     let time;
-    document.addEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });
+    document.addEventListener('visibilitychange', async () => {
+        if (document.visibilityState === 'visible') { clearTimeout(time); }
+        else { (await import('../firebase/authentication.js')).startTimerInactivity(time); }
+    });
 
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
