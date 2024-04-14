@@ -336,6 +336,9 @@ aparezca mensaje de contraseña incorrecta.
 a la direccion url con la clave "key", sea indispenzable la  comprobacion de la session del usuario, porque cualquier persona podria acceder con tan solo
 poner la direccion mas el atributo "key", he aqui la magia  
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#210: en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario, sino un método para
+desuscribirse del listener. Este comportamiento es típico de los observadores, donde `onAuthStateChanged` está diseñado para ejecutarse cada vez que
+el estado de autenticación cambia, lo que no se alinea directamente con el patrón `async/await;
 /*--------------------------------------------------tips--------------------------------------------------*/
 ### OPTIMIZAR PAGINA WEB
 

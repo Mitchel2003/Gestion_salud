@@ -66,6 +66,7 @@ export async function requestResetPassword() {
 export async function modeAuxiliary() {
     let time;
     document.addEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });
+    document.removeEventListener('visibilitychange', async () => { await (await import('../firebase/authentication.js')).handleTimeOut(time); });
 
     //side bar
     document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
@@ -107,7 +108,7 @@ export async function modeChangePassword() {
         try {
             event.preventDefault();
             onLoadWhile();
-            const query = (await import('../routes/routes.js')).getQueryParams();
+            const query = (await import('../firebase/query.js')).getQueryParams();
             const oobCode = query.oobCode;
             const password = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;

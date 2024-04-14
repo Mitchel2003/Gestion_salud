@@ -15,7 +15,7 @@ export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
 /*--------------------------------------------------in session--------------------------------------------------*/
-export async function checkSessionActive() {
+export async function checkSessionActive() {//AC #210
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             try { resolve(user.email); }
@@ -23,13 +23,6 @@ export async function checkSessionActive() {
         });
     });
 }
-// export async function checkSessionActive() { 
-//     const res = onAuthStateChanged(auth, async (user) => {
-//         try { const data = user.email; console.log(data); return data; } 
-//         catch (error) { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
-//     });
-//     return res;
-// }
 export async function handleTimeOut(temp) {
     if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', async () => { await handleTimeOut(time); }) }
     else { clockTimerInactivity(temp); }
