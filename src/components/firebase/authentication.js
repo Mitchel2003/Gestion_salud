@@ -23,17 +23,30 @@ export async function checkSessionActive() {//AC #209
         });
     });
 }
-export class timerOut {
-    constructor(){
-        this.cancelTimerOut();
+export class TimerOut {
+    constructor(duration, action){
+        this.duration=duration;
+        this.action=action;
+        this.timerID=null;
+        this.setupChangeVisibility();
+    }
+
+    setupChangeVisibility() {
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') { this.cancelTimerOut(); }
+            else { this.startTimeOut(); }
+        });
     }
 
     startTimeOut(){
-        this.timer = setTimeout(async () => { await offSession(); }, 5000);
+        this.cancelTimerOut();
+        this.timerID = setTimeout(() => { this.action(); }, this.duration);
     }
     cancelTimerOut(){
-        clearTimeout(this.timer);
-        delete this.timer;
+        if(this.timerID !== null){ 
+            clearTimeout(this.timerID);
+            this.timerID = null; 
+        }
     }
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/

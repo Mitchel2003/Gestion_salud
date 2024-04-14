@@ -1,24 +1,16 @@
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
-import { checkSessionActive } from '../firebase/authentication.js';
-import { getDocumentUser } from '../firebase/query.js';
-import { timerOut } from '../firebase/authentication.js';
+import { checkSessionActive, offSession } from '../firebase/authentication.js';
+import { TimerOut } from '../firebase/authentication.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
 onLoadWhile();
 await fixContext();
 
 //timeOut
-const timer = new timerOut();
-document.addEventListener('visibilitychange', () => { 
-    if(document.visibilityState === 'visible'){
-        timer.startTimeOut();
-    }else{
-        timer.cancelTimerOut();
-    }
-});
+const time = new TimerOut(10000, await offSession());
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     const user = await checkSessionActive();
-    const { access } = await getDocumentUser(user);
+    const { access } = await (await import('../firebase/query.js')).getDocumentUser(user);
     await managementSession(access);
 }
 async function managementSession(access){
