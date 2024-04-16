@@ -9,6 +9,17 @@ export function customAlert(title, message, icon) {//alert default
         customClass: { popup: 'customAlert' },
     });
 }
+export function alertToast(title, message, icon) {
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        timer: 3000,
+        toast: true,
+        position: 'top-end',
+        customClass: { popup: 'customAlert' },
+    });
+}
 export function selectIcon(item) {
     if (item === "s") { return "success"; }
     else if (item === "w") { return "warning"; }
@@ -151,6 +162,12 @@ export function messageTempUnknow() {
     const typeAlert = "e";
     return { title, typeAlert };
 }
+export function messageOffline() {
+    const title = "Offline";
+    const message = "Check your connection";
+    const typeAlert = "e";
+    return { title, message, typeAlert };
+}
 /*--------------------------------------------------exceptions--------------------------------------------------*/
 export function exceptionsLoginUser(error) {
     if (error.code === 'auth/invalid-login-credentials') {
@@ -194,14 +211,20 @@ export function exceptionsResetPassword(error) {
     customAlert(title, error.code, selectIcon(typeAlert));
     return;
 }
-export async function exceptionsChangePassword(error) {
+
+/* ---responses personalized--- */
+export function exceptionsChangePassword() {
     const { title, message, typeAlert } = messageTokenExpired();
-    customAlert(title, message, selectIcon(typeAlert));
-    return;
+    customAlert(title, message, selectIcon(typeAlert)); return;
 }
 export async function exceptionsSignOut() {
     const { title, message, typeAlert } = messageSessionFailed();
-    const res = await alertButtonAction(title, message, selectIcon(typeAlert));
-    if (res) { (await import('./view.js')).goToHome(); }
-    return;
+    await alertButtonAction(title, message, selectIcon(typeAlert));
+    (await import('./view.js')).goToHome(); return;
+}
+export function exceptionsConnectionEthernet(res) {
+    if(!res){
+        const { title, message, typeAlert } = messageOffline();
+        alertToast(title, message, selectIcon(typeAlert));
+    }
 }

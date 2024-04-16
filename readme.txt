@@ -55,6 +55,21 @@ function getImportAnim(action) {//load difered
             console.log(error);
         });
 }
+//-----------------class example-----------------
+ class UIManager {
+   constructor() {
+     this.initListeners();
+   }
+   initListeners() {
+     document.getElementById('menu-action').addEventListener('click', this.toggleSideBar.bind(this, true));
+     document.getElementById('close-action').addEventListener('click', this.toggleSideBar.bind(this, false));
+   }
+   toggleSideBar(open) {
+     const sideBar = document.querySelector('.side-bar');
+     open ? sideBar.classList.add('spawn') : sideBar.classList.remove('spawn');
+   }
+ }
+ export default UIManager;
 //-----------------appened background image-----------------
 function appenedBackgroundImage(address){
     const background = new Image();

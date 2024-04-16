@@ -125,7 +125,7 @@ export async function modeChangePassword() {
             if (request) { (await import('../utils/view.js')).goToHome(); }
             await offSession();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsChangePassword(error); }
+        } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsChangePassword(); }
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
@@ -135,18 +135,3 @@ function checkSamePasswords(item_1, item_2) {
 function checkSizeAllowed(item) {
     if (item.length < 6) { return item; }
 }
-
-// class UIManager {
-//   constructor() {
-//     this.initListeners();
-//   }
-//   initListeners() {
-//     document.getElementById('menu-action').addEventListener('click', this.toggleSideBar.bind(this, true));
-//     document.getElementById('close-action').addEventListener('click', this.toggleSideBar.bind(this, false));
-//   }
-//   toggleSideBar(open) {
-//     const sideBar = document.querySelector('.side-bar');
-//     open ? sideBar.classList.add('spawn') : sideBar.classList.remove('spawn');
-//   }
-// }
-// export default UIManager;

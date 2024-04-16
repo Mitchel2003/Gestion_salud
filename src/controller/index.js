@@ -1,5 +1,7 @@
 import { addActive, removeActive } from "../components/utils/view.js";
+import { StatusConnection } from "../components/firebase/authentication.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
+let status = new StatusConnection();
 const container = document.querySelector('.mainContainer');
 //view
 window.addEventListener("load", async () => { (await import('../components/utils/view.js')).loadElements(container); });

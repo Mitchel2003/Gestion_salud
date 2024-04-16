@@ -14,7 +14,19 @@ export async function verificationEmailAddress(userEmail, userAccess) {
 export async function appenedDocumentReference(email, access) {
     return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
 }
-/*--------------------------------------------------in session--------------------------------------------------*/
+/*--------------------------------------------------on/off session--------------------------------------------------*/
+export async function onSession(email, password) {
+    return await (await import('./conection.js')).signInWithEmailAndPassword(auth, email, password);
+} export async function offSession() {
+    return await (await import('./conection.js')).signOut(auth);
+}
+/*--------------------------------------------------resetPassword--------------------------------------------------*/
+export async function sendToEmailResetPassword(email) {
+    return await (await import('./conection.js')).sendPasswordResetEmail(auth, email);
+} export async function validateResetPassword(obbCode, newPassword) {
+    return await (await import('./conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
+}
+/*--------------------------------------------------user validations--------------------------------------------------*/
 export async function checkSessionActive() {//AC #209
     return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
@@ -43,15 +55,14 @@ export class TimerOut {
         if (this.timerID !== null) { clearTimeout(this.timerID); this.timerID = null; }
     }
 }
-/*--------------------------------------------------on/off session--------------------------------------------------*/
-export async function onSession(email, password) {
-    return await (await import('./conection.js')).signInWithEmailAndPassword(auth, email, password);
-} export async function offSession() {
-    return await (await import('./conection.js')).signOut(auth);
-}
-/*--------------------------------------------------resetPassword--------------------------------------------------*/
-export async function sendToEmailResetPassword(email) {
-    return await (await import('./conection.js')).sendPasswordResetEmail(auth, email);
-} export async function validateResetPassword(obbCode, newPassword) {
-    return await (await import('./conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
+export class StatusConnection {
+    constructor() {
+        this.listenStatus();
+    }
+    listenStatus() {
+        window.addEventListener('offline', this.showStatus() );
+    }
+    showStatus(){
+        new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet(navigator.onLine)) })
+    }
 }
