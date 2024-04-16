@@ -9,17 +9,17 @@ export function customAlert(title, message, icon) {//alert default
         customClass: { popup: 'customAlert' },
     });
 }
-export function alertToast(title, message, icon) {
-    Swal.fire({
-        title: title,
-        text: message,
-        icon: icon,
-        timer: 3000,
-        toast: true,
-        position: 'top-end',
-        customClass: { popup: 'customAlert' },
-    });
-}
+// export function alertToast(title, message, icon) {
+//     Swal.fire({
+//         title: title,
+//         text: message,
+//         icon: icon,
+//         timer: 3000,
+//         toast: true,
+//         position: 'top-end',
+//         customClass: { popup: 'customAlert' },
+//     });
+// }
 export function selectIcon(item) {
     if (item === "s") { return "success"; }
     else if (item === "w") { return "warning"; }
@@ -82,12 +82,6 @@ export function messageTokenSubmitted() {
     const message2 = "Check your email to continue reset password";
     const typeAlert2 = "s";
     return { title2, message2, typeAlert2 };
-}
-export function messageOnline() {
-    const title = "Online";
-    const message = "Connection restore";
-    const typeAlert = "s";
-    return { title, message, typeAlert };
 }
 /*--------------------------------------------------*/
 export function messageEmailNotFound() {//warning
@@ -163,12 +157,6 @@ export function messageTokenVerifyExpired() {
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
-export function messageOffline() {
-    const title = "Offline";
-    const message = "Check your connection";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
 export function messageTempUnknow() {
     const title = "Exception Unknow";
     const typeAlert = "e";
@@ -227,13 +215,4 @@ export async function exceptionsSignOut() {
     const { title, message, typeAlert } = messageSessionFailed();
     await alertButtonAction(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome(); return;
-}
-export function exceptionsConnectionEthernet(res) {
-    if(res){
-        const { title, message, typeAlert } = messageOnline();
-        alertToast(title, message, selectIcon(typeAlert));
-    } else {
-        const { title, message, typeAlert } = messageOffline();
-        alertToast(title, message, selectIcon(typeAlert));
-    }
 }

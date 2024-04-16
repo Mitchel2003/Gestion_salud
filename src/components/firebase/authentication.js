@@ -57,6 +57,7 @@ export class TimerOut {
 }
 export class StatusConnection {//AC #210
     constructor() {
+        this.status = navigator.onLine;
         this.update = this.updateStatus.bind(this);
         this.listenStatus();
     }
@@ -65,6 +66,6 @@ export class StatusConnection {//AC #210
         window.addEventListener('online', this.update );
     }
     updateStatus(){
-        new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet(navigator.onLine)) })
+        if(this.status){ alert('!Connection restored!') } else { alert('Offline, check your connection'); }
     }
 }
