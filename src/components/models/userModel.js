@@ -113,7 +113,8 @@ export async function modeChangePassword() {
                 const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordNotSame();
                 customAlert(title, message, selectIcon(typeAlert));
                 offLoadWhile(); return;
-            } if (checkSizeAllowed(password)) {
+            } 
+            if (checkSizeAllowed(password)) {
                 const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordSizeShort();
                 customAlert(title, message, selectIcon(typeAlert));
                 offLoadWhile(); return;
