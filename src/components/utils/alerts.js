@@ -83,6 +83,12 @@ export function messageTokenSubmitted() {
     const typeAlert2 = "s";
     return { title2, message2, typeAlert2 };
 }
+export function messageOnline() {
+    const title = "Online";
+    const message = "Connection restore";
+    const typeAlert = "s";
+    return { title, message, typeAlert };
+}
 /*--------------------------------------------------*/
 export function messageEmailNotFound() {//warning
     const title = "Email unknow";
@@ -157,16 +163,16 @@ export function messageTokenVerifyExpired() {
     const typeAlert = "e";
     return { title, message, typeAlert };
 }
-export function messageTempUnknow() {
-    const title = "Exception Unknow";
-    const typeAlert = "e";
-    return { title, typeAlert };
-}
 export function messageOffline() {
     const title = "Offline";
     const message = "Check your connection";
     const typeAlert = "e";
     return { title, message, typeAlert };
+}
+export function messageTempUnknow() {
+    const title = "Exception Unknow";
+    const typeAlert = "e";
+    return { title, typeAlert };
 }
 /*--------------------------------------------------exceptions--------------------------------------------------*/
 export function exceptionsLoginUser(error) {
@@ -223,7 +229,10 @@ export async function exceptionsSignOut() {
     (await import('./view.js')).goToHome(); return;
 }
 export function exceptionsConnectionEthernet(res) {
-    if(!res){
+    if(res){
+        const { title, message, typeAlert } = messageOnline();
+        alertToast(title, message, selectIcon(typeAlert));
+    } else {
         const { title, message, typeAlert } = messageOffline();
         alertToast(title, message, selectIcon(typeAlert));
     }

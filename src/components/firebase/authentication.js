@@ -26,7 +26,7 @@ export async function sendToEmailResetPassword(email) {
 } export async function validateResetPassword(obbCode, newPassword) {
     return await (await import('./conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
-/*--------------------------------------------------user validations--------------------------------------------------*/
+/*--------------------------------------------------controller session--------------------------------------------------*/
 export async function checkSessionActive() {//AC #209
     return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
@@ -55,14 +55,16 @@ export class TimerOut {
         if (this.timerID !== null) { clearTimeout(this.timerID); this.timerID = null; }
     }
 }
-export class StatusConnection {
+export class StatusConnection {//AC #210
     constructor() {
+        this.update = this.updateStatus.bind(this);
         this.listenStatus();
     }
     listenStatus() {
-        window.addEventListener('offline', this.showStatus() );
+        window.addEventListener('offline', this.update );
+        window.addEventListener('online', this.update );
     }
-    showStatus(){
+    updateStatus(){
         new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet(navigator.onLine)) })
     }
 }

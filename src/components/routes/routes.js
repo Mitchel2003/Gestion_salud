@@ -21,8 +21,8 @@ async function managementSession(access){
     offLoadWhile();
 }
 function getUserContext(res) {//AC #205
+    document.title = "Session";
     if (res === 'auxiliary') {
-        document.title = "Session";
         return `
         <nav>
             <ul class="side-bar">
@@ -41,12 +41,10 @@ function getUserContext(res) {//AC #205
         </nav>
         `;
     } if (res === 'auditor') {
-        document.title = "Session";
         return `
         
         `;
     } if (res === 'admin') {
-        document.title = "Session";
         return `
         
         `;

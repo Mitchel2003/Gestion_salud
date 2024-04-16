@@ -5,7 +5,7 @@ import { onLoadWhile, offLoadWhile } from "../utils/view.js";
 export async function loginUser(user, password) {
     try {
         onLoadWhile();
-        const { access, key } = await (await import('../firebase/query.js')).getDocumentUser(user);
+        const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
         if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
             const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageEmailNotFound();
             customAlert(title, message, selectIcon(typeAlert));
