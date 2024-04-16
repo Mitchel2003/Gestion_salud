@@ -9,17 +9,17 @@ export function customAlert(title, message, icon) {//alert default
         customClass: { popup: 'customAlert' },
     });
 }
-// export function alertToast(title, message, icon) {
-//     Swal.fire({
-//         title: title,
-//         text: message,
-//         icon: icon,
-//         timer: 3000,
-//         toast: true,
-//         position: 'top-end',
-//         customClass: { popup: 'customAlert' },
-//     });
-// }
+export function alertToast(title, message, icon) {
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        timer: 3000,
+        toast: true,
+        position: 'top-end',
+        customClass: { popup: 'customAlert' },
+    });
+}
 export function selectIcon(item) {
     if (item === "s") { return "success"; }
     else if (item === "w") { return "warning"; }
@@ -82,6 +82,12 @@ export function messageTokenSubmitted() {
     const message2 = "Check your email to continue reset password";
     const typeAlert2 = "s";
     return { title2, message2, typeAlert2 };
+}
+export function messageStatusOnline() {
+    const title = "Online";
+    const message = "Connection restored";
+    const typeAlert = "s";
+    return { title, message, typeAlert };
 }
 /*--------------------------------------------------*/
 export function messageEmailNotFound() {//warning
@@ -210,6 +216,10 @@ export function exceptionsResetPassword(error) {
 export function exceptionsChangePassword() {
     const { title, message, typeAlert } = messageTokenExpired();
     customAlert(title, message, selectIcon(typeAlert)); return;
+}
+export function exceptionsConnectionEthernet() {
+    const { title, message, typeAlert } = messageStatusOnline();
+    alertToast(title, message, selectIcon(typeAlert)); return;
 }
 export async function exceptionsSignOut() {
     const { title, message, typeAlert } = messageSessionFailed();

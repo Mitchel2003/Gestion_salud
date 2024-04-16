@@ -61,10 +61,11 @@ export class StatusConnection {//AC #210
         this.listenStatus();
     }
     listenStatus() {
-        window.addEventListener('offline', this.update );
-        window.addEventListener('online', this.update );
+        window.addEventListener('offline', this.update);
+        window.addEventListener('online', this.update);
     }
-    updateStatus(){
-        if(navigator.onLine){ alert('!Connection restored!') } else { alert('Offline, check your connection'); }
+    updateStatus() {
+        if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
+        else { alert('Offline, check your connection'); }
     }
 }
