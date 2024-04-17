@@ -33,7 +33,7 @@ export async function registerUser(name, email, password, access) {
         await getAuthMethod.createUser(email, password);
         await getAuthMethod.updateDataUser(name);
         await getAuthMethod.verificationEmailAddress(email, access);
-        (await import('../utils/view.js')).cleanInputRegister();
+        (await import('../utils/values.js')).cleanInputRegister();
 
         const { title, message, typeAlert } = getAlert.messageEmailVerify();
         customAlert(title, message, selectIcon(typeAlert));

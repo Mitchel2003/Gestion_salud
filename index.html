@@ -10,6 +10,7 @@
   <!-- local resource -->
   <link rel="icon" type="image/x-icon" href="./src/components/images/gs_icon.ico">
   <link rel="stylesheet" href="./src/controller/styles/index.css">
+  <link rel="stylesheet" href="./src/controller/styles/verifyAction.css">
   <script type="module" src="./src/controller/index.js"></script>
 </head>
 
@@ -39,11 +40,16 @@
           <input id="password-register" name="password" type="password" placeholder="Password" required>
           <img src="./src/components/images/eye-close.webp" id="eyeIcon-register">
         </div>
-        <label id="position">Position</label>
+        <label>User access</label>
         <select id="userPosition">
           <option value="auditor">Auditor</option>
           <option value="admin">Administrator</option>
           <option value="auxiliary">Auxiliary</option>
+        </select>
+        <select id="userEntity">
+          <option value="1">first example</option>
+          <option value="2">second example</option>
+          <option value="3">thirty example</option>
         </select>
         <button type="submit" class="button">Send request</button>
       </form>

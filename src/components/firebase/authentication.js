@@ -1,5 +1,5 @@
-import { getCollection } from './query.js';
 import { auth, onAuthStateChanged } from "./conection.js";
+import { getCollection } from './query.js';
 
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
