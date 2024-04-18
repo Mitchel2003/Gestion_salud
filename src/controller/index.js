@@ -9,6 +9,18 @@ let status = new StatusConnection();
 document.querySelector('.registerContainer header').addEventListener('click',() => {addActive(container)});
 document.querySelector('.signContainer header').addEventListener('click',() => {removeActive(container)});
 (await import('../components/utils/view.js')).changeStatusIconEye();
+
+//temp
+const menu = document.querySelector('.select-menu'),
+select = menu.querySelector('.select-btn'),
+options = menu.querySelectorAll('.option'),
+showText = menu.querySelector('.btn-text');
+
+select.addEventListener('click', () => {menu.classList.toggle('viewOptions')})
+
+options.forEach((item) => {
+    item.addEventListener('click', () => { let option = item.querySelector('.option-text').innerText; showText.innerText = option;  })
+})
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');

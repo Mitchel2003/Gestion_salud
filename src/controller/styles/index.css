@@ -126,7 +126,7 @@ input,
 .registerContainer input,
 .input-box-register,
 .select-menu .select-btn{
-    background-color: rgb(255, 248, 255);
+    background-color: #fdfdfd;
 }
 
 /*fix inputs (ComboBox)*/
@@ -138,13 +138,20 @@ input,
     align-items: center;
     padding: 10px 0 10px 20px;
     justify-content: space-between;
-    cursor: pointer;
-}.select-btn i{
+    cursor: pointer;    
+}.select-menu .btn-text{
+    color: #dddddd;
+}.select-menu .select-btn i{
     font-size: 25px;
+}
+
+.select-menu.viewOptions .options{
+    display: block;
 }
 
 .select-menu .options{
     position: relative;
+    padding: 5px 10px;
     margin-top: 5px;
     border-radius: 8px;
     background: #fff;
@@ -157,12 +164,18 @@ input,
     background: #fff;
     cursor: pointer;
 }.options .option:hover{
-    background: #f2f2f2;
+    background: #fafafa;
+}.option i{
+    margin-right: 15px;
+    font-size: 25px;
 }
 
-.option i{
-    font-size: 25px;
-    margin-left: 12px;
+.separator{
+    position: relative;
+    height: 1px;
+    width: 100%;
+    justify-content: center;
+    background-color: #eeeeee;
 }
 
 /*eyeIcon*/
@@ -265,6 +278,7 @@ form .button{
     font-size: 18px;
     padding: 0 10px;
     margin-top: 10px;
+    margin-right: 40%;
     font-weight: 400;
 }
 /*--------------------------------------------------media query (responsive)--------------------------------------------------*/
