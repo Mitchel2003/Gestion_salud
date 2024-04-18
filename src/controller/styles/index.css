@@ -74,7 +74,7 @@ header{
     gap: 10px;
 }
 /*--------------------------------------------------input, select--------------------------------------------------*/
-form input, form select, .input-box-login, .input-box-register{
+form input, .input-box-login, .input-box-register, .select-menu .select-btn{
     outline: none;
     border: none;
     padding: 10px 20px;
@@ -87,7 +87,7 @@ form input, form select, .input-box-login, .input-box-register{
 .input-box-login, .input-box-register{/*eyeIcon*/
     display: flex;
     align-items: center;
-    padding: 0px 0px;
+    padding: 0 10px 0 0;
 }#password-login, #password-register{
     margin-left: 0%;
     border: 0;
@@ -101,12 +101,13 @@ form input, form select, .input-box-login, .input-box-register{
     opacity: 1;
 }
 
-input, select, .input-box-login, .input-box-register{/*fix inputs (generaly)*/
+input, .input-box-login, .input-box-register, .select-menu .select-btn{/*fix inputs (generaly)*/
     height: 6vh;
     width: calc(100% - 10%);
     margin-left: calc(100% - 95%);
+    /* align-items: center; */
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
-}.classic-input:hover, select:hover, .input-box-login:hover, .input-box-register:hover{
+}.classic-input:hover, .input-box-login:hover, .input-box-register:hover, .select-menu .select-btn:hover{
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
@@ -121,14 +122,56 @@ input, select, .input-box-login, .input-box-register{/*fix inputs (generaly)*/
     background-color: rgba(5, 7, 12, 0.1);
 }
 
-.registerContainer input, select, .input-box-register{/*fix inputs (register)*/
+.registerContainer input, .input-box-register, .select-menu .select-btn{/*fix inputs (register)*/
     background-color: rgb(255, 248, 255);
-} select{
-    color: #ffffff;
-    padding: 5px 15px;
-} select option:not(:first-child){
-    color: #fff;
-}/*working here/*
+}
+
+/*fix inputs (register)*/
+/* .select-menu{
+    width: 380px;
+    margin: 150px auto;
+} */
+.select-menu .select-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+
+
+.select-btn i{
+    font-size: 25px;
+}
+
+.select-menu .options{
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0, 0.1);
+}.options .option{
+    display: flex;
+    height: 55px;
+    cursor: pointer;
+    padding: 0 16px;
+    border-radius: 8px;
+    align-items: center;
+    background: #fff;
+}.options .option:hover{
+    background: #f2f2f2;
+}
+
+.option i{
+    font-size: 25px;
+    margin-left: 12px;
+}.option {
+
+}
+
+
+
 /*--------------------------------------------------buttons--------------------------------------------------*/
 form .button{
     position: relative;
