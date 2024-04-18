@@ -1,4 +1,85 @@
 /*--------------------------------------------------tips--------------------------------------------------*/
+
+
+Entiendo lo que necesitas. Quieres cambiar el color del texto de la opción seleccionada que se muestra en tu elemento `<select>`, incluso antes de que el usuario despliegue las opciones. Esto puede ser un poco complicado porque los navegadores tienden a limitar el estilo de los controles de formulario nativos para mantener una experiencia de usuario coherente. Sin embargo, hay algunas formas de abordarlo, aunque no se puede hacer directamente con CSS en el elemento `<select>`.
+
+Una forma de lograr un efecto similar es utilizar JavaScript junto con CSS para aplicar estilos a un elemento sustituto del `<select>`. Esto implica ocultar el `<select>` real y mostrar en su lugar un elemento que simule serlo, el cual puede ser un `<div>`, por ejemplo. Este elemento puede estilizarse como desees, incluyendo cambiar el color del texto de la opción "seleccionada" que se muestra.
+
+Aquí tienes un ejemplo básico de cómo podrías implementar esto:
+
+HTML (estructura básica):
+```html
+<div id="selectBox" class="select-box">
+    <div id="selectedValue" class="selected-value">Selecciona una opción</div>
+    <div id="options" class="options-container hidden">
+        <div class="option" data-value="1">Opción 1</div>
+        <div class="option" data-value="2">Opción 2</div>
+        <!-- Agrega más opciones según necesites -->
+    </div>
+</div>
+<input type="hidden" id="actualSelect" name="selectValue">
+```
+
+CSS para ocultar/mostrar las opciones y personalizar el "select":
+```css
+.select-box {
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.selected-value {
+  padding: 10px;
+  background-color: white;
+  color: red; /* Aquí eliges el color del texto */
+}
+
+.options-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: none;
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.option {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: #f2f2f2;
+}
+```
+
+JavaScript para manejar los eventos:
+```javascript
+document.getElementById("selectBox").addEventListener("click", function() {
+    var optionsContainer = document.getElementById("options");
+    optionsContainer.classList.toggle("hidden");
+});
+
+var options = document.querySelectorAll(".option");
+options.forEach(function(option) {
+    option.addEventListener("click", function() {
+        var selectedValue = document.getElementById("selectedValue");
+        selectedValue.innerText = option.textContent;
+        document.getElementById("actualSelect").value = option.getAttribute("data-value");
+        document.getElementById("options").classList.add("hidden");
+    });
+});
+```
+
+Este es solo un punto de partida y seguramente querrás ajustarlo a tus necesidades específicas, como mejorar la accesibilidad o agregar funcionalidades adicionales.
+
+
+
 //for initializing webpack of server: webpack-dev-server --mode development yes
 //implements: bcrypt, jsonwebtoken, dotenv
 //production: react router, stackblitz, vite
