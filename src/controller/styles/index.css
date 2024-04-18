@@ -143,13 +143,12 @@ input,
     color: #dddddd;
 }.select-menu .select-btn i{
     font-size: 25px;
-}
-
-.select-menu.viewOptions .options{
+}.select-menu.viewOptions .options{
     display: block;
 }
 
 .select-menu .options{
+    display: none;
     position: relative;
     padding: 5px 10px;
     margin-top: 5px;
