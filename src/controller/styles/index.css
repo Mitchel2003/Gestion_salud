@@ -277,6 +277,5 @@ form .button{
 @media (max-height: 650px) {.mainContainer.active .registerContainer{transform: translate(-50%, 13%);} .mainContainer form{padding: 10px 0;} .mainContainer.active{height: 70%;}} */
 /* @media (max-height: 600px) {.registerContainer{transform: translate(-50%, 80%);} .mainContainer{height: 300px;}}convert to static */
 /* @media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}} */
-
 @media (max-height: 600px) {.registerContainer{transform: translate(-50%, 65%);} .mainContainer{height: 300px;}}/*convert to static*/
 @media (min-height: 300px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 500px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}}
