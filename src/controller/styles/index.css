@@ -270,7 +270,6 @@ form .button{
 /*--------------------------------------------------media query (responsive)--------------------------------------------------*/
 @media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
 @media (min-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 7%);}}
-
 /* @media (max-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 8%);}}
 @media (max-height: 850px) {.mainContainer.active .registerContainer{transform: translate(-50%, 11%);}}
 @media (max-height: 750px) {.mainContainer.active .registerContainer{transform: translate(-50%, 12%);} .mainContainer form{padding: 5px 0;} .mainContainer.active{height: 65%;}}
