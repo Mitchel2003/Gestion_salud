@@ -66,15 +66,20 @@ header{
     transform: scale(1);
 }
 /*--------------------------------------------------form container--------------------------------------------------*/
-.mainContainer form{
+.mainContainer form,
+.registerContainer form,
+.select-menu{
     display: flex;
     flex-direction: column;
-    gap: 10px;
-}.registerContainer form{
+    justify-content: center;
+    align-items: center;
     gap: 10px;
 }
 /*--------------------------------------------------input, select--------------------------------------------------*/
-form input, .input-box-login, .input-box-register, .select-menu .select-btn{
+form input,
+.input-box-login,
+.input-box-register,
+.select-menu .select-btn{
     outline: none;
     border: none;
     padding: 10px 20px;
@@ -84,81 +89,73 @@ form input, .input-box-login, .input-box-register, .select-menu .select-btn{
     border-radius: 8px;
 }
 
-.input-box-login, .input-box-register{/*eyeIcon*/
-    display: flex;
-    align-items: center;
-    padding: 0 10px 0 0;
-}#password-login, #password-register{
-    margin-left: 0%;
-    border: 0;
-    background: #00000000;
-}img{
-    margin-right: 0px;
-    width: 20px;
-    opacity: 0;
-    cursor: pointer;
-}.input-box-login:hover img, .input-box-register:hover img{
-    opacity: 1;
-}
-
-input, .input-box-login, .input-box-register, .select-menu .select-btn{/*fix inputs (generaly)*/
+/*fix inputs (generaly)*/
+input,
+.input-box-login,
+.input-box-register,
+.select-menu .select-btn{
     height: 6vh;
     width: calc(100% - 10%);
-    margin-left: calc(100% - 95%);
-    /* align-items: center; */
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
-}.classic-input:hover, .input-box-login:hover, .input-box-register:hover, .select-menu .select-btn:hover{
+}
+.classic-input:hover,
+.input-box-login:hover,
+.input-box-register:hover,
+.select-menu .select-btn:hover{
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
-}.input-box-login:hover #password-login, .input-box-login:hover #password-login{
+}
+.input-box-login:hover #password-login,
+.input-box-register:hover #password-register{
     font-size: 18px;
 }
 
-.signContainer input, .input-box-login{/*fix inputs (login)*/
+/*fix inputs (login)*/
+.signContainer input,
+.input-box-login{
     color: #ddd2d2;
     background-color: rgba(5, 7, 12, 0.2);
-}.signContainer input:hover, .input-box-login:hover{
+}
+.signContainer input:hover,
+.input-box-login:hover{
     background-color: rgba(5, 7, 12, 0.1);
 }
 
-.registerContainer input, .input-box-register, .select-menu .select-btn{/*fix inputs (register)*/
+/*fix inputs (register)*/
+.registerContainer input,
+.input-box-register,
+.select-menu .select-btn{
     background-color: rgb(255, 248, 255);
 }
 
-/*fix inputs (register)*/
-/* .select-menu{
-    width: 380px;
-    margin: 150px auto;
-} */
-.select-menu .select-btn{
+/*fix inputs (ComboBox)*/
+.select-menu{
+    width: 100%;
+    gap: 0;
+}.select-menu .select-btn{
     display: flex;
     align-items: center;
+    padding: 10px 0 10px 20px;
     justify-content: space-between;
     cursor: pointer;
-}
-
-
-
-.select-btn i{
+}.select-btn i{
     font-size: 25px;
 }
 
 .select-menu .options{
     position: relative;
-    padding: 20px;
-    margin-top: 10px;
+    margin-top: 5px;
     border-radius: 8px;
     background: #fff;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0, 0.1);
 }.options .option{
     display: flex;
-    height: 55px;
-    cursor: pointer;
-    padding: 0 16px;
+    padding: 5px 20px;
     border-radius: 8px;
     align-items: center;
     background: #fff;
+    cursor: pointer;
 }.options .option:hover{
     background: #f2f2f2;
 }
@@ -166,12 +163,31 @@ input, .input-box-login, .input-box-register, .select-menu .select-btn{/*fix inp
 .option i{
     font-size: 25px;
     margin-left: 12px;
-}.option {
-
 }
 
-
-
+/*eyeIcon*/
+.input-box-login,
+.input-box-register{
+    display: flex;
+    align-items: center;
+    padding: 0 10px 0 0;
+}
+#password-login,
+#password-register{
+    margin-left: 0%;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+}
+.input-box-login:hover img,
+.input-box-register:hover img{
+    opacity: 1;
+}
+img{
+    margin-right: 0px;
+    width: 20px;
+    opacity: 0;
+    cursor: pointer;
+}
 /*--------------------------------------------------buttons--------------------------------------------------*/
 form .button{
     position: relative;
