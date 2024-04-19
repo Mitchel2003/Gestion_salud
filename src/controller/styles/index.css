@@ -6,8 +6,6 @@
 .mainContainer.active .registerContainer header{transform: scale(1.1); opacity: 1;}
 .mainContainer.active .signContainer header{transform: scale(0.9); opacity: 0.6;}
 .mainContainer.active .signContainer header:hover{transform: scale(1);}
-
-.setColor{color: #333 !important;}
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;
@@ -68,9 +66,7 @@ header{
     transform: scale(1);
 }
 /*--------------------------------------------------form container--------------------------------------------------*/
-.mainContainer form,
-.registerContainer form,
-.menu-access{
+.mainContainer form, .registerContainer form{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,10 +74,7 @@ header{
     gap: 10px;
 }
 /*--------------------------------------------------input, select--------------------------------------------------*/
-form input,
-.input-box-login,
-.input-box-register,
-.menu-access .input-access{
+form input, form select, .input-box-login, .input-box-register{
     outline: none;
     border: none;
     padding: 10px 20px;
@@ -92,112 +85,43 @@ form input,
 }
 
 /*fix inputs (generaly)*/
-input,
-.input-box-login,
-.input-box-register,
-.menu-access .input-access{
+input, select, .input-box-login, .input-box-register{
     height: 6vh;
     width: calc(100% - 10%);
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
-}
-.classic-input:hover,
-.input-box-login:hover,
-.input-box-register:hover,
-.menu-access:hover .input-access{
+}.classic-input:hover, select:hover, .input-box-login:hover, .input-box-register:hover{
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
-}
-.input-box-login:hover #password-login,
-.input-box-register:hover #password-register{
+}.input-box-login:hover #password-login, .input-box-register:hover #password-register{
     font-size: 18px;
 }
 
 /*fix inputs (login)*/
-.signContainer input,
-.input-box-login{
+.signContainer input, .input-box-login{
     color: #ddd2d2;
     background-color: rgba(5, 7, 12, 0.2);
-}
-.signContainer input:hover,
-.input-box-login:hover{
+}.signContainer input:hover, .input-box-login:hover{
     background-color: rgba(5, 7, 12, 0.1);
 }
 
 /*fix inputs (register)*/
-.registerContainer input,
-.input-box-register,
-.menu-access .input-access{
+.registerContainer input, select, .input-box-register{
     background-color: #fdfdfd;
 }
 
-/*fix inputs (ComboBox)*/
-.menu-access{
-    width: 100%;
-    gap: 0;
-}.menu-access .input-access{
-    display: flex;
-    align-items: center;
-    padding: 10px 0 10px 20px;
-    justify-content: space-between;
-    cursor: pointer;    
-}.menu-access .text-access{
-    color: #dddddd;
-}.menu-access .input-access i{
-    font-size: 25px;
-}
-.menu-access.viewOptions .box-options-access{
-    display: block;
-}
-
-.menu-access .box-options-access{
-    display: none;
-    position: relative;
-    padding: 5px 10px;
-    margin-top: 5px;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0, 0.1);
-}.box-options-access .option-access{
-    display: flex;
-    padding: 5px 20px;
-    border-radius: 8px;
-    align-items: center;
-    background: #fff;
-    cursor: pointer;
-}.box-options-access .option-access:hover{
-    background: #fafafa;
-}.option-access i{
-    margin-right: 15px;
-    font-size: 25px;
-}
-
-.separator{
-    position: relative;
-    height: 1px;
-    width: 100%;
-    justify-content: center;
-    background-color: #eeeeee;
-}
-
 /*eyeIcon*/
-.input-box-login,
-.input-box-register{
+.input-box-login, .input-box-register{
     display: flex;
     align-items: center;
     padding: 0 10px 0 0;
-}
-#password-login,
-#password-register{
+}#password-login, #password-register{
     margin-left: 0%;
     border: 0;
     background: rgba(0, 0, 0, 0);
-}
-.input-box-login:hover img,
-.input-box-register:hover img{
+}.input-box-login:hover img, .input-box-register:hover img{
     opacity: 1;
-}
-img{
+}img{
     margin-right: 0px;
     width: 20px;
     opacity: 0;
@@ -213,7 +137,6 @@ form .button{
     width: 50%;
     font-size: 18px;
     font-weight: 600;
-    margin-left: calc(100% - 75%);
     margin-top: 15px;
     padding: 8px 15px;
     border-radius: 8px;
@@ -265,9 +188,6 @@ form .button{
 /*--------------------------------------------------text, link--------------------------------------------------*/
 .signContainer button[type="button"]{
     border: none;
-    text-align: center;
-    margin-left: calc(100% - 80%);/*translate to left - relation: this ++1, width --2*/
-    width: calc(100% - 40%);/*translate to rigth - relation: this --2, margin-left ++1*/
     font-size: 15px;
     color: rgb(205, 170, 205);
     background: rgba(0, 0, 0, 0);
@@ -280,17 +200,17 @@ form .button{
     font-size: 18px;
     padding: 0 10px;
     margin-top: 10px;
-    margin-right: 40%;
+    margin-right: 50%;
     font-weight: 400;
 }
 /*--------------------------------------------------media query (responsive)--------------------------------------------------*/
 @media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
 @media (min-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 7%);}}
-/* @media (max-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 8%);}}
+
+@media (max-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 8%);}}
 @media (max-height: 850px) {.mainContainer.active .registerContainer{transform: translate(-50%, 11%);}}
 @media (max-height: 750px) {.mainContainer.active .registerContainer{transform: translate(-50%, 12%);} .mainContainer form{padding: 5px 0;} .mainContainer.active{height: 65%;}}
-@media (max-height: 650px) {.mainContainer.active .registerContainer{transform: translate(-50%, 13%);} .mainContainer form{padding: 10px 0;} .mainContainer.active{height: 70%;}} */
-/* @media (max-height: 600px) {.registerContainer{transform: translate(-50%, 80%);} .mainContainer{height: 300px;}}convert to static */
-/* @media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}} */
-@media (max-height: 600px) {.registerContainer{transform: translate(-50%, 65%);} .mainContainer{height: 300px;}}/*convert to static*/
-@media (min-height: 300px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 500px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}}
+@media (max-height: 650px) {.mainContainer.active .registerContainer{transform: translate(-50%, 13%);} .mainContainer form{padding: 10px 0;} .mainContainer.active{height: 70%;}}
+@media (max-height: 600px) {.registerContainer{transform: translate(-50%, 80%);} .mainContainer{height: 300px;}}/*convert to static*/
+@media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}}
+
