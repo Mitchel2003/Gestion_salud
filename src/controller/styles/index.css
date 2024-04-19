@@ -6,6 +6,8 @@
 .mainContainer.active .registerContainer header{transform: scale(1.1); opacity: 1;}
 .mainContainer.active .signContainer header{transform: scale(0.9); opacity: 0.6;}
 .mainContainer.active .signContainer header:hover{transform: scale(1);}
+
+.setColor{color: #333 !important;}
 /*--------------------------------------------------Generaly--------------------------------------------------*/
 *{
     margin: 0;
@@ -68,7 +70,7 @@ header{
 /*--------------------------------------------------form container--------------------------------------------------*/
 .mainContainer form,
 .registerContainer form,
-.select-menu{
+.menu-access{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -79,7 +81,7 @@ header{
 form input,
 .input-box-login,
 .input-box-register,
-.select-menu .select-btn{
+.menu-access .input-access{
     outline: none;
     border: none;
     padding: 10px 20px;
@@ -93,7 +95,7 @@ form input,
 input,
 .input-box-login,
 .input-box-register,
-.select-menu .select-btn{
+.menu-access .input-access{
     height: 6vh;
     width: calc(100% - 10%);
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
@@ -101,7 +103,7 @@ input,
 .classic-input:hover,
 .input-box-login:hover,
 .input-box-register:hover,
-.select-menu .select-btn:hover{
+.menu-access:hover .input-access{
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
@@ -125,29 +127,30 @@ input,
 /*fix inputs (register)*/
 .registerContainer input,
 .input-box-register,
-.select-menu .select-btn{
+.menu-access .input-access{
     background-color: #fdfdfd;
 }
 
 /*fix inputs (ComboBox)*/
-.select-menu{
+.menu-access{
     width: 100%;
     gap: 0;
-}.select-menu .select-btn{
+}.menu-access .input-access{
     display: flex;
     align-items: center;
     padding: 10px 0 10px 20px;
     justify-content: space-between;
     cursor: pointer;    
-}.select-menu .btn-text{
+}.menu-access .text-access{
     color: #dddddd;
-}.select-menu .select-btn i{
+}.menu-access .input-access i{
     font-size: 25px;
-}.select-menu.viewOptions .options{
+}
+.menu-access.viewOptions .box-options-access{
     display: block;
 }
 
-.select-menu .options{
+.menu-access .box-options-access{
     display: none;
     position: relative;
     padding: 5px 10px;
@@ -155,16 +158,16 @@ input,
     border-radius: 8px;
     background: #fff;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0, 0.1);
-}.options .option{
+}.box-options-access .option-access{
     display: flex;
     padding: 5px 20px;
     border-radius: 8px;
     align-items: center;
     background: #fff;
     cursor: pointer;
-}.options .option:hover{
+}.box-options-access .option-access:hover{
     background: #fafafa;
-}.option i{
+}.option-access i{
     margin-right: 15px;
     font-size: 25px;
 }
