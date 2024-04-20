@@ -84,11 +84,11 @@ form input, form select, .box-input-password{
     border-radius: 8px;
 }
 
-input, select, .box-input-password, .container-access, .container-entity{/*fix inputs (generaly)*/
+input, select, .box-input-password, .container-select{/*fix inputs (generaly)*/
     height: 6vh;
     width: calc(100% - 10%);
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
-}.classic-input:hover, .box-input-password:hover, .container-access:hover, .container-entity:hover{
+}.classic-input:hover, .box-input-password:hover, .container-select:hover{
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
@@ -117,14 +117,14 @@ select {/*fix inputs (register select)*/
     border-radius: 0 !important;
 }select::-ms-expand {
     display: none;
-}.container-access, .container-entity{
+}.container-select{
     position: relative;
     display: flex;
     border-radius: 8px;
     line-height: 3;
     background: #333;
     overflow: hidden;
-}.container-access::after, .container-entity::after{
+}.container-select::after{
     content: '\25BC';
     position: absolute;
     top: 0;
@@ -135,7 +135,7 @@ select {/*fix inputs (register select)*/
     color: rgb(229, 157, 229);
     background-color: rgb(249, 220, 249);
     transition: color 0.7s ease;
-}.container-access:hover::after, .container-entity:hover::after{
+}.container-select:hover::after{
     color: rgb(203, 119, 203);
 }
 
@@ -231,7 +231,7 @@ form .button{
     font-weight: 400;
 }
 /*--------------------------------------------------media query (responsive)--------------------------------------------------*/
-@media (min-width: 800px) {.container-access, .container-entity{line-height: 6;}}/*working here...*/
+/*@media (min-width: 800px) {.container-select{line-height: 4;}}working here...*/
 @media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
  
 @media (min-height: 950px) {.mainContainer.active{height: 67%;} .mainContainer.active .registerContainer{transform: translate(-50%, 7%);} .mainContainer{height: 45%;}}

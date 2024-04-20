@@ -26,7 +26,9 @@ function setInput(input, icon) {
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...
-    window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
+    let url = new URL(window.location.href);
+    url.pathname = './index.html';
+    window.location.href = url.toString();
 }
 export function goToSession() {
     let url = new URL(window.location.href);
