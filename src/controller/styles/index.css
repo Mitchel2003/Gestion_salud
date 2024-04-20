@@ -2,7 +2,7 @@
 @keyframes animEntry { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); }}/*animation soft displacement to init()*/
 /*fix transition login-register*/
 .mainContainer.active .registerContainer{transform: translate(-50%); border-radius: 150px; box-shadow: 0 -5px 10px rgba(0,0,0,0.3);}
-.mainContainer.active{height: 65%;}
+.mainContainer.active{height: 70%;}
 .mainContainer.active .registerContainer header{transform: scale(1.1); opacity: 1;}
 .mainContainer.active .signContainer header{transform: scale(0.9); opacity: 0.6;}
 .mainContainer.active .signContainer header:hover{transform: scale(1);}
@@ -226,19 +226,19 @@ form .button{
 
 .registerContainer label{
     font-size: 18px;
-    padding: 0 10px;
     margin-top: 10px;
     margin-right: 50%;
     font-weight: 400;
 }
 /*--------------------------------------------------media query (responsive)--------------------------------------------------*/
+@media (min-width: 800px) {.container-access, .container-entity{line-height: 6;}}/*working here...*/
 @media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
-@media (min-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 7%);}}
-
-@media (max-height: 1000px) {.mainContainer.active .registerContainer{transform: translate(-50%, 8%);}}
-@media (max-height: 850px) {.mainContainer.active .registerContainer{transform: translate(-50%, 11%);}}
-@media (max-height: 750px) {.mainContainer.active .registerContainer{transform: translate(-50%, 12%);} .mainContainer form{padding: 5px 0;} .mainContainer.active{height: 65%;}}
-@media (max-height: 650px) {.mainContainer.active .registerContainer{transform: translate(-50%, 13%);} .mainContainer form{padding: 10px 0;} .mainContainer.active{height: 70%;}}
-@media (max-height: 600px) {.registerContainer{transform: translate(-50%, 80%);} .mainContainer{height: 300px;}}/*convert to static*/
-@media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .box-input-password, form .button{height: 35px;}}
-
+ 
+@media (min-height: 950px) {.mainContainer.active{height: 67%;} .mainContainer.active .registerContainer{transform: translate(-50%, 7%);} .mainContainer{height: 45%;}}
+@media (max-height: 950px) {.mainContainer.active{height: 69%;} .mainContainer.active .registerContainer{transform: translate(-50%, 8%);}}
+@media (max-height: 800px) {.mainContainer.active{height: 70%;} .registerContainer{transform: translate(-50%, 68%);}}
+@media (max-height: 750px) {.mainContainer.active{height: 72%;}}
+@media (max-height: 700px) {.mainContainer.active{height: 74%;}}
+@media (max-height: 650px) {.mainContainer.active{height: 76%;} form .button{width: 60%;} .mainContainer form{padding: 10px 0;} .mainContainer{height: 320px;} .registerContainer{transform: translate(-50%, 67%);}}/*static*/
+@media (max-height: 550px) {.mainContainer.active{height: 430px;} .mainContainer.active .registerContainer{transform: translate(-50%, 9%);} .mainContainer form{padding: 20px 0;}  input, select, .box-input-password, form .button{height: 35px;}}
+@media (max-height: 450px) {.mainContainer.active{height: 410px;}}
