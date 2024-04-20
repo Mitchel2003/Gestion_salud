@@ -10,10 +10,6 @@ export function loadElements(container) {//init()
 export function onLoadWhile() { document.querySelector('.loadContainer').classList.add('show'); }
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
-//fix anim switch login/register
-export function addActive(container) { container.classList.add('active'); }
-export function removeActive(container) { container.classList.remove('active'); }
-
 export function changeStatusIconEye() {//fix anim on/off iconEye (AC #206)
     const iconLogin = document.getElementById('eyeIcon-login');
     const iconRegister = document.getElementById('eyeIcon-register');
@@ -25,13 +21,32 @@ function setInput(input, icon) {
     else { input.type = "password"; icon.src = "./src/components/images/eye-close.webp"; }
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
+export class SetClassList {//onClick
+    constructor(turnOn, turnOff, container, classList) {
+        this.on = turnOn;
+        this.off = turnOff;
+        this.add = this.addClass.bind(this, container, classList);
+        this.remove = this.removeClass.bind(this, container, classList);
+        this.listenClick();
+    }
+    listenClick() {
+        this.on.addEventListener('click', this.add );
+        this.off.addEventListener('click', this.remove );
+    }
+    addClass(element, classList) { element.classList.add(classList); }
+    removeClass(element, classList) { element.classList.remove(classList); }
+    destroy() { 
+        this.on.removeEventListener('click', this.add ); 
+        this.off.removeEventListener('click', this.remove );
+    }
+}
 export function goToHome() {//send to...
     let url = new URL(window.location.href);
-    url.pathname = './index.html';
+    url.pathname = './Gestion_salud/index.html';
     window.location.href = url.toString();
 }
 export function goToSession() {
     let url = new URL(window.location.href);
-    url.pathname = './src/public/session.html';
+    url.pathname = './Gestion_salud/src/public/session.html';
     window.location.href = url.toString();
 }

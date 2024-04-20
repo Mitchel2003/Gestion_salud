@@ -1,4 +1,4 @@
-import { addActive, removeActive } from "../components/utils/view.js";
+import { SetClassList } from "../components/utils/view.js";
 import { StatusConnection } from "../components/firebase/authentication.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
@@ -6,10 +6,8 @@ window.addEventListener("load", async () => { (await import('../components/utils
 
 //iterators
 let status = new StatusConnection();
-document.querySelector('.registerContainer header').addEventListener('click',() => {addActive(container)});
-document.querySelector('.signContainer header').addEventListener('click',() => {removeActive(container)});
+let changeContext = new SetClassList(document.querySelector('.registerContainer header'), document.querySelector('.signContainer header'), container, 'active'); //on, off, setElement, class
 (await import('../components/utils/view.js')).changeStatusIconEye();
-
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');
