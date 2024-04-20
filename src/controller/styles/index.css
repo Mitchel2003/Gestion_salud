@@ -74,7 +74,7 @@ header{
     gap: 10px;
 }
 /*--------------------------------------------------input, select--------------------------------------------------*/
-form input, form select, .input-box-login, .input-box-register{
+form input, form select, .box-input-password{
     outline: none;
     border: none;
     padding: 10px 20px;
@@ -84,42 +84,70 @@ form input, form select, .input-box-login, .input-box-register{
     border-radius: 8px;
 }
 
-/*fix inputs (generaly)*/
-input, select, .input-box-login, .input-box-register{
+input, select, .box-input-password, .container-access, .container-entity{/*fix inputs (generaly)*/
     height: 6vh;
     width: calc(100% - 10%);
     transition: transform 0.3s ease, font-size 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease ;
-}.classic-input:hover, select:hover, .input-box-login:hover, .input-box-register:hover{
+}.classic-input:hover, .box-input-password:hover, .container-access:hover, .container-entity:hover{
     font-size: 18px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
-}.input-box-login:hover #password-login, .input-box-register:hover #password-register{
+}.box-input-password:hover input{
     font-size: 18px;
 }
 
-/*fix inputs (login)*/
-.signContainer input, .input-box-login{
+.signContainer input, #bx-password-login{/*fix inputs (login)*/
     color: #ddd2d2;
     background-color: rgba(5, 7, 12, 0.2);
-}.signContainer input:hover, .input-box-login:hover{
+}.signContainer input:hover, #bx-password-login:hover{
     background-color: rgba(5, 7, 12, 0.1);
 }
 
-/*fix inputs (register)*/
-.registerContainer input, select, .input-box-register{
+.registerContainer input, #bx-password-register{/*fix inputs (register)*/
     background-color: #fdfdfd;
 }
 
-/*eyeIcon*/
-.input-box-login, .input-box-register{
+select {/*fix inputs (register select)*/
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    appearance:none;
+    flex: 1;
+    cursor:pointer;
+    border-radius: 0 !important;
+}select::-ms-expand {
+    display: none;
+}.container-access, .container-entity{
+    position: relative;
+    display: flex;
+    border-radius: 8px;
+    line-height: 3;
+    background: #333;
+    overflow: hidden;
+}.container-access::after, .container-entity::after{
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    cursor:pointer;
+    pointer-events:none;
+    color: rgb(229, 157, 229);
+    background-color: rgb(249, 220, 249);
+    transition: color 0.7s ease;
+}.container-access:hover::after, .container-entity:hover::after{
+    color: rgb(203, 119, 203);
+}
+
+.box-input-password{/*eyeIcon*/
     display: flex;
     align-items: center;
     padding: 0 10px 0 0;
-}#password-login, #password-register{
+}#password-login, #password-register{/*AC #211*/
     margin-left: 0%;
     border: 0;
     background: rgba(0, 0, 0, 0);
-}.input-box-login:hover img, .input-box-register:hover img{
+}.box-input-password:hover img{
     opacity: 1;
 }img{
     margin-right: 0px;
@@ -212,5 +240,5 @@ form .button{
 @media (max-height: 750px) {.mainContainer.active .registerContainer{transform: translate(-50%, 12%);} .mainContainer form{padding: 5px 0;} .mainContainer.active{height: 65%;}}
 @media (max-height: 650px) {.mainContainer.active .registerContainer{transform: translate(-50%, 13%);} .mainContainer form{padding: 10px 0;} .mainContainer.active{height: 70%;}}
 @media (max-height: 600px) {.registerContainer{transform: translate(-50%, 80%);} .mainContainer{height: 300px;}}/*convert to static*/
-@media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .input-box-login, .input-box-register, form .button{height: 35px;}}
+@media (max-height: 550px) {.mainContainer.active .registerContainer{transform: translate(-50%, 14%);} .mainContainer form{padding: 20px 0;} .mainContainer.active{height: 400px;} input, select, .box-input-password, form .button{height: 35px;}}
 

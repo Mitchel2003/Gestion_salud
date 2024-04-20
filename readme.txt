@@ -1,85 +1,4 @@
 /*--------------------------------------------------tips--------------------------------------------------*/
-
-
-Entiendo lo que necesitas. Quieres cambiar el color del texto de la opción seleccionada que se muestra en tu elemento `<select>`, incluso antes de que el usuario despliegue las opciones. Esto puede ser un poco complicado porque los navegadores tienden a limitar el estilo de los controles de formulario nativos para mantener una experiencia de usuario coherente. Sin embargo, hay algunas formas de abordarlo, aunque no se puede hacer directamente con CSS en el elemento `<select>`.
-
-Una forma de lograr un efecto similar es utilizar JavaScript junto con CSS para aplicar estilos a un elemento sustituto del `<select>`. Esto implica ocultar el `<select>` real y mostrar en su lugar un elemento que simule serlo, el cual puede ser un `<div>`, por ejemplo. Este elemento puede estilizarse como desees, incluyendo cambiar el color del texto de la opción "seleccionada" que se muestra.
-
-Aquí tienes un ejemplo básico de cómo podrías implementar esto:
-
-HTML (estructura básica):
-```html
-<div id="selectBox" class="select-box">
-    <div id="selectedValue" class="selected-value">Selecciona una opción</div>
-    <div id="options" class="options-container hidden">
-        <div class="option" data-value="1">Opción 1</div>
-        <div class="option" data-value="2">Opción 2</div>
-        <!-- Agrega más opciones según necesites -->
-    </div>
-</div>
-<input type="hidden" id="actualSelect" name="selectValue">
-```
-
-CSS para ocultar/mostrar las opciones y personalizar el "select":
-```css
-.select-box {
-  position: relative;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.selected-value {
-  padding: 10px;
-  background-color: white;
-  color: red; /* Aquí eliges el color del texto */
-}
-
-.options-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  border-top: none;
-  z-index: 10;
-}
-
-.hidden {
-  display: none;
-}
-
-.option {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.option:hover {
-  background-color: #f2f2f2;
-}
-```
-
-JavaScript para manejar los eventos:
-```javascript
-document.getElementById("selectBox").addEventListener("click", function() {
-    var optionsContainer = document.getElementById("options");
-    optionsContainer.classList.toggle("hidden");
-});
-
-var options = document.querySelectorAll(".option");
-options.forEach(function(option) {
-    option.addEventListener("click", function() {
-        var selectedValue = document.getElementById("selectedValue");
-        selectedValue.innerText = option.textContent;
-        document.getElementById("actualSelect").value = option.getAttribute("data-value");
-        document.getElementById("options").classList.add("hidden");
-    });
-});
-```
-
-Este es solo un punto de partida y seguramente querrás ajustarlo a tus necesidades específicas, como mejorar la accesibilidad o agregar funcionalidades adicionales.
-
-
-
 //for initializing webpack of server: webpack-dev-server --mode development yes
 //implements: bcrypt, jsonwebtoken, dotenv
 //production: react router, stackblitz, vite
@@ -600,4 +519,17 @@ after:
 usé this.updateStatus = this.updateStatus.bind(this) para asegurar que this dentro de la función updateStatus se refiera a la instancia
 de StatusConnection, permitiendo el acceso correcto al metodo; de este modo el addEventListener no se dispara erroneamente, sino que logra
 retenerse y esperar el cambio en el estatus
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#211: el contexto subyace de la necesidad de acortar las lineas de codigo;
+
+#password-login, #password-register{
+    margin-left: 0%;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+}
+
+si bien es cierto esto se puede simplicar al ponerles el mismo nombre de clase; eso mismo intenté, pero al hacer referencia a esta clase
+para poder aplicar estos estilos encontramos inconvenientes con la superposicion; lo que pasa es que en otras partes del codigo encontramos
+referencias mas especificas de este elemento que inciden en los estilos, por tanto, el id es por el momento el unico metodo de acceder a estos
+elementos input de modo que se respete las asignaciones que programo; creo que otro modo seria utilizando !important, ya veremos...
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

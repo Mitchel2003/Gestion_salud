@@ -17,8 +17,8 @@ export function removeActive(container) { container.classList.remove('active'); 
 export function changeStatusIconEye() {//fix anim on/off iconEye (AC #206)
     const iconLogin = document.getElementById('eyeIcon-login');
     const iconRegister = document.getElementById('eyeIcon-register');
-    iconLogin.addEventListener('click', () => { setInput(document.querySelector('.input-box-login input'), iconLogin); });
-    iconRegister.addEventListener('click', () => { setInput(document.querySelector('.input-box-register input'), iconRegister); });
+    iconLogin.addEventListener('click', () => { setInput(document.querySelector('#bx-password-login input'), iconLogin); });
+    iconRegister.addEventListener('click', () => { setInput(document.querySelector('#bx-password-register input'), iconRegister); });
 }
 function setInput(input, icon) {
     if (input.type === "password") { input.type = "text"; icon.src = "./src/components/images/eye-open.webp"; }

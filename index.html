@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestion salud</title>
   <!-- dependency -->
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!-- sweetAlert and more -->
   <!-- local resource -->
   <link rel="icon" type="image/x-icon" href="./src/components/images/gs_icon.ico">
   <link rel="stylesheet" href="./src/controller/styles/index.css">
@@ -22,7 +22,7 @@
       <header>Login</header>
       <form>
         <input class="classic-input" name="user" type="email" placeholder="User" required>
-        <div class="input-box-login">
+        <div id="bx-password-login" class="box-input-password">
           <input id="password-login" name="password" type="password" placeholder="Password" required>
           <img src="./src/components/images/eye-close.webp" id="eyeIcon-login">
         </div>
@@ -36,50 +36,31 @@
       <form>
         <input class="classic-input" name="user" type="text" placeholder="Name" required>
         <input class="classic-input" name="mail" type="email" placeholder="Email" required>
-        <div class="input-box-register">
+        <div id="bx-password-register" class="box-input-password">
           <input id="password-register" name="password" type="password" placeholder="Password" required>
           <img src="./src/components/images/eye-close.webp" id="eyeIcon-register">
         </div>
 
         <label id="position">User access</label>
-        <select id="userPosition">
-          <option value="auditor">Auditor</option>
-          <option value="admin">Administrator</option>
-          <option value="auxiliary">Auxiliary</option>
-        </select>
-        <select id="userEntity">
-          <option value="1">first example</option>
-          <option value="2">second example</option>
-          <option value="3">thirty example</option>
-        </select>
 
+        <div class="container-access">
+          <select name="access" id="select-access">
+            <option selected disabled>choose a access</option>
+            <option value="auditor">Auditor</option>
+            <option value="admin">Administrator</option>
+            <option value="auxiliary">Auxiliary</option>
+          </select>
+        </div>
 
+        <div class="container-entity">
+          <select name="entity" id="select-entity">
+            <option selected disabled>choose a entity</option>
+            <!-- wait database -->
+          </select>
+        </div>
 
-        <!-- <label>User access</label>
-        <div class="menu-access">
-          <div class="input-access">
-            <span class="text-access">select access</span>
-            <i class="bx bx-chevron-down"></i>
-          </div>
-          
-          <div class="box-options-access">
-            <li class="option-access">
-              <i class="bx bxs-user-circle" style="color: rgb(0, 194, 194);"></i>
-              <span class="text-option">Auxiliary</span>
-            </li>
-            <div class="separator"></div>
-            <li class="option-access">
-              <i> <div class="bx bx-check-double" style="color: rgb(7, 199, 0);"></div></i>
-              <span class="text-option">Auditor</span>
-            </li>
-            <div class="separator"></div>
-            <li class="option-access">
-              <i> <div class="bx bxs-key" style="color: #cec005;"></div></i>
-              <span class="text-option">Administrator</span>
-            </li>
-          </div>
-
-        </div> -->
+        <!-- use boxicons -->
+        <!-- <i class="bx bx-chevron-down"></i> -->
 
         <button type="submit" class="button">Send request</button>
       </form>
@@ -87,7 +68,7 @@
   </div>
 
   <!-- screen loading... -->
-  <div  class="loadContainer" >
+  <div class="loadContainer">
     <div class="load">
       <div class="frame_1"></div>
       <div class="frame_2"></div>
