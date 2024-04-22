@@ -1,80 +1,64 @@
-import { customAlert, selectIcon, alertButtonAction } from "../utils/alerts.js";
 import { onSession, offSession } from "../firebase/authentication.js";
 import { onLoadWhile, offLoadWhile } from "../utils/view.js";
+import { showMessageAlert } from "../utils/alerts.js";
+
+const getAlert = await import('../utils/alerts.js');
 
 export async function loginUser(user, password) {
     try {
         onLoadWhile();
-        const { key } = await (await import('../firebase/query.js')).getDocumentUser(user);
-        if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(user))) {
-            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageEmailNotFound();
-            customAlert(title, message, selectIcon(typeAlert));
+        const getQuery = await import('../firebase/query.js');
+        const { key } = await getQuery.getDocumentUser(user);
+
+        if (!(await getQuery.isFoundDocumentReference(user))) {
+            await showMessageAlert('messageEmailNotFound');
             offLoadWhile();
             return;
         }
         await onSession(user, password);//AC #208
 
         if (!key) {
-            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageAccessNotFound();
-            customAlert(title, message, selectIcon(typeAlert));
+            await showMessageAlert('messageAccessNotFound');
             await offSession();
             offLoadWhile();
             return;
         }
         (await import('../utils/view.js')).goToSession();
         offLoadWhile();
-    } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsLoginUser(error); }
+    } catch (error) { offLoadWhile(); getAlert.exceptionsLoginUser(error); }
 }
 export async function registerUser(name, email, password, access) {
     try {
         onLoadWhile();
-        const getAuthMethod = await import('../firebase/authentication.js');
-        const getAlert = await import('../utils/alerts.js');
-        await getAuthMethod.createUser(email, password);
-        await getAuthMethod.updateDataUser(name);
-        await getAuthMethod.verificationEmailAddress(email, access);
+        const getAuth = await import('../firebase/authentication.js');
+        await getAuth.createUser(email, password);
+        await getAuth.updateDataUser(name);
+        await getAuth.verificationEmailAddress(email, access);
         (await import('../utils/values.js')).cleanInputRegister();
 
-        const { title, message, typeAlert } = getAlert.messageEmailVerify();
-        customAlert(title, message, selectIcon(typeAlert));
+        await showMessageAlert('messageEmailVerify');
         await offSession();
         offLoadWhile();
-    } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsRegisterUser(error); }
+    } catch (error) { offLoadWhile(); getAlert.exceptionsRegisterUser(error); }
 }
 export async function requestResetPassword() {
     try {
-        const getAlert = await import('../utils/alerts.js');
-        const { title, message, typeAlert } = getAlert.messageRestorePassword();
-        const email = await getAlert.alertInput(title, message, selectIcon(typeAlert));
+        const email = await showMessageAlert('messageRestorePassword');
         onLoadWhile();
 
-        if (!(await (await import('../firebase/query.js')).isFoundDocumentReference(email))) {
-            const { title, message, typeAlert } = getAlert.messageEmailNotFound();
-            customAlert(title, message, selectIcon(typeAlert));
+        const getQuery = await import('../firebase/query.js');
+        const getAuth = await import('../firebase/authentication.js');
+
+        if ( !(await getQuery.isFoundDocumentReference(email)) ) {
+            await showMessageAlert('messageEmailNotFound');
             offLoadWhile();
             return;
         }
-        await (await import('../firebase/authentication.js')).sendToEmailResetPassword(email);
-
-        const { title2, message2, typeAlert2 } = getAlert.messageTokenSubmitted();
-        customAlert(title2, message2, selectIcon(typeAlert2));
+        await getAuth.sendToEmailResetPassword(email);
+        await showMessageAlert('messageTokenSubmitted');
         offLoadWhile();
-    } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsResetPassword(error); }
+    } catch (error) { offLoadWhile(); getAlert.exceptionsResetPassword(error); }
 }
-
-/*--------------------------------------------------on session--------------------------------------------------*/
-export async function modeAuxiliary() {
-    //side bar
-    document.getElementById('menu-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
-    document.getElementById('close-action').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
-}
-export async function modeAuditor() {
-
-}
-export async function modeAdmin() {
-
-}
-
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();
@@ -83,24 +67,25 @@ export async function modeVerifyEmail(res) {
     const userEmail = url.searchParams.get('email');
     const userAccess = url.searchParams.get('access');
 
-    if (await (await import('../firebase/query.js')).isFoundDocumentReference(userEmail)) {
-        const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageTokenVerifyExpired();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-        if (response) { (await import('../utils/view.js')).goToHome(); }
+    const getQuery = await import('../firebase/query.js');
+    const getAuth = await import('../firebase/authentication.js');
+    const getView = await import('../utils/view.js');
+
+    if (await getQuery.isFoundDocumentReference(userEmail)) {
+        const response = await showMessageAlert('messageTokenVerifyExpired');
+        if (response) { getView.goToHome(); }
         offLoadWhile();
         return;
     }
-    await (await import('../firebase/authentication.js')).appenedDocumentReference(userEmail, userAccess);
+    await getAuth.appenedDocumentReference(userEmail, userAccess);
 
-    const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageUserSubmitted();
-    const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-    if (response) { (await import('../utils/view.js')).goToHome(); }
+    const response = await showMessageAlert('messageUserSubmitted');
+    if (response) { getView.goToHome(); }
     await offSession();
     offLoadWhile();
 }
 export async function modeChangePassword() {
-    const resetButton = document.getElementById('resetPassword_form');
-    resetButton.addEventListener('submit', async function (event) {//AC #204
+    document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
             event.preventDefault();
             onLoadWhile();
@@ -110,23 +95,20 @@ export async function modeChangePassword() {
             const confirmPassword = document.getElementById('confirmPassword').value;
 
             if (checkSamePasswords(password, confirmPassword)) {
-                const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordNotSame();
-                customAlert(title, message, selectIcon(typeAlert));
+                await showMessageAlert('messagePasswordNotSame');
                 offLoadWhile(); return;
-            } 
+            }
             if (checkSizeAllowed(password)) {
-                const { title, message, typeAlert } = (await import('../utils/alerts.js')).messagePasswordSizeShort();
-                customAlert(title, message, selectIcon(typeAlert));
+                await showMessageAlert('messagePasswordSizeShort');
                 offLoadWhile(); return;
             }
             await (await import('../firebase/authentication.js')).validateResetPassword(oobCode, password);
 
-            const { title, message, typeAlert } = (await import('../utils/alerts.js')).messageResetPasswordSuccess();
-            const request = await alertButtonAction(title, message, selectIcon(typeAlert));
+            const request = await showMessageAlert('messageResetPasswordSuccess');
             if (request) { (await import('../utils/view.js')).goToHome(); }
             await offSession();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); (await import('../utils/alerts.js')).exceptionsChangePassword(); }
+        } catch (error) { offLoadWhile(); getAlert.exceptionsChangePassword(); }
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/

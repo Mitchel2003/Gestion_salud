@@ -22,9 +22,9 @@ function setInput(input, icon) {
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 export class SetClassList {//onClick
-    constructor(turnOn, turnOff, container, classList) {
-        this.on = turnOn;
-        this.off = turnOff;
+    constructor(turnOn, turnOff, classList, container) {
+        this.on = document.querySelector(turnOn);
+        this.off = document.querySelector(turnOff);
         this.add = this.addClass.bind(this, container, classList);
         this.remove = this.removeClass.bind(this, container, classList);
         this.listenClick();
@@ -41,9 +41,7 @@ export class SetClassList {//onClick
     }
 }
 export function goToHome() {//send to...
-    let url = new URL(window.location.href);
-    url.pathname = './Gestion_salud/index.html';
-    window.location.href = url.toString();
+    window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }
 export function goToSession() {
     let url = new URL(window.location.href);

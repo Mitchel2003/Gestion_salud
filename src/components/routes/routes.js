@@ -15,9 +15,9 @@ async function fixContext(){
 async function managementSession(access){
     const road = getUserContext(access); 
     insertHtml(road);
-    if (access === 'auxiliary') { await (await import('../models/userModel.js')).modeAuxiliary(); }
-    else if (access === 'auditor') { await (await import('../models/userModel.js')).modeAuditor(); }
-    else if (access === 'admin') { await (await import('../models/userModel.js')).modeAdmin(); }
+    if (access === 'auxiliary') { await (await import('../models/sessionModel.js')).modeAuxiliary(); }
+    else if (access === 'auditor') { await (await import('../models/sessionModel.js')).modeAuditor(); }
+    else if (access === 'admin') { await (await import('../models/sessionModel.js')).modeAdmin(); }
     offLoadWhile();
 }
 function getUserContext(res) {//AC #205

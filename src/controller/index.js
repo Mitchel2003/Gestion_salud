@@ -6,7 +6,7 @@ window.addEventListener("load", async () => { (await import('../components/utils
 
 //iterators
 let status = new StatusConnection();
-let changeContext = new SetClassList(document.querySelector('.registerContainer header'), document.querySelector('.signContainer header'), container, 'active'); //on, off, setElement, class
+let changeContext = new SetClassList('.registerContainer header', '.signContainer header', 'active', container); //on, off, class, setElement
 (await import('../components/utils/view.js')).changeStatusIconEye();
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');

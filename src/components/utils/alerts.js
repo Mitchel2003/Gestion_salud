@@ -212,7 +212,7 @@ export function exceptionsResetPassword(error) {
     return;
 }
 
-/* ---responses personalized--- */
+/* ---responses personalized (shorteners)--- */
 export function exceptionsChangePassword() {
     const { title, message, typeAlert } = messageTokenExpired();
     customAlert(title, message, selectIcon(typeAlert)); return;
@@ -225,4 +225,47 @@ export async function exceptionsSignOut() {
     const { title, message, typeAlert } = messageSessionFailed();
     await alertButtonAction(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome(); return;
+}
+export async function showMessageAlert(type) {//generaly
+    if (type === 'messageEmailNotFound') {
+        const { title, message, typeAlert } = messageEmailNotFound();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageAccessNotFound') {
+        const { title, message, typeAlert } = messageAccessNotFound();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageEmailVerify') {
+        const { title, message, typeAlert } = messageEmailVerify();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageRestorePassword') {
+        const { title, message, typeAlert } = messageRestorePassword();
+        const email = await alertInput(title, message, selectIcon(typeAlert));
+        return email;
+    } if (type === 'messageTokenSubmitted') {
+        const { title2, message2, typeAlert2 } = messageTokenSubmitted();
+        customAlert(title2, message2, selectIcon(typeAlert2));
+        return;
+    } if (type === 'messageTokenVerifyExpired') {
+        const { title, message, typeAlert } = messageTokenVerifyExpired();
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));    
+        return response;
+    } if (type === 'messageUserSubmitted') {
+        const { title, message, typeAlert } = messageUserSubmitted();
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+        return response;
+    } if (type === 'messagePasswordNotSame') {
+        const { title, message, typeAlert } = messagePasswordNotSame();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messagePasswordSizeShort') {
+        const { title, message, typeAlert } = messagePasswordSizeShort();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageResetPasswordSuccess') {
+        const { title, message, typeAlert } = messageResetPasswordSuccess();
+        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
+        return request;
+    }
 }

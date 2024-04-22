@@ -231,7 +231,7 @@ form .button{
     font-weight: 400;
 }
 /*--------------------------------------------------media query (responsive)--------------------------------------------------*/
-/*@media (min-width: 800px) {.container-select{line-height: 4;}}working here...*/
+@media (min-height: 800px) {.container-select{line-height: 4;}}
 @media (min-width: 720px) {.mainContainer{width: 42vw; max-width: 400px;}}
  
 @media (min-height: 950px) {.mainContainer.active{height: 67%;} .mainContainer.active .registerContainer{transform: translate(-50%, 7%);} .mainContainer{height: 45%;}}
