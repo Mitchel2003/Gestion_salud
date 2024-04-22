@@ -139,11 +139,11 @@ select {/*fix inputs (register select)*/
     color: rgb(203, 119, 203);
 }
 
-.box-input-password{/*eyeIcon*/
+/* .box-input-password{
     display: flex;
     align-items: center;
     padding: 0 10px 0 0;
-}#password-login, #password-register{/*AC #211*/
+}#password-login, #password-register{
     margin-left: 0%;
     border: 0;
     background: rgba(0, 0, 0, 0);
@@ -154,7 +154,7 @@ select {/*fix inputs (register select)*/
     width: 20px;
     opacity: 0;
     cursor: pointer;
-}
+} */
 /*--------------------------------------------------buttons--------------------------------------------------*/
 form .button{
     position: relative;
