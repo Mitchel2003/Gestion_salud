@@ -10,18 +10,21 @@ export function loadElements(container) {//init()
 export function onLoadWhile() { document.querySelector('.loadContainer').classList.add('show'); }
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
-export function changeStatusIconEye() {//fix anim on/off iconEye (AC #206)
-    const iconLogin = document.getElementById('eyeIcon-login');
-    const iconRegister = document.getElementById('eyeIcon-register');
-    iconLogin.addEventListener('click', () => { setInput(document.querySelector('#bx-password-login input'), iconLogin); });
-    iconRegister.addEventListener('click', () => { setInput(document.querySelector('#bx-password-register input'), iconRegister); });
+export class StatusIconEye {//fix anim on/off iconEye (AC #206)
+    constructor(eye, input) {
+        this.icon = document.querySelector(eye);
+        this.input = document.querySelector(input);
+        this.observer();
+    }
+    observer() {
+        this.icon.addEventListener('click', () => this.setInput(this.icon, this.input) );
+    }
+    setInput(icon, input) {
+        if (input.type === "password") { input.type = "text"; icon.src = "./src/components/images/eye-open.webp"; }
+        else { input.type = "password"; icon.src = "./src/components/images/eye-close.webp"; }
+    }
 }
-function setInput(input, icon) {
-    if (input.type === "password") { input.type = "text"; icon.src = "./src/components/images/eye-open.webp"; }
-    else { input.type = "password"; icon.src = "./src/components/images/eye-close.webp"; }
-}
-/*--------------------------------------------------tools--------------------------------------------------*/
-export class SetClassList {//onClick
+export class SetClassList {//at onClick
     constructor(turnOn, turnOff, classList, container) {
         this.on = document.querySelector(turnOn);
         this.off = document.querySelector(turnOff);
@@ -30,16 +33,17 @@ export class SetClassList {//onClick
         this.listenClick();
     }
     listenClick() {
-        this.on.addEventListener('click', this.add );
-        this.off.addEventListener('click', this.remove );
+        this.on.addEventListener('click', this.add);
+        this.off.addEventListener('click', this.remove);
     }
     addClass(element, classList) { element.classList.add(classList); }
     removeClass(element, classList) { element.classList.remove(classList); }
-    destroy() { 
-        this.on.removeEventListener('click', this.add ); 
-        this.off.removeEventListener('click', this.remove );
+    destroy() {
+        this.on.removeEventListener('click', this.add);
+        this.off.removeEventListener('click', this.remove);
     }
 }
+/*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';
 }

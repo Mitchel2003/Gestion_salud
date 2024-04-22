@@ -16,7 +16,10 @@
     <script type="module">
         import { modeVerifyEmail, modeChangePassword } from '../components/models/userModel.js';
         import { getQueryParams } from '../components/firebase/query.js';
-
+        import { StatusIconEye } from "../components/utils/view.js";
+        
+        let observerIconEye_newPassword = new StatusIconEye('#eyeIcon-1', '#box-1 input');
+        let observerIconEye_confirmPassword = new StatusIconEye('#eyeIcon-2', '#box-2 input');
         await fixContext();
 
         async function fixContext() {
@@ -58,11 +61,13 @@
                                 <div class="card-body text-center">
                                     <h2 class="mb-4">Enter your new password</h2>
                                     <form id="resetPassword_form">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" id="newPassword" placeholder="Password" required>
+                                        <div class="form-group" id="box-1">
+                                            <input type="password" class="form-control" placeholder="Password" required>
+                                            <img class="icon" src="./src/components/images/eye-close.webp" id="eyeIcon-1">
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                                        <div class="form-group" id="box-2">
+                                            <input type="password" class="form-control" placeholder="Confirm password" required>
+                                            <img class="icon" src="./src/components/images/eye-close.webp" id="eyeIcon-2">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
                                     </form>

@@ -40,3 +40,20 @@
     top: calc(50% - 20px);
     animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
 }.show{ opacity: 1; z-index: 999; }/*class setVisible*/
+
+.form-group{/*eyeIcon*/
+    display: flex;
+    align-items: center;
+    padding: 0 10px 0 0;
+}.form-control{
+    margin-left: 0%;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+}.form-group:hover .icon{
+    opacity: 1;
+}.icon{
+    margin-right: 0px;
+    width: 20px;
+    opacity: 0;
+    cursor: pointer;
+}

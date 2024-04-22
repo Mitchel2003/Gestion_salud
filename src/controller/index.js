@@ -1,4 +1,4 @@
-import { SetClassList } from "../components/utils/view.js";
+import { SetClassList, StatusIconEye } from "../components/utils/view.js";
 import { StatusConnection } from "../components/firebase/authentication.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
@@ -6,8 +6,9 @@ window.addEventListener("load", async () => { (await import('../components/utils
 
 //iterators
 let status = new StatusConnection();
-let changeContext = new SetClassList('.registerContainer header', '.signContainer header', 'active', container); //on, off, class, setElement
-(await import('../components/utils/view.js')).changeStatusIconEye();
+let setSection = new SetClassList('.registerContainer header', '.signContainer header', 'active', container);
+let observerIconEye_section_login = new StatusIconEye('#eyeIcon-login', '#password-login');
+let observerIconEye_section_register = new StatusIconEye('#eyeIcon-register', '#password-register');
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');
