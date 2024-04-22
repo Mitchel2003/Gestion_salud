@@ -20,10 +20,10 @@ signContainer.addEventListener('submit', async function (event) {
     const { user, password } = (await import('../components/utils/values.js')).getInputLogin();
     await (await import('../components/models/userModel.js')).loginUser(user, password);
 });
-registerContainer.addEventListener('submit', async function (event) {
+registerContainer.addEventListener('submit', async function (event) { //working here...
     event.preventDefault();
-    const { name, email, password, access } = (await import('../components/utils/values.js')).getInputRegister();//AC #203
-    await (await import('../components/models/userModel.js')).registerUser(name, email, password, access);
+    const { name, email, password, access, entity } = (await import('../components/utils/values.js')).getInputRegister();//AC #203
+    await (await import('../components/models/userModel.js')).registerUser(name, email, password, access, entity);
 });
 forgotPassword.addEventListener('click', async function (event) {
     event.preventDefault();

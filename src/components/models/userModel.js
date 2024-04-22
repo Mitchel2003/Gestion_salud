@@ -27,7 +27,7 @@ export async function loginUser(user, password) {
         offLoadWhile();
     } catch (error) { offLoadWhile(); getAlert.exceptionsLoginUser(error); }
 }
-export async function registerUser(name, email, password, access) {
+export async function registerUser(name, email, password, access, entity) {
     try {
         onLoadWhile();
         const getAuth = await import('../firebase/authentication.js');

@@ -2,8 +2,8 @@ export function getInputRegister() {
     const name=document.querySelector('.registerContainer input[type="text"]').value;
     const email=document.querySelector('.registerContainer input[type="email"]').value;
     const password=document.querySelector('#bx-password-register input').value;
-    const access=document.querySelector('.registerContainer #userPosition').value;
-    const entity=document.querySelector('.registerContainer #userEntity').value;
+    const access=document.querySelector('.registerContainer #select-access').value;
+    const entity=document.querySelector('.registerContainer #select-entity').value;
     return {name, email, password, access, entity};
 }
 export function getInputLogin() {
