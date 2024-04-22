@@ -86,8 +86,8 @@ export async function modeVerifyEmail(res) {
 }
 export async function modeChangePassword() {
     const getView = await import("../utils/view.js");
-    let observerIconEye_newPassword = new getView.StatusIconEye('#eyeIcon-1', '#new-password');
-    let observerIconEye_confirmPassword = new getView.StatusIconEye('#eyeIcon-2', '#confirm-password');
+    let observerIconEye_newPassword = new getView.StatusIconEye('#eyeIcon-1', '#password-login');
+    let observerIconEye_confirmPassword = new getView.StatusIconEye('#eyeIcon-2', '#password-register');
     
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
