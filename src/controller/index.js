@@ -7,8 +7,10 @@ window.addEventListener("load", async () => { (await import('../components/utils
 //iterators
 let status = new StatusConnection();
 let setSection = new SetClassList('.registerContainer header', '.signContainer header', 'active', container);
-let observerIconEye_section_login = new StatusIconEye('#eyeIcon-login', '#password-login');
-let observerIconEye_section_register = new StatusIconEye('#eyeIcon-register', '#password-register');
+
+const srcIconOpen = "./src/components/images/eye-open.webp", srcIconClose = "./src/components/images/eye-close.webp";
+let observerIconEye_section_login = new StatusIconEye('#eyeIcon-login', '#password-login', srcIconOpen, srcIconClose );
+let observerIconEye_section_register = new StatusIconEye('#eyeIcon-register', '#password-register', srcIconOpen, srcIconClose );
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');

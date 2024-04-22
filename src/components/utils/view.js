@@ -11,17 +11,19 @@ export function onLoadWhile() { document.querySelector('.loadContainer').classLi
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
 export class StatusIconEye {//fix anim on/off iconEye (AC #206)
-    constructor(eye, input) {
+    constructor(eye, input, iconOpen, iconClose) {
         this.icon = document.querySelector(eye);
         this.input = document.querySelector(input);
+        this.open = iconOpen;
+        this.close = iconClose;
         this.observer();
     }
     observer() {
-        this.icon.addEventListener('click', () => this.setInput(this.icon, this.input) );
+        this.icon.addEventListener('click', () => this.setInput(this.icon, this.input, this.open, this.close) );
     }
-    setInput(icon, input) {
-        if (input.type === "password") { input.type = "text"; icon.src = "./src/components/images/eye-open.webp"; }
-        else { input.type = "password"; icon.src = "./src/components/images/eye-close.webp"; }
+    setInput(icon, input, open, close) {
+        if (input.type === "password") { input.type = "text"; icon.src = open; }
+        else { input.type = "password"; icon.src = close; }
     }
 }
 export class SetClassList {//at onClick
