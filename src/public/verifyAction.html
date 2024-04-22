@@ -16,7 +16,6 @@
     <script type="module">
         import { modeVerifyEmail, modeChangePassword } from '../components/models/userModel.js';
         import { getQueryParams } from '../components/firebase/query.js';
-        import { insertHtml } from '../components/routes/routes.js';
         
         await fixContext();
 
@@ -28,8 +27,8 @@
         }
 
         async function managementAccount(compare) {
-            if (compare) { const road = requestContext('verify'); insertHtml(road); await modeVerifyEmail(compare); }
-            else { const road = requestContext('reset'); insertHtml(road); await modeChangePassword(); }
+            if (compare) { const road = requestContext('verify'); document.body.insertAdjacentHTML('afterbegin', road); await modeVerifyEmail(compare); }
+            else { const road = requestContext('reset'); document.body.insertAdjacentHTML('afterbegin', road); await modeChangePassword(); }
         }
 
         function requestContext(res) {//AC #205
@@ -61,11 +60,11 @@
                                     <form id="resetPassword_form">
                                         <div class="box-input-password">
                                             <input type="password" id="new-password" placeholder="Password" required>
-                                            <img class="icon" src="../components/images/eye-close.webp" id="eyeIcon-1">
+                                            <img class="icon" src="./components/images/eye-close.webp" id="eyeIcon-1">
                                         </div>
                                         <div class="box-input-password">
                                             <input type="password" id="confirm-password" placeholder="Confirm password" required>
-                                            <img class="icon" src="../components/images/eye-close.webp" id="eyeIcon-2">
+                                            <img class="icon" src="./components/images/eye-close.webp" id="eyeIcon-2">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
                                     </form>
