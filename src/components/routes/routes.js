@@ -51,6 +51,6 @@ function getUserContext(res) {//AC #205
     }
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
-function insertHtml(data){
+export function insertHtml(data){
     document.body.insertAdjacentHTML('afterbegin', data);
 }

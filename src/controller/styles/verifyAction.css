@@ -41,17 +41,17 @@
     animation: load_2 1s cubic-bezier(0.40, 0.61, 0.58, 0.41) infinite;
 }.show{ opacity: 1; z-index: 999; }/*class setVisible*/
 
-.form-group{/*eyeIcon*/
+.box-input-password{/*eyeIcon*/
     display: flex;
     align-items: center;
     padding: 0 10px 0 0;
-}.form-control{
+}#password-login, #password-register, #new-password , #confirm-password{/*AC #211*/
     margin-left: 0%;
     border: 0;
     background: rgba(0, 0, 0, 0);
-}.form-group:hover .icon{
+}.box-input-password:hover img{
     opacity: 1;
-}.icon{
+}img{
     margin-right: 0px;
     width: 20px;
     opacity: 0;
