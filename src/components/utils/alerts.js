@@ -58,6 +58,108 @@ export async function alertButtonAction(title, message, icon) {
         customClass: { popup: 'customAlert' }
     }); return request;
 }
+/*--------------------------------------------------exceptions--------------------------------------------------*/
+export function exceptionsLoginUser(error) {
+    if (error.code === 'auth/invalid-login-credentials') {
+        const { title, message, typeAlert } = messageCredentialsIncorrects();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (error.code === 'auth/too-many-requests') {
+        const { title, message, typeAlert } = messageManyRequests();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error, selectIcon(typeAlert));
+    return;
+}
+export function exceptionsRegisterUser(error) {
+    if (error.code === 'auth/email-already-in-use') {
+        const { title, message, typeAlert } = messageEmailUsed();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (error.code === 'auth/invalid-email') {
+        const { title, message, typeAlert } = messageEmailUnknow();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (error.code === 'auth/weak-password') {
+        const { title, message, typeAlert } = messagePasswordSizeShort();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error.code, selectIcon(typeAlert));
+    return;
+}
+export function exceptionsResetPassword(error) {
+    if (error.code === 'auth/too-many-requests') {
+        const { title, message, typeAlert } = messageManyRequests();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (error.code === 'invalid-argument') {/*nothing*/ return; }
+    const { title, typeAlert } = messageTempUnknow();
+    customAlert(title, error.code, selectIcon(typeAlert));
+    return;
+}
+
+/* ---responses personalized (shorteners)--- */
+export function exceptionsChangePassword() {
+    const { title, message, typeAlert } = messageTokenExpired();
+    customAlert(title, message, selectIcon(typeAlert)); return;
+}
+export function exceptionsConnectionEthernet() {
+    const { title, message, typeAlert } = messageStatusOnline();
+    alertToast(title, message, selectIcon(typeAlert)); return;
+}
+export async function exceptionsSignOut() {
+    const { title, message, typeAlert } = messageSessionFailed();
+    await alertButtonAction(title, message, selectIcon(typeAlert));
+    (await import('./view.js')).goToHome(); return;
+}
+
+export async function showMessageAlert(type) {/* ---(generaly)--- */
+    if (type === 'messageEmailNotFound') {
+        const { title, message, typeAlert } = messageEmailNotFound();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageAccessNotFound') {
+        const { title, message, typeAlert } = messageAccessNotFound();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageEmailVerify') {
+        const { title, message, typeAlert } = messageEmailVerify();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageRestorePassword') {
+        const { title, message, typeAlert } = messageRestorePassword();
+        const email = await alertInput(title, message, selectIcon(typeAlert));
+        return email;
+    } if (type === 'messageTokenSubmitted') {
+        const { title2, message2, typeAlert2 } = messageTokenSubmitted();
+        customAlert(title2, message2, selectIcon(typeAlert2));
+        return;
+    } if (type === 'messageTokenVerifyExpired') {
+        const { title, message, typeAlert } = messageTokenVerifyExpired();
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));    
+        return response;
+    } if (type === 'messageUserSubmitted') {
+        const { title, message, typeAlert } = messageUserSubmitted();
+        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
+        return response;
+    } if (type === 'messagePasswordNotSame') {
+        const { title, message, typeAlert } = messagePasswordNotSame();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messagePasswordSizeShort') {
+        const { title, message, typeAlert } = messagePasswordSizeShort();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    } if (type === 'messageResetPasswordSuccess') {
+        const { title, message, typeAlert } = messageResetPasswordSuccess();
+        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
+        return request;
+    }
+}
 /*--------------------------------------------------text--------------------------------------------------*/
 export function messageUserSubmitted() {//successfull
     const title = "User submitted";
@@ -167,105 +269,4 @@ export function messageTempUnknow() {
     const title = "Exception Unknow";
     const typeAlert = "e";
     return { title, typeAlert };
-}
-/*--------------------------------------------------exceptions--------------------------------------------------*/
-export function exceptionsLoginUser(error) {
-    if (error.code === 'auth/invalid-login-credentials') {
-        const { title, message, typeAlert } = messageCredentialsIncorrects();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (error.code === 'auth/too-many-requests') {
-        const { title, message, typeAlert } = messageManyRequests();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
-    const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error, selectIcon(typeAlert));
-    return;
-}
-export function exceptionsRegisterUser(error) {
-    if (error.code === 'auth/email-already-in-use') {
-        const { title, message, typeAlert } = messageEmailUsed();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (error.code === 'auth/invalid-email') {
-        const { title, message, typeAlert } = messageEmailUnknow();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (error.code === 'auth/weak-password') {
-        const { title, message, typeAlert } = messagePasswordSizeShort();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
-    const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code, selectIcon(typeAlert));
-    return;
-}
-export function exceptionsResetPassword(error) {
-    if (error.code === 'auth/too-many-requests') {
-        const { title, message, typeAlert } = messageManyRequests();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (error.code === 'invalid-argument') {/*nothing*/ return; }
-    const { title, typeAlert } = messageTempUnknow();
-    customAlert(title, error.code, selectIcon(typeAlert));
-    return;
-}
-
-/* ---responses personalized (shorteners)--- */
-export function exceptionsChangePassword() {
-    const { title, message, typeAlert } = messageTokenExpired();
-    customAlert(title, message, selectIcon(typeAlert)); return;
-}
-export function exceptionsConnectionEthernet() {
-    const { title, message, typeAlert } = messageStatusOnline();
-    alertToast(title, message, selectIcon(typeAlert)); return;
-}
-export async function exceptionsSignOut() {
-    const { title, message, typeAlert } = messageSessionFailed();
-    await alertButtonAction(title, message, selectIcon(typeAlert));
-    (await import('./view.js')).goToHome(); return;
-}
-export async function showMessageAlert(type) {//generaly
-    if (type === 'messageEmailNotFound') {
-        const { title, message, typeAlert } = messageEmailNotFound();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageAccessNotFound') {
-        const { title, message, typeAlert } = messageAccessNotFound();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageEmailVerify') {
-        const { title, message, typeAlert } = messageEmailVerify();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageRestorePassword') {
-        const { title, message, typeAlert } = messageRestorePassword();
-        const email = await alertInput(title, message, selectIcon(typeAlert));
-        return email;
-    } if (type === 'messageTokenSubmitted') {
-        const { title2, message2, typeAlert2 } = messageTokenSubmitted();
-        customAlert(title2, message2, selectIcon(typeAlert2));
-        return;
-    } if (type === 'messageTokenVerifyExpired') {
-        const { title, message, typeAlert } = messageTokenVerifyExpired();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));    
-        return response;
-    } if (type === 'messageUserSubmitted') {
-        const { title, message, typeAlert } = messageUserSubmitted();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-        return response;
-    } if (type === 'messagePasswordNotSame') {
-        const { title, message, typeAlert } = messagePasswordNotSame();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messagePasswordSizeShort') {
-        const { title, message, typeAlert } = messagePasswordSizeShort();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageResetPasswordSuccess') {
-        const { title, message, typeAlert } = messageResetPasswordSuccess();
-        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
-        return request;
-    }
 }
