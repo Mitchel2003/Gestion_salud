@@ -97,8 +97,8 @@ export async function modeChangePassword() {
             onLoadWhile();
             const query = (await import('../firebase/query.js')).getQueryParams();
             const oobCode = query.oobCode;
-            const password = document.querySelector('#box-1 input').value;
-            const confirmPassword = document.querySelector('#box-2 input').value;
+            const password = document.querySelector('#password-login').value;
+            const confirmPassword = document.querySelector('#password-register').value;
 
             if (checkSamePasswords(password, confirmPassword)) {
                 await showMessageAlert('messagePasswordNotSame');
