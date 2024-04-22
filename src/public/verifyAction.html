@@ -16,10 +16,7 @@
     <script type="module">
         import { modeVerifyEmail, modeChangePassword } from '../components/models/userModel.js';
         import { getQueryParams } from '../components/firebase/query.js';
-        import { StatusIconEye } from "../components/utils/view.js";
         
-        let observerIconEye_newPassword = new StatusIconEye('#eyeIcon-1', '#box-1 input');
-        let observerIconEye_confirmPassword = new StatusIconEye('#eyeIcon-2', '#box-2 input');
         await fixContext();
 
         async function fixContext() {
