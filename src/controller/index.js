@@ -6,7 +6,7 @@ window.addEventListener("load", async () => { (await import('../components/utils
 
 //iterators
 let status = new StatusConnection();
-let fillSelectEntity = new AppennedItemSelect('');
+// let fillSelectEntity = new AppennedItemSelect('');
 let setSection = new SetClassList('.registerContainer header', '.signContainer header', 'active', container);
 
 const srcIconOpen = "./src/components/images/eye-open.webp", srcIconClose = "./src/components/images/eye-close.webp";

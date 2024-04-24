@@ -46,28 +46,23 @@ export class SetIconEye {//on/off iconEye at on click (AC #206)
         else { input.type = "password"; icon.src = close; }
     }
 }
-export class AppennedItemSelect{
-    constructor() {
-        this.update = this.updateStatus.bind(this);
-        this.setSelect();
-    }
-    setSelect() {
-        window.addEventListener('offline', this.update);
-        window.addEventListener('online', this.update);
-    }
-    updateStatus() {
-        if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
-        else { alert('Offline, check your connection'); }
-    }
-}
+// export class AppennedItemSelect{
+//     constructor() {
+//         this.update = this.updateStatus.bind(this);
+//         this.setSelect();
+//     }
+//     setSelect() {
+//         window.addEventListener('offline', this.update);
+//         window.addEventListener('online', this.update);
+//     }
+//     updateStatus() {
+//         if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
+//         else { alert('Offline, check your connection'); }
+//     }
+// }
 
-```javascript
-// Función async para obtener los datos de Firebase y añadirlos al select
-async function cargarEntidades() {
-  const selectEntity = document.getElementById('select-entity');
-
-  try {
-    // Obtiene los datos de Firebase
+async function appennedItemSelect(elementSelect) {
+  const select = document.querySelector(elementSelect);
     const datos = await obtenerDatosDeFirebase(); // Asume que esta función ya está implementada
 
     // Procesa cada objeto de datos para añadirlo como una opción en el select
@@ -77,15 +72,12 @@ async function cargarEntidades() {
       opcion.textContent = dato.nombre; // Asume que cada objeto tiene un 'nombre'
       selectEntity.appendChild(opcion);
     });
-  } catch(error) {
-    console.error('Error al cargar entidades desde Firebase', error);
-  }
 }
 
 // Asegúrate de llamar a cargarEntidades() en el punto adecuado de tu aplicación
 // Por ejemplo, después de que se haya cargado el DOM para evitar errores de referencia
 document.addEventListener('DOMContentLoaded', cargarEntidades);
-```
+
 
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...

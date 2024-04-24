@@ -12,6 +12,13 @@ export async function getDocumentUser(user) {
     querySnapshot.forEach((doc)=>{ const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
+export async function getListEntities(user) {//working here...
+    let access, key;
+    const ask = query(await getCollection("userInfo"), where("email", "==", user));
+    const querySnapshot = await getDocs(ask);
+    querySnapshot.forEach((doc)=>{ const value = doc.data(); access = value.access; key = value.key; });
+    return { access, key };
+}
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export async function getCollection(context) {
     const collectionReference = await (await import('./conection.js')).collection(db, context);
