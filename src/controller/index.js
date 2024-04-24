@@ -1,5 +1,6 @@
-import { SetClassList, SetIconEye } from "../components/utils/view.js";
 import { StatusConnection } from "../components/firebase/authentication.js";
+import { ClassList_OnClick, IconEye } from "../components/utils/view.js";
+
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
 window.addEventListener("load", async () => { (await import('../components/utils/view.js')).loadElements(container); });
@@ -7,11 +8,11 @@ window.addEventListener("load", async () => { (await import('../components/utils
 //iterators
 let status = new StatusConnection();
 // let fillSelectEntity = new AppennedItemSelect('');
-let setSection = new SetClassList('.registerContainer header', '.signContainer header', 'active', container);
+let setSection = new ClassList_OnClick('.registerContainer header', '.signContainer header', 'active', container);
 
 const srcIconOpen = "./src/components/images/eye-open.webp", srcIconClose = "./src/components/images/eye-close.webp";
-let observerIconEye_section_login = new SetIconEye('#eyeIcon-login', '#password-login', srcIconOpen, srcIconClose );
-let observerIconEye_section_register = new SetIconEye('#eyeIcon-register', '#password-register', srcIconOpen, srcIconClose );
+let observerIconEye_section_login = new IconEye('#eyeIcon-login', '#password-login', srcIconOpen, srcIconClose );
+let observerIconEye_section_register = new IconEye('#eyeIcon-register', '#password-register', srcIconOpen, srcIconClose );
 /*--------------------------------------------------tools--------------------------------------------------*/
 const signContainer = document.querySelector('.signContainer');
 const registerContainer = document.querySelector('.registerContainer');

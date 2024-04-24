@@ -11,7 +11,7 @@ export function onLoadWhile() { document.querySelector('.loadContainer').classLi
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
 /*--------------------------------------------------class--------------------------------------------------*/
-export class SetClassList {//on/off at on click
+export class ClassList_OnClick {//on/off at on click
     constructor(turnOn, turnOff, classList, container) {
         this.on = document.querySelector(turnOn);
         this.off = document.querySelector(turnOff);
@@ -47,13 +47,14 @@ export class SetIconEye {//on/off iconEye at on click (AC #206)
     }
 }
 // export class AppennedItemSelect{
-//     constructor() {
-//         this.update = this.updateStatus.bind(this);
+//     constructor(selectContext) {
+//         this.select = document.querySelector(selectContext);
 //         this.setSelect();
+//         // this.update = this.updateStatus.bind(this);
+        
 //     }
 //     setSelect() {
-//         window.addEventListener('offline', this.update);
-//         window.addEventListener('online', this.update);
+        
 //     }
 //     updateStatus() {
 //         if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
@@ -61,9 +62,9 @@ export class SetIconEye {//on/off iconEye at on click (AC #206)
 //     }
 // }
 
-async function appennedItemSelect(elementSelect) {
-  const select = document.querySelector(elementSelect);
-    const datos = await obtenerDatosDeFirebase(); // Asume que esta función ya está implementada
+async function appennedItemSelect(selectContext) {
+    const select = document.querySelector(selectContext);
+    const datos = await ((await import('../firebase/query')).getListEntities();); // Asume que esta función ya está implementada
 
     // Procesa cada objeto de datos para añadirlo como una opción en el select
     datos.forEach(dato => {

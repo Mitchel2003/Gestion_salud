@@ -88,8 +88,8 @@ export async function modeChangePassword() {
     const getView = await import("../utils/view.js");
 
     const srcIconOpen = "../../src/components/images/eye-open.webp", srcIconClose = "../../src/components/images/eye-close.webp"; 
-    let observerIconEye_newPassword = new getView.SetIconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
-    let observerIconEye_confirmPassword = new getView.SetIconEye('#eyeIcon-2', '#password-register',srcIconOpen ,srcIconClose);
+    let observerIconEye_newPassword = new getView.IconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
+    let observerIconEye_confirmPassword = new getView.IconEye('#eyeIcon-2', '#password-register',srcIconOpen ,srcIconClose);
     
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
