@@ -10,23 +10,8 @@ export function loadElements(container) {//init()
 export function onLoadWhile() { document.querySelector('.loadContainer').classList.add('show'); }
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
-export class StatusIconEye {//fix anim on/off iconEye (AC #206)
-    constructor(eye, input, iconOpen, iconClose) {
-        this.icon = document.querySelector(eye);
-        this.input = document.querySelector(input);
-        this.open = iconOpen;
-        this.close = iconClose;
-        this.observer();
-    }
-    observer() {
-        this.icon.addEventListener('click', () => this.setInput(this.icon, this.input, this.open, this.close) );
-    }
-    setInput(icon, input, open, close) {
-        if (input.type === "password") { input.type = "text"; icon.src = open; }
-        else { input.type = "password"; icon.src = close; }
-    }
-}
-export class SetClassList {//at onClick
+/*--------------------------------------------------class--------------------------------------------------*/
+export class SetClassList {//on/off at on click
     constructor(turnOn, turnOff, classList, container) {
         this.on = document.querySelector(turnOn);
         this.off = document.querySelector(turnOff);
@@ -45,6 +30,63 @@ export class SetClassList {//at onClick
         this.off.removeEventListener('click', this.remove);
     }
 }
+export class SetIconEye {//on/off iconEye at on click (AC #206)
+    constructor(eye, input, iconOpen, iconClose) {
+        this.icon = document.querySelector(eye);
+        this.input = document.querySelector(input);
+        this.open = iconOpen;
+        this.close = iconClose;
+        this.observer();
+    }
+    observer() {
+        this.icon.addEventListener('click', () => this.setInput(this.icon, this.input, this.open, this.close) );
+    }
+    setInput(icon, input, open, close) {
+        if (input.type === "password") { input.type = "text"; icon.src = open; }
+        else { input.type = "password"; icon.src = close; }
+    }
+}
+export class AppennedItemSelect{
+    constructor() {
+        this.update = this.updateStatus.bind(this);
+        this.setSelect();
+    }
+    setSelect() {
+        window.addEventListener('offline', this.update);
+        window.addEventListener('online', this.update);
+    }
+    updateStatus() {
+        if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
+        else { alert('Offline, check your connection'); }
+    }
+}
+
+```javascript
+// Función async para obtener los datos de Firebase y añadirlos al select
+async function cargarEntidades() {
+  const selectEntity = document.getElementById('select-entity');
+
+  try {
+    // Obtiene los datos de Firebase
+    const datos = await obtenerDatosDeFirebase(); // Asume que esta función ya está implementada
+
+    // Procesa cada objeto de datos para añadirlo como una opción en el select
+    datos.forEach(dato => {
+      const opcion = document.createElement('option');
+      opcion.value = dato.id; // Asume que cada objeto tiene un 'id'
+      opcion.textContent = dato.nombre; // Asume que cada objeto tiene un 'nombre'
+      selectEntity.appendChild(opcion);
+    });
+  } catch(error) {
+    console.error('Error al cargar entidades desde Firebase', error);
+  }
+}
+
+// Asegúrate de llamar a cargarEntidades() en el punto adecuado de tu aplicación
+// Por ejemplo, después de que se haya cargado el DOM para evitar errores de referencia
+document.addEventListener('DOMContentLoaded', cargarEntidades);
+```
+
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';

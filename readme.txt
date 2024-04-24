@@ -511,9 +511,9 @@ unos styles propios de la documentacion de sweetAlert, estos modificaban el cont
 para lograr de este modo interponerme en el efecto del class de sweetAlert. 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #208: Se que en algun momento te abras preguntado, porque el onSession esta entre 2 if(), porque no simplemente lo ponemos
-al final de los dos if(), y la cuestion es la siguiente; si es if() de consultar "key" (true or false) se evalua primero que
-el onSession(), entonces primero se evaluará la existencia de acceso para ese email ingresado, en caso de estar la contraseña
-incorrecta es un problema, porque entonces tiene que ser usuario habilitado para que le aparezca mensaje de contraseña incorrecta.
+al final de los dos if(), y la cuestion es la siguiente; si esa consulta "key" (true or false) se evalua primero que el onSession(),
+entonces primero se evaluará la existencia de acceso para ese email ingresado, en caso de estar la contraseña incorrecta es un
+problema, porque entonces tiene que ser usuario habilitado para que le aparezca mensaje de contraseña incorrecta.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #209: en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario,
 sino un método para desuscribirse del listener. Este comportamiento es típico de los observadores, donde `onAuthStateChanged`
