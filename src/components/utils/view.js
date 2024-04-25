@@ -31,7 +31,7 @@ export class ClassList_OnClick {//on/off at on click
         this.off.removeEventListener('click', this.remove);
     }
 }
-export class SetIconEye {//on/off iconEye at on click (AC #206)
+export class IconEye {//on/off iconEye at on click (AC #206)
     constructor(eye, input, iconOpen, iconClose) {
         this.icon = document.querySelector(eye);
         this.input = document.querySelector(input);
