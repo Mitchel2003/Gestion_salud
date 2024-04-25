@@ -19,8 +19,8 @@ export async function getDataByRequest(request, typeSearch) {
     return querySnapshot;
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
-export async function pullCollection(object, deep) {//apropiade for get big data
-    const deep = object['deep']
+export async function pullCollection(object) {//apropiade for get big data
+    const deep = object['deep'];
     const init = doc(db, 'main', object['1']);
 
     if (deep === 1) {//user and departament
