@@ -3,7 +3,6 @@ export function loadElements(container) {//init()
     background.src = "./src/components/images/background_login.webp";
     background.onload = async function () {
         document.body.style.backgroundImage = `url(${background.src})`;//setBackground
-        await appennedItemSelect('#select-entity');
         container.classList.add('loaded');//animStart
     };
 }
@@ -47,30 +46,14 @@ export class IconEye {//on/off iconEye at on click (AC #206)
         else { input.type = "password"; icon.src = close; }
     }
 }
-// export class AppennedItemSelect{
-//     constructor(selectContext) {
-//         this.select = document.querySelector(selectContext);
-//         this.setSelect();
-//         // this.update = this.updateStatus.bind(this);
-        
-//     }
-//     setSelect() {
-        
-//     }
-//     updateStatus() {
-//         if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
-//         else { alert('Offline, check your connection'); }
-//     }
-// }
-
-async function appennedItemSelect(selectContext) {
+export async function appennedItemSelect(selectContext) {
     const select = document.querySelector(selectContext);
-    const data = await (await import('../firebase/query')).getDataByRequest({'request':'none'}, '');
-
-    data.forEach( (e) => {
+    const getQuery = await import('../firebase/query.js');
+    const data = await getQuery.getDataByRequest({'request':'none'}, ''); //default is equals to get first collection (entities)
+    data.forEach((e) => { 
         const opcion = document.createElement('option');
-        opcion.value = e.uid; // Asume que cada objeto tiene un 'id'
-        select.appendChild(opcion);
+        opcion.value = e.id;  opcion.textContent = e.id;
+        select.appendChild(opcion); 
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/

@@ -1,8 +1,8 @@
 import { StatusConnection } from "../components/firebase/authentication.js";
-import { ClassList_OnClick, IconEye } from "../components/utils/view.js";
+import { loadElements, IconEye, ClassList_OnClick, appennedItemSelect } from "../components/utils/view.js";
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
-window.addEventListener("load", async () => { (await import('../components/utils/view.js')).loadElements(container); });
+window.addEventListener("load", async () => { loadElements(container); await appennedItemSelect('#select-entity'); });
 
 //iterators
 let status = new StatusConnection();

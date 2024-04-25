@@ -1,5 +1,3 @@
-/*--------------------------------------------------tips--------------------------------------------------*/
-
 ¡Hola! Sin duda, aplicar patrones de diseño puede mejorar significativamente la mantenibilidad, optimización, y profesionalismo en tus proyectos web desarrollados en JavaScript. A continuación, te presento algunos de los patrones de diseño más importantes para tener en cuenta:
 
 ### 1. **Módulo (Module)**
@@ -53,7 +51,7 @@ Siguiendo estas recomendaciones y optimizando el código CSS, deberías poder lo
 profesional. ¡Espero que estos consejos te sean útiles y te ayuden a alcanzar tus objetivos!
 ¡Mucho ánimo en tu trabajo!
 
-/*--------------------------------------------------tools and source--------------------------------------------------*/
+### --------------------------------------------------tools and source-------------------------------------------------- ###
 function getImportAnim(action) {//load difered
     import('./components/anim.js')
         .then((anim) => {
@@ -217,9 +215,10 @@ export function TIME_WITH_SUBTRACTION() {//return timeContext - 15 min
 https://codingpr.com/react-firebase-password-reset-feature/
 //---------------------------------------------------------
 
-/*--------------------------------------------------patrones de diseño--------------------------------------------------*/
-### Singleton
 
+### --------------------------------------------------desing patterns-------------------------------------------------- ###
+
+**Singleton**
 La lógica detrás del patrón Singleton es asegurar que una clase tenga única y exclusivamente una
 instancia y proporcionar un punto de acceso global a dicha instancia. El ejemplo anterior logra
 esto mediante:
@@ -240,7 +239,7 @@ incluyen:
 - Manejadores de cache.
 - Factories que crean objetos específicos y deben ser únicos para garantizar consistencia.
 
-### Consejos al Usar Singleton
+**Consejos al Usar Singleton**
 
 - **Uso Justificado:** Asegúrate de que el uso del Singleton es justificado. El mal uso puede llevar
 a problemas de diseño, como dificultades en testing dado que el estado persiste entre tests, y puede
@@ -283,9 +282,8 @@ console.log(instanciaA === instanciaB); // true, ambas variables apuntan al mism
 
 instanciaA.mostrarEstado(); // Muestra 'inicial'.
 
-
-/*--------------------------------------------------tips--------------------------------------------------*/
-### OPTIMIZAR PAGINA WEB
+### --------------------------------------------------tips-------------------------------------------------- ###
+**OPTIMIZAR PAGINA WEB**
 
 Optimizar un proyecto web implica mejorar su rendimiento, eficiencia y experiencia del usuario. Aquí hay
 algunas estrategias generales para lograr una optimización efectiva:
@@ -335,7 +333,7 @@ de tu aplicación. Profundizar en cada uno de estos puntos y adaptarlos a las ne
 puede mejorar significativamente el rendimiento general.
 
 
-### OPTIMIZAR FIRESTORE
+**OPTIMIZAR FIRESTORE**
 
 Firestore está diseñado para ser escalable y manejar eficientemente consultas, incluso cuando
 hay una gran cantidad de documentos. Sin embargo, siempre es bueno considerar las mejores prácticas y
@@ -361,9 +359,8 @@ Recuerda que en Firestore, la eficiencia y el rendimiento suelen depender de la 
 datos y cómo realizas tus consultas. Es una buena práctica ajustar la estructura de tus datos según las
 necesidades de consulta específicas de tu aplicación.
 
-/*--------------------------------------------------addComentary in code--------------------------------------------------*/
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#201: el hecho de que haya una animacion explicita que señale un comportamiento, no cambia el estado estandar 
+### --------------------------------------------------addComentary in code-------------------------------------------------- ###
+**#201** el hecho de que haya una animacion explicita que señale un comportamiento, no cambia el estado estandar 
 del elemento en referencia; es decir, si ponemos en contexto la siguiente animacion
 //css
 	@keyframes animEntry{
@@ -430,7 +427,7 @@ que este el contenedor
     		opacity: 1;
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#202: async without await: en esta ilustracion vemos la funcion con el async pero sin el await; lo que sucede es que
+**#202** async without await: en esta ilustracion vemos la funcion con el async pero sin el await; lo que sucede es que
 esta es una funcion que pretende usar como parametro un elemento "promesa", el parametro que le introducimos es un getDocs
 de FireBase "querySnapshot"; por eso, si quisieramos por ejemplo implementar un if() tendria que verse algo así
 "(await getTokenPassword(querySnapshot)) esto dentro de un metodo async".
@@ -457,7 +454,7 @@ export async function isFoundToken(emailContext) {
     return result;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#203: al  importar dentro de un metodo "carga diferida" necesitamos poner await, luego una vez finalizada esa llegada,
+**#203** al  importar dentro de un metodo "carga diferida" necesitamos poner await, luego una vez finalizada esa llegada,
 se importa el modulo en especifico
 
 const {name, email, password, access} = (await import('../components/utils/tools/getValue.js')).getInputRegister();
@@ -470,19 +467,19 @@ export function getInputRegister() {
     return {name, email, password, access};
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#204: en esta porcion de codigo he optado por el empleo de metodos para formalizar excepciones; entrando contexto, diferentes
+**#204** en esta porcion de codigo he optado por el empleo de metodos para formalizar excepciones; entrando contexto, diferentes
 partes de codigo precisamente poseen un metodo personalizado de excepciones "exceptions... from alerts.js", en este caso en
 particular es un poco diferente; al momento notificar al usuario puntos tales como passwordSizeShort o passwordNotSame, el
 backend de firebase no me lanza una excepcion especifica como para yo poder captarla en un metodo "if"
 por tanto, vi necesario el uso de metodos para comprobar las entradas; queda el codigo un poco mas largo pero todo sea por un
 bien mayor...
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#205: en este metodo recibo un parametro "data" el cual refiere al valor de "continueUrl" el cual se halla intrinseco en el
+**#205** en este metodo recibo un parametro "data" el cual refiere al valor de "continueUrl" el cual se halla intrinseco en el
 link que devuelve FireBase para la verificacion de email; entonces, la logica es la siguiente "if const continueUrl=null" si
 se cumple lo anterior entonces es que estamos en el contexto de una solicitud de resetPassword y no en una confirmacion de
 email; en este orden de ideas pensé en esta alternativa.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#206: en la implementacion visual de metodos como addActive;
+**#206** en la implementacion visual de metodos como addActive;
 
     export function addActive(container) {//fix anim transition login-register
         container.classList.add('active');
@@ -501,7 +498,7 @@ he simplificado las cosas, he puesto un hover para el container del input, al mo
 entonces muestra el icono, en javaScript tan solo me he encargado de operar el cambio del tipo de input, para que muestre
 u oculte la conttraseña
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#207: en este apartado se me presentaba un problema; resulta que cuando utilizaba la alerta default de sweetAlert, el
+**#207** en este apartado se me presentaba un problema; resulta que cuando utilizaba la alerta default de sweetAlert, el
 contenido de la pantalla se desajustaba; me veia obligado a utilizar el atributo "toast: true", este presentaba un screen
 informativo mas pequeño, me ayudo a huir del problema;
 
@@ -510,17 +507,17 @@ unos styles propios de la documentacion de sweetAlert, estos modificaban el cont
 {height: auto !important;}" que se interponía con ese !important; la solucion fue poner el atributo height desde el body,
 para lograr de este modo interponerme en el efecto del class de sweetAlert. 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#208: Se que en algun momento te abras preguntado, porque el onSession esta entre 2 if(), porque no simplemente lo ponemos
+**#208** Se que en algun momento te abras preguntado, porque el onSession esta entre 2 if(), porque no simplemente lo ponemos
 al final de los dos if(), y la cuestion es la siguiente; si esa consulta "key" (true or false) se evalua primero que el onSession(),
 entonces primero se evaluará la existencia de acceso para ese email ingresado, en caso de estar la contraseña incorrecta es un
 problema, porque entonces tiene que ser usuario habilitado para que le aparezca mensaje de contraseña incorrecta.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#209: en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario,
+**#209** en este caso particular, es importante señalar que `onAuthStateChanged` no retorna una promesa con el valor del usuario,
 sino un método para desuscribirse del listener. Este comportamiento es típico de los observadores, donde `onAuthStateChanged`
 está diseñado para ejecutarse cada vez que el estado de autenticación cambia, lo que no se alinea directamente con el patrón
 `async/await;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#210: inicialmente tuve problemas dado que estába invocando this.updateStatus() en lugar de proporcionar una referencia a la
+**#210** inicialmente tuve problemas dado que estába invocando this.updateStatus() en lugar de proporcionar una referencia a la
 función que debe ser llamada cuando el evento ocurra:
 
 before:
@@ -550,7 +547,7 @@ usé this.updateStatus = this.updateStatus.bind(this) para asegurar que this den
 de StatusConnection, permitiendo el acceso correcto al metodo; de este modo el addEventListener no se dispara erroneamente, sino que logra
 retenerse y esperar el cambio en el estatus
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#211: el contexto subyace de la necesidad de acortar las lineas de codigo;
+**#211** el contexto subyace de la necesidad de acortar las lineas de codigo;
 
 #password-login, #password-register{
     margin-left: 0%;

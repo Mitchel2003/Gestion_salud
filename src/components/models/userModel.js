@@ -32,8 +32,8 @@ export async function registerUser(name, email, password, access, entity) {
         onLoadWhile();
         const getAuth = await import('../firebase/authentication.js');
         await getAuth.createUser(email, password);
-        await getAuth.updateDataUser(name);
-        await getAuth.verificationEmailAddress(email, access);
+        await getAuth.updateDataUser(entity);
+        await getAuth.verificationEmailAddress(name, email, access, entity);
         (await import('../utils/values.js')).cleanInputRegister();
 
         await showMessageAlert('messageEmailVerify');
@@ -64,11 +64,12 @@ export async function modeVerifyEmail(res) {
     onLoadWhile();
     const decodeURL = decodeURIComponent(res);
     const url = new URL(decodeURL);
+    const userName = url.searchParams.get('name');
     const userEmail = url.searchParams.get('email');
     const userAccess = url.searchParams.get('access');
+    const userEntity = url.searchParams.get('entity');
 
     const getQuery = await import('../firebase/query.js');
-    const getAuth = await import('../firebase/authentication.js');
     const getView = await import('../utils/view.js');
 
     if (await getQuery.isFoundDocumentReference(userEmail)) {
@@ -77,7 +78,7 @@ export async function modeVerifyEmail(res) {
         offLoadWhile();
         return;
     }
-    await getAuth.appenedDocumentReference(userEmail, userAccess);
+    await (await import('../firebase/authentication.js')).appenedDocumentReference(userName, userEmail, userAccess, userEntity );
 
     const response = await showMessageAlert('messageUserSubmitted');
     if (response) { getView.goToHome(); }

@@ -4,15 +4,18 @@ import { getCollection } from './query.js';
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
 }
-export async function updateDataUser(name) {
-    return await (await import('./conection.js')).updateProfile(auth.currentUser, { displayName: name });
+export async function updateDataUser(entity) {
+    return await (await import('./conection.js')).updateProfile(auth.currentUser, { displayName: entity });
 }
-export async function verificationEmailAddress(userEmail, userAccess) {
-    const redirect = `https://mitchel2003.github.io/Gestion_salud/src/public/emailVerified.html?mode=verifyEmail&email=${encodeURIComponent(userEmail)}&access=${encodeURIComponent(userAccess)}`;
+export async function verificationEmailAddress(userName, userEmail, userAccess, userEntity) {
+    const redirect = `https://mitchel2003.github.io/Gestion_salud/src/public/verifyAction.html?mode=verifyEmail&name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&access=${encodeURIComponent(userAccess)}&entity=${encodeURIComponent(userEntity)}`;
     return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, { url: redirect });
 }
-export async function appenedDocumentReference(email, access) {
-    return await (await import('./conection.js')).addDoc(await getCollection("userInfo"), { email: email, access: access, key: false });
+export async function appenedDocumentReference(name, email, access, entity) {
+    const { collection, doc, addDoc } = await import("./conection.js");
+    const documentReference = doc(getCollection('main'), entity);
+    const subCollection = collection(documentReference, 'user');
+    return await addDoc(subCollection, { name: name, email: email, access: access, key: false });
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
