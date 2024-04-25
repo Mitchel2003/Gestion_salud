@@ -1,8 +1,9 @@
 export function loadElements(container) {//init()
     const background = new Image();
     background.src = "./src/components/images/background_login.webp";
-    background.onload = function () {
+    background.onload = async function () {
         document.body.style.backgroundImage = `url(${background.src})`;//setBackground
+        await appennedItemSelect('#select-entity');
         container.classList.add('loaded');//animStart
     };
 }
@@ -64,22 +65,14 @@ export class SetIconEye {//on/off iconEye at on click (AC #206)
 
 async function appennedItemSelect(selectContext) {
     const select = document.querySelector(selectContext);
-    const datos = await ((await import('../firebase/query')).getListEntities();); // Asume que esta función ya está implementada
+    const data = await (await import('../firebase/query')).getDataByRequest({'request':'none'}, '');
 
-    // Procesa cada objeto de datos para añadirlo como una opción en el select
-    datos.forEach(dato => {
-      const opcion = document.createElement('option');
-      opcion.value = dato.id; // Asume que cada objeto tiene un 'id'
-      opcion.textContent = dato.nombre; // Asume que cada objeto tiene un 'nombre'
-      selectEntity.appendChild(opcion);
+    data.forEach( (e) => {
+        const opcion = document.createElement('option');
+        opcion.value = e.uid; // Asume que cada objeto tiene un 'id'
+        select.appendChild(opcion);
     });
 }
-
-// Asegúrate de llamar a cargarEntidades() en el punto adecuado de tu aplicación
-// Por ejemplo, después de que se haya cargado el DOM para evitar errores de referencia
-document.addEventListener('DOMContentLoaded', cargarEntidades);
-
-
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...
     window.location.href = 'https://mitchel2003.github.io/Gestion_salud/';

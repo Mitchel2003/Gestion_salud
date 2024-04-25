@@ -12,42 +12,28 @@ export async function getDocumentUser(user) {
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-export async function getDataCollection(request, typeSearch) {//for big data query (listCollections contain min 2 elements)
-    
-    if(typeSearch === 'query'){//query or collection
-
-    }
-    if (key.includes('2')) { await checkExtensionData(object); return; }
-
-    if (request === 'user') {
-        
-    }
-    if (request === 'departament') {
-        
-    }
-    if (request === 'device') {
-
-    }
-    if (request === 'finding') {
-        
-    }
+export async function getDataByRequest(request, typeSearch) {
+    if (typeSearch === 'query') { pullQuery(request); return; }
+    if (typeSearch === 'collection') { pullCollection(request); return; }
+    // if (key.includes('2')) { await checkExtensionData(object); return; }
 
     //query all entities
     const ask = await getCollection("main");
     const querySnapshot = await getDocs(ask);
     return querySnapshot;
 }
-export async function checkExtensionData(data){
+
+async function checkExtensionData(data){
     if(data['2'] === ''){ await isBigData(data); } //at fetch in collection
     else{ isSmallData(); } //at fetch in document
 }
-export async function isBigData(object){
+async function isBigData(object){
     const init = doc(db, 'main', object['1'])
     const subCollection = collection(init, object['2']);
     const querySnapshot = await getDocs(subCollection);
     return querySnapshot;
 }
-export async function isSmallData(){
+async function isSmallData(){
     
 }
 
@@ -56,7 +42,7 @@ export async function getCollection(context) {
     const collectionReference = await collection(db, context);
     return collectionReference;
 }
-export async function pullCollection(object, deep) {
+export async function pullCollection(object, deep) {//this is apropiade for 
     const init = doc(db, 'main', object['1']);
     
     if (deep === 1) {//user and departament
@@ -77,21 +63,31 @@ export async function pullCollection(object, deep) {
 export async function pullQuery(object, deep, condicion){//get document apply condicion
     const init = doc(db, 'main', object['1']);
     let collectionContext;
-    if (deep === 1) {//user and departament
-        collectionContext = collection(init, object['2']);
+
+    switch (deep) {
+        case 1://user and departament
+            collectionContext = collection(init, object['2']);
+            break;
+        case 2://device
+            const subDocument = doc(init, object['2'], object['3']);
+            collectionContext = collection(subDocument, object['4']);
+            break;
+        case 3://finding
+            break;
+
+        default:
+            const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
+            const querySnapshot = await getDocs(ask);
+            return querySnapshot;
+            break;
     }
-    if (deep === 2) {//device
-        const subDocument = doc(init, object['2'], object['3']);
-        collectionContext = collection(subDocument, object['4']);
-        
-    }
-    if (deep === 3) {//finding
-        
-    }
-    const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
-        const querySnapshot = await getDocs(ask);
-        return querySnapshot;
 }
+async function filterQuery(object){
+    if(object){
+        const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
+    }
+}
+
 export function getQueryParams() {
     const queryString = window.location.search;
     const searchParams = new URLSearchParams(queryString);

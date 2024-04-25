@@ -1,13 +1,11 @@
 import { StatusConnection } from "../components/firebase/authentication.js";
 import { ClassList_OnClick, IconEye } from "../components/utils/view.js";
-
 /*--------------------------------------------------runtime--------------------------------------------------*/
 const container = document.querySelector('.mainContainer');
 window.addEventListener("load", async () => { (await import('../components/utils/view.js')).loadElements(container); });
 
 //iterators
 let status = new StatusConnection();
-// let fillSelectEntity = new AppennedItemSelect('');
 let setSection = new ClassList_OnClick('.registerContainer header', '.signContainer header', 'active', container);
 
 const srcIconOpen = "./src/components/images/eye-open.webp", srcIconClose = "./src/components/images/eye-close.webp";
