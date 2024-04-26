@@ -5,9 +5,9 @@ export async function isFoundDocumentReference(user, entity) {
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
 }
-export async function getDocumentUser(user) {
+export async function getDocumentUser(user, entity) {
     let access, key;
-    const ask = query(getCollection("userInfo"), where("email", "==", user));
+    const ask = query(getCollectionUser(entity), where("email", "==", user));
     const querySnapshot = await getDocs(ask);
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
@@ -29,7 +29,6 @@ export async function pullCollection(object) {//apropiade for get big data
         return querySnapshot;
     }
     if (deep === 2) {//device
-
         const querySnapshot = await getDocs(subCollection);
         return querySnapshot;
     }
@@ -69,7 +68,7 @@ export function getCollection(context) {
     const collectionReference = collection(db, context);
     return collectionReference;
 }
-export function getCollectionUser(entityContext){
+export function getCollectionUser(entityContext) {
     const documentReference = doc(getCollection('main'), entityContext);
     const subCollection = collection(documentReference, 'user');
     return subCollection;

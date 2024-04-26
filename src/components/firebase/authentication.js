@@ -1,5 +1,4 @@
 import { auth, onAuthStateChanged } from "./conection.js";
-import { getCollection } from './query.js';
 
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
@@ -12,10 +11,8 @@ export async function verificationEmailAddress(userName, userEmail, userAccess, 
     return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, { url: redirect });
 }
 export async function appenedDocumentReference(name, email, access, entity) {
-    const { collection, doc, addDoc } = await import("./conection.js");
-    const documentReference = doc(getCollection('main'), entity);
-    const subCollection = collection(documentReference, 'user');
-    return await addDoc(subCollection, { name: name, email: email, access: access, key: false });
+    const { getCollectionUser } = await import("./query.js");
+    return await addDoc(getCollectionUser(entity), { name: name, email: email, access: access, key: false });
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
@@ -35,6 +32,13 @@ export async function checkSessionActive() {//AC #209
         onAuthStateChanged(auth, async (user) => {
             if (user) { resolve(user.email); }
             else { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
+        });
+    });
+}
+export async function getProfileUser() {
+    return new Promise((resolve) => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) { resolve({ email: user.email, entity: user.photoURL }); }
         });
     });
 }

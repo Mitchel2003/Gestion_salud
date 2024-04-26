@@ -4,18 +4,21 @@ import { showMessageAlert } from "../utils/alerts.js";
 
 const getAlert = await import('../utils/alerts.js');
 
-export async function loginUser(user, password) {
+export async function loginUser(user, password) {//working here...
     try {
         onLoadWhile();
-        const getQuery = await import('../firebase/query.js');
-        const { key } = await getQuery.getDocumentUser(user);
+        await onSession(user, password);//AC #208
 
-        if (!(await getQuery.isFoundDocumentReference(user))) {
+        const getQuery = await import('../firebase/query.js');
+        const { entity } = getQuery.getProfileUser();
+        const { key } = await getQuery.getDocumentUser(user, entity);
+
+        if (!(await getQuery.isFoundDocumentReference(user, entity))) {
             await showMessageAlert('messageEmailNotFound');
             offLoadWhile();
             return;
         }
-        await onSession(user, password);//AC #208
+        
 
         if (!key) {
             await showMessageAlert('messageAccessNotFound');
