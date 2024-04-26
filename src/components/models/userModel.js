@@ -32,7 +32,7 @@ export async function registerUser(name, email, password, access, entity) {
         onLoadWhile();
         const getAuth = await import('../firebase/authentication.js');
         await getAuth.createUser(email, password);
-        await getAuth.updateDataUser(entity);
+        await getAuth.updateDataUser(name, entity);
         await getAuth.verificationEmailAddress(name, email, access, entity);
         (await import('../utils/values.js')).cleanInputRegister();
 

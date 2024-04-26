@@ -4,8 +4,8 @@ import { getCollection } from './query.js';
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
 }
-export async function updateDataUser(entity) {
-    return await (await import('./conection.js')).updateProfile(auth.currentUser, { displayName: entity });
+export async function updateDataUser(name, entity) {
+    return await (await import('./conection.js')).updateProfile(auth.currentUser, { displayName: name, photoURL: entity });
 }
 export async function verificationEmailAddress(userName, userEmail, userAccess, userEntity) {
     const redirect = `https://mitchel2003.github.io/Gestion_salud/src/public/verifyAction.html?mode=verifyEmail&name=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&access=${encodeURIComponent(userAccess)}&entity=${encodeURIComponent(userEntity)}`;
