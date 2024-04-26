@@ -72,7 +72,7 @@ export async function modeVerifyEmail(res) {
     const getQuery = await import('../firebase/query.js');
     const getView = await import('../utils/view.js');
 
-    if (await getQuery.isFoundDocumentReference(userEmail)) {
+    if (await getQuery.isFoundDocumentReference(userEmail, userEntity)) {
         const response = await showMessageAlert('messageTokenVerifyExpired');
         if (response) { getView.goToHome(); }
         offLoadWhile();

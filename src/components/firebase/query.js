@@ -1,7 +1,7 @@
-import { collection, db, doc, getDocs, query, where } from "./conection.js";
+import { db, collection, doc, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
-export async function isFoundDocumentReference(user) {
-    const ask = query(getCollection("userInfo"), where("email", "==", user));
+export async function isFoundDocumentReference(user, entity) {
+    const ask = query(getCollectionUser(entity), where("email", "==", user));
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
 }
@@ -68,6 +68,11 @@ async function filterQuery(object) {
 export function getCollection(context) {
     const collectionReference = collection(db, context);
     return collectionReference;
+}
+export function getCollectionUser(entityContext){
+    const documentReference = doc(getCollection('main'), entityContext);
+    const subCollection = collection(documentReference, 'user');
+    return subCollection;
 }
 export function getQueryParams() {
     const queryString = window.location.search;
