@@ -117,6 +117,26 @@ export async function exceptionsSignOut() {
     (await import('./view.js')).goToHome(); return;
 }
 
+
+export class ValueError extends Error {
+    constructor(context) {
+        this.type = context;
+        this.message = this.messageSelector.bind(this);
+    }
+    messageSelector(){
+        const { title, message, typeAlert } = this.type();
+        customAlert(title, message, selectIcon(typeAlert));
+        return;
+    }
+}
+
+
+
+
+
+
+
+
 export async function showMessageAlert(type) {/* ---(generaly)--- */
     if (type === 'messageEmailNotFound') {
         const { title, message, typeAlert } = messageEmailNotFound();
@@ -159,6 +179,19 @@ export async function showMessageAlert(type) {/* ---(generaly)--- */
         const request = await alertButtonAction(title, message, selectIcon(typeAlert));
         return request;
     }
+
+    if (type === 'messageSelectAccessEmpty') {
+        const { title, message, typeAlert } = messageSelectAccessEmpty();
+        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
+        return request;
+    }
+    if (type === 'messageSelectEntityEmpty') {
+        const { title, message, typeAlert } = messageSelectEntityEmpty();
+        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
+        //throw new ValueError("")
+        return request;
+    }
+    
 }
 /*--------------------------------------------------text--------------------------------------------------*/
 export function messageUserSubmitted() {//successfull
@@ -194,7 +227,7 @@ export function messageStatusOnline() {
 /*--------------------------------------------------*/
 export function messageEmailNotFound() {//warning
     const title = "Email unknow";
-    const message = "If the account has been registered, checkout you mailbox";
+    const message = "If the account has been registered before, checkout you mailbox";
     const typeAlert = "w";
     return { title, message, typeAlert };
 }
@@ -228,6 +261,21 @@ export function messageRestorePassword() {
     const typeAlert = "q";
     return { title, message, typeAlert };
 }
+export function messageSelectAccessEmpty() {
+    const title = "Field access empty";
+    const message = "choose one of the available accesses
+    ";
+    const typeAlert = "q";
+    return { title, message, typeAlert };
+}
+export function messageSelectEntityEmpty() {
+    const title = "Restore password";
+    const message = "Enter a registered email to send token";
+    const typeAlert = "q";
+    return { title, message, typeAlert };
+}
+
+
 /*--------------------------------------------------*/
 export function messageEmailUsed() {//error
     const title = "Email is used";

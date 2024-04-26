@@ -18,4 +18,6 @@ export function cleanInputRegister() {
     name.value = "";
     email.value = "";
     password.value = "";
+    //and scroll
+    document.classList.remove('active');
 }

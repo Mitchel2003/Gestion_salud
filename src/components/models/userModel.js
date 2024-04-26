@@ -4,28 +4,25 @@ import { showMessageAlert } from "../utils/alerts.js";
 
 const getAlert = await import('../utils/alerts.js');
 
-export async function loginUser(user, password) {//working here...
+export async function loginUser(user, password) {
     try {
         onLoadWhile();
-        await onSession(user, password);//AC #208
-
         const getQuery = await import('../firebase/query.js');
-        const { entity } = getQuery.getProfileUser();
+        const getAuth = await import('../firebase/authentication.js');
+
+        await onSession(user, password);//AC #208
+        const { entity } = await getAuth.getProfileUser();
         const { key } = await getQuery.getDocumentUser(user, entity);
 
         if (!(await getQuery.isFoundDocumentReference(user, entity))) {
             await showMessageAlert('messageEmailNotFound');
-            offLoadWhile();
-            return;
+            await offSession(); offLoadWhile(); return;
         }
-        
-
         if (!key) {
             await showMessageAlert('messageAccessNotFound');
-            await offSession();
-            offLoadWhile();
-            return;
+            await offSession(); offLoadWhile(); return;
         }
+
         (await import('../utils/view.js')).goToSession();
         offLoadWhile();
     } catch (error) { offLoadWhile(); getAlert.exceptionsLoginUser(error); }
@@ -33,6 +30,8 @@ export async function loginUser(user, password) {//working here...
 export async function registerUser(name, email, password, access, entity) {
     try {
         onLoadWhile();
+        if (!access) { await showMessageAlert('messageSelectAccessEmpty'); offLoadWhile(); return; }
+        if (!entity) { await showMessageAlert('messageSelectEntityEmpty'); offLoadWhile(); return; }
         const getAuth = await import('../firebase/authentication.js');
         await getAuth.createUser(email, password);
         await getAuth.updateDataUser(name, entity);
@@ -52,7 +51,7 @@ export async function requestResetPassword() {
         const getQuery = await import('../firebase/query.js');
         const getAuth = await import('../firebase/authentication.js');
 
-        if ( !(await getQuery.isFoundDocumentReference(email)) ) {
+        if (!(await getQuery.isFoundDocumentReference(email))) {
             await showMessageAlert('messageEmailNotFound');
             offLoadWhile();
             return;
@@ -81,7 +80,7 @@ export async function modeVerifyEmail(res) {
         offLoadWhile();
         return;
     }
-    await (await import('../firebase/authentication.js')).appenedDocumentReference(userName, userEmail, userAccess, userEntity );
+    await (await import('../firebase/authentication.js')).appenedDocumentReference(userName, userEmail, userAccess, userEntity);
 
     const response = await showMessageAlert('messageUserSubmitted');
     if (response) { getView.goToHome(); }
@@ -91,10 +90,10 @@ export async function modeVerifyEmail(res) {
 export async function modeChangePassword() {
     const getView = await import("../utils/view.js");
 
-    const srcIconOpen = "../../src/components/images/eye-open.webp", srcIconClose = "../../src/components/images/eye-close.webp"; 
+    const srcIconOpen = "../../src/components/images/eye-open.webp", srcIconClose = "../../src/components/images/eye-close.webp";
     let observerIconEye_newPassword = new getView.IconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
-    let observerIconEye_confirmPassword = new getView.IconEye('#eyeIcon-2', '#password-register',srcIconOpen ,srcIconClose);
-    
+    let observerIconEye_confirmPassword = new getView.IconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
+
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {
             event.preventDefault();
