@@ -31,7 +31,10 @@ export async function checkSessionActive() {//AC #209
     return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) { resolve(user.email); }
-            else { await (await import('../utils/alerts.js')).exceptionsSignOut(); }
+            else {
+                const getAlert = await import('../utils/alerts.js'), getView = await import('../utils/view.js');
+                await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); return; 
+            }
         });
     });
 }
@@ -72,7 +75,7 @@ export class StatusConnection {//AC #210
         window.addEventListener('online', this.update);
     }
     updateStatus() {
-        if (navigator.onLine) { new Promise(async (resolve) => { resolve((await import('../utils/alerts.js')).exceptionsConnectionEthernet()); }) }
+        if (navigator.onLine) { new Promise(async (resolve) => { resolve(await (await import('../utils/alerts.js')).showMessage('messageStatusOnline', 'alertToast')); }) }
         else { alert('Offline, check your connection'); }
     }
 }

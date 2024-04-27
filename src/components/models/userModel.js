@@ -17,15 +17,14 @@ export async function loginUser(user, password) {
         if (!(await getQuery.isFoundDocumentReference(user, entity))) {
             await showMessage('messageEmailNotFound', 'default');
             await offSession(); offLoadWhile(); return;
-        }
-        if (!key) {
+        } if (!key) {
             await showMessage('messageAccessNotFound', 'default');
             await offSession(); offLoadWhile(); return;
         }
 
         (await import('../utils/view.js')).goToSession();
         offLoadWhile();
-    } catch (error) { offLoadWhile(); getAlert.exceptionsLoginUser(error); }
+    } catch (error) { offLoadWhile(); await getAlert.exceptionsLoginUser(error); }
 }
 export async function registerUser(name, email, password, access, entity) {
     try {
@@ -39,7 +38,7 @@ export async function registerUser(name, email, password, access, entity) {
         await showMessage('messageEmailVerify', 'default');
         await offSession();
         offLoadWhile();
-    } catch (error) { offLoadWhile(); getAlert.exceptionsRegisterUser(error); }
+    } catch (error) { offLoadWhile(); await getAlert.exceptionsRegisterUser(error); }
 }
 export async function requestResetPassword() {
     try {
@@ -48,7 +47,7 @@ export async function requestResetPassword() {
         await (await import('../firebase/authentication.js')).sendToEmailResetPassword(email);
         await showMessage('messageTokenSubmitted', 'default');
         offLoadWhile();
-    } catch (error) { offLoadWhile(); getAlert.exceptionsResetPassword(error); }
+    } catch (error) { offLoadWhile(); await getAlert.exceptionsResetPassword(error); }
 }
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
@@ -104,7 +103,7 @@ export async function modeChangePassword() {
             if (request) { (await import('../utils/view.js')).goToHome(); }
             await offSession();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); getAlert.exceptionsChangePassword(); }
+        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); }
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
