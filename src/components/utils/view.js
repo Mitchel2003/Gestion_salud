@@ -10,6 +10,22 @@ export function loadElements(container) {//init()
 export function onLoadWhile() { document.querySelector('.loadContainer').classList.add('show'); }
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
+export async function appennedItemSelect(selectContext) {
+    const select = document.querySelector(selectContext);
+    const getQuery = await import('../firebase/query.js');
+    const data = await getQuery.getDataByRequest({'request':'none'}, '');
+    data.forEach((e) => {
+        const opcion = document.createElement('option');
+        opcion.value = e.id;  opcion.textContent = e.id;
+        select.appendChild(opcion);
+    });
+}
+export function removeClassList(nameClass){
+    const elements = document.querySelectorAll('.' + nameClass);
+    elements.forEach((e) => {
+        e.classList.remove(nameClass);
+    });
+}
 /*--------------------------------------------------class--------------------------------------------------*/
 export class ClassList_OnClick {//on/off at on click
     constructor(turnOn, turnOff, classList, container) {
@@ -45,16 +61,6 @@ export class IconEye {//on/off iconEye at on click (AC #206)
         if (input.type === "password") { input.type = "text"; icon.src = open; }
         else { input.type = "password"; icon.src = close; }
     }
-}
-export async function appennedItemSelect(selectContext) {
-    const select = document.querySelector(selectContext);
-    const getQuery = await import('../firebase/query.js');
-    const data = await getQuery.getDataByRequest({'request':'none'}, ''); //default is equals to get first collection (entities)
-    data.forEach((e) => { 
-        const opcion = document.createElement('option');
-        opcion.value = e.id;  opcion.textContent = e.id;
-        select.appendChild(opcion); 
-    });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...

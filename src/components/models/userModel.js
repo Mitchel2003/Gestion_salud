@@ -29,11 +29,13 @@ export async function loginUser(user, password) {
 export async function registerUser(name, email, password, access, entity) {
     try {
         onLoadWhile();
+        if (!access || !entity) { await showMessage('messageSelectEmpty', 'default'); offLoadWhile(); return; }
         const getAuth = await import('../firebase/authentication.js');
         await getAuth.createUser(email, password);
         await getAuth.updateDataUser(name, entity);
         await getAuth.verificationEmailAddress(name, email, access, entity);
         (await import('../utils/values.js')).cleanInputRegister();
+        (await import('../utils/view.js')).removeClassList('active');
 
         await showMessage('messageEmailVerify', 'default');
         await offSession();
@@ -52,15 +54,10 @@ export async function requestResetPassword() {
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();
-    const decodeURL = decodeURIComponent(res);
-    const url = new URL(decodeURL);
-    const userName = url.searchParams.get('name');
-    const userEmail = url.searchParams.get('email');
-    const userAccess = url.searchParams.get('access');
-    const userEntity = url.searchParams.get('entity');
-
     const getQuery = await import('../firebase/query.js');
+    const getValues = await import('../utils/values.js');
     const getView = await import('../utils/view.js');
+    const { userName, userEmail, userAccess, userEntity } = await getValues.getSearchParams(res);
 
     if (await getQuery.isFoundDocumentReference(userEmail, userEntity)) {
         const response = await showMessage('messageTokenVerifyExpired', 'alertButtonAction');
@@ -76,6 +73,7 @@ export async function modeVerifyEmail(res) {
 }
 export async function modeChangePassword() {
     const getView = await import("../utils/view.js");
+    const getValues = await import("../utils/values.js");
     const srcIconOpen = "../../src/components/images/eye-open.webp", srcIconClose = "../../src/components/images/eye-close.webp";
     let observerIconEye_newPassword = new getView.IconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
     let observerIconEye_confirmPassword = new getView.IconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
@@ -84,10 +82,8 @@ export async function modeChangePassword() {
         try {
             event.preventDefault();
             onLoadWhile();
-            const query = (await import('../firebase/query.js')).getQueryParams();
-            const oobCode = query.oobCode;
-            const password = document.querySelector('#password-login').value;
-            const confirmPassword = document.querySelector('#password-register').value;
+            const { oobCode } = await getValues.getSearchParams();
+            const { password, confirmPassword } = getValues.getInputResetPassword();
 
             if (checkSamePasswords(password, confirmPassword)) {
                 await showMessage('messagePasswordNotSame', 'default');
@@ -100,7 +96,7 @@ export async function modeChangePassword() {
             await (await import('../firebase/authentication.js')).validateResetPassword(oobCode, password);
 
             const request = await showMessage('messageResetPasswordSuccess', 'alertButtonAction');
-            if (request) { (await import('../utils/view.js')).goToHome(); }
+            if (request) { getView.goToHome(); }
             await offSession();
             offLoadWhile();
         } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); }
