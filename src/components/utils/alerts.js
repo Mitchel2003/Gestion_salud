@@ -14,7 +14,7 @@ export function alertToast(title, message, icon) {
         title: title,
         text: message,
         icon: icon,
-        timer: 3000,
+        timer: 5000,
         toast: true,
         position: 'top-end',
         customClass: { popup: 'customAlert' },

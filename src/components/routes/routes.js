@@ -1,5 +1,5 @@
+import { checkSessionActive, getProfileUser } from '../firebase/authentication.js';
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
-import { checkSessionActive } from '../firebase/authentication.js';
 import { TimerOut } from '../firebase/authentication.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
 onLoadWhile();
@@ -9,7 +9,8 @@ let time = new TimerOut(5000);//timeOut
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext(){
     const user = await checkSessionActive();
-    const { access } = await (await import('../firebase/query.js')).getDocumentUser(user);
+    const { entity } = await getProfileUser();
+    const { access } = await (await import('../firebase/query.js')).getDocumentUser(user, entity);
     await managementSession(access);
 }
 async function managementSession(access){
