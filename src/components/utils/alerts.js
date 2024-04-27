@@ -116,205 +116,38 @@ export async function exceptionsSignOut() {
     await alertButtonAction(title, message, selectIcon(typeAlert));
     (await import('./view.js')).goToHome(); return;
 }
-
-
-export class ValueError extends Error {
-    constructor(context) {
-        this.type = context;
-        this.message = this.messageSelector.bind(this);
-    }
-    messageSelector(){
-        const { title, message, typeAlert } = this.type();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    }
-}
-
-
-
-
-
-
-
-
-export async function showMessageAlert(type) {/* ---(generaly)--- */
-    if (type === 'messageEmailNotFound') {
-        const { title, message, typeAlert } = messageEmailNotFound();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageAccessNotFound') {
-        const { title, message, typeAlert } = messageAccessNotFound();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageEmailVerify') {
-        const { title, message, typeAlert } = messageEmailVerify();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageRestorePassword') {
-        const { title, message, typeAlert } = messageRestorePassword();
-        const email = await alertInput(title, message, selectIcon(typeAlert));
-        return email;
-    } if (type === 'messageTokenSubmitted') {
-        const { title2, message2, typeAlert2 } = messageTokenSubmitted();
-        customAlert(title2, message2, selectIcon(typeAlert2));
-        return;
-    } if (type === 'messageTokenVerifyExpired') {
-        const { title, message, typeAlert } = messageTokenVerifyExpired();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));    
-        return response;
-    } if (type === 'messageUserSubmitted') {
-        const { title, message, typeAlert } = messageUserSubmitted();
-        const response = await alertButtonAction(title, message, selectIcon(typeAlert));
-        return response;
-    } if (type === 'messagePasswordNotSame') {
-        const { title, message, typeAlert } = messagePasswordNotSame();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messagePasswordSizeShort') {
-        const { title, message, typeAlert } = messagePasswordSizeShort();
-        customAlert(title, message, selectIcon(typeAlert));
-        return;
-    } if (type === 'messageResetPasswordSuccess') {
-        const { title, message, typeAlert } = messageResetPasswordSuccess();
-        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
-        return request;
-    }
-
-    if (type === 'messageSelectAccessEmpty') {
-        const { title, message, typeAlert } = messageSelectAccessEmpty();
-        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
-        return request;
-    }
-    if (type === 'messageSelectEntityEmpty') {
-        const { title, message, typeAlert } = messageSelectEntityEmpty();
-        const request = await alertButtonAction(title, message, selectIcon(typeAlert));
-        //throw new ValueError("")
-        return request;
-    }
-    
+/* ---view message--- */
+export async function showMessage(text, alert) {
+    const { title, message, typeAlert } = getMessageAlert(text);
+    if (alert === 'alertInput') { const value = await alertInput(title, message, selectIcon(typeAlert)); return value; }
+    else if(alert === 'alertButtonAction'){ const value = await alertButtonAction(title, message, selectIcon(typeAlert)); return value; }
+    else { customAlert(title, message, selectIcon(typeAlert)); return; }
 }
 /*--------------------------------------------------text--------------------------------------------------*/
-export function messageUserSubmitted() {//successfull
-    const title = "User submitted";
-    const message = "Now, contact the administrator to give you access";
-    const typeAlert = "s";
+function getMessageAlert(type) {
+    let title, message, typeAlert;
+    //successfull
+    if (type === 'messageUserSubmitted') { title = "User submitted"; message = "Now, contact the administrator to give you access"; typeAlert = "s"; }
+    if (type === 'messageEmailVerify') { title = "Pre-registration successfull"; message = "Checkout your mailbox and validate this email to continue"; typeAlert = "s"; }
+    if (type === 'messageResetPasswordSuccess') { title = "Reset password success"; message = "Now, you can entry to app"; typeAlert = "s"; }
+    if (type === 'messageTokenSubmitted') { title = "Token generated"; message = "Check your email to continue reset password"; typeAlert = "s"; }
+    if (type === 'messageStatusOnline') { title = "Online"; message = "Connection restored"; typeAlert = "s"; }
+    //warning
+    if (type === 'messageEmailNotFound') { title = "Email unknow"; message = "If the account has been registered before, checkout you mailbox"; typeAlert = "w"; }
+    if (type === 'messageAccessNotFound') { title = "Without access"; message = "It has been found that this account does not have access; comunicate with the management"; typeAlert = "w"; }
+    if (type === 'messageSessionFailed') { title = "Session expired"; message = "Try login again"; typeAlert = "w"; }
+    if (type === 'messageManyRequests') { title = "Too many attempts"; message = "Retry in other moment"; typeAlert = "w"; }
+    if (type === 'messageCredentialsIncorrects') { title = "Credentials incorrects"; message = "The email or password may not be correct"; typeAlert = "w"; }
+    if (type === 'messageRestorePassword') { title = "Restore password"; message = "Enter a registered email to send token"; typeAlert = "q"; }
+    if (type === 'messageSelectAccessEmpty') { title = "Field access empty"; message = "choose one of the available accesses"; typeAlert = "q"; }
+    if (type === 'messageSelectEntityEmpty') { title = "Field entity empty"; message = "choose one of the available entities"; typeAlert = "q"; }
+    //error
+    if (type === 'messageEmailUsed') { title = "Email is used"; message = "Please, retry with other email address"; typeAlert = "e"; }
+    if (type === 'messageEmailUnknow') { title = "Email invalid"; message = "Please check email, retry with an email valid"; typeAlert = "e"; }
+    if (type === 'messagePasswordNotSame') { title = "Passwords not same"; message = "Please, retry"; typeAlert = "e"; }
+    if (type === 'messagePasswordSizeShort') { title = "Password so short"; message = "Please, retry with 6 or more caracters"; typeAlert = "e"; }
+    if (type === 'messageTokenExpired') { title = "Token expired"; message = "Try to generate another token"; typeAlert = "e"; }
+    if (type === 'messageTokenVerifyExpired') { title = "Token expired"; message = "This account has already been verified"; typeAlert = "e"; }
+    if (type === 'messageTempUnknow') { title = "Exception Unknow"; typeAlert = "e"; }
     return { title, message, typeAlert };
-}
-export function messageEmailVerify() {
-    const title = "Pre-registration successfull";
-    const message = "Checkout your mailbox and validate this email to continue";
-    const typeAlert = "s";
-    return { title, message, typeAlert };
-}
-export function messageResetPasswordSuccess() {
-    const title = "Reset password success";
-    const message = "Now, you can entry to app";
-    const typeAlert = "s";
-    return { title, message, typeAlert };
-}
-export function messageTokenSubmitted() {
-    const title2 = "Token generated";
-    const message2 = "Check your email to continue reset password";
-    const typeAlert2 = "s";
-    return { title2, message2, typeAlert2 };
-}
-export function messageStatusOnline() {
-    const title = "Online";
-    const message = "Connection restored";
-    const typeAlert = "s";
-    return { title, message, typeAlert };
-}
-/*--------------------------------------------------*/
-export function messageEmailNotFound() {//warning
-    const title = "Email unknow";
-    const message = "If the account has been registered before, checkout you mailbox";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageAccessNotFound() {
-    const title = "Without access";
-    const message = "It has been found that this account does not have access; comunicate with the management";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageSessionFailed() {
-    const title = "Session expired";
-    const message = "Try login again";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageManyRequests() {
-    const title = "Too many attempts";
-    const message = "Retry in other moment";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageCredentialsIncorrects() {
-    const title = "Credentials incorrects";
-    const message = "The email or password may not be correct";
-    const typeAlert = "w";
-    return { title, message, typeAlert };
-}
-export function messageRestorePassword() {
-    const title = "Restore password";
-    const message = "Enter a registered email to send token";
-    const typeAlert = "q";
-    return { title, message, typeAlert };
-}
-export function messageSelectAccessEmpty() {
-    const title = "Field access empty";
-    const message = "choose one of the available accesses
-    ";
-    const typeAlert = "q";
-    return { title, message, typeAlert };
-}
-export function messageSelectEntityEmpty() {
-    const title = "Restore password";
-    const message = "Enter a registered email to send token";
-    const typeAlert = "q";
-    return { title, message, typeAlert };
-}
-
-
-/*--------------------------------------------------*/
-export function messageEmailUsed() {//error
-    const title = "Email is used";
-    const message = "Please, retry with other email address";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageEmailUnknow() {
-    const title = "Email invalid";
-    const message = "Please check email, retry with an email valid";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messagePasswordNotSame() {
-    const title = "Passwords not same";
-    const message = "Please, retry";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messagePasswordSizeShort() {
-    const title = "Password so short";
-    const message = "Please, retry with 6 or more caracters";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageTokenExpired() {
-    const title = "Token expired";
-    const message = "Try to generate another token";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageTokenVerifyExpired() {
-    const title = "Token expired";
-    const message = "This account has already been verified";
-    const typeAlert = "e";
-    return { title, message, typeAlert };
-}
-export function messageTempUnknow() {
-    const title = "Exception Unknow";
-    const typeAlert = "e";
-    return { title, typeAlert };
 }
