@@ -74,7 +74,7 @@ export class StatusConnection {//AC #210
         window.addEventListener('online', this.update);
     }
     updateStatus() {
-        if (navigator.onLine) { new Promise(async (resolve) => { resolve(await (await import('../utils/alerts.js')).showMessage('messageStatusOnline', 'alertToast')); }) }
+        if (navigator.onLine) { return new Promise(async (resolve) => { resolve(await (await import('../utils/alerts.js')).showMessage('messageStatusOnline', 'alertToast')); }); }
         else { alert('Offline, check your connection'); }
     }
 }
