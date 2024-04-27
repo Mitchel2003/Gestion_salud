@@ -98,9 +98,8 @@ function getMessageAlert(type) {
     if (type === 'messageSessionFailed') { title = "Session expired"; message = "Try login again"; typeAlert = "w"; }
     if (type === 'messageManyRequests') { title = "Too many attempts"; message = "Retry in other moment"; typeAlert = "w"; }
     if (type === 'messageCredentialsIncorrects') { title = "Credentials incorrects"; message = "The email or password may not be correct"; typeAlert = "w"; }
+    if (type === 'messageSelectEmpty') { title = "Field select empty"; message = "please check the selects, this information is obligatory"; typeAlert = "w"; }
     if (type === 'messageRestorePassword') { title = "Restore password"; message = "Enter a registered email to send token"; typeAlert = "q"; }
-    if (type === 'messageSelectAccessEmpty') { title = "Field access empty"; message = "choose one of the available accesses"; typeAlert = "q"; }
-    if (type === 'messageSelectEntityEmpty') { title = "Field entity empty"; message = "choose one of the available entities"; typeAlert = "q"; }
     //error
     if (type === 'messageEmailUsed') { title = "Email is used"; message = "Please, retry with other email address"; typeAlert = "e"; }
     if (type === 'messageEmailUnknow') { title = "Email invalid"; message = "Please check email, retry with an email valid"; typeAlert = "e"; }

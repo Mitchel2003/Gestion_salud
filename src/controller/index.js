@@ -23,6 +23,7 @@ signContainer.addEventListener('submit', async function (event) {
 registerContainer.addEventListener('submit', async function (event) { //working here...
     event.preventDefault();
     const { name, email, password, access, entity } = (await import('../components/utils/values.js')).getInputRegister();//AC #203
+    if(!access || !entity){ await (await import('../components/utils/alerts.js')).showMessage('messageSelectEmpty', 'default'); return; }
     await (await import('../components/models/userModel.js')).registerUser(name, email, password, access, entity);
 });
 forgotPassword.addEventListener('click', async function (event) {
