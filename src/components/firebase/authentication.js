@@ -29,7 +29,7 @@ export async function sendToEmailResetPassword(email) {
 export async function checkSessionActive() {//AC #209
     return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
-            if (user) { resolve(user.email); }
+            if (user) { resolve({ email: user.email, entity: user.photoURL }); }
             else {
                 const getAlert = await import('../utils/alerts.js'), getView = await import('../utils/view.js');
                 await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); return;

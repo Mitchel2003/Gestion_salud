@@ -7,14 +7,13 @@ await fixContext();
 
 let time = new TimerOut(5000);//timeOut
 /*--------------------------------------------------methods--------------------------------------------------*/
-async function fixContext(){
-    const user = await checkSessionActive();
-    const { entity } = await getProfileUser();
+async function fixContext() {
+    const { user, entity } = await checkSessionActive();
     const { access } = await (await import('../firebase/query.js')).getDocumentUser(user, entity);
     await managementSession(access);
 }
-async function managementSession(access){
-    const road = getUserContext(access); 
+async function managementSession(access) {
+    const road = getUserContext(access);
     insertHtml(road);
     if (access === 'auxiliary') { await (await import('../models/sessionModel.js')).modeAuxiliary(); }
     else if (access === 'auditor') { await (await import('../models/sessionModel.js')).modeAuditor(); }
@@ -52,6 +51,6 @@ function getUserContext(res) {//AC #205
     }
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
-export function insertHtml(data){
+export function insertHtml(data) {
     document.body.insertAdjacentHTML('afterbegin', data);
 }
