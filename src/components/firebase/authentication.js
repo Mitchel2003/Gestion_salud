@@ -11,8 +11,7 @@ export async function verificationEmailAddress(userName, userEmail, userAccess, 
     return await (await import('./conection.js')).sendEmailVerification(auth.currentUser, { url: redirect });
 }
 export async function appenedDocumentReference(name, email, access, entity) {
-    const { getCollectionUser } = await import("./query.js");
-    return await addDoc(getCollectionUser(entity), { name: name, email: email, access: access, key: false });
+    return await (await import('./conection.js')).addDoc((await import("./query.js")).getCollectionUser(entity), { name: name, email: email, access: access, key: false });
 }
 /*--------------------------------------------------on/off session--------------------------------------------------*/
 export async function onSession(email, password) {
@@ -33,7 +32,7 @@ export async function checkSessionActive() {//AC #209
             if (user) { resolve(user.email); }
             else {
                 const getAlert = await import('../utils/alerts.js'), getView = await import('../utils/view.js');
-                await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); return; 
+                await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); return;
             }
         });
     });
