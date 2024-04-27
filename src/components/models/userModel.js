@@ -35,7 +35,6 @@ export async function registerUser(name, email, password, access, entity) {
         await getAuth.updateDataUser(name, entity);
         await getAuth.verificationEmailAddress(name, email, access, entity);
         (await import('../utils/values.js')).cleanInputRegister();
-        (await import('../utils/view.js')).removeClassList('active');
 
         await showMessage('messageEmailVerify', 'default');
         await offSession();

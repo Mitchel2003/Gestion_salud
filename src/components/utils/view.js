@@ -20,12 +20,6 @@ export async function appennedItemSelect(selectContext) {
         select.appendChild(opcion);
     });
 }
-export function removeClassList(nameClass){
-    const elements = document.querySelectorAll('.' + nameClass);
-    elements.forEach((e) => {
-        e.classList.remove(nameClass);
-    });
-}
 /*--------------------------------------------------class--------------------------------------------------*/
 export class ClassList_OnClick {//on/off at on click
     constructor(turnOn, turnOff, classList, container) {
