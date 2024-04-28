@@ -1,4 +1,4 @@
-import { checkSessionActive, getProfileUser } from '../firebase/authentication.js';
+import { checkSessionActive } from '../firebase/authentication.js';
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 import { TimerOut } from '../firebase/authentication.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
