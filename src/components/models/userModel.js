@@ -45,8 +45,7 @@ export async function requestResetPassword() {
     try {
         const email = await showMessage('messageRestorePassword', 'alertInput');
         onLoadWhile();
-        await (await import('../firebase/authentication.js')).sendToEmailResetPassword(email);
-        await showMessage('messageTokenSubmitted', 'default');
+        if (email) { await (await import('../firebase/authentication.js')).sendToEmailResetPassword(email); await showMessage('messageTokenSubmitted', 'default'); }
         offLoadWhile();
     } catch (error) { offLoadWhile(); await getAlert.exceptionsResetPassword(error); }
 }

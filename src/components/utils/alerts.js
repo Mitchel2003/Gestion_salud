@@ -80,7 +80,8 @@ export async function exceptionsRegisterUser(error) {
 }
 export async function exceptionsResetPassword(error) {
     if (error.code === 'auth/too-many-requests') { await showMessage('messageManyRequests', 'default'); return; }
-    if (error.code === 'invalid-argument') {/*nothing*/ return; }
+    if (error.code === 'auth/invalid-email') { await showMessage('messageEmailUnknow', 'default'); return; }
+    if (error.code === 'invalid-argument') { /*nothing*/ return; }
     await showMessage('messageTempUnknow', 'default');
 }
 /*--------------------------------------------------text--------------------------------------------------*/
