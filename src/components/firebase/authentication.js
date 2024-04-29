@@ -26,21 +26,14 @@ export async function sendToEmailResetPassword(email) {
     return await (await import('./conection.js')).confirmPasswordReset(auth, obbCode, newPassword);
 }
 /*--------------------------------------------------controller session--------------------------------------------------*/
-export async function checkSessionActive() {//AC #209
+export async function observerSessionActive() {//AC #209
     return new Promise((resolve) => {
         onAuthStateChanged(auth, async (user) => {
-            if (user) { resolve({ email: user.email, entity: user.photoURL }); }
-            else {
-                const getAlert = await import('../utils/alerts.js'), getView = await import('../utils/view.js');
-                await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); return;
-            }
-        });
-    });
-}
-export async function getProfileUser() {
-    return new Promise((resolve) => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) { resolve({ email: user.email, entity: user.photoURL }); }
+            const getAlert = await import('../utils/alerts.js');
+            const getView = await import('../utils/view.js');
+
+            if (!user) { await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); }
+            else { resolve({ email: user.email, entity: user.photoURL }); }
         });
     });
 }

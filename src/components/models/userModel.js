@@ -8,10 +8,9 @@ export async function loginUser(user, password) {
     try {
         onLoadWhile();
         const getQuery = await import('../firebase/query.js');
-        const getAuth = await import('../firebase/authentication.js');
 
         await onSession(user, password);//AC #208
-        const { entity } = await getAuth.getProfileUser();
+        const { entity } = await getQuery.getProfileUser();
         const { key } = await getQuery.getDocumentUser(user, entity);
 
         if (!(await getQuery.isFoundDocumentReference(user, entity))) {

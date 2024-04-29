@@ -1,9 +1,14 @@
-import { db, collection, doc, getDocs, query, where } from "./conection.js";
+import { db, auth, collection, doc, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
 export async function isFoundDocumentReference(user, entity) {
     const ask = query(getCollectionUser(entity), where("email", "==", user));
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
+}
+export async function getProfileUser() {
+    const user = auth.currentUser;
+    if (!user) { return; }
+    return { email: user.email, entity: user.photoURL };
 }
 export async function getDocumentUser(user, entity) {
     let access, key;
