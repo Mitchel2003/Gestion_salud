@@ -5,7 +5,7 @@ import { getDocumentUser } from '../firebase/query.js';
 onLoadWhile();
 await fixContext();
 
-let time = new TimerOut(5000);//timeOut
+let time = new TimerOut(600000);//timeOut 10 minuts
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext() {
     const { email, entity } = await observerSessionActive();
