@@ -5,9 +5,8 @@ export async function isFoundDocumentReference(user, entity) {
     const querySnapshot = await getDocs(ask);
     return !querySnapshot.empty;
 }
-export async function getProfileUser() {
+export function getProfileUser() {
     const user = auth.currentUser;
-    if (!user) { return; }
     return { email: user.email, entity: user.photoURL };
 }
 export async function getDocumentUser(user, entity) {
