@@ -11,7 +11,6 @@ async function fixContext() {
     const { email, entity } = await observerSessionActive();
     const { access } = await getDocumentUser(email, entity);
     await managementSession(access);
-    console.log(email, entity, access)
 }
 async function managementSession(access) {
     const road = getUserContext(access);
