@@ -10,3 +10,7 @@
     background-image: url('../../components/images/background_session.webp');
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.bxs-user-circle{
+    font-size: 45px;
+}

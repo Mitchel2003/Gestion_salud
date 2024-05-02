@@ -30,15 +30,10 @@ function getUserContext(res) {//AC #205
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand">Dashboard</a>
+                <h1 class="navbar-brand">Dashboard</h1>
                 
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="navbar-brand"><img src="../components/images/gs_icon.svg" alt="icon" width="40" height="40"></a>    
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
@@ -60,14 +55,7 @@ function getUserContext(res) {//AC #205
                             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                         </li>
                     </ul>
-
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-
-                    <a class="ms-lg-3 mb-lg-0"> <span class="bx bxs-user-circle"></span> </a>
-
+                    <a class="mt-lg-0"> <span class="bx bxs-user-circle"></span> </a>
                 </div>
             </div>
         </nav>
