@@ -31,7 +31,7 @@ function getUserContext(res) {//AC #205
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <h1 class="navbar-brand">Dashboard</h1>
-                
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -51,13 +51,21 @@ function getUserContext(res) {//AC #205
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                        </li>
                     </ul>
-                    <a class="mt-lg-0"> <span class="bx bxs-user-circle"></span> </a>
+
+                    <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle"></span> </a>
                 </div>
+                
             </div>
+        </nav>
+
+        <nav class="nav-side-bar">
+            <ul class="side-bar">
+                <li id="close-options"> <a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a> </li>
+                <li><a>inicio</a></li>
+                <li><a>Management accounts</a></li>
+                <li><a>Settings</a></li>
+            </ul>
         </nav>
         `;
     } if (res === 'auditor') {

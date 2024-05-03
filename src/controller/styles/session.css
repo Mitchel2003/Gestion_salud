@@ -14,3 +14,49 @@
 .bxs-user-circle{
     font-size: 45px;
 }
+
+.nav-side-bar{
+    background-color: white;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}.nav-side-bar ul{
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}.nav-side-bar li{
+    height: 50px;
+}.nav-side-bar li:first-child{
+    margin-right: auto;
+}.nav-side-bar a{
+    height: 100%;
+    padding: 0px 30px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: black;
+}.nav-side-bar a:hover{
+    background-color: #f0f0f0;
+}
+
+.side-bar{
+    position: fixed;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0.3;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}.side-bar li, .side-bar a{
+    width: 100%;
+}.spawn{ transform: translateX(0); opacity: 1; }/*class spawn side-bar*/
