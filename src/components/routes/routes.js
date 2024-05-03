@@ -33,42 +33,45 @@ function getUserContext(res) {//AC #205
                 <h1 class="navbar-brand">Dashboard</h1>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="nav nav-tabs navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Consult device</a>
+                            <a class="nav-link" href="#">Driver device</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Control departaments</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">User management</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
-                                Query documents 
+                            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
+                                Documents 
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Query documents</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="">Finding data</a></li>
+                                <li><a class="dropdown-item" href="">Device information</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="">Filters</a></li>
                             </ul>
                         </li>                            
                     </ul>
-                    <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>                 
                 </div>
-                
+                <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>
             </div>
         </nav>
         
-        
         <ul class="side-bar">
-            <li class="close-options"> <span class="bx bx-x fs-2"></span> </li>
+            <li class="close-options">
+                <h4 class="text-center mb-0 fs-4">Options</h4>
+                <span class="bx bx-x fs-1"></span> 
+            </li>
             <li><a>Your profile</a></li>
             <li><a>Management accounts</a></li>
             <li><a>Settings</a></li>
         </ul>
-        
         `;
     } if (res === 'auditor') {
         return `
@@ -81,6 +84,4 @@ function getUserContext(res) {//AC #205
     }
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
-export function insertHtml(data) {
-    document.body.insertAdjacentHTML('afterbegin', data);
-}
+export function insertHtml(data) { document.body.insertAdjacentHTML('afterbegin', data); }

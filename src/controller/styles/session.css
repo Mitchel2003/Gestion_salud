@@ -37,8 +37,14 @@
     color: black;
     align-items: center;
     text-decoration: none;
-}.side-bar a, .side-bar span{
-    padding: 0px 30px;
-}.side-bar a:hover, .side-bar .close-options:hover {
+}.side-bar a, .close-options{
+    padding: 0 0 0 30px;
+}
+
+.close-options h4{
+    margin-right: auto;
+}.close-options span{
+    margin-right: 10px;
+}.close-options span:hover, .side-bar a:hover{
     background-color: rgb(240, 240, 240, 0.5);
 }.spawn{ transform: translateX(0); opacity: 1; }/*class spawn side-bar*/
