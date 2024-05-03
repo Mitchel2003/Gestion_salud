@@ -38,22 +38,24 @@ function getUserContext(res) {//AC #205
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="#">Consult device</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">User management</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
+                                Query documents 
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Query documents</a></li>
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                        </li>
+                        </li>                            
                     </ul>
-
-                    <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>
+                    <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>                 
                 </div>
                 
             </div>
@@ -62,7 +64,7 @@ function getUserContext(res) {//AC #205
         
         <ul class="side-bar">
             <li class="close-options"> <span class="bx bx-x fs-2"></span> </li>
-            <li><a>inicio</a></li>
+            <li><a>Your profile</a></li>
             <li><a>Management accounts</a></li>
             <li><a>Settings</a></li>
         </ul>
