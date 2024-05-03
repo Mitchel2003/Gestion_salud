@@ -53,20 +53,20 @@ function getUserContext(res) {//AC #205
                         </li>
                     </ul>
 
-                    <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle"></span> </a>
+                    <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>
                 </div>
                 
             </div>
         </nav>
-
-        <nav class="nav-side-bar">
-            <ul class="side-bar">
-                <li id="close-options"> <a><svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="26"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a> </li>
-                <li><a>inicio</a></li>
-                <li><a>Management accounts</a></li>
-                <li><a>Settings</a></li>
-            </ul>
-        </nav>
+        
+        
+        <ul class="side-bar">
+            <li class="close-options"> <span class="bx bx-x fs-2"></span> </li>
+            <li><a>inicio</a></li>
+            <li><a>Management accounts</a></li>
+            <li><a>Settings</a></li>
+        </ul>
+        
         `;
     } if (res === 'auditor') {
         return `

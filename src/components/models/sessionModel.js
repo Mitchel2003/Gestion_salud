@@ -1,6 +1,8 @@
 export async function modeAuxiliary() {
-    document.querySelector('.user-options').addEventListener('click', (e) => {e.preventDefault; document.querySelector('.side-bar').classList.add('spawn'); });
-    document.getElementById('close-options').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn'); });
+    //need use less addEventListener for themes of optimization
+    document.querySelector('.user-options').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
+    document.querySelector('.close-options').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn') });
+    document.querySelector('.side-bar').addEventListener("mouseleave", () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 }
 export async function modeAuditor() {
 

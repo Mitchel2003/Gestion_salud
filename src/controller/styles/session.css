@@ -11,34 +11,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.bxs-user-circle{
-    font-size: 45px;
-}
-
-.nav-side-bar{
-    background-color: white;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-}.nav-side-bar ul{
-    width: 100%;
-    list-style: none;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}.nav-side-bar li{
-    height: 50px;
-}.nav-side-bar li:first-child{
-    margin-right: auto;
-}.nav-side-bar a{
-    height: 100%;
-    padding: 0px 30px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    color: black;
-}.nav-side-bar a:hover{
-    background-color: #f0f0f0;
-}
-
 .side-bar{
     position: fixed;
     display: flex;
@@ -47,6 +19,7 @@
     flex-direction: column;
     overflow: hidden;
     opacity: 0.3;
+    padding: 0;
     top: 0;
     right: 0;
     height: 100vh;
@@ -58,5 +31,14 @@
     transform: translateX(100%);
     transition: transform 0.5s ease, opacity 0.5s ease;
 }.side-bar li, .side-bar a{
+    display: flex;
+    height: 50px;
     width: 100%;
+    color: black;
+    align-items: center;
+    text-decoration: none;
+}.side-bar a, .side-bar span{
+    padding: 0px 30px;
+}.side-bar a:hover, .side-bar .close-options:hover {
+    background-color: rgb(240, 240, 240, 0.5);
 }.spawn{ transform: translateX(0); opacity: 1; }/*class spawn side-bar*/
