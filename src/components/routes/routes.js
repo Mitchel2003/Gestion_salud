@@ -5,7 +5,7 @@ import { getDocumentUser } from '../firebase/query.js';
 onLoadWhile();
 await fixContext();
 
-let time = new TimerOut(300000);//timeOut 10 minuts
+let time = new TimerOut(300000);//timeOut 5 minuts
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext() {
     const { email, entity } = await observerSessionActive();
@@ -35,16 +35,16 @@ function getUserContext(res) {//AC #205
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav nav-tabs navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" id="nav-home" data-bs-toggle="tab" data-bs-target="#home" aria-current="nav-home" aria-select="false" href="">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Driver device</a>
+                            <a class="nav-link" href="">Driver device</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Control departaments</a>
+                            <a class="nav-link" href="">Control departaments</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">User management</a>
+                            <a class="nav-link" href="">User management</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
@@ -66,7 +66,7 @@ function getUserContext(res) {//AC #205
         <ul class="side-bar">
             <li class="close-options">
                 <h4 class="text-center mb-0 fs-4">Options</h4>
-                <span class="bx bx-x fs-1"></span> 
+                <span class="bx bx-x fs-1"></span>
             </li>
             <li><a>Your profile</a></li>
             <li><a>Management accounts</a></li>
