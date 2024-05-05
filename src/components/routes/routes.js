@@ -34,29 +34,35 @@ function getUserContext(res) {//AC #205
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav nav-tabs navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="nav-home" data-bs-toggle="tab" data-bs-target="#home" aria-current="nav-home" aria-select="false" href="">Home</a>
+                        <li class="nav-link active" id="nav-home" role="button" data-bs-toggle="tab" data-bs-target="#home" aria-current="home" aria-selected="true">
+                            Home
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Driver device</a>
+                        <li class="nav-link" id="nav-driver-device" role="button" data-bs-toggle="tab" data-bs-target="#driver-device" aria-current="driver-device">
+                            Driver device
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Control departaments</a>
+                        <li class="nav-link" id="nav-control-departaments" role="button" data-bs-toggle="tab" data-bs-target="#control-departaments" aria-current="control-departaments">
+                            Control departaments
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">User management</a>
+                        <li class="nav-link" id="nav-user-management" role="button" data-bs-toggle="tab" data-bs-target="#user-management" aria-current="user-management">
+                            User management
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
-                                Documents 
+                        <li class="dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Documents
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="">Finding data</a></li>
-                                <li><a class="dropdown-item" href="">Device information</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="">Filters</a></li>
+                                <li class="dropdown-item" id="nav-finding-data" role="button" data-bs-toggle="tab" data-bs-target="#finding-data" aria-current="finding-data">
+                                    Finding data
+                                </li>
+                                <li class="dropdown-item" id="nav-device-information" role="button" data-bs-toggle="tab" data-bs-target="#device-information" aria-current="device-information">
+                                    Device information
+                                </li>
+                                <hr class="dropdown-divider">
+                                <li class="dropdown-item" id="nav-filters" role="button" data-bs-toggle="tab" data-bs-target="#filters" aria-current="filters">
+                                    Filters
+                                </li>
                             </ul>
-                        </li>                            
+                        </li>
                     </ul>
                 </div>
                 <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>
@@ -72,6 +78,14 @@ function getUserContext(res) {//AC #205
             <li><a>Management accounts</a></li>
             <li><a>Settings</a></li>
         </ul>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-panel fade show active p-3" id="home" role="tabpanel" aria-labelledby="nav-home">
+                <div class="container-fluid">
+                    <h2>hello world</h2>
+                </div>
+            </div>
+        </div>
         `;
     } if (res === 'auditor') {
         return `

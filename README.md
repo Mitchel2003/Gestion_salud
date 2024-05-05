@@ -192,7 +192,7 @@ export async function registerTokenPassword() {
             return;
         }
 
-        // //token generated with UID...
+        // token generated with UID...
         // const token = await (await import('../firebase/query.js')).getUID_User(email);
         // await createTokenPassword(email, token); //need token for continue...
 
@@ -282,6 +282,16 @@ console.log(instanciaA === instanciaB); // true, ambas variables apuntan al mism
 
 instanciaA.mostrarEstado(); // Muestra 'inicial'.
 
+
+class Singleton{
+    static currentContext;
+    constructor(context = null){
+        if(context===null){return false}
+        if(Singleton.currentContext){return Singleton.currentContext;}
+        this.context=context;
+        Singleton.currentContext = this;
+    }
+}
 ### --------------------------------------------------tips-------------------------------------------------- ###
 **OPTIMIZAR PAGINA WEB**
 
