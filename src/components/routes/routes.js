@@ -30,42 +30,49 @@ function getUserContext(res) {//AC #205
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand">Dashboard</h1>
+                <h1 class="navbar-brand mb-0">Dashboard</h1>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="nav nav-tabs navbar-nav">
-                        <li class="nav-link active" id="nav-home" role="button" data-bs-toggle="tab" data-bs-target="#home" aria-current="home" aria-selected="true">
+                <div class="collapse navbar-collapse mx-2" id="navbarSupportedContent">
+                    <ul class="nav nav-tabs navbar-nav" role="tablist">
+                        <button class="nav-link active" id="nav-home" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#home" aria-current="home" aria-selected="true">
                             Home
-                        </li>
-                        <li class="nav-link" id="nav-driver-device" role="button" data-bs-toggle="tab" data-bs-target="#driver-device" aria-current="driver-device">
+                        </button>
+                        <button class="nav-link" id="nav-driver-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#driver-device" aria-current="driver-device" aria-selected="false">
                             Driver device
-                        </li>
-                        <li class="nav-link" id="nav-control-departaments" role="button" data-bs-toggle="tab" data-bs-target="#control-departaments" aria-current="control-departaments">
+                        </button>
+
+                        <button class="nav-link" id="nav-control-departaments" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#control-departaments" aria-current="control-departaments" aria-selected="false">
                             Control departaments
-                        </li>
-                        <li class="nav-link" id="nav-user-management" role="button" data-bs-toggle="tab" data-bs-target="#user-management" aria-current="user-management">
+                        </button>
+
+                        <button class="nav-link" id="nav-user-management" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#user-management" aria-current="user-management" aria-selected="false">
                             User management
-                        </li>
-                        <li class="dropdown">
+                        </button>
+
+                        <li class="dropdown text-center">
                             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Documents
                             </a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-item" id="nav-finding-data" role="button" data-bs-toggle="tab" data-bs-target="#finding-data" aria-current="finding-data">
+                            <ul class="dropdown-menu text-center">
+
+                                <button class="dropdown-item" id="nav-finding-data" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#finding-data" aria-current="finding-data" aria-selected="false">
                                     Finding data
-                                </li>
-                                <li class="dropdown-item" id="nav-device-information" role="button" data-bs-toggle="tab" data-bs-target="#device-information" aria-current="device-information">
+                                </button>
+
+                                <button class="dropdown-item" id="nav-device-information" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#device-information" aria-current="device-information" aria-selected="false">
                                     Device information
-                                </li>
+                                </button>
+
                                 <hr class="dropdown-divider">
-                                <li class="dropdown-item" id="nav-filters" role="button" data-bs-toggle="tab" data-bs-target="#filters" aria-current="filters">
+
+                                <button class="dropdown-item" id="nav-filters" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#filters" aria-current="filters" aria-selected="false">
                                     Filters
-                                </li>
+                                </button>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                <a class="user-options mt-lg-0"> <span class="bx bxs-user-circle fs-1"></span> </a>
+                <a class="user-options mt-1 collapse show" id="navbarSupportedContent"> <span class="bx bxs-user-circle fs-1"></span> </a>
             </div>
         </nav>
         
@@ -80,11 +87,67 @@ function getUserContext(res) {//AC #205
         </ul>
 
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-panel fade show active p-3" id="home" role="tabpanel" aria-labelledby="nav-home">
+
+            <div class="tab-panel fade collapse show active p-3" id="home" role="tabpanel" aria-labelledby="nav-home">
                 <div class="container-fluid">
-                    <h2>hello world</h2>
+                    <div class="accordion" id="accordionExample1">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Accordion Item #1
+                                </button>
+                            </h2>
+
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample1">
+                                <div class="accordion-body">
+                                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="tab-panel fade collapse p-3" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
+                <div class="container-fluid">
+                    <div class="accordion" id="accordionExample2">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    Accordion Item #2
+                                </button>
+                            </h2>
+
+                            <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2">
+                                <div class="accordion-body">
+                                    <strong>This is the second item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel fade collapse p-3" id="control-departaments" role="tabpanel" aria-labelledby="nav-control-departaments">
+                <h1>control-departaments</h1>
+            </div>
+
+            <div class="tab-panel fade collapse p-3" id="user-management" role="tabpanel" aria-labelledby="nav-user-management">
+                <h1>user-management</h1>
+            </div>
+
+            <div class="tab-panel fade collapse p-3" id="finding-data" role="tabpanel" aria-labelledby="nav-finding-data">
+                <h1>finding-data</h1>
+            </div>
+
+            <div class="tab-panel fade collapse p-3" id="device-information" role="tabpanel" aria-labelledby="nav-device-information">
+                <h1>device-information</h1>
+            </div>
+
+            <div class="tab-panel fade collapse p-3" id="filters" role="tabpanel" aria-labelledby="nav-filters">
+                <h1>filters</h1>
+            </div>
+
         </div>
         `;
     } if (res === 'auditor') {
