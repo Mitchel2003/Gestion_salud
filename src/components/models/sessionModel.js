@@ -22,33 +22,34 @@ class Section{
     }
     observer(){
         this.element.addEventListener('click', (e) => {
-            const currentContext = e.target.ariaCurrent;
-            if(!currentContext){return}
-            if(Section.currentContext === currentContext){ /*refresh*/ return;}
+            const section = e.target.ariaCurrent;
+            if(!section){return}
+            if(Section.currentContext === section){ /*refresh*/ return;}
 
-            this.context = currentContext;
+            this.context = section;
             Section.currentContext = this.context;
-            // setCurrentContext(currentContext);
 
+            //need get documents of colection call especific
 
-            //first i do structure of the section
+            //first thing that in section we have; containers, ids, addEventsListeners(), 
+            //then at change of section, we could remove addEventsListeners()
 
-            //then
+            //remember, the colapse of the containers in section corresponds to bootstrap; i just need drive the events;
+            //for themes of optimization
 
-            //need get documents of colection call especific 
+            setContentCurrentContext(section);
         });
     }
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
-// function setCurrentContext(section){
-//     const searchStructure = document.querySelector(`.${section}`);//search container from body
-//     if(!searchStructure){ createStructure(section); return; }//here add structure to document
+function setCurrentContext(section){
     
-//     //set visibility
-//     checkState(section);
+    const searchStructure = document.querySelector(`.${section}`);//search container from body
+    if(!searchStructure){ createStructure(section); return; }//here add structure to document
     
-    
-// }
+    //set visibility
+    checkState(section);   
+}
 // function checkState(section) {
 //     const element = document.querySelector(section);
 //     if(!element){return}
