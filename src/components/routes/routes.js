@@ -109,23 +109,44 @@ function getUserContext(res) {//AC #205
             </div>
 
             <div class="tab-panel fade collapse p-3" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
-                <div class="container-fluid">
-                    <div class="accordion" id="accordionExample2">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    Accordion Item #2
-                                </button>
-                            </h2>
 
-                            <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <strong>This is the second item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                <div class="container bg-body-tertiary" style="max-height: 400px; overflow-y: auto;">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="scroll-container">
+                                <div id="item-1">
+                                    <h4>Item 1</h4>
+                                    <p>...</p>
+                                </div>
+                                <div id="item-1-1">
+                                    <h5>Item 1-1</h5>
+                                    <p>...</p>
+                                </div>
+                                <div id="item-1-2">
+                                    <h5>Item 1-2</h5>
+                                    <p>...</p>
+                                </div>
+                                <div id="item-2">
+                                    <h4>Item 2</h4>
+                                    <p>...</p>
+                                </div>
+                                <div id="item-3">
+                                    <h4>Item 3</h4>
+                                    <p>...</p>
+                                </div>
+                                <div id="item-3-1">
+                                    <h5>Item 3-1</h5>
+                                    <p>...</p>
+                                </div>
+                                <div id="item-3-2">
+                                    <h5>Item 3-2</h5>
+                                    <p>...</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                    
             </div>
 
             <div class="tab-panel fade collapse p-3" id="control-departaments" role="tabpanel" aria-labelledby="nav-control-departaments">

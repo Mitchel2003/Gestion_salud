@@ -29,6 +29,13 @@ class Section{
             this.context = currentContext;
             Section.currentContext = this.context;
             // setCurrentContext(currentContext);
+
+
+            //first i do structure of the section
+
+            //then
+
+            //need get documents of colection call especific 
         });
     }
 }
