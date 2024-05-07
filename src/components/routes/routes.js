@@ -114,7 +114,7 @@ function getUserContext(res) {//AC #205
                     <div class="row">
 
                         <div class="col-lg-8 col-md-8 col-sm-12">
-                            <div class="scroll-container overflow-auto" style="max-height: 90vh;">
+                            <div class="scroll-container overflow-auto" style="max-height: 83vh;">
                                 <div id="left-item">
                                     <h4>Contenedor Izquierdo</h4>
                                     <p>Contenido...</p>
@@ -123,7 +123,7 @@ function getUserContext(res) {//AC #205
                         </div>
 
                         <div class="bg-body-tertiary bg-opacity-50 rounded-2 col-lg-4 col-md-4 col-sm-12">
-                            <div class="scroll-container overflow-auto" style="max-height: 90vh;">
+                            <div class="scroll-container overflow-auto" style="max-height: 83vh;">
                                 <div id="right-item">
                                     <h4>Contenedor Derecho</h4>
                                     <p>Contenido...</p>
