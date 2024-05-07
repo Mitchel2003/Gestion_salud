@@ -11,9 +11,9 @@ export async function loginUser(user, password) {
 
         await onSession(user, password);//AC #208
         const { entity } = getQuery.getProfileUser();
-        const { key } = await getQuery.getDocumentUser(user, entity);
+        const { key, access: userFound } = await getQuery.getDocumentUser(user, entity);
 
-        if (!(await getQuery.getDocumentUser(user, entity))) {
+        if (!userFound) {
             await showMessage('messageEmailNotFound', 'default');
             await offSession(); offLoadWhile(); return;
         } if (!key) {
@@ -55,9 +55,9 @@ export async function modeVerifyEmail(res) {
     const getValues = await import('../utils/values.js');
     const getView = await import('../utils/view.js');
     const { userName, userEmail, userAccess, userEntity } = await getValues.getSearchParams(res);
-    const { key } = await getQuery.getDocumentUser(userEmail, userEntity);
+    const { access: userFound } = await getQuery.getDocumentUser(userEmail, userEntity);
     
-    if (key) {
+    if (userFound) {
         const response = await showMessage('messageTokenVerifyExpired', 'alertButtonAction');
         if (response) { getView.goToHome(); }
         offLoadWhile(); return;

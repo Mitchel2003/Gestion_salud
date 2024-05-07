@@ -8,9 +8,7 @@ export async function getDocumentUser(user, entity) {
     let access, key;
     const ask = query(getCollectionUser(entity), where("email", "==", user));
     const querySnapshot = await getDocs(ask);
-
     if(!querySnapshot){return !querySnapshot.empty;}
-
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }

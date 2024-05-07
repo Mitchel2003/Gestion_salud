@@ -110,37 +110,115 @@ function getUserContext(res) {//AC #205
 
             <div class="tab-panel fade collapse p-3" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
 
-                <div class="container bg-body-tertiary" style="max-height: 400px; overflow-y: auto;">
+                <div class="container-fluid bg-body-tertiary overflow-auto mb-3" style="height: 90vh;">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="scroll-container">
-                                <div id="item-1">
-                                    <h4>Item 1</h4>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
                                 </div>
-                                <div id="item-1-1">
-                                    <h5>Item 1-1</h5>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
                                 </div>
-                                <div id="item-1-2">
-                                    <h5>Item 1-2</h5>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
                                 </div>
-                                <div id="item-2">
-                                    <h4>Item 2</h4>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
                                 </div>
-                                <div id="item-3">
-                                    <h4>Item 3</h4>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
                                 </div>
-                                <div id="item-3-1">
-                                    <h5>Item 3-1</h5>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
                                 </div>
-                                <div id="item-3-2">
-                                    <h5>Item 3-2</h5>
-                                    <p>...</p>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="left-item">
+                                    <h4>Contenedor Izquierdo</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container-fluid bg-body-tertiary overflow-auto" style="height: 90vh;">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="scroll-container overflow-auto h-100">
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
                                 </div>
                             </div>
                         </div>
