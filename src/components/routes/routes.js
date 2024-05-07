@@ -24,7 +24,7 @@ function getUserContext(res) {//AC #205
     document.title = "Session";
     if (res === 'auxiliary') {
         return `
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="bg-body-tertiary navbar navbar-expand-lg">
             <div class="container-fluid">
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,7 @@ function getUserContext(res) {//AC #205
                 </button>
                 <h1 class="navbar-brand mb-0">Dashboard</h1>
 
-                <div class="collapse navbar-collapse mx-2" id="navbarSupportedContent">
+                <div class="navbar-collapse mx-2 collapse" id="navbarSupportedContent">
                     <ul class="nav nav-tabs navbar-nav" role="tablist">
                         <button class="nav-link active" id="nav-home" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#home" aria-current="home" aria-selected="true">
                             Home
@@ -88,7 +88,7 @@ function getUserContext(res) {//AC #205
 
         <div class="tab-content" id="nav-tabContent">
 
-            <div class="tab-panel fade collapse show active p-3" id="home" role="tabpanel" aria-labelledby="nav-home">
+            <div class="tab-panel p-3 fade collapse show active" id="home" role="tabpanel" aria-labelledby="nav-home">
                 <div class="container-fluid">
                     <div class="accordion" id="accordionExample1">
                         <div class="accordion-item">
@@ -108,11 +108,12 @@ function getUserContext(res) {//AC #205
                 </div>
             </div>
 
-            <div class="tab-panel fade collapse p-3" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
+            <div class="tab-panel p-3 fade collapse" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
 
-                <div class="container-fluid bg-body-tertiary overflow-auto mb-3" style="height: 90vh;">
+                <div class="container-fluid bg-body-tertiary bg-opacity-50 rounded-2 overflow-auto">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-12">
+
+                        <div class="col-lg-8 col-md-8 col-sm-12">
                             <div class="scroll-container">
                                 <div id="left-item">
                                     <h4>Contenedor Izquierdo</h4>
@@ -122,96 +123,11 @@ function getUserContext(res) {//AC #205
                                     <h4>Contenedor Izquierdo</h4>
                                     <p>Contenido...</p>
                                 </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-
-                <div class="container-fluid bg-body-tertiary overflow-auto" style="height: 90vh;">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-12">
-                            <div class="scroll-container overflow-auto h-100">
-                                <div id="right-item">
-                                    <h4>Contenedor Derecho</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="right-item">
-                                    <h4>Contenedor Derecho</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="right-item">
-                                    <h4>Contenedor Derecho</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="right-item">
-                                    <h4>Contenedor Derecho</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="right-item">
-                                    <h4>Contenedor Derecho</h4>
-                                    <p>Contenido...</p>
-                                </div>
-                                <div id="right-item">
-                                    <h4>Contenedor Derecho</h4>
-                                    <p>Contenido...</p>
-                                </div>
+                        <div class="bg-body-tertiary bg-opacity-50 rounded-2 col-lg-4 col-md-4 col-sm-12">
+                            <div class="scroll-container">
                                 <div id="right-item">
                                     <h4>Contenedor Derecho</h4>
                                     <p>Contenido...</p>
@@ -222,8 +138,10 @@ function getUserContext(res) {//AC #205
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
                     
             </div>
 

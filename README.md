@@ -1,3 +1,36 @@
+Para lograr el comportamiento deseado de un contenedor que se expande según el contenido hasta un máximo de 90vh, y que después habilite el scroll, puedes utilizar clases de Bootstrap junto con un poco de CSS personalizado. Bootstrap no tiene una clase específica que limite la altura máxima de un contenedor y luego permita el desplazamiento interno, pero puedes lograrlo fácilmente.
+
+Primero, asegúrate de tener tu estructura de `<div>` como la mostraste, y luego agrega CSS personalizado para el contenedor principal y los contenedores internos donde quieres que ocurra el desplazamiento. A continuación, te muestro cómo:
+
+1. **Agrega una Clase Específica a Tus Contenedores de Desplazamiento:**
+
+    Dentro de tus contenedores `.scroll-container`, puedes mantener ese nombre de clase y agregar el estilo necesario.
+
+2. **Estilo CSS Personalizado:**
+
+    Para tu `.scroll-container`, necesitas definir un máximo de altura (en este caso, 90vh) y permitir el desplazamiento interno. Un ejemplo de cómo podría ser el CSS:
+
+    ```css
+    .scroll-container {
+        max-height: 90vh; /* Altura máxima antes de que el scroll se habilite */
+        overflow-y: auto; /* Habilitar desplazamiento vertical cuando se supera la altura máxima */
+    }
+    ```
+
+3. **Asegúrate de que el HTML esté Correctamente Formulado:**
+
+    Revisa que tienes todo correctamente estructurado y que las IDs sean únicas si decides usarlas. Por ejemplo, en tu código actual, tienes múltiples elementos con el mismo `id="left-item"` e `id="right-item"`, lo cual no es válido en HTML. Cada ID debe ser única en el documento.
+
+4. **Integra el CSS con Bootstrap:**
+
+    Puedes agregar tu CSS personalizado en una etiqueta `<style>` dentro del `<head>` de tu página o en un archivo CSS externo. Asegúrate de que este CSS se carga después de Bootstrap para que tenga prioridad.
+
+5. **Responsive:**
+
+    Tu contenedor ya es responsive debido al uso de las clases `col-lg-`, `col-md-` y `col-sm-` de Bootstrap. Esto hace que se ajuste según el tamaño de la pantalla. El comportamiento del scroll que has definido no afecta a esta responsividad.
+
+Siguiendo estos pasos y recomendaciones, puedes lograr un diseño que se expanda de acuerdo con el contenido hasta un punto máximo, y luego habilite el desplazamiento, todo esto manteniendo la responsividad que ofrece Bootstrap.
+
 ¡Hola! Sin duda, aplicar patrones de diseño puede mejorar significativamente la mantenibilidad, optimización, y profesionalismo en tus proyectos web desarrollados en JavaScript. A continuación, te presento algunos de los patrones de diseño más importantes para tener en cuenta:
 
 ### 1. **Módulo (Module)**
