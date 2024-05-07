@@ -13,7 +13,7 @@ export async function loginUser(user, password) {
         const { entity } = getQuery.getProfileUser();
         const { key } = await getQuery.getDocumentUser(user, entity);
 
-        if (!(await getQuery.isFoundDocumentReference(user, entity))) {
+        if (!(await getQuery.getDocumentUser(user, entity))) {
             await showMessage('messageEmailNotFound', 'default');
             await offSession(); offLoadWhile(); return;
         } if (!key) {
@@ -55,8 +55,9 @@ export async function modeVerifyEmail(res) {
     const getValues = await import('../utils/values.js');
     const getView = await import('../utils/view.js');
     const { userName, userEmail, userAccess, userEntity } = await getValues.getSearchParams(res);
-
-    if (await getQuery.isFoundDocumentReference(userEmail, userEntity)) {
+    const { key } = await getQuery.getDocumentUser(userEmail, userEntity);
+    
+    if (key) {
         const response = await showMessage('messageTokenVerifyExpired', 'alertButtonAction');
         if (response) { getView.goToHome(); }
         offLoadWhile(); return;

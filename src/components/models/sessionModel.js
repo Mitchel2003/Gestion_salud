@@ -24,7 +24,7 @@ class Section{
         this.element.addEventListener('click', (e) => {
             const currentContext = e.target.ariaCurrent;
             if(!currentContext){return}
-            if(Section.currentContext === currentContext){ console.log(currentContext); /*loadContentSection();*/}
+            if(Section.currentContext === currentContext){ /*refresh*/ return;}
 
             this.context = currentContext;
             Section.currentContext = this.context;

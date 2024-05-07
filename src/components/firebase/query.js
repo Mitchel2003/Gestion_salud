@@ -1,10 +1,5 @@
 import { db, auth, collection, doc, getDocs, query, where } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
-export async function isFoundDocumentReference(user, entity) {
-    const ask = query(getCollectionUser(entity), where("email", "==", user));
-    const querySnapshot = await getDocs(ask);
-    return !querySnapshot.empty;
-}
 export function getProfileUser() {
     const user = auth.currentUser;
     return { email: user.email, entity: user.photoURL };
@@ -13,6 +8,9 @@ export async function getDocumentUser(user, entity) {
     let access, key;
     const ask = query(getCollectionUser(entity), where("email", "==", user));
     const querySnapshot = await getDocs(ask);
+
+    if(!querySnapshot){return !querySnapshot.empty;}
+
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
