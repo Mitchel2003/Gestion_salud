@@ -110,15 +110,11 @@ function getUserContext(res) {//AC #205
 
             <div class="tab-panel p-3 fade collapse" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
 
-                <div class="container-fluid bg-body-tertiary bg-opacity-50 rounded-2 overflow-auto">
+                <div class="container-fluid bg-body-tertiary bg-opacity-50 rounded-2">
                     <div class="row">
 
                         <div class="col-lg-8 col-md-8 col-sm-12">
-                            <div class="scroll-container">
-                                <div id="left-item">
-                                    <h4>Contenedor Izquierdo</h4>
-                                    <p>Contenido...</p>
-                                </div>
+                            <div class="scroll-container overflow-auto" style="max-height: 90vh;">
                                 <div id="left-item">
                                     <h4>Contenedor Izquierdo</h4>
                                     <p>Contenido...</p>
@@ -127,7 +123,7 @@ function getUserContext(res) {//AC #205
                         </div>
 
                         <div class="bg-body-tertiary bg-opacity-50 rounded-2 col-lg-4 col-md-4 col-sm-12">
-                            <div class="scroll-container">
+                            <div class="scroll-container overflow-auto" style="max-height: 90vh;">
                                 <div id="right-item">
                                     <h4>Contenedor Derecho</h4>
                                     <p>Contenido...</p>
@@ -136,6 +132,59 @@ function getUserContext(res) {//AC #205
                                     <h4>Contenedor Derecho</h4>
                                     <p>Contenido...</p>
                                 </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+                                <div id="right-item">
+                                    <h4>Contenedor Derecho</h4>
+                                    <p>Contenido...</p>
+                                </div>
+
                             </div>
                         </div>
 
