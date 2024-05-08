@@ -119,62 +119,8 @@ function getUserContext(res) {//AC #205
                 </div>                
 
                 <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50">
-                
                     <div class="row">
-
                         <div class="col-lg-8 col-md-8 col-sm-12 scroll-container overflow-auto" style="max-height: 75vh;">
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
                             <div id="empty-item">
                                 <h4>Empty</h4>
                                 <p>nothing here</p>
@@ -186,40 +132,7 @@ function getUserContext(res) {//AC #205
                                 <h4>Empty</h4>
                                 <p>nothing here</p>
                             </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>                            
                         </div>
-
                     </div>
                 </div>
                     
