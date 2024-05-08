@@ -37,10 +37,9 @@ function getUserContext(res) {//AC #205
                         <button class="nav-link active" id="nav-home" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#home" aria-current="home" aria-selected="true">
                             Home
                         </button>
-                        <button class="nav-link" id="nav-driver-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#driver-device" aria-current="driver-device" aria-selected="false">
-                            Driver device
+                        <button class="nav-link" id="nav-handler-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#handler-device" aria-current="handler-device" aria-selected="false">
+                            Handler device
                         </button>
-
                         <button class="nav-link" id="nav-control-departaments" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#control-departaments" aria-current="control-departaments" aria-selected="false">
                             Control departaments
                         </button>
@@ -54,17 +53,13 @@ function getUserContext(res) {//AC #205
                                 Documents
                             </a>
                             <ul class="dropdown-menu text-center">
-
                                 <button class="dropdown-item" id="nav-finding-data" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#finding-data" aria-current="finding-data" aria-selected="false">
                                     Finding data
                                 </button>
-
                                 <button class="dropdown-item" id="nav-device-information" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#device-information" aria-current="device-information" aria-selected="false">
                                     Device information
                                 </button>
-
                                 <hr class="dropdown-divider">
-
                                 <button class="dropdown-item" id="nav-filters" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#filters" aria-current="filters" aria-selected="false">
                                     Filters
                                 </button>
@@ -108,15 +103,24 @@ function getUserContext(res) {//AC #205
                 </div>
             </div>
 
-            <div class="tab-panel p-3 fade collapse" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
+            <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
 
                 <div class="row mb-1">
+                    <nav class="col-lg-8 col-md-8 col-sm-12">
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+                            <button class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" disabled>Disabled</button>
+                        </div>
+                    </nav>
+
                     <form class="d-flex ms-auto col-lg-4 col-md-4 col-sm-12">
                         <button class="btn btn-warning" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
                         <input class="form-control w-75 ms-1 rounded-end-0" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-info rounded-start-0" type="submit"> <span class="bx bx-search fs-5"></span> </button>                            
                     </form>
-                </div>                
+                </div>
 
                 <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50">
                     <div class="row">
@@ -125,6 +129,15 @@ function getUserContext(res) {//AC #205
                                 <h4>Empty</h4>
                                 <p>nothing here</p>
                             </div>
+
+
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">...</div>
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">...</div>
+                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">...</div>
+                                <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div>
+                            </div>
+    
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
