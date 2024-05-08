@@ -109,30 +109,119 @@ function getUserContext(res) {//AC #205
             </div>
 
             <div class="tab-panel p-3 fade collapse" id="driver-device" role="tabpanel" aria-labelledby="nav-driver-device">
-                <div class="container-fluid bg-body-tertiary bg-opacity-50 rounded-2">
+
+                <div class="row mb-1">
+                    <form class="d-flex ms-auto col-lg-4 col-md-4 col-sm-12">
+                        <button class="btn btn-warning" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
+                        <input class="form-control w-75 ms-1 rounded-end-0" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-info rounded-start-0" type="submit"> <span class="bx bx-search fs-5"></span> </button>                            
+                    </form>
+                </div>                
+
+                <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50">
+                
                     <div class="row">
 
-                        <div class="col-lg-8 col-md-8 col-sm-12">
-                            <div class="scroll-container overflow-auto" style="max-height: 83vh;">
-                                <div id="empty-item">
-                                    <h4>Empty</h4>
-                                    <p>nothing here</p>
-                                </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 scroll-container overflow-auto" style="max-height: 75vh;">
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
                             </div>
                         </div>
 
-                        <div class="bg-body-tertiary bg-opacity-50 rounded-2 col-lg-4 col-md-4 col-sm-12">
-                            <div class="scroll-container overflow-auto" style="max-height: 83vh;">
-                                <div id="empty-item">
-                                    <h4>Empty</h4>
-                                    <p>nothing here</p>
-                                </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
                             </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>
+                            <div id="empty-item">
+                                <h4>Empty</h4>
+                                <p>nothing here</p>
+                            </div>                            
                         </div>
 
                     </div>
                 </div>
-
                     
             </div>
 

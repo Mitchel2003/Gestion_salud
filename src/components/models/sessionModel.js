@@ -37,12 +37,12 @@ class Section{
             //remember, the colapse of the containers in section corresponds to bootstrap; i just need drive the events;
             //for themes of optimization
 
-            setContentCurrentContext(section);
+            // setContentCurrentContext(section);
         });
     }
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
-function setCurrentContext(section){
+function setContentCurrentContext(section){
     
     const searchStructure = document.querySelector(`.${section}`);//search container from body
     if(!searchStructure){ createStructure(section); return; }//here add structure to document
