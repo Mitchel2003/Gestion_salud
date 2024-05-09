@@ -37,9 +37,11 @@ function getUserContext(res) {//AC #205
                         <button class="nav-link active" id="nav-home" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#home" aria-current="home" aria-selected="true">
                             Home
                         </button>
+
                         <button class="nav-link" id="nav-handler-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#handler-device" aria-current="handler-device" aria-selected="false">
                             Handler device
                         </button>
+
                         <button class="nav-link" id="nav-control-departaments" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#control-departaments" aria-current="control-departaments" aria-selected="false">
                             Control departaments
                         </button>
@@ -92,7 +94,6 @@ function getUserContext(res) {//AC #205
                                     Accordion Item #1
                                 </button>
                             </h2>
-
                             <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample1">
                                 <div class="accordion-body">
                                     <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
@@ -107,22 +108,38 @@ function getUserContext(res) {//AC #205
 
                 <div class="row mb-1">
 
-                    <button class="navbar-toggler accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHandlerDevice" aria-controls="navbarHandlerDevice" aria-expanded="false" aria-label="Toggle navigation handler device">
-                        show
-                    </button>
-
-                    <nav class="col-lg-8 col-md-8 col-sm-12 navbar navbar-expand-lg">    
-
-                        <div class="nav navbar-collapse collapse nav-tabs" id="navbarHandlerDevice" role="tablist">
-                            <button class="nav-link active" id="nav-reports" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="true">
-                                Reports
-                            </button>
-                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                <!-- working here -->
+                        <div class="nav nav-tabs navbar-collapse collapse">
+                            <ul class="navbar-nav nav-tabs" role="tablist">
+                                <li class="dropdown text-center">
+                                    <a class="nav-link dropdown-toggle text-white" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </a>
+                                    <ul class="dropdown-menu text-center">
+                                        <button class="dropdown-item" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="false">
+                                            Reports
+                                        </button>
+                                        <button class="dropdown-item" id="nav-add-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-report" aria-current="add-report" aria-selected="false">
+                                            Add report
+                                        </button>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
 
+                    <nav class="col-lg-8 col-md-8 col-sm-12 navbar navbar-expand-lg">    
+                        <div class="nav nav-tabs navbar-collapse collapse" id="navbarHandlerDevice" role="tablist">
+                            <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
+                                Reports
+                            </button>
+
+                            <button class="nav-link" id="nav-add-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-report" aria-current="add-report" aria-selected="false">
+                                Add report
+                            </button>
+                        </div>
                     </nav>
 
-                    <form class="d-flex ms-auto col-lg-4 col-md-4 col-sm-12">
+                    <form class="col-lg-4 col-md-4 col-sm-12 d-flex ms-auto">
                         <button class="btn btn-warning" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
                         <input class="form-control w-75 ms-1 rounded-end-0" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-info rounded-start-0" type="submit"> <span class="bx bx-search fs-5"></span> </button>                            
