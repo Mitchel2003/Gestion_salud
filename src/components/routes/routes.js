@@ -106,25 +106,24 @@ function getUserContext(res) {//AC #205
 
             <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
                 <div class="row mb-1">
+                    <div class="col-lg-8 col-md-8 col-sm-5 container-fluid">
+<!-- here -->           <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
+                            <div class="nav nav-tabs navbar-collapse" id="navbarHandlerDevice" role="tablist">
+                                <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
+                                    Reports
+                                </button>
 
-                        <div class="col-lg-8 col-md-8 col-sm-12 container-fluid">
-                            <nav class="navbar navbar-expand-lg p-0">
-                                <div class="nav nav-tabs navbar-collapse" id="navbarHandlerDevice" role="tablist">
-                                    <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
-                                        Reports
-                                    </button>
-
-                                    <button class="nav-link" id="nav-add-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-report" aria-current="add-report" aria-selected="false">
-                                        Add report
-                                    </button>
-                                </div>
-                            </nav>
-                        </div>
-                        <div class="col-lg-4 col-md-4 d-flex">
-                            <button class="btn btn-sm btn-warning rounded-end-0 rounded-start-4 ms-auto" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
-                            <input class="form-control w-75 rounded-0" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-lg btn-info rounded-start-0 " type="submit"> <span class="bx bx-search fs-5"></span> </button>
-                        </div>
+                                <button class="nav-link" id="nav-add-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-report" aria-current="add-report" aria-selected="false">
+                                    Add report
+                                </button>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-7 d-flex">
+                        <button class="btn btn-lg btn-warning rounded-end-0 rounded-start-4 ms-auto" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
+                        <input class="form-control w-100 rounded-0" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-lg btn-info rounded-start-0 " type="submit"> <span class="bx bx-search fs-5"></span> </button>
+                    </div>
                 </div>
 
                 <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50">
