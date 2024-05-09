@@ -4,7 +4,9 @@ export async function modeAuxiliary() {
     document.querySelector('.close-options span').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn') });
     document.querySelector('.side-bar').addEventListener("mouseleave", () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 
-    let currentSection = new Section('.nav-tabs');
+    let section = new Section('.nav-tabs');
+    // setContentCurrentContext(section.currentContext);
+    
 }
 export async function modeAuditor() {
 
@@ -21,34 +23,33 @@ class Section{
         this.observer();
     }
     observer(){
-        this.element.addEventListener('click', (e) => {
+        this.element.addEventListener('click', async (e) => {
             const section = e.target.ariaCurrent;
             if(!section){return}
-            if(Section.currentContext === section){ /*refresh*/ return;}
-
             this.context = section;
             Section.currentContext = this.context;
-
-            //need get documents of colection call especific
-
-            //first thing that in section we have; containers, ids, addEventsListeners(), 
-            //then at change of section, we could remove addEventsListeners()
-
-            //remember, the colapse of the containers in section corresponds to bootstrap; i just need drive the events;
-            //for themes of optimization
-
-            // setContentCurrentContext(section);
+            
+            // await setContentSection(section)
         });
     }
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
-function setContentCurrentContext(section){
+async function setContentSection(context){
+    let lastVisibleDocument = null;
+    const queryLimit = 10; // Cambia este valor según tus necesidades
+    await requestQuery(context, {}, "collection");
+
+}
+async function requestQuery(context, request, typeSearch) {//working here...
+    //need request 5 documents from database "for example"
+    switch (context) {
+        case 'handler-device':
+            await (await import('../firebase/query.js')).getDataByRequest()
+            break;
     
-    const searchStructure = document.querySelector(`.${section}`);//search container from body
-    if(!searchStructure){ createStructure(section); return; }//here add structure to document
-    
-    //set visibility
-    checkState(section);   
+        default:
+            break;
+    }
 }
 // function checkState(section) {
 //     const element = document.querySelector(section);

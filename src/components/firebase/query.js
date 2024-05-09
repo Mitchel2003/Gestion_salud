@@ -13,22 +13,24 @@ export async function getDocumentUser(user, entity) {
     return { access, key };
 }
 export async function getDataByRequest(request, typeSearch) {
+    //request is equals to say = {deep: 2, data:{entity: "sa-medic", first_level:'departament', first_level:'departament'}}
     if (typeSearch === 'query') { pullQuery(request); return; }
     if (typeSearch === 'collection') { pullCollection(request); return; }
     const querySnapshot = await getDocs(collection(db, 'main')); //getCollection default
     return querySnapshot;
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
-export async function pullCollection(object) {//apropiade for get big data
-    const deep = object['deep'];
-    const init = doc(db, 'main', object['1']);
+export async function pullCollection(array) {//apropiade for get big data
+    const deep = array['deep'];
+    const init = doc(db, 'main', array['data'].entity);
 
     if (deep === 1) {//user and departament
-        const subCollection = collection(init, object['2']);
+        const subCollection = collection(init, array['data'].first_level);
         const querySnapshot = await getDocs(subCollection);
         return querySnapshot;
     }
     if (deep === 2) {//device
+        const subCollection = collection(init, 'device');
         const querySnapshot = await getDocs(subCollection);
         return querySnapshot;
     }
