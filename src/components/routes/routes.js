@@ -105,9 +105,9 @@ function getUserContext(res) {//AC #205
             </div>
 
             <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
-                <div class="row mb-1">
-                    <div class="col-lg-8 col-md-8 col-sm-5 container-fluid">
-<!-- here -->           <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
+                <div class="row mb-1"> <!-- hd top -->
+                    <div class="col-lg-8 col-md-8 col-sm-5 d-flex align-items-end"> <!-- hd navbar -->
+                        <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
                             <div class="nav nav-tabs navbar-collapse" id="navbarHandlerDevice" role="tablist">
                                 <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
                                     Reports
@@ -119,33 +119,35 @@ function getUserContext(res) {//AC #205
                             </div>
                         </nav>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-7 d-flex">
+                    <div class="col-lg-4 col-md-4 col-sm-7 d-flex"> <!-- hd search -->
                         <button class="btn btn-lg btn-warning rounded-end-0 rounded-start-4 ms-auto" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
                         <input class="form-control w-100 rounded-0" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-lg btn-info rounded-start-0 " type="submit"> <span class="bx bx-search fs-5"></span> </button>
                     </div>
                 </div>
 
-                <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50">
+                <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50"> <!-- hd container -->
                     <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-12 scroll-container overflow-auto" style="max-height: 75vh;">
-                            <div id="empty-item">
-                                <h4>Empty</h4>
-                                <p>nothing here</p>
-                            </div>
 
-
-                            <div class="tab-content" id="nav-tabContent-handlerDevice">
-                                <div class="tab-pane fade show active" id="nav-reports" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">...</div>
-                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">...</div>
-                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">...</div>
-                                <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 scroll-container overflow-auto" style="max-height: 75vh;"> <!-- section 1 -->
+                            <div class="tab-content" id="nav-tabContent-handlerDevice"> <!-- content -->
+                                <div class="tab-panel fade collapse show active" id="reports" role="tabpanel" aria-labelledby="nav-reports">
+                                    <div id="hd-c1-addreport-empty">
+                                        <h4>Empty</h4>
+                                        <p>nothing here</p>
+                                    </div>
+                                </div>
+                                <div class="tab-panel fade collapse" id="add-report" role="tabpanel" aria-labelledby="nav-add-report">
+                                    <div id="hd-c1-reports-empty">
+                                        <h4>Empty number 2</h4>
+                                        <p>nothing here again</p>
+                                    </div>
+                                </div>
                             </div>
-    
                         </div>
 
-                        <div class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
-                            <div id="empty-item">
+                        <div class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;"> <!-- section 2 -->
+                            <div id="hd-c2-empty">
                                 <h4>Empty</h4>
                                 <p>nothing here</p>
                             </div>
