@@ -1,3 +1,5 @@
+import { getProfileUser, getDataByRequest } from '../firebase/query.js';
+
 export async function modeAuxiliary() {
     //need use less addEventListener for themes of optimization
     document.querySelector('.user-options').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
@@ -31,16 +33,35 @@ class CurrentSection{//AC #212
     }
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
-async function setContent(context){
-    await requestDataQuery(context);
+async function setContent(context){ //working here...
+    const { entity, collection, filter, limit, icon } = await preparateRequest(context);
+    const elements = await getDataByRequest({ data:{entity: entity, req:collection, filter: filter, limit: limit} });
+
+    elements.forEach((e) => { let appennedDevice = new Div(e.id_device, e.serial, e.avaliable, icon); });
 }
-async function requestDataQuery(CurrentSection) {//working here...
-    //need request 5 documents from database "for example"    
-    const {entity} = (await import('../firebase/query.js')).getProfileUser();
+async function preparateRequest(currentSection) {
+    let collection, filter = 'avaliable', limit = 5, icon;
+    const {entity} = getProfileUser();
+    switch (currentSection) {
+        case currentSection.includes('device'): collection = 'device_references'; icon='bx bx-desktop'; break;
+        case currentSection.includes('finding'): collection = 'finding_references'; break;
+        case currentSection.includes('departaments'): collection = 'departament'; break;
+        case currentSection.includes('user'): collection = 'user'; break;
+        default: break;
+    } return { entity, collection, filter, limit, icon }
+}
 
-    'handler-device'
+class Div{
+    constructor(id, serial, avaliable, icon){
+        this.id = id;
+        this.device = serial;
+        this.enable = avaliable;
+        this.icon = icon;
+        this.createElements();
+    }
+    createElements(){
 
-    const response = await (await import('../firebase/query.js')).getDataByRequest({ deep: true, data:{ entity: entity, req:'device' } });
+    }
 }
 // function checkState(section) {
 //     const element = document.querySelector(section);
