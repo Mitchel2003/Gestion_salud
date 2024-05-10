@@ -12,17 +12,17 @@ export async function getDocumentUser(user, entity) {
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-export async function getDataByRequest(request, typeSearch) {
-    //request is equals to say = {deep: 2, data:{entity: "sa-medic", first_level:'departament', first_level:'departament'}}
-    if (typeSearch === 'query') { pullQuery(request); return; }
-    if (typeSearch === 'collection') { pullCollection(request); return; }
-    const querySnapshot = await getDocs(collection(db, 'main')); //getCollection default
+export async function getDataByRequest(request = null) {
+    const initialCollection = collection(db, 'main');//collection default
+    if(request){ requestAddress(request, initialCollection); return; };
+    const querySnapshot = await getDocs(initialCollection);
     return querySnapshot;
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
-export async function pullCollection(array) {//apropiade for get big data
+export async function requestAddress(array) {
+    const initCollection = doc(db, 'main', array['data'].entity);
     const deep = array['deep'];
-    const init = doc(db, 'main', array['data'].entity);
+    
 
     if (deep === 1) {//user and departament
         const subCollection = collection(init, array['data'].first_level);
@@ -39,33 +39,41 @@ export async function pullCollection(array) {//apropiade for get big data
     }
 
 }
-export async function pullQuery(object, deep, condicion) {//apply condicion, apropiade for get small data
-    const init = doc(db, 'main', object['1']);
-    let collectionContext;
+// export async function pullQuery(object, deep, condicion) {//apply condicion, apropiade for get small data
+//     const init = doc(db, 'main', object['1']);
+//     let collectionContext;
 
-    switch (deep) {
-        case 1://user and departament
-            collectionContext = collection(init, object['2']);
-            break;
-        case 2://device
-            const subDocument = doc(init, object['2'], object['3']);
-            collectionContext = collection(subDocument, object['4']);
-            break;
-        case 3://finding
-            break;
+//     switch (deep) {
+//         case 1://user and departament
+//             collectionContext = collection(init, object['2']);
+//             break;
+//         case 2://device
+//             const subDocument = doc(init, object['2'], object['3']);
+//             collectionContext = collection(subDocument, object['4']);
+//             break;
+//         case 3://finding
+//             break;
 
-        default:
-            const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
-            const querySnapshot = await getDocs(ask);
-            return querySnapshot;
-            break;
-    }
-}
+//         default:
+//             const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
+//             const querySnapshot = await getDocs(ask);
+//             return querySnapshot;
+//             break;
+//     }
+// }
 async function filterQuery(object) {
     if (object) {
         const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
     }
 }
+async function getDataByReference(){
+
+}
+
+
+
+
+
 export function getCollection(context) {
     const collectionReference = collection(db, context);
     return collectionReference;

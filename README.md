@@ -708,3 +708,11 @@ para poder aplicar estos estilos encontramos inconvenientes con la superposicion
 referencias mas especificas de este elemento que inciden en los estilos, por tanto, el id es por el momento el unico metodo de acceder a estos
 elementos input de modo que se respete las asignaciones que programo; creo que otro modo seria utilizando !important, ya veremos...
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+**#212** remember one thing; the functionality of show/hiden content (html) for sections especifics is designed by bootstrap and its class,
+i just do that adjunt the query from database and show <div> to contain data information, but into current method, just doing a event on click
+for the differents sections avaliables in this user, then when user click on the section, happens next:
+
+    **1:** bootstrap enable 'display: flex;' and allow 'show active' the view of visuals elements
+    **2:** this method detect 'observer' a click on element context '.nav-tabs' = main navbar; then for example 'home'
+            at click, we will activate the fetch of information specific for the current section
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,10 +1,11 @@
-import { TimerOut, observerSessionActive } from '../firebase/authentication.js';
+import { TimerOut, observerSessionActive, StatusConnection } from '../firebase/authentication.js';
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 import { getDocumentUser } from '../firebase/query.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
 onLoadWhile();
 await fixContext();
 
+let status = new StatusConnection();
 let time = new TimerOut(300000);//timeOut 5 minuts
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext() {

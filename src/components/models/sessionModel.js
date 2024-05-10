@@ -4,9 +4,7 @@ export async function modeAuxiliary() {
     document.querySelector('.close-options span').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn') });
     document.querySelector('.side-bar').addEventListener("mouseleave", () => { document.querySelector('.side-bar').classList.remove('spawn'); });
 
-    let section = new Section('.nav-tabs');
-    // setContentCurrentContext(section.currentContext);
-    
+    let loadData = new CurrentSection('.nav-tabs');
 }
 export async function modeAuditor() {
 
@@ -15,7 +13,7 @@ export async function modeAdmin() {
 
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
-class Section{
+class CurrentSection{//AC #212
     static currentContext;
     constructor(data){
         this.context = null;
@@ -27,29 +25,22 @@ class Section{
             const section = e.target.ariaCurrent;
             if(!section){return}
             this.context = section;
-            Section.currentContext = this.context;
-            
-            // await setContentSection(section)
+            CurrentSection.currentContext = this.context;
+            await setContent(CurrentSection.currentContext);
         });
     }
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
-async function setContentSection(context){
-    let lastVisibleDocument = null;
-    const queryLimit = 10; // Cambia este valor según tus necesidades
-    await requestQuery(context, {}, "collection");
-
+async function setContent(context){
+    await requestDataQuery(context);
 }
-async function requestQuery(context, request, typeSearch) {//working here...
-    //need request 5 documents from database "for example"
-    switch (context) {
-        case 'handler-device':
-            await (await import('../firebase/query.js')).getDataByRequest()
-            break;
-    
-        default:
-            break;
-    }
+async function requestDataQuery(CurrentSection) {//working here...
+    //need request 5 documents from database "for example"    
+    const {entity} = (await import('../firebase/query.js')).getProfileUser();
+
+    'handler-device'
+
+    const response = await (await import('../firebase/query.js')).getDataByRequest({ deep: true, data:{ entity: entity, req:'device' } });
 }
 // function checkState(section) {
 //     const element = document.querySelector(section);
