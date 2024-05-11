@@ -13,7 +13,7 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }body{
-    display: flex;
+    display: flex;  
     align-items: center;
     justify-content: center;
     background-repeat: no-repeat;
@@ -46,7 +46,7 @@
     width: calc(100% + 125px);
     padding: 7px 100px;
     border-radius: 200px;
-    background: linear-gradient(to bottom, rgba(199, 135, 245, 0.4), rgba(225, 190, 225, 0.5), rgba(230, 210, 230, 0.6), rgba(240, 230, 240, 0.7), rgba(240, 230, 240, 0.8), rgba(240, 230, 240, 0.9), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240));
+    background: linear-gradient(to bottom, rgba(199, 135, 245, 0.6), rgba(225, 190, 225, 0.7), rgba(230, 210, 230, 0.8), rgba(240, 230, 240, 0.9), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240), rgb(240, 230, 240));
     transform: translate(-50%, 70%);
     transition: transform 0.7s ease, border-radius 0.7s ease, box-shadow 0.7s ease;
 }
@@ -98,8 +98,10 @@ input, select, .box-input-password, .container-select{/*fix inputs (generaly)*/
 }
 
 .signContainer input, #bx-password-login{/*fix inputs (login)*/
-    color: #ddd2d2;
+    color: rgb(222, 209, 209);
     background-color: rgba(0, 0, 0, 0.1);
+}.signContainer input::placeholder{
+    color: rgba(221, 210, 210, 0.7);
 }.signContainer input:hover, #bx-password-login:hover{
     background-color: rgba(0, 0, 0, 0.2);
 }
