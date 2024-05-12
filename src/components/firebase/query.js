@@ -13,50 +13,15 @@ export async function getDocumentUser(user, entity) {
     return { access, key };
 }
 export async function getDataByRequest(request = null) {
-    if (request) { return await getDocumentSubCollection(request); };
-    return await getDocs(getCollection());
-}
-/*--------------------------------------------------tools modularization--------------------------------------------------*/
-async function getDocumentSubCollection({data: array}) {
+    if (!request) { return await getDocs(getCollection()); };
+    const array = request['data'];
     const documentReference = doc(getCollection(), array.entity);
     const subCollection = collection(documentReference, array.req)
         .orderBy(array.filter)
         .limit(array.limit);
     return await getDocs(subCollection);
 }
-// export async function pullQuery(object, deep, condicion) {//apply condicion, apropiade for get small data
-//     const init = doc(db, 'main', object['1']);
-//     let collectionContext;
-
-//     switch (deep) {
-//         case 1://user and departament
-//             collectionContext = collection(init, object['2']);
-//             break;
-//         case 2://device
-//             const subDocument = doc(init, object['2'], object['3']);
-//             collectionContext = collection(subDocument, object['4']);
-//             break;
-//         case 3://finding
-//             break;
-
-//         default:
-//             const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
-//             const querySnapshot = await getDocs(ask);
-//             return querySnapshot;
-//             break;
-//     }
-// }
-async function filterQuery(object) {
-    if (object) {
-        const ask = query(collection(init, object['2']), where(condicion['p1'], condicion['o1'], condicion['p2']));
-    }
-}
-
-
-
-
-
-
+/*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() {
     const collectionReference = collection(db, 'main');
     return collectionReference;

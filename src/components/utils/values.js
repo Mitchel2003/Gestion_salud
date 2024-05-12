@@ -174,7 +174,7 @@ export function getUserContext(res) {//AC #205
                         </div>
 
                         <!-- container right -->
-                        <div class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
+                        <div id="hd-container-right" class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
                             <div id="hd-c2-empty">
                                 <h4>Empty</h4>
                                 <p>nothing here</p>
