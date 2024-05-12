@@ -16,59 +16,71 @@ export async function modeAdmin() {
 
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
-class Section{//AC #212
+class Section {//AC #212
     static currentContext;
-    constructor(data){
+    constructor(data) {
         this.navigator = document.querySelector(data);
         this.observer();
     }
-    observer(){
+    observer() {
         this.navigator.addEventListener('click', async (e) => {
             const section = e.target.ariaCurrent;
-            if(!section){return}
-            Section.currentContext = section;
+            if (!section) { return } else { Section.currentContext = section }
             await setContent(Section.currentContext);
         });
     }
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
-async function setContent(context){
-    onLoadWhile();
-    const { searchCollection, companyContext, orderBy, querylimit, icon } = await preparateRequest(context);
-    const query = await getDataByRequest({ data:{req:searchCollection, entity: companyContext, filter: orderBy, limit: querylimit} });
+async function setContent(sectionContext) {
+    const { obj: data } = getContextRequest(sectionContext);
+    const { entity: companyContext } = getProfileUser();
 
-    const turn = 'right';
-    const currentContainer = document.getElementById(`${context}-${turn}`);
-    const elementEmpty = currentContainer.querySelector('.empty');
-    if (currentContainer.contains(elementEmpty)) { currentContainer.removeChild(elementEmpty); }// working here...
-
-    query.forEach((e) => {
-        const data = e.data();
-        const container = createElement(data.id_device, data.serial, data.avaliable, icon);
-        currentContainer.insertAdjacentHTML('afterbegin', container);
+    const keys = Object.keys(data);
+    keys.map(async (id) => {
+        const array = data[id];
+        const currentContainer = document.getElementById(array.id_container);
+        const cardEmpty = currentContainer.querySelector('.empty');
+        const res = await getDataByRequest({ data: { req: id, entity: companyContext, order: array.order, limit: array.limit } });
+        if (!res) { cardEmpty.classList.add('collapse'); return } else { cardEmpty.classList.remove('collapse') }
+        await createItems(res, id, array);
     });
-    offLoadWhile();
 }
-async function preparateRequest(currentSection) {
-    let searchCollection, icon, orderBy = 'avaliable', querylimit = 5;
-    const {entity: companyContext} = getProfileUser();
-    if(currentSection.includes('user')){ searchCollection = 'user'; icon='bx bxs-id-card'; }
-    if(currentSection.includes('device')){ searchCollection = 'device_references'; icon='bx bx-desktop'; }
-    if(currentSection.includes('finding')){ searchCollection = 'finding_references'; icon='bx bx-file'; }
-    if(currentSection.includes('departaments')){ searchCollection = 'departament'; icon='bx bx-buildings'; }
-    return { searchCollection, companyContext, orderBy, querylimit, icon }
+export async function createItems(getQuery, idReq, arrayReq) {
+    const container = document.getElementById(arrayReq.id_container);
+    getQuery.forEach(async (e) => {
+        const answerData = e.data();
+        const itemToInsert = await getCardContent(answerData, idReq, arrayReq);
+        container.insertAdjacentHTML('afterbegin', itemToInsert);
+    });
 }
-
-function createElement(id, serial, status, icon) {
-    return `
-        <div class="card" style="width: 18rem;">
-            <span class="${icon} fs-2"></span>
-            <div class="card-body">
-                <h5 class="card-title">ID: ${id} </h5>
-                <p class="card-text">Serial: ${serial}</p>
-                <p class="card-text">Available: <span class="fs-5"> ${status?'&#x1F7E2;':'&#x1F534;'} </span> </p>
-                <a href="" class="btn btn-primary">more details</a>
-            </div>
-        </div>
-    `;
+async function getCardContent(queryData, idReq, arrayReq) {
+    const cards = await import('../layout/cards.js');
+    if (idReq.includes('user')) { }
+    if (idReq.includes('departament')) { }
+    if (idReq.includes('device')) { return cards.cardDevice(queryData, arrayReq); }
+    if (idReq.includes('finding')) { return cards.cardFinding(queryData, arrayReq); }
+}
+function getContextRequest(currentSection, queryLimit = 5) {
+    let references;
+    if (currentSection.includes('user')) {
+        references = {
+            user: { id_container: 'user-list', order: 'access', limit: queryLimit, icon: 'bx bxs-id-card' }
+        };
+    }
+    if (currentSection.includes('departaments')) {
+        references = {
+            departament: { id_container: 'departament-list', order: 'name-room', limit: queryLimit, icon: 'bx bx-buildings' }
+        };
+    }
+    if (currentSection.includes('device')) {
+        references = {
+            device_references: { id_container: 'device-list', order: 'avaliable', limit: queryLimit, icon: 'bx bx-desktop' },
+            finding_references: { id_container: 'reports', order: 'date', limit: queryLimit, icon: 'bx bx-file' }
+        };
+    }
+    if (currentSection.includes('finding')) {
+        references = {
+            finding_references: { id_container: 'finding-list', order: 'date', limit: queryLimit, icon: 'bx bx-file' }
+        };
+    } return { obj: references }
 }

@@ -159,13 +159,13 @@ export function getUserContext(res) {//AC #205
                             <!-- content section left -->
                             <div class="tab-content" id="nav-tabContent-handlerDevice">
                                 <div class="tab-panel fade collapse show active" id="reports" role="tabpanel" aria-labelledby="nav-reports">
-                                    <div id="hd-c1-addreport-empty">
+                                    <div class="empty">
                                         <h4>Empty</h4>
                                         <p>nothing here</p>
                                     </div>
                                 </div>
                                 <div class="tab-panel fade collapse" id="add-report" role="tabpanel" aria-labelledby="nav-add-report">
-                                    <div id="hd-c1-reports-empty">
+                                    <div class="empty">
                                         <h4>Empty number 2</h4>
                                         <p>nothing here again</p>
                                     </div>
@@ -174,7 +174,7 @@ export function getUserContext(res) {//AC #205
                         </div>
 
                         <!-- container right -->
-                        <div id="handler-device-right" class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
+                        <div id="device-list" class="col-lg-4 col-md-4 col-sm-12 rounded-2 bg-body-tertiary bg-opacity-75 scroll-container overflow-auto" style="max-height: 75vh;">
                             <div class="empty">
                                 <h4>Empty</h4>
                                 <p>nothing here</p>
