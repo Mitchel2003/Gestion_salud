@@ -1,5 +1,5 @@
 import { auth, onAuthStateChanged } from "./conection.js";
-
+/*--------------------------------------------------backend firebase--------------------------------------------------*/
 export async function createUser(email, password) {
     return await (await import('./conection.js')).createUserWithEmailAndPassword(auth, email, password);
 }

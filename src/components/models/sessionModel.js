@@ -1,4 +1,5 @@
 import { getProfileUser, getDataByRequest } from '../firebase/query.js';
+import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 
 export async function modeAuxiliary() {
     //need use less addEventListener for themes of optimization
@@ -32,12 +33,21 @@ class Section{//AC #212
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
 async function setContent(context){
+    onLoadWhile();
     const { searchCollection, companyContext, orderBy, querylimit, icon } = await preparateRequest(context);
-    const elements = await getDataByRequest({ data:{req:searchCollection, entity: companyContext, filter: orderBy, limit: querylimit} });
-    elements.forEach((e) => { 
-        let container = createElement(e.id_device, e.serial, e.avaliable, icon);
-        document.getElementById('hd-container-right').appendChild(container);
+    const query = await getDataByRequest({ data:{req:searchCollection, entity: companyContext, filter: orderBy, limit: querylimit} });
+
+    const turn = 'right';
+    const currentContainer = document.getElementById(`${context}-${turn}`);
+    const elementEmpty = currentContainer.querySelector('.empty');
+    if (currentContainer.contains(elementEmpty)) { currentContainer.removeChild(elementEmpty); }// working here...
+
+    query.forEach((e) => {
+        const data = e.data();
+        const container = createElement(data.id_device, data.serial, data.avaliable, icon);
+        currentContainer.insertAdjacentHTML('afterbegin', container);
     });
+    offLoadWhile();
 }
 async function preparateRequest(currentSection) {
     let searchCollection, icon, orderBy = 'avaliable', querylimit = 5;
