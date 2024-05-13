@@ -61,28 +61,28 @@ export async function alertButtonAction(title, message, icon) {
 /*--------------------------------------------------view message--------------------------------------------------*/
 export async function showMessage(text, alert) {
     const { title, message, typeAlert } = getMessageAlert(text);
-    if (alert === 'alertToast') { alertToast(title, message, selectIcon(typeAlert)); return; }
-    else if (alert === 'alertInput') { const value = await alertInput(title, message, selectIcon(typeAlert)); return value; }
-    else if (alert === 'alertButtonAction') { const value = await alertButtonAction(title, message, selectIcon(typeAlert)); return value; }
-    else { customAlert(title, message, selectIcon(typeAlert)); return; }
+    if (alert === 'alertToast') { return alertToast(title, message, selectIcon(typeAlert)); }
+    if (alert === 'alertInput') { return await alertInput(title, message, selectIcon(typeAlert)); }
+    if (alert === 'alertButtonAction') { return await alertButtonAction(title, message, selectIcon(typeAlert)); }
+    return customAlert(title, message, selectIcon(typeAlert));
 }
 /*--------------------------------------------------exceptions (fetch)--------------------------------------------------*/
 export async function exceptionsLoginUser(error) {
-    if (error.code === 'auth/invalid-login-credentials') { await showMessage('messageCredentialsIncorrects', 'default'); return; }
-    if (error.code === 'auth/too-many-requests') { await showMessage('messageManyRequests', 'default'); return; }
-    await showMessage('messageTempUnknow', 'default');
+    if (error.code === 'auth/invalid-login-credentials') { return await showMessage('messageCredentialsIncorrects', 'default'); }
+    if (error.code === 'auth/too-many-requests') { return await showMessage('messageManyRequests', 'default'); }
+    return await showMessage('messageTempUnknow', 'default');
 }
 export async function exceptionsRegisterUser(error) {
-    if (error.code === 'auth/email-already-in-use') { await showMessage('messageEmailUsed', 'default'); return; }
-    if (error.code === 'auth/invalid-email') { await showMessage('messageEmailUnknow', 'default'); return; }
-    if (error.code === 'auth/weak-password') { await showMessage('messagePasswordSizeShort', 'default'); return; }
-    await showMessage('messageTempUnknow', 'default');
+    if (error.code === 'auth/invalid-email') { return await showMessage('messageEmailUnknow', 'default'); }
+    if (error.code === 'auth/email-already-in-use') { return await showMessage('messageEmailUsed', 'default'); }
+    if (error.code === 'auth/weak-password') { return await showMessage('messagePasswordSizeShort', 'default'); }
+    return await showMessage('messageTempUnknow', 'default');
 }
 export async function exceptionsResetPassword(error) {
-    if (error.code === 'auth/too-many-requests') { await showMessage('messageManyRequests', 'default'); return; }
-    if (error.code === 'auth/invalid-email') { await showMessage('messageEmailUnknow', 'default'); return; }
-    if (error.code === 'invalid-argument') { /*nothing*/ return; }
-    await showMessage('messageTempUnknow', 'default');
+    if (error.code === 'auth/too-many-requests') { return await showMessage('messageManyRequests', 'default'); }
+    if (error.code === 'auth/invalid-email') { return await showMessage('messageEmailUnknow', 'default'); }
+    if (error.code === 'invalid-argument') { return }//nothing
+    return await showMessage('messageTempUnknow', 'default');
 }
 /*--------------------------------------------------text--------------------------------------------------*/
 function getMessageAlert(type) {
