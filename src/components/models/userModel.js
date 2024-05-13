@@ -51,30 +51,31 @@ export async function requestResetPassword() {
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();
-    const getQuery = await import('../firebase/query.js');
-    const getValues = await import('../utils/values.js');
-    const getView = await import('../utils/view.js');
-    const { userName, userEmail, userAccess, userEntity } = await getValues.getSearchParams(res);
-    const { access: userFound } = await getQuery.getDocumentUser(userEmail, userEntity);
-    
+    const {getDocumentUser} = await import('../firebase/query.js');
+    const {getSearchParams} = await import('../utils/values.js');
+    const {goToHome} = await import('../utils/view.js');
+
+    const { userName, userEmail, userAccess, userEntity } = await getSearchParams(res);
+    const { access: userFound } = await getDocumentUser(userEmail, userEntity);
     if (userFound) {
         const response = await showMessage('messageTokenVerifyExpired', 'alertButtonAction');
-        if (response) { getView.goToHome(); }
+        if (response) { goToHome(); }
         offLoadWhile(); return;
     }
     await (await import('../firebase/authentication.js')).appenedDocumentReference(userName, userEmail, userAccess, userEntity);
 
     const response = await showMessage('messageUserSubmitted', 'alertButtonAction');
-    if (response) { getView.goToHome(); }
+    if (response) { goToHome(); }
     await offSession();
     offLoadWhile();
 }
 export async function modeChangePassword() {
-    const getView = await import("../utils/view.js");
     const getValues = await import("../utils/values.js");
+    const getView = await import("../utils/view.js");
+    
     const srcIconOpen = "../../src/components/images/eye-open.webp", srcIconClose = "../../src/components/images/eye-close.webp";
-    let observerIconEye_newPassword = new getView.IconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
-    let observerIconEye_confirmPassword = new getView.IconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
+    getView.setIconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
+    getView.setIconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
 
     document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
         try {

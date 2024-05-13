@@ -1,32 +1,20 @@
 import { onLoadWhile, offLoadWhile, ClassList_OnClick } from '../utils/view.js';
 import { getProfileUser, getDataByRequest } from '../firebase/query.js';
-
+/*--------------------------------------------------controllers--------------------------------------------------*/
 export async function modeAuxiliary() {
     const side_bar = document.querySelector('.side-bar');
     side_bar.addEventListener("mouseleave", () => { side_bar.classList.remove('spawn'); });
     let navbar = new ClassList_OnClick('.user-options', '.close-options span', 'spawn', side_bar);
-    let loadData = new Section('.nav-tabs');
-}
-export async function modeAuditor() {
-
-}
-export async function modeAdmin() {
-
+    await handlerSection('.nav-tabs');
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
-class Section {//AC #212
-    static currentContext;
-    constructor(data) {
-        this.navigator = document.querySelector(data);
-        this.observer();
-    }
-    observer() {
-        this.navigator.addEventListener('click', async (e) => {
-            const section = e.target.ariaCurrent;
-            if (!section) { return } else { Section.currentContext = section }
-            await setContent(Section.currentContext);
-        });
-    }
+async function handlerSection(navigator) {
+    const nav = document.querySelector(navigator);
+    nav.addEventListener('click', async (e) => {
+        const section = e.target.ariaCurrent;
+        if (!section) { return }
+        await setContent(section);
+    });
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
 async function setContent(sectionContext) {
@@ -37,19 +25,19 @@ async function setContent(sectionContext) {
     const keys = Object.keys(data);
     keys.map(async (id, index) => {
         const array = data[id];
-        const currentContainer = document.getElementById(array.id_container);
+        const containerToFill = document.getElementById(array.id_container);
         const res = await getDataByRequest({ data: { req: id, entity: companyContext, order: array.order, limit: array.limit } });
-        if (res) { currentContainer.querySelector('.empty').classList.toggle('d-none') }
+        if (res) { containerToFill.querySelector('.empty').classList.toggle('d-none') }
         if (index === keys.length - 1) { offLoadWhile(); }
-        await createItems(res, id, array, currentContainer);
+        await createItems(res, id, array, containerToFill);
     });
 
 }
-export async function createItems(getQuery, idReq, arrayReq, currentContainer) {
+async function createItems(getQuery, idReq, arrayReq, containerContext) {
     getQuery.forEach(async (e) => {
         const answerData = e.data();
         const itemToInsert = await getCardContent(answerData, idReq, arrayReq);
-        currentContainer.insertAdjacentHTML('afterbegin', itemToInsert);
+        containerContext.insertAdjacentHTML('afterbegin', itemToInsert);
     });
 }
 async function getCardContent(queryData, idReq, arrayReq) {

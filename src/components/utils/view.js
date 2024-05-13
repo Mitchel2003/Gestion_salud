@@ -11,50 +11,27 @@ export function onLoadWhile() { document.querySelector('.loadContainer').classLi
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
 export async function appennedItemSelect(selectContext) {
+    const { getDataByRequest } = await import('../firebase/query.js');
     const select = document.querySelector(selectContext);
-    const getQuery = await import('../firebase/query.js');
-    const data = await getQuery.getDataByRequest();
+    const data = await getDataByRequest();
     data.forEach((e) => {
-        const opcion = document.createElement('option');
-        opcion.value = e.id;  opcion.textContent = e.id;
-        select.appendChild(opcion);
+        const option = document.createElement('option');
+        option.value = e.id; option.textContent = e.id;
+        select.appendChild(option);
     });
 }
 /*--------------------------------------------------class--------------------------------------------------*/
-export class ClassList_OnClick {//on/off at on click
-    constructor(turnOn, turnOff, classList, container) {
-        this.on = document.querySelector(turnOn);
-        this.off = document.querySelector(turnOff);
-        this.add = this.addClass.bind(this, container, classList);
-        this.remove = this.removeClass.bind(this, container, classList);
-        this.listenClick();
-    }
-    listenClick() {
-        this.on.addEventListener('click', this.add);
-        this.off.addEventListener('click', this.remove);
-    }
-    addClass(element, classList) { element.classList.add(classList); }
-    removeClass(element, classList) { element.classList.remove(classList); }
-    destroy() {
-        this.on.removeEventListener('click', this.add);
-        this.off.removeEventListener('click', this.remove);
-    }
+export function toggleClassList_onClick(turnOn, turnOff, classList, container) {//on/off at on click
+    const on = document.querySelector(turnOn), off = document.querySelector(turnOff);
+    on.addEventListener('click', () => { container.classList.toggle(classList); });
+    off.addEventListener('click', () => { container.classList.toggle(classList); });
 }
-export class IconEye {//on/off iconEye at on click (AC #206)
-    constructor(eye, input, iconOpen, iconClose) {
-        this.icon = document.querySelector(eye);
-        this.input = document.querySelector(input);
-        this.open = iconOpen;
-        this.close = iconClose;
-        this.observer();
-    }
-    observer() {
-        this.icon.addEventListener('click', () => this.setInput(this.icon, this.input, this.open, this.close) );
-    }
-    setInput(icon, input, open, close) {
-        if (input.type === "password") { input.type = "text"; icon.src = open; }
-        else { input.type = "password"; icon.src = close; }
-    }
+export function setIconEye(iconContainer, inputContainer, iconOpen, iconClose) {//on/off iconEye at on click
+    const icon = document.querySelector(iconContainer), input = document.querySelector(inputContainer);
+    icon.addEventListener('click', () => {
+        if (input.type === "password") { input.type = "text"; icon.src = iconOpen; }
+        else { input.type = "password"; icon.src = iconClose; }
+    });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 export function goToHome() {//send to...
