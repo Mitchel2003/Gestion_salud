@@ -8,7 +8,8 @@ window.addEventListener("DOMContentLoaded", async () => { onLoadWhile(); loadEle
 let status = new StatusConnection();
 toggleClassList_onClick('.registerContainer header', '.signContainer header', 'active', container);
 
-const srcIconOpen = "./src/components/images/eye-open.webp", srcIconClose = "./src/components/images/eye-close.webp";
+const srcIconOpen = "./src/components/images/eye-open.webp";
+const srcIconClose = "./src/components/images/eye-close.webp";
 setIconEye('#eyeIcon-login', '#password-login', srcIconOpen, srcIconClose );
 setIconEye('#eyeIcon-register', '#password-register', srcIconOpen, srcIconClose);
 /*--------------------------------------------------tools--------------------------------------------------*/

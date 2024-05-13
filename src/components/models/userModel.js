@@ -1,9 +1,8 @@
 import { onSession, offSession } from "../firebase/authentication.js";
 import { onLoadWhile, offLoadWhile } from "../utils/view.js";
 import { showMessage } from "../utils/alerts.js";
-
+/*--------------------------------------------------controllers--------------------------------------------------*/
 const getAlert = await import('../utils/alerts.js');
-
 export async function loginUser(user, password) {
     try {
         onLoadWhile();
@@ -72,8 +71,9 @@ export async function modeVerifyEmail(res) {
 export async function modeChangePassword() {
     const getValues = await import("../utils/values.js");
     const getView = await import("../utils/view.js");
-    
-    const srcIconOpen = "../../src/components/images/eye-open.webp", srcIconClose = "../../src/components/images/eye-close.webp";
+
+    const srcIconOpen = "../../src/components/images/eye-open.webp";
+    const srcIconClose = "../../src/components/images/eye-close.webp";
     getView.setIconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
     getView.setIconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
 
@@ -98,7 +98,7 @@ export async function modeChangePassword() {
             if (request) { getView.goToHome(); }
             await offSession();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); }
+        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); new Error('here...')}
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
