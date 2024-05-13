@@ -18,7 +18,7 @@ export async function getDataByRequest(request = null) {
     const array = request['data'];
     const { query, orderBy, limit } = await import('./conection.js');
     const subCollection = collection(getCollection(), array.entity, array.req);
-    const querySnapshot = query(subCollection, orderBy(array.order), limit(array.limit))
+    const querySnapshot = query(subCollection, orderBy(array.order), limit(array.limit));
     return await getDocs(querySnapshot);
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/

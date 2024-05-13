@@ -1,12 +1,10 @@
+import { onLoadWhile, offLoadWhile, ClassList_OnClick } from '../utils/view.js';
 import { getProfileUser, getDataByRequest } from '../firebase/query.js';
-import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 
 export async function modeAuxiliary() {
-    //need use less addEventListener for themes of optimization
-    document.querySelector('.user-options').addEventListener('click', () => { document.querySelector('.side-bar').classList.add('spawn'); });
-    document.querySelector('.close-options span').addEventListener('click', () => { document.querySelector('.side-bar').classList.remove('spawn') });
-    document.querySelector('.side-bar').addEventListener("mouseleave", () => { document.querySelector('.side-bar').classList.remove('spawn'); });
-
+    const side_bar = document.querySelector('.side-bar');
+    side_bar.addEventListener("mouseleave", () => { side_bar.classList.remove('spawn'); });
+    let navbar = new ClassList_OnClick('.user-options', '.close-options span', 'spawn', side_bar);
     let loadData = new Section('.nav-tabs');
 }
 export async function modeAuditor() {
@@ -32,25 +30,26 @@ class Section {//AC #212
 }
 /*--------------------------------------------------interface--------------------------------------------------*/
 async function setContent(sectionContext) {
+    onLoadWhile();
     const { obj: data } = getContextRequest(sectionContext);
     const { entity: companyContext } = getProfileUser();
 
     const keys = Object.keys(data);
-    keys.map(async (id) => {
+    keys.map(async (id, index) => {
         const array = data[id];
         const currentContainer = document.getElementById(array.id_container);
-        const cardEmpty = currentContainer.querySelector('.empty');
         const res = await getDataByRequest({ data: { req: id, entity: companyContext, order: array.order, limit: array.limit } });
-        if (!res) { cardEmpty.classList.add('collapse'); return } else { cardEmpty.classList.remove('collapse') }
-        await createItems(res, id, array);
+        if (res) { currentContainer.querySelector('.empty').classList.toggle('d-none') }
+        if (index === keys.length - 1) { offLoadWhile(); }
+        await createItems(res, id, array, currentContainer);
     });
+
 }
-export async function createItems(getQuery, idReq, arrayReq) {
-    const container = document.getElementById(arrayReq.id_container);
+export async function createItems(getQuery, idReq, arrayReq, currentContainer) {
     getQuery.forEach(async (e) => {
         const answerData = e.data();
         const itemToInsert = await getCardContent(answerData, idReq, arrayReq);
-        container.insertAdjacentHTML('afterbegin', itemToInsert);
+        currentContainer.insertAdjacentHTML('afterbegin', itemToInsert);
     });
 }
 async function getCardContent(queryData, idReq, arrayReq) {
@@ -60,7 +59,7 @@ async function getCardContent(queryData, idReq, arrayReq) {
     if (idReq.includes('device')) { return cards.cardDevice(queryData, arrayReq); }
     if (idReq.includes('finding')) { return cards.cardFinding(queryData, arrayReq); }
 }
-function getContextRequest(currentSection, queryLimit = 5) {
+function getContextRequest(currentSection, queryLimit = 3) {
     let references;
     if (currentSection.includes('user')) {
         references = {
@@ -74,7 +73,7 @@ function getContextRequest(currentSection, queryLimit = 5) {
     }
     if (currentSection.includes('device')) {
         references = {
-            device_references: { id_container: 'device-list', order: 'avaliable', limit: queryLimit, icon: 'bx bx-desktop' },
+            device_references: { id_container: 'device-list', order: 'serial', limit: queryLimit, icon: 'bx bx-desktop' },
             finding_references: { id_container: 'reports', order: 'date', limit: queryLimit, icon: 'bx bx-file' }
         };
     }
