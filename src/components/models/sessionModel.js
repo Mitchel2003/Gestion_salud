@@ -4,7 +4,7 @@ import { getProfileUser, getDataByRequest } from '../firebase/query.js';
 export async function modeAuxiliary() {
     const side_bar = document.querySelector('.side-bar');
     toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
-    side_bar.addEventListener("mouseleave", () => { side_bar.classList.remove('spawn'); });
+    side_bar.addEventListener('pointerleave', () => { side_bar.classList.remove('spawn') });
     
     await handlerSection('.nav-tabs');
 }
