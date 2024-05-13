@@ -98,7 +98,7 @@ export async function modeChangePassword() {
             if (request) { getView.goToHome(); }
             await offSession();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); new Error('here...')}
+        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); const value = new Error('here...'); console.log(value);}
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
