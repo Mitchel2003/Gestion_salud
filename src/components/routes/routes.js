@@ -22,6 +22,6 @@ async function managementSession(access) {
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 async function insertHtml(data) {
-    const road = (await import('../utils/values.js')).getUserContext(data);
+    const road = (await import('../layout/currentUser.js')).getUserContext(data);
     document.body.insertAdjacentHTML('afterbegin', road);
 }

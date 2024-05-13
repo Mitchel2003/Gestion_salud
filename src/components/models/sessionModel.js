@@ -1,10 +1,11 @@
-import { onLoadWhile, offLoadWhile, ClassList_OnClick } from '../utils/view.js';
+import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
 import { getProfileUser, getDataByRequest } from '../firebase/query.js';
 /*--------------------------------------------------controllers--------------------------------------------------*/
 export async function modeAuxiliary() {
     const side_bar = document.querySelector('.side-bar');
+    toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
     side_bar.addEventListener("mouseleave", () => { side_bar.classList.remove('spawn'); });
-    let navbar = new ClassList_OnClick('.user-options', '.close-options span', 'spawn', side_bar);
+    
     await handlerSection('.nav-tabs');
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
@@ -26,8 +27,10 @@ async function setContent(sectionContext) {
     keys.map(async (id, index) => {
         const array = data[id];
         const containerToFill = document.getElementById(array.id_container);
-        const res = await getDataByRequest({ data: { req: id, entity: companyContext, order: array.order, limit: array.limit } });
-        if (res) { containerToFill.querySelector('.empty').classList.toggle('d-none') }
+        const cardEmptyByDefault = containerToFill.querySelector('.empty');
+
+        const res = await getDataByRequest({ req: id, entity: companyContext, order: array.order, limit: array.limit });
+        if (res && !cardEmptyByDefault.className.includes('d-none')) { cardEmptyByDefault.classList.toggle('d-none') }
         if (index === keys.length - 1) { offLoadWhile(); }
         await createItems(res, id, array, containerToFill);
     });

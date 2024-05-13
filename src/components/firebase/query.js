@@ -13,9 +13,8 @@ export async function getDocumentUser(user, entity) {
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-export async function getDataByRequest(request = null) {
-    if (!request) { return await getDocs(getCollection()); };
-    const array = request['data'];
+export async function getDataByRequest(array = null) {
+    if (!array) { return await getDocs(getCollection()); };
     const { query, orderBy, limit } = await import('./conection.js');
     const subCollection = collection(getCollection(), array.entity, array.req);
     const querySnapshot = query(subCollection, orderBy(array.order), limit(array.limit));
