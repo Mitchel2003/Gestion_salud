@@ -90,10 +90,10 @@ export function getUserContext(res) {//AC #205
             <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
 
                 <!-- hd top -->
-                <div class="row mb-1">
+                <div class="row">
 
                     <!-- hd navbar -->
-                    <div class="col-lg-8 col-md-8 col-sm-5 d-flex align-items-end">
+                    <div class="col-lg-8 col-md-8 col-sm-5 align-items-end d-flex order-2 order-sm-1">
                         <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
                             <div class="nav nav-tabs navbar-collapse" id="navbarHandlerDevice" role="tablist">
                                 <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
@@ -108,7 +108,7 @@ export function getUserContext(res) {//AC #205
                     </div>
 
                     <!-- hd search -->
-                    <div class="col-lg-4 col-md-4 col-sm-7 d-flex"> 
+                    <div class="col-lg-4 col-md-4 col-sm-7 mb-1 d-flex order-1 order-sm-2">
                         <button class="btn btn-lg btn-warning rounded-end-0 rounded-start-4 ms-auto" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
                         <input class="form-control w-100 rounded-0" type="search" placeholder="Search device" aria-label="Search">
                         <button class="btn btn-lg btn-info rounded-start-0 " type="submit"> <span class="bx bx-search fs-5"></span> </button>
@@ -120,7 +120,7 @@ export function getUserContext(res) {//AC #205
                     <div class="row">
 
                         <!-- container left -->
-                        <div class="col-lg-8 col-md-8 col-sm-12 p-0 pt-1 px-1">
+                        <div class="col-lg-8 col-md-8 col-sm-6 p-1">
                             <div class="scroll-container overflow-auto rounded-2" style="max-height: 75vh;">
                                 <!-- content section left -->
                                 <div class="tab-content" id="nav-tabContent-handlerDevice">
@@ -141,7 +141,10 @@ export function getUserContext(res) {//AC #205
                         </div>
 
                         <!-- container right -->
-                        <div class="col-lg-4 col-md-4 col-sm-12 p-1 rounded-2 bg-body-tertiary bg-opacity-75">
+                        <div class="col-lg-4 col-md-4 col-sm-6 p-1 rounded-2 bg-body-tertiary bg-opacity-75">
+                            <div class="text-center d-sm-none">
+                                <h5>Devices</h5>
+                            </div>
                             <div id="device-list" class="scroll-container overflow-auto p-0 rounded-2" style="max-height: 75vh;">
                                 <div class="empty">
                                     <h4>Empty</h4>

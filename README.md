@@ -1,10 +1,44 @@
+### ---------------------------------------------------------------------------------------------------- ###
+Para lograr que en pantallas de menos de 576px de ancho (típicamente dispositivos móviles) la barra de navegación con pestañas se ubique debajo del campo de búsqueda, y asumiendo que estás utilizando Bootstrap 4 o 5, te recomiendo seguir un enfoque basado en el uso de las clases de utilidad de flex y los order classes proporcionados por Bootstrap. Esto te permitirá controlar el orden de los elementos sin necesidad de manipular el DOM con JavaScript o modificar los estilos directamente.
+
+Supongamos que tienes una estructura HTML como la siguiente:
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-12 d-flex flex-column flex-sm-row">
+      <div class="search-box order-2 order-sm-1">
+        <!-- Aquí va tu barra de búsqueda -->
+        <input type="text" placeholder="Buscar...">
+      </div>
+      <div class="navigation-bar order-1 order-sm-2">
+        <!-- Aquí va tu barra de navegación -->
+        <nav>
+          <ul class="nav">
+            <li class="nav-item"><a href="#" class="nav-link">Inicio</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Acerca de</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Servicios</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+En este HTML, utilizamos `d-flex` para crear un contenedor flex. El truco aquí está en usar `flex-column` en dispositivos más pequeños para hacer que los elementos se apilen verticalmente y `flex-sm-row` para dispositivos más anchos (más de 576px) para hacer que se alineen horizontalmente. Luego, mediante las clases `order-#`, podemos invertir el orden de los elementos según sea necesario: `order-2` para dispositivos más pequeños y `order-1` para pantalla más ancha con la misma lógica aplicada al otro elemento pero con órdenes inversos. Esto garantiza que el campo de búsqueda se muestre encima de la barra de navegación en dispositivos móviles, pero puedes ajustar las clases `order-sm-#` para cambiar el orden como prefieras cuando la pantalla sea más ancha.
+
+Esta solución es eficiente porque aprovecha el sistema de grillas y las utilidades flex de Bootstrap, evitando el uso innecesario de JavaScript o modificaciones complejas de CSS.
+
+### ---------------------------------------------------------------------------------------------------- ###
 function getWeekday(num) {
      const weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
 
     return weekDays[num] || new Error('Invalid weekday');
 }
 
-
+### ---------------------------------------------------------------------------------------------------- ###
 Diseñando un componente atractivo y funcional con Bootstrap y JavaScript moderno implica varios aspectos: cumplir con los principios de diseño, asegurar la accesibilidad y escribir un código limpio y mantenible. Para tu solicitud, te propondré un diseño que integra estas consideraciones. 
 
 **Bootstrap** te ofrece un amplio rango de componentes y clases de utilidad para diseñar interfaces responsivas y accesibles. Para el diseño de cada dispositivo, podemos emplear una tarjeta (`card`) de Bootstrap, que es versátil y visualmente atractiva. En tu caso, el `HTML` de la tarjeta sería algo así:
