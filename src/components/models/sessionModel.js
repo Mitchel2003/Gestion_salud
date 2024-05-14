@@ -17,7 +17,7 @@ async function handlerSection(navigator) {
         await setContent(section);
     });
 }
-/*--------------------------------------------------interface--------------------------------------------------*/
+/*--------------------------------------------------tools--------------------------------------------------*/
 async function setContent(sectionContext) {
     onLoadWhile();
     const { obj: data } = getContextRequest(sectionContext);
