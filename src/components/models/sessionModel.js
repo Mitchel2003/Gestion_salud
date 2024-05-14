@@ -64,8 +64,8 @@ function getContextRequest(currentSection, queryLimit = 3) {
     }
     if (currentSection.includes('device')) {
         references = {
-            device_references: { id_container: 'device-list', order: 'serial', limit: queryLimit, icon: 'bx bx-desktop' },
-            finding_references: { id_container: 'reports', order: 'date', limit: queryLimit, icon: 'bx bx-file' }
+            device_references: { id_container: 'device-list', order: 'id_device', limit: queryLimit, icon: 'bi bi-display' },
+            finding_references: { id_container: 'reports', order: 'date', limit: queryLimit, icon: 'bi bi-file-earmark-text' }
         };
     }
     if (currentSection.includes('finding')) {
