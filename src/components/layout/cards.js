@@ -5,7 +5,7 @@ export function cardDevice(data, queryArray) {
             <div class="card-body">
                 <h5 class="card-title">ID: ${data.id_device} </h5>
                 <p class="card-text">Serial: ${data.serial}</p>
-                <p class="card-text">Available: <span class="fs-5"> ${data.avaliable ? '&#x1F7E2;' : '&#x1F534;'} </span> </p>
+                <p class="card-text">Available: <span class="fs-5"> ${data.avaliable ? '&#x2705;' : '&#x26D4;'} </span> </p>
                 <a href="" class="btn btn-primary">more details</a>
             </div>
         </div>

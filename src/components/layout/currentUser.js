@@ -142,8 +142,13 @@ export function getUserContext(res) {//AC #205
 
                         <!-- container right -->
                         <div class="col-lg-4 col-md-4 col-sm-6 p-1 rounded-2 bg-body-tertiary bg-opacity-75">
-                            <div class="text-center d-sm-none">
-                                <h5>Devices</h5>
+                            <div class="d-flex px-1 d-sm-none">
+                                <div class="me-auto">
+                                    <i class="bi bi-pc-display text-primary fs-1"></i>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <h3>Devices</h3>
+                                </div>
                             </div>
                             <div id="device-list" class="scroll-container overflow-auto p-0 rounded-2" style="max-height: 75vh;">
                                 <div class="empty">
