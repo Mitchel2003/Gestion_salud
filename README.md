@@ -1,3 +1,10 @@
+function getWeekday(num) {
+     const weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'];
+
+    return weekDays[num] || new Error('Invalid weekday');
+}
+
+
 Diseñando un componente atractivo y funcional con Bootstrap y JavaScript moderno implica varios aspectos: cumplir con los principios de diseño, asegurar la accesibilidad y escribir un código limpio y mantenible. Para tu solicitud, te propondré un diseño que integra estas consideraciones. 
 
 **Bootstrap** te ofrece un amplio rango de componentes y clases de utilidad para diseñar interfaces responsivas y accesibles. Para el diseño de cada dispositivo, podemos emplear una tarjeta (`card`) de Bootstrap, que es versátil y visualmente atractiva. En tu caso, el `HTML` de la tarjeta sería algo así:
