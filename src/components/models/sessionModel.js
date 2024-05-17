@@ -13,6 +13,7 @@ async function handlerSection(navigator) {
     const nav = document.querySelector(navigator);
     nav.addEventListener('click', async (e) => {
         const section = e.target.ariaCurrent;
+
         if (!section) { return }
         await setContent(section);
     });
@@ -29,12 +30,11 @@ async function setContent(sectionContext) {
         const containerToFill = document.getElementById(array.id_container);
         const cardEmptyByDefault = containerToFill.querySelector('.empty');
 
-        const res = await getDataByRequest({ req: id, entity: companyContext, order: array.order, limit: array.limit });
+        const res = await getDataByRequest({ req: id, entity: companyContext, order: array.order, limit: array.limit, configQuery: array.configQuery });
         if (res && !cardEmptyByDefault.className.includes('d-none')) { cardEmptyByDefault.classList.toggle('d-none') }
-        if (index === keys.length - 1) { offLoadWhile(); }
+        if (index === keys.length - 1) { offLoadWhile(); /*appenedLoadMore(res, containerToFill);*/ }
         await createItems(res, id, array, containerToFill);
     });
-
 }
 async function createItems(getQuery, idReq, arrayReq, containerContext) {
     getQuery.forEach(async (e) => {
@@ -50,7 +50,9 @@ async function getCardContent(queryData, idReq, arrayReq) {
     if (idReq.includes('device')) { return cards.cardDevice(queryData, arrayReq); }
     if (idReq.includes('finding')) { return cards.cardFinding(queryData, arrayReq); }
 }
-function getContextRequest(currentSection, queryLimit = 3) {
+
+
+function getContextRequest(currentSection, queryLimit = 5) {
     let references;
     if (currentSection.includes('user')) {
         references = {
@@ -64,8 +66,8 @@ function getContextRequest(currentSection, queryLimit = 3) {
     }
     if (currentSection.includes('device')) {
         references = {
-            device_references: { id_container: 'device-list', order: 'id_device', limit: queryLimit, icon: 'bi bi-display' },
-            finding_references: { id_container: 'reports', order: 'date', limit: queryLimit, icon: 'bi bi-file-earmark-text' }
+            device_references: { id_container: 'device-list', order: 'avaliable', limit: queryLimit, icon: 'bi bi-display', configQuery:{ a_1:'avaliable', operation:'!=', a_2:true} },
+            finding_references: { id_container: 'reports', order: 'date', limit: queryLimit, icon: 'bi bi-file-earmark-text', configQuery:{ a_1:'date', operation:'!=', a_2:''} }
         };
     }
     if (currentSection.includes('finding')) {
