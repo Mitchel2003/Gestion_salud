@@ -100,8 +100,8 @@ export function getUserContext(res) {//AC #205
                                     Reports
                                 </button>
 
-                                <button class="nav-link" id="nav-add-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-report" aria-current="add-report" aria-selected="false">
-                                    Add report
+                                <button class="nav-link" id="nav-add-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-device" aria-current="add-device" aria-selected="false">
+                                    Add device
                                 </button>
                             </div>
                         </nav>
@@ -130,10 +130,10 @@ export function getUserContext(res) {//AC #205
                                             <p>nothing here</p>
                                         </div>
                                     </div>
-                                    <div class="tab-panel fade collapse" id="add-report" role="tabpanel" aria-labelledby="nav-add-report">
+                                    <div class="tab-panel fade collapse" id="add-device" role="tabpanel" aria-labelledby="nav-add-device">
                                         <div class="empty">
-                                            <h4>Empty number 2</h4>
-                                            <p>nothing here again</p>
+                                            <h4>Empty here...</h4>
+                                            <p>nothing that show</p>
                                         </div>
                                     </div>
                                 </div>
