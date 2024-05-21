@@ -21,12 +21,15 @@ async function handlerSection(navigator) {
 async function setContent(sectionContext) {
     onLoadWhile();
     const index = getIndexRequest(sectionContext);
-    const arrayContainer = fieldsToFillAndQuery(index);
-    arrayContainer.map((e) => { 
-        const { obj: data } = getArrayRequest(index, e);
+    const array = fieldsReference(index);
+    const containers = array['id_container'];
+
+    containers.map((e, i) => {
+        const colletion = array['id_collection'].find(i);
+        const { obj: data } = getArrayRequest(i, e, array['id_collection']);
     });
 
-    
+
     const { entity: companyContext } = getProfileUser();
 
     const keys = Object.keys(data);
@@ -45,13 +48,12 @@ function getIndexRequest(context) {//preparate index for work with array[]; we c
     const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
     array.filter((e, index) => { if (e === context) { return index; } });
 }
-function fieldsToFillAndQuery(i) {//ids of containers to fill section especific
+function fieldsReference(i) {//ids containers and collections to queryDocuments; 
     const array = [
-    {id_container:['id_container_home'], id_collection: ['id_collection_home']},
-    {id_container:['device-list', 'reports'], id_collection: ['device_references', 'finding_references']},
-    {id_container:['id_container_departament'], id_collection: ['id_collection_departament']}
-    ];
-    return array[i];
+        { id_container: ['id_container_home'], id_collection: ['id_collection_home'] },
+        { id_container: ['device-list', 'reports'], id_collection: ['device_references', 'finding_references'] },
+        { id_container: ['id_container_departament'], id_collection: ['id_collection_departament'] }
+    ]; return array[i];
 }
 
 async function createItems(getQuery, idReq, arrayReq, containerContext) {
@@ -70,7 +72,7 @@ async function getCardContent(queryData, idReq, arrayReq) {
 }
 
 
-function getArrayRequest(indexSearch, containerToFill, configQuery = null) {
+function getArrayRequest(indexSearch, containerToFill, collectionToSearch,configQuery = null) {
     if (!configQuery) { configQuery = getDefaultQuery(indexSearch); }
     const array = [
         { device_references: { id_container: containerToFill, icon: 'bi bi-display', where: configQuery.where, pagination: configQuery.pagination } },
@@ -78,8 +80,7 @@ function getArrayRequest(indexSearch, containerToFill, configQuery = null) {
         { user: { id_container: containerToFill, icon: 'bx bxs-id-card', where: configQuery.where, pagination: configQuery.pagination } },
         { finding_references: { id_container: containerToFill, icon: 'bi bi-file-earmark-text', where: configQuery.where, pagination: configQuery.pagination } }
     ]
-    const keys = Object.keys(array);
-    keys.map((id, index) => { if(id === ) {} });
+    Object.keys(array).map((value, index) => { if (value === collectionToSearch) { return array[index]; } });
 }
 function getDefaultQuery(index) {
     const array = [
