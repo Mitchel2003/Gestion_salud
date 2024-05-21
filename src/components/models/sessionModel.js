@@ -20,89 +20,92 @@ async function handlerSection(navigator) {
 /*--------------------------------------------------tools--------------------------------------------------*/
 async function setContent(sectionContext) {
     onLoadWhile();
-    const { entity: companyContext } = getProfileUser();
+    const { entity } = getProfileUser();
     const indexSection = getIndexRequest(sectionContext);
     const arrayContainer = containerToFill(indexSection);
     const arrayCollection = collectionToSearch(indexSection);
 
-    arrayContainer.map((container, index) => {
+
+    arrayContainer.map(async (container, index) => {
         const collection = arrayCollection[index];
-        const array = getArrayRequest(indexSection, container, collection);//(1), (device_list), (device_reference)
+        const obj = getRequest(indexSection, collection);
 
+        console.log(obj.where[index!=0?3:0]);
+        const res = await getDataByRequest({ 
+            req: collection,
+            entity: entity,
+            where: { ar_1: obj.where[index!=0?3:0], operation: obj.where[index!=0?4:1], ar_2: obj.where[index!=0?5:2]},
+            pagination: { order: obj.pagination[index!=0?2:0], limit: obj.pagination[index!=0?3:1]}
+        });
         
-        
-    });
 
+        //preparate to fill
+        const elementContainer = document.getElementById(container);
+        const cardEmpty = elementContainer.querySelector('.empty');
 
-    
-
-    const keys = Object.keys(data);
-    keys.map(async (id, index) => {
-        const array = data[id];
-        const containerToFill = document.getElementById(array.id_container);
-        const cardEmptyByDefault = containerToFill.querySelector('.empty');
-
-        const res = await getDataByRequest({ req: id, entity: companyContext, order: array.order, limit: array.limit, configQuery: array.configQuery });
-        if (res && !cardEmptyByDefault.className.includes('d-none')) { cardEmptyByDefault.classList.toggle('d-none') }
-        if (index === keys.length - 1) { offLoadWhile(); /*appenedLoadMore(res, containerToFill);*/ }
-        await createItems(res, id, array, containerToFill);
+        if (res && !cardEmpty.className.includes('d-none')) { cardEmpty.classList.toggle('d-none') }
+        if (index === arrayContainer.length - 1) { offLoadWhile(); }
+        /*appenedLoadMore(res, containerToFill);*/
+        await createItems(res, obj, container);
     });
 }
-function getIndexRequest(context) {//preparate index for work with array[]; we can get a correspondent request
-    const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
-    array.filter((e, index) => { if (e === context) { return index; } });
+async function createItems(query, arrayRequest, container) {
+    query.forEach(async (e) => {
+        const answerData = e.data();
+        const itemToInsert = await getCardContent(answerData, arrayRequest, container);
+        document.getElementById(container).insertAdjacentHTML('afterbegin', itemToInsert);
+    });
 }
-function containerToFill(i) {//ids containers and collections to queryDocuments; 
+async function getCardContent(data, array, nameContainer) {
+    const { cardDevice, cardFinding } = await import('../layout/cards.js');
+    const obj = {
+        //list
+        user: { method: '...' },
+        device: { method: cardDevice(data, array) },
+        finding: { method: cardFinding(data, array) },
+        departament: { method: '...' },
+
+        //subList
+        reports: { method: cardFinding(data, array) }
+    }
+    Object.keys(obj).map((e) => { if (nameContainer.includes(e)) { return obj[e].method; } });
+}
+
+function getRequest(indexSection, collectionToSearch, configQuery = null) {
+    if (!configQuery) { configQuery = getDefaultQuery(indexSection); }
+    const obj = {
+        device_references: { icon: 'bi bi-display', where: configQuery.where, pagination: configQuery.pagination },
+        finding_references: { icon: 'bi bi-file-earmark-text', where: configQuery.where, pagination: configQuery.pagination },
+        departament: { icon: 'bx bx-buildings', where: configQuery.where, pagination: configQuery.pagination },
+        user: { icon: 'bx bxs-id-card', where: configQuery.where, pagination: configQuery.pagination }
+    };
+    let request = null;
+    Object.keys(obj).map((e) => { if (e === collectionToSearch) { request = obj[e]; } }); return request;
+}
+function getDefaultQuery(index) {//missing queryDefault; currently just have for one collection
+    const array = [
+        { where: ['empty'], pagination: ['empty'] },
+        { where: ['avaliable', '!=', 'true', 'date', '!=', '' ], pagination: ['avaliable', 5, 'date', 5 ] },
+        { where: ['empty'], pagination: ['empty'] }
+    ]; return array[index];
+}
+function containerToFill(i) {//ids containers
     const array = [
         ['id_container_home'],
         ['device-list', 'reports'],
         ['id_container_departament']
     ]; return array[i];
 }
-function collectionToSearch() {
+function collectionToSearch(i) {//collections to request
     const array = [
         ['id_collection_home'],
         ['device_reference', 'finding_references'],
         ['id_container_departament']
     ]; return array[i];
 }
-
-function getArrayRequest(indexSection, containerToFill, collectionToSearch, configQuery = null) {
-    if (!configQuery) { configQuery = getDefaultQuery(indexSection); }
-    const array = [
-        { device_references: { id_container: containerToFill, icon: 'bi bi-display', where: configQuery.where, pagination: configQuery.pagination } },
-        { departament: { id_container: containerToFill, icon: 'bx bx-buildings', where: configQuery.where, pagination: configQuery.pagination } },
-        { user: { id_container: containerToFill, icon: 'bx bxs-id-card', where: configQuery.where, pagination: configQuery.pagination } },
-        { finding_references: { id_container: containerToFill, icon: 'bi bi-file-earmark-text', where: configQuery.where, pagination: configQuery.pagination } }
-    ]
-    array.map((e, index) => { if (e === collectionToSearch) { return array[index]; } }); //working here...
-}
-function getDefaultQuery(index) {
-    const array = [
-        { where: ['empty'], pagination: ['empty'] },
-        { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] },
-        { where: ['empty'], pagination: ['empty'] }
-    ]; return array[index];
-}
-function getCollectionToSearch(params) {
-    array = []
-}
-
-
-
-
-
-async function createItems(getQuery, idReq, arrayReq, containerContext) {
-    getQuery.forEach(async (e) => {
-        const answerData = e.data();
-        const itemToInsert = await getCardContent(answerData, idReq, arrayReq);
-        containerContext.insertAdjacentHTML('afterbegin', itemToInsert);
-    });
-}
-async function getCardContent(queryData, idReq, arrayReq) {
-    const cards = await import('../layout/cards.js');
-    if (idReq.includes('user')) { }
-    if (idReq.includes('departament')) { }
-    if (idReq.includes('device')) { return cards.cardDevice(queryData, arrayReq); }
-    if (idReq.includes('finding')) { return cards.cardFinding(queryData, arrayReq); }
+function getIndexRequest(context) {//preparate index for work with array[]; we can get a correspondent request
+    const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
+    let index;
+    array.map((e, i) => { if (e === context) { index = i } });
+    return index;
 }
