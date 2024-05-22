@@ -18,7 +18,7 @@ async function handlerSection(navigator) {
         await setContent(section);
     });
 }
-/*--------------------------------------------------tools--------------------------------------------------*/
+
 async function setContent(sectionContext) {
     onLoadWhile();
     const { entity } = getProfileUser();
@@ -41,57 +41,50 @@ async function setContent(sectionContext) {
         /*appenedLoadMore(res, containerToFill);*/
     });
 }
-function fixQueryConfig(data, index) {
-    let indexW = [0, 3], indexP = [0, 2];
-    if (index === 2) { indexW = [6, 9], indexP = [4, 6] }
-    if (index === 1) { indexW = [3, 6], indexP = [2, 4] }
-    return [...data.where.slice(indexW[0], indexW[1]), ...data.pagination.slice(indexP[0], indexP[1])]
-}
-
-function createItems(query, container, icon) {
-    query.forEach((e) => {
-        const item = getCardContent(e.data(), container, icon);
-        document.getElementById(container).insertAdjacentHTML('afterbegin', item);
-    });
-}
-function getCardContent(value, nameContainer, icon) {
-    const metaData = {
-        user: '',
-        device: () => cardDevice(value, icon),
-        finding: () => cardFinding(value, icon),
-        departament: '',
-        reports: () => cardFinding(value, icon)
-    }
-    for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
-}
-
 function getRequest(indexSection, collectionToSearch, configQuery = null) {
     if (!configQuery) { configQuery = getDefaultQuery(indexSection); }
     const metaData = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };
-    let request; Object.keys(metaData).map((value) => { if (value === collectionToSearch) { request = { ...metaData[value], ...configQuery } } }); return request;
+    return { ...metaData[collectionToSearch], ...configQuery };
 }
-function getDefaultQuery(index) {
+function createItems(query, container, icon) {
+    query.forEach((e) => {
+        const item = createCard(e.data(), container, icon);
+        document.getElementById(container).insertAdjacentHTML('afterbegin', item);
+    });
+}
+function createCard(value, nameContainer, icon) {
+    const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon) }
+    for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
+}
+/*--------------------------------------------------tools--------------------------------------------------*/
+function getIndexRequest(context) {//preparate index for work with array[]; we can got a correspondent request
+    const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
+    return array.findIndex(value => value === context);
+}
+function getDefaultQuery(index) {//while we dont have filters in the queries, we need make the pagination and ordenament in standard mode
     const array = [
         { where: ['empty'], pagination: ['empty'] },
         { where: ['avaliable', '!=', 'true', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
         { where: ['empty'], pagination: ['empty'] }
     ]; return array[index];
 }
-function containerToFill(i) {//ids containers
+function fixQueryConfig(data, index) {//for optimize the code and logic better, according to index we can get a queryConfig specific;
+    let indexW = [0, 3], indexP = [0, 2];
+    if (index === 2) { indexW = [6, 9], indexP = [4, 6] }
+    if (index === 1) { indexW = [3, 6], indexP = [2, 4] }
+    return [...data.where.slice(indexW[0], indexW[1]), ...data.pagination.slice(indexP[0], indexP[1])]
+}
+function containerToFill(i) {//contains all containers of each section by him id, sorted according to navigator bar
     const array = [
         ['id_container_home'],
         ['device-list', 'reports'],
         ['id_container_departament']
     ]; return array[i];
 }
-function collectionToSearch(i) {//collections to request into database
+function collectionToSearch(i) {//contains all collections to search in database, sorted according to navigator bar
     const array = [
         ['id_collection_home'],
         ['device_references', 'finding_references'],
         ['id_container_departament']
     ]; return array[i];
-}
-function getIndexRequest(context) {//preparate index for work with array[]; we can got a correspondent request
-    const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
-    return array.findIndex(value => value === context);
 }

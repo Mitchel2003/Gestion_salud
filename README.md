@@ -1,3 +1,56 @@
+¡Claro! Vamos a mejorar tu método `getRequest` usando prácticas más profesionales y eficientes. En lugar de usar `Object.keys` y un `.map` (que no es ideal para buscar un solo elemento), podemos usar un enfoque más directo y limpio.
+
+Podemos utilizar el patrón de diseño **Factory Method** que ayuda a encapsular la lógica de creación de diferentes tipos de objetos dentro de una única función central. Esto mejora la legibilidad y la mantenibilidad del código.
+
+Aquí tienes una versión optimizada del método:
+
+```javascript
+function getDefaultQuery(indexSection) {
+    // Aquí va la implementación de getDefaultQuery
+}
+
+function getRequest(indexSection, collectionToSearch, configQuery = null) {
+    if (!configQuery) { 
+        configQuery = getDefaultQuery(indexSection); 
+    }
+
+    const metaData = {
+        device_references: { icon: 'bi bi-display' },
+        finding_references: { icon: 'bi bi-file-earmark-text' },
+        departament: { icon: 'bx bx-buildings' },
+        user: { icon: 'bx bxs-id-card' }
+    };
+
+    const collectionData = metaData[collectionToSearch];
+    if (!collectionData) {
+        throw new Error(`Collection ${collectionToSearch} does not exist in metaData`);
+    }
+
+    return { ...collectionData, ...configQuery };
+}
+```
+
+La mejora más significativa es reemplazar la iteración y la asignación de `request` con una búsqueda directa en el objeto `metaData` usando el nombre de la colección. Esto es más eficiente y directo.
+
+### Ventajas del enfoque:
+1. **Eficiencia**: Evitamos iterar sobre las claves del objeto `metaData` usando directamente el valor de la colección.
+2. **Claridad**: El código es más limpio y fácil de entender.
+3. **Mantenibilidad**: Si necesitas agregar nuevas colecciones o cambiar las existentes, solo debes modificar `metaData`.
+4. **Escalabilidad**: Al agregar nuevas colecciones, no se incrementa la complejidad del método de búsqueda.
+
+### Uso del patrón de diseño:
+Al utilizar este enfoque, estamos aplicando una versión simplificada del patrón **Factory Method**, en la que `metaData` funciona como una fábrica que devuelve la configuración correspondiente a la colección solicitada. Este patrón es útil para manejar diferentes configuraciones de manera centralizada y escalable.
+
+¡Espero que esta optimización cumpla tus expectativas y te acerque al éxito! 🚀
+
+
+
+
+
+
+
+
+
 ```javascript
 // Factory Pattern to get the method based on container name
 class CardContentFactory {
