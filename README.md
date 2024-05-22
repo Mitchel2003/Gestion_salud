@@ -1,4 +1,40 @@
 ### ---------------------------------------------------------------------------------------------------- ###
+```javascript
+function createWhereArray(index, array) {
+    if (index !== 0) {
+        return array.slice(3, 6);
+    } else {
+        return array.slice(0, 3);
+    }
+}
+
+function getRequest(indexSection, collection) {
+    // Esto debería devolver un objeto con la propiedad "where" basada en los argumentos
+    return {
+        where: ['avaliable', '!=', 'true', 'date', '!=', ''],
+        pagination: { /* algún valor */ },
+    };
+}
+
+// Uso del método para obtener los datos
+const obj = getRequest(indexSection, collection);
+
+const whereArray = createWhereArray(index, obj.where);
+
+// Llamando a getDataByRequest con la configuración adecuada
+const res = await getDataByRequest({ 
+    req: collection, 
+    entity: entity, 
+    where: whereArray, 
+    pagination: obj.pagination 
+});
+```
+// Puedes modularizar más este código, dependiendo de lo grande que sea tu proyecto.
+
+//add this for GPT4
+necesito lograr esto de la manera mas profesional posible, usando patrones de diseño, optimizaciones de codigo y de rendimiento, eficiciencia en cuanto empleo de macanismos profesionales, necesito la forma mas optima en cuanto a rendimiento y escalabilidad, eficiente en cuanto a codigo y profesional en cuanto a empleo de codigo limpio, mejores practicas y patrones de diseño, !animo, el exito esta cerca!
+
+### ---------------------------------------------------------------------------------------------------- ###
 Para lograr que en pantallas de menos de 576px de ancho (típicamente dispositivos móviles) la barra de navegación con pestañas se ubique debajo del campo de búsqueda, y asumiendo que estás utilizando Bootstrap 4 o 5, te recomiendo seguir un enfoque basado en el uso de las clases de utilidad de flex y los order classes proporcionados por Bootstrap. Esto te permitirá controlar el orden de los elementos sin necesidad de manipular el DOM con JavaScript o modificar los estilos directamente.
 
 Supongamos que tienes una estructura HTML como la siguiente:

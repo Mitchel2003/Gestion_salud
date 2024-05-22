@@ -25,21 +25,18 @@ async function setContent(sectionContext) {
     const arrayContainer = containerToFill(indexSection);
     const arrayCollection = collectionToSearch(indexSection);
 
-
     arrayContainer.map(async (container, index) => {
         const collection = arrayCollection[index];
         const obj = getRequest(indexSection, collection);
+        const objSimplified = fixConfigQuery(index, obj);
+        console.log(objSimplified);
 
-        console.log(obj.where[index!=0?3:0]);
-        const res = await getDataByRequest({ 
+        const res = await getDataByRequest({
             req: collection,
             entity: entity,
-            where: { ar_1: obj.where[index!=0?3:0], operation: obj.where[index!=0?4:1], ar_2: obj.where[index!=0?5:2]},
-            pagination: { order: obj.pagination[index!=0?2:0], limit: obj.pagination[index!=0?3:1]}
+            where: objSimplified.where, 
+            pagination: objSimplified.pagination 
         });
-        
-
-        //preparate to fill
         const elementContainer = document.getElementById(container);
         const cardEmpty = elementContainer.querySelector('.empty');
 
@@ -49,6 +46,13 @@ async function setContent(sectionContext) {
         await createItems(res, obj, container);
     });
 }
+function fixConfigQuery(object, index) {
+    const arrayWhere, arrayPagination
+    if (index === 2) { return { ...object.where.slice(6, 9), ...object.pagination.slice(4, 6) } }
+    if (index === 1) { return { ...object.where.slice(3, 6), ...object.pagination.slice(2, 4) } }
+    return { ...object.where.slice(0, 3), ...object.pagination.slice(0, 2) }
+}
+
 async function createItems(query, arrayRequest, container) {
     query.forEach(async (e) => {
         const answerData = e.data();
@@ -73,19 +77,13 @@ async function getCardContent(data, array, nameContainer) {
 
 function getRequest(indexSection, collectionToSearch, configQuery = null) {
     if (!configQuery) { configQuery = getDefaultQuery(indexSection); }
-    const obj = {
-        device_references: { icon: 'bi bi-display', where: configQuery.where, pagination: configQuery.pagination },
-        finding_references: { icon: 'bi bi-file-earmark-text', where: configQuery.where, pagination: configQuery.pagination },
-        departament: { icon: 'bx bx-buildings', where: configQuery.where, pagination: configQuery.pagination },
-        user: { icon: 'bx bxs-id-card', where: configQuery.where, pagination: configQuery.pagination }
-    };
-    let request = null;
-    Object.keys(obj).map((e) => { if (e === collectionToSearch) { request = obj[e]; } }); return request;
+    const obj = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };
+    let request; Object.keys(obj).map((value) => { if (value === collectionToSearch) { request = { ...obj[value], ...configQuery } } }); return request;
 }
-function getDefaultQuery(index) {//missing queryDefault; currently just have for one collection
+function getDefaultQuery(index) {
     const array = [
         { where: ['empty'], pagination: ['empty'] },
-        { where: ['avaliable', '!=', 'true', 'date', '!=', '' ], pagination: ['avaliable', 5, 'date', 5 ] },
+        { where: ['avaliable', '!=', 'true', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
         { where: ['empty'], pagination: ['empty'] }
     ]; return array[index];
 }
@@ -96,16 +94,14 @@ function containerToFill(i) {//ids containers
         ['id_container_departament']
     ]; return array[i];
 }
-function collectionToSearch(i) {//collections to request
+function collectionToSearch(i) {//collections to request into database
     const array = [
         ['id_collection_home'],
-        ['device_reference', 'finding_references'],
+        ['device_references', 'finding_references'],
         ['id_container_departament']
     ]; return array[i];
 }
 function getIndexRequest(context) {//preparate index for work with array[]; we can get a correspondent request
     const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
-    let index;
-    array.map((e, i) => { if (e === context) { index = i } });
-    return index;
+    let num; array.map((value, index) => { if (value === context) { num = index } }); return num;
 }

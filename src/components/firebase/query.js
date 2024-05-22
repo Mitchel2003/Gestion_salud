@@ -17,12 +17,10 @@ export async function getDataByRequest(array = null) {
     if (!array) { return await getDocs(getCollection()); };
     const { query, where, orderBy, limit } = await import('./conection.js');
     const subCollection = collection(getCollection(), array.entity, array.req);
-    
-    const querySnapshot = query(
-        subCollection,
-        where(array.where.a_1, array.where.operation, array.where.a_2),
-        orderBy(array.pagination.order),
-        limit(array.pagination.limit)
+    const querySnapshot = query( subCollection,
+        where(array.where[0], array.where[1], array.where[2]),
+        orderBy(array.pagination[0]),
+        limit(array.pagination[1])
     );
     return await getDocs(querySnapshot);
 }
