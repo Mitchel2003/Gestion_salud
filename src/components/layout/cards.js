@@ -1,4 +1,4 @@
-export function cardDevice(data, queryArray) {
+export function cardDevice(data, icon) {
     return `
         <div class="card card-body container-fluid">
             <div class="row">
@@ -8,7 +8,7 @@ export function cardDevice(data, queryArray) {
                     <p class="card-text m-0">Available: <span class="fs-5"> ${data.avaliable ? '&#x2705;' : '&#x26D4;'} </span> </p>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 d-flex justify-content-end">
-                    <i class="${queryArray.icon} text-primary fs-1"></i>
+                    <i class="${icon} text-primary fs-1"></i>
                 </div>
             </div>
 
@@ -19,7 +19,7 @@ export function cardDevice(data, queryArray) {
         </div>
     `;
 }
-export function cardFinding(data, queryArray) {
+export function cardFinding(data, icon) {
     return `
         <div class="card card-body container-fluid border border-4 ${data.type === 'preventive'?'border-primary-subtle':'border-warning-subtle'}">
                 <div class="row">
@@ -28,7 +28,7 @@ export function cardFinding(data, queryArray) {
                         <h6 class="card-title m-0">Device: ${data.id_device}</h6>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-2 d-flex justify-content-end order-1 order-sm-2">
-                        <i class="${queryArray.icon} ${data.type === 'preventive'?'text-primary':'text-warning'} fs-1"></i>
+                        <i class="${icon} ${data.type === 'preventive'?'text-primary':'text-warning'} fs-1"></i>
                     </div>
                 </div>
                 <div class="row align-items-center">
