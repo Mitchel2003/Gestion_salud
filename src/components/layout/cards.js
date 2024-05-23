@@ -17,6 +17,9 @@ export function cardDevice(data, icon) {
                 <a href="" class="btn btn-outline-primary container-fluid">more details</a>
             </div>
         </div>
+        <div class="card d-none">
+            <a href="" class="btn btn-outline-primary container-fluid p-0">load more...</a>
+        </div>
     `;
 }
 export function cardFinding(data, icon) {

@@ -3,7 +3,7 @@ import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding } from '../layout/cards.js';
 /*--------------------------------------------------mode--------------------------------------------------*/
 export async function modeAuxiliary() {
-    const side_bar = document.querySelector('.side-bar');
+    const side_bar = document.querySelector('.side-bar') /*buttonLoadMore = document.querySelector('.side-bar')*/;
     toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
     side_bar.addEventListener('pointerleave', () => { side_bar.classList.remove('spawn') });
 
@@ -19,35 +19,43 @@ async function handlerSection(navigator) {
     });
 }
 async function setContent(sectionContext, filter = null) {
-    onLoadWhile();
-    const { entity } = getProfileUser();
-    const indexSection = getIndexRequest(sectionContext);
-    const arrayContainer = containerToFill(indexSection);
-    const arrayCollection = collectionToSearch(indexSection);
+    try {
+        onLoadWhile();
+        const { entity } = getProfileUser();
+        const indexSection = getIndexRequest(sectionContext);
+        const arrayContainer = containerToFill(indexSection);
+        const arrayCollection = collectionToSearch(indexSection);
 
-    arrayContainer.map(async (container, index) => {//AC #213
-        if(filter && index!=0){ return }
-        const collection = arrayCollection[index];
-        const data = getRequest(indexSection, collection);
-        const arrayConfig = fixQueryConfig(data, index);
+        arrayContainer.map(async (container, index) => {//AC #213
+            if (filter && index != 0) { return }
+            const collection = arrayCollection[index];
+            const data = getRequest(indexSection, collection);
+            const arrayConfig = fixQueryConfig(data, index);
 
-        const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, filter );
+            const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, filter);
 
-        const elementContainer = document.getElementById(container);
-        elementContainer.removeChild()
-        const cardEmpty = elementContainer.querySelector('.empty');
-        if (res && !cardEmpty.className.includes('d-none')) { cardEmpty.classList.toggle('d-none') }
-        if (index === arrayContainer.length - 1) { offLoadWhile(); }
-        if (!filter) {cleanContainer(elementContainer)}
-        createItems(res, container, data.icon);
-    });
+            const elementContainer = document.getElementById(container);
+            const cardEmpty = elementContainer.querySelector('.empty');
+
+            if (res && !cardEmpty.className.includes('d-none')) { cardEmpty.classList.toggle('d-none') }
+            if (index === arrayContainer.length - 1) { offLoadWhile(); }
+
+            //we have a query limit of five; then according at obtained query, we change status of the "loadMore" between (show/hide);
+            if (res.data().length < arrayConfig[4]) { showButtonLoadMore(); /*loadMore();*/ } //working here...
+
+            
+            if (!filter) { cleanContainer(elementContainer) }
+            createItems(res, container, data.icon);
+        });
+    } catch (error) { console.error('Error fetching documents:', error); throw error }
 }
-async function loadMore(res, lastDocument){
+async function loadMore(res, lastDocument) {
 
 
 }
-function cleanContainer(container) {//at update, we need reload elements
-    container.innerHTML = ''; //working here...
+function cleanContainer(container) {
+    const cards = container.querySelectorAll('.card');
+    cards.forEach(card => card.remove());
 }
 
 function getRequest(indexSection, collectionToSearch, configQuery = null) {

@@ -1,15 +1,29 @@
-Claro, entiendo que quieras mantener tus prácticas de código limpias y eficientes. Usar `removeChild` es una buena forma, pero hay una manera aún más sencilla y eficiente para eliminar todo el contenido de un contenedor en JavaScript.
+### Entendiendo el `static`
 
-La manera óptima y ampliamente utilizada para borrar todos los hijos de un elemento es definir su propiedad `innerHTML` como una cadena vacía. Este método es preferido por su simplicidad y rendimiento. Aquí tienes un ejemplo:
+En JavaScript, `static` se usa para definir métodos que pertenecen a la clase en sí, en lugar de a instancias individuales de esa clase. Esto es útil cuando necesitas una funcionalidad que no dependa del estado de una instancia específica.
 
+En el caso de tu método `get`, usar `static` tiene sentido porque estás accediendo a datos comunes a todas las instancias de `DataByRequest`. Es una especie de método utilitario único para la clase.
+
+### Mejora del Código
+
+Vamos a refactorizar tu código para mantenerlo más limpio y con mejores prácticas:
+
+1. **Descomposición**: Divide responsabilidades en métodos más pequeños.
+2. **Manejo de Errores**: Asegúrate de manejar errores adecuadamente.
+3. **Comentarios y Legibilidad**: Añade comentarios para aumentar la legibilidad.
+
+### Buenas Prácticas y Consejos:
+
+1. **Separación de Responsabilidades**: Mueve partes de funciones grandes en funciones más pequeñas y reutilizables.
+2. **Manejo de Errores**: Siempre captura cualquier error en tus operaciones asincrónicas.
+3. **Código Limpio**: Evita comentarios innecesarios y escribe nombres de funciones y variables descriptivos.
+4. **Patrones de Diseño**: Usa patrones como Singleton si tu clase solo debe haber una instancia.
+5. **Optimización**: Limita el número de operaciones asíncronas secuenciales, combínalas si es posible.
+### ---------------------------------------------------------------------------------------------------- ###
 ```javascript
 const container = document.getElementById('contenedorPadre');
 container.innerHTML = '';
-```
 
-Sin embargo, si prefieres mantener una manipulación directa del DOM y seguir más alineado con prácticas que implican interacción con nodos, puedes utilizar un bucle que elimine cada nodo hijo. Aquí te muestro cómo podrías hacerlo:
-
-```javascript
 const container = document.getElementById('contenedorPadre');
 while (container.firstChild) {
     container.removeChild(container.firstChild);
@@ -27,7 +41,6 @@ Ambos métodos tienen sus méritos:
 
 Ambos métodos están en línea con las mejores prácticas y son eficientes dependiendo del contexto en el que los utilices. Si buscas una combinación de simplicidad y rendimiento, `innerHTML = ''` es generalmente la opción recomendada.
 
-
 ```javascript
 // Función principal para limpiar el contenedor
 function cleanContainer(containerId) {
@@ -41,15 +54,10 @@ function cleanContainer(containerId) {
     const cardsToRemove = container.querySelectorAll('.card');
     cardsToRemove.forEach(card => card.remove());
 }
-
-// Uso de la función
-const elementContainer = 'container'; // Asume que 'container' es el ID del contenedor
-cleanContainer(elementContainer);
 ```
+### ---------------------------------------------------------------------------------------------------- ###
 ### Uso del patrón de diseño:
 Al utilizar este enfoque, estamos aplicando una versión simplificada del patrón **Factory Method**, en la que `metaData` funciona como una fábrica que devuelve la configuración correspondiente a la colección solicitada. Este patrón es útil para manejar diferentes configuraciones de manera centralizada y escalable.
-
-¡Espero que esta optimización cumpla tus expectativas y te acerque al éxito! 🚀
 
 ```javascript
 // Factory Pattern to get the method based on container name
@@ -911,5 +919,5 @@ for the differents sections avaliables in this user, then when user click on the
             at click, we will activate the fetch of information specific for the current section
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 **#213** 
-**Mejor manejo de Promesas**: Al usar un bucle `for...of` en lugar de `forEach`, evitamos el problema de que `forEach` no maneja Promesas de manera predecible. Esto garantiza que las tarjetas se crean y se insertan en secuencia.
+**Mejor manejo de Promesas**: Al usar un bucle `for...of` or `map` en lugar de `forEach`, evitamos el problema de que `forEach` no maneja Promesas de manera predecible. Esto garantiza que las tarjetas se crean y se insertan en secuencia; anteriormente un supuesto "problema" al momento de rellenar los containers, el orden en que se plasmaban las targetas no iba de acuerdo con el orden de la consulta especificada, el problema radicaba en que el forEach no me controlaba las promesas, por tanto, podria estar ejecutandose una consulta en "const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, filter);", pero el for no esperaba por el, encontonces se saltaba al siguiente ciclo.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
