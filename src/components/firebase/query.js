@@ -13,15 +13,35 @@ export async function getDocumentUser(user, entity) {
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-export async function getDataByRequest(array = null) {
+
+// export class DataByRequest {
+//     static lastDocumentVisible;
+//     static async get(array = null) {
+//         if (!array) { return await getDocs(getCollection()); };
+//         const { query, where, orderBy, limit } = await import('./conection.js');
+//         const subCollection = collection(getCollection(), array.entity, array.req);
+//         const querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4]));
+
+//         const snapshot = await getDocs(querySnapshot);
+//         this.lastDocumentVisible = snapshot.docs[snapshot.docs.length - 1];
+//         return snapshot;
+//     }
+//     getLastItem() { return DataByRequest.lastDocumentVisible }
+// }
+
+// async function loadMore(res, lastDocument){
+
+
+// }
+
+export async function getDataByRequest(array = null, filter = null) {
+    let querySnapshot;
     if (!array) { return await getDocs(getCollection()); };
-    const { query, where, orderBy, limit } = await import('./conection.js');
+    const { query, where, orderBy, limit, startAfter } = await import('./conection.js');
     const subCollection = collection(getCollection(), array.entity, array.req);
-    const querySnapshot = query( subCollection,
-        where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]),
-        orderBy(array.queryConfig[3]),
-        limit(array.queryConfig[4])
-    );
+    
+    if(!filter){ querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4])) }
+    else { querySnapshot = query(subCollection, where(filter.queryConfig[0], filter.queryConfig[1], filter.queryConfig[2]), orderBy(filter.queryConfig[3]), startAfter(filter.lastVisible), limit(filter.queryConfig[4])) }
     return await getDocs(querySnapshot);
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/

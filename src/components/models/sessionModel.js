@@ -18,15 +18,15 @@ async function handlerSection(navigator) {
         await setContent(section);
     });
 }
-
-async function setContent(sectionContext) {
+async function setContent(sectionContext, filter = null) {
     onLoadWhile();
     const { entity } = getProfileUser();
     const indexSection = getIndexRequest(sectionContext);
     const arrayContainer = containerToFill(indexSection);
     const arrayCollection = collectionToSearch(indexSection);
 
-    arrayContainer.map(async (container, index) => {
+    arrayContainer.map(async (container, index) => {//AC #213
+        if(filter && index!=0){ return }
         const collection = arrayCollection[index];
         const data = getRequest(indexSection, collection);
         const arrayConfig = fixQueryConfig(data, index);
@@ -38,7 +38,6 @@ async function setContent(sectionContext) {
         if (res && !cardEmpty.className.includes('d-none')) { cardEmpty.classList.toggle('d-none') }
         if (index === arrayContainer.length - 1) { offLoadWhile(); }
         createItems(res, container, data.icon);
-        /*appenedLoadMore(res, containerToFill);*/
     });
 }
 function getRequest(indexSection, collectionToSearch, configQuery = null) {
@@ -58,7 +57,7 @@ function createCard(value, nameContainer, icon) {
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
 function getIndexRequest(context) {//preparate index for work with array[]; we can got a correspondent request
-    const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'device-information', 'filters'];
+    const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters'];
     return array.findIndex(value => value === context);
 }
 function getDefaultQuery(index) {//while we dont have filters in the queries, we need make the pagination and ordenament in standard mode
