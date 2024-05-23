@@ -1,5 +1,5 @@
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
-import { getProfileUser, getDataByRequest } from '../firebase/query.js';
+import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding } from '../layout/cards.js';
 /*--------------------------------------------------mode--------------------------------------------------*/
 export async function modeAuxiliary() {
@@ -31,15 +31,25 @@ async function setContent(sectionContext, filter = null) {
         const data = getRequest(indexSection, collection);
         const arrayConfig = fixQueryConfig(data, index);
 
-        const res = await getDataByRequest({ req: collection, entity: entity, queryConfig: arrayConfig });
+        const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, filter );
 
         const elementContainer = document.getElementById(container);
+        elementContainer.removeChild()
         const cardEmpty = elementContainer.querySelector('.empty');
         if (res && !cardEmpty.className.includes('d-none')) { cardEmpty.classList.toggle('d-none') }
         if (index === arrayContainer.length - 1) { offLoadWhile(); }
+        if (!filter) {cleanContainer(elementContainer)}
         createItems(res, container, data.icon);
     });
 }
+async function loadMore(res, lastDocument){
+
+
+}
+function cleanContainer(container) {//at update, we need reload elements
+    container.innerHTML = ''; //working here...
+}
+
 function getRequest(indexSection, collectionToSearch, configQuery = null) {
     if (!configQuery) { configQuery = getDefaultQuery(indexSection); }
     const metaData = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };

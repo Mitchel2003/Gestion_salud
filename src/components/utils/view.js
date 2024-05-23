@@ -11,9 +11,9 @@ export function onLoadWhile() { document.querySelector('.loadContainer').classLi
 export function offLoadWhile() { document.querySelector('.loadContainer').classList.remove('show'); }
 
 export async function appennedItemSelect(selectContext) {
-    const { getDataByRequest } = await import('../firebase/query.js');
+    const { DataByRequest } = await import('../firebase/query.js');
     const select = document.querySelector(selectContext);
-    const data = await getDataByRequest();
+    const data = await DataByRequest.get();
     data.forEach((e) => {
         const option = document.createElement('option');
         option.value = e.id; option.textContent = e.id;

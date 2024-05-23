@@ -14,36 +14,34 @@ export async function getDocumentUser(user, entity) {
     return { access, key };
 }
 
-// export class DataByRequest {
-//     static lastDocumentVisible;
-//     static async get(array = null) {
-//         if (!array) { return await getDocs(getCollection()); };
-//         const { query, where, orderBy, limit } = await import('./conection.js');
-//         const subCollection = collection(getCollection(), array.entity, array.req);
-//         const querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4]));
+export class DataByRequest {
+    static lastDocumentVisible;
+    static async get(array = null, filter = null) {
+        let querySnapshot;
+        if (!array) { return await getDocs(getCollection()) }
+        const { query, where, orderBy, limit } = await import('./conection.js');
+        const subCollection = collection(getCollection(), array.entity, array.req);
 
-//         const snapshot = await getDocs(querySnapshot);
-//         this.lastDocumentVisible = snapshot.docs[snapshot.docs.length - 1];
-//         return snapshot;
-//     }
-//     getLastItem() { return DataByRequest.lastDocumentVisible }
-// }
+        if(!filter){ querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4])) }
+        else { querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), startAfter(filter.lastVisible), limit(array.queryConfig[4])) }
 
-// async function loadMore(res, lastDocument){
-
-
-// }
-
-export async function getDataByRequest(array = null, filter = null) {
-    let querySnapshot;
-    if (!array) { return await getDocs(getCollection()); };
-    const { query, where, orderBy, limit, startAfter } = await import('./conection.js');
-    const subCollection = collection(getCollection(), array.entity, array.req);
-    
-    if(!filter){ querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4])) }
-    else { querySnapshot = query(subCollection, where(filter.queryConfig[0], filter.queryConfig[1], filter.queryConfig[2]), orderBy(filter.queryConfig[3]), startAfter(filter.lastVisible), limit(filter.queryConfig[4])) }
-    return await getDocs(querySnapshot);
+        const response = await getDocs(querySnapshot);
+        this.lastDocumentVisible = response.docs[response.docs.length - 1];  return response;
+    }
+    getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
+
+
+// export async function getDataByRequest(array = null, filter = null) {
+//     let querySnapshot;
+//     if (!array) { return await getDocs(getCollection()); };
+//     const { query, where, orderBy, limit, startAfter } = await import('./conection.js');
+//     const subCollection = collection(getCollection(), array.entity, array.req);
+    
+//     if(!filter){ querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4])) }
+//     else { querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), startAfter(filter.lastVisible), limit(array.queryConfig[4])) }
+//     return await getDocs(querySnapshot);
+// }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() {
     const collectionReference = collection(db, 'main');
