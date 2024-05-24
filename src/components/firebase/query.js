@@ -35,7 +35,7 @@ export class DataByRequest {
         return query(subCollection, ...config);
     }
     static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
-    getLastDocument() { return DataByRequest.lastDocumentVisible }
+    static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
 
 

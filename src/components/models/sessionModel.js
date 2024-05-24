@@ -3,22 +3,32 @@ import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding } from '../layout/cards.js';
 /*--------------------------------------------------mode--------------------------------------------------*/
 export async function modeAuxiliary() {
-    const side_bar = document.querySelector('.side-bar') /*buttonLoadMore = document.querySelector('.side-bar')*/;
+    const side_bar = document.querySelector('.side-bar');
     toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
     side_bar.addEventListener('pointerleave', () => { side_bar.classList.remove('spawn') });
 
     await handlerSection('.nav-tabs');
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
+class EventsSection{
+
+    // const initDocument = DataByRequest.getLastDocument();
+    // console.log(initDocument);
+
+}
+async function handlerSection(navigator) {
+
+}
 async function handlerSection(navigator) {
     const nav = document.querySelector(navigator);
     nav.addEventListener('click', async (e) => {
         const section = e.target.ariaCurrent;
         if (!section) { return }
         await setContent(section);
+        await actionOverSection(section);
     });
 }
-async function setContent(sectionContext, filter = null) {
+async function setContent(sectionContext, handlerFormat = null) {
     try {
         onLoadWhile();
         const { entity } = getProfileUser();
@@ -27,12 +37,12 @@ async function setContent(sectionContext, filter = null) {
         const arrayCollection = collectionToSearch(indexSection);
 
         arrayContainer.map(async (container, index) => {//AC #213
-            if (filter && index != 0) { return }
+            if (handlerFormat && index != 0) { return }
             const collection = arrayCollection[index];
             const data = getRequest(indexSection, collection);
             const arrayConfig = fixQueryConfig(data, index);
 
-            const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, filter);
+            const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, handlerFormat);
 
             const elementContainer = document.getElementById(container);
             const cardEmpty = elementContainer.querySelector('.empty');
@@ -41,18 +51,15 @@ async function setContent(sectionContext, filter = null) {
             if (index === arrayContainer.length - 1) { offLoadWhile(); }
 
             //we have a query limit of five; then according at obtained query, we change status of the "loadMore" between (show/hide);
-            if (res.data().length < arrayConfig[4]) { showButtonLoadMore(); /*loadMore();*/ } //working here...
+            //if (res.data().length < arrayConfig[4]) { showButtonLoadMore(); /*loadMore();*/ } //working here...
 
             
-            if (!filter) { cleanContainer(elementContainer) }
+            if (!handlerFormat) { cleanContainer(elementContainer) }
             createItems(res, container, data.icon);
         });
     } catch (error) { console.error('Error fetching documents:', error); throw error }
 }
-async function loadMore(res, lastDocument) {
 
-
-}
 function cleanContainer(container) {
     const cards = container.querySelectorAll('.card');
     cards.forEach(card => card.remove());

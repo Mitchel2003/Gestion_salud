@@ -17,8 +17,8 @@ export function cardDevice(data, icon) {
                 <a href="" class="btn btn-outline-primary container-fluid">more details</a>
             </div>
         </div>
-        <div class="card d-none">
-            <a href="" class="btn btn-outline-primary container-fluid p-0">load more...</a>
+        <div class="card d-flex" id="load-more">
+            <button class="btn btn-outline-primary container-fluid p-0">load more...</button>
         </div>
     `;
 }
