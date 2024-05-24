@@ -11,12 +11,11 @@ export async function modeAuxiliary() {
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
 class EventsSection{
-
     // const initDocument = DataByRequest.getLastDocument();
     // console.log(initDocument);
-
 }
-async function handlerSection(navigator) {
+
+async function actionOverList(context) {
 
 }
 async function handlerSection(navigator) {
@@ -25,7 +24,7 @@ async function handlerSection(navigator) {
         const section = e.target.ariaCurrent;
         if (!section) { return }
         await setContent(section);
-        await actionOverSection(section);
+        await actionOverList(section);
     });
 }
 async function setContent(sectionContext, handlerFormat = null) {
@@ -72,11 +71,11 @@ function getRequest(indexSection, collectionToSearch, configQuery = null) {
 }
 function createItems(query, container, icon) {
     query.forEach((e) => {
-        const item = createCard(e.data(), container, icon);
+        const item = setContentCard(e.data(), container, icon);
         document.getElementById(container).insertAdjacentHTML('afterbegin', item);
     });
 }
-function createCard(value, nameContainer, icon) {
+function setContentCard(value, nameContainer, icon) {
     const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon) }
     for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
 }

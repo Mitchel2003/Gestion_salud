@@ -155,6 +155,9 @@ export function getUserContext(res) {//AC #205
                                     <h4>Empty</h4>
                                     <p>nothing here</p>
                                 </div>
+                                <div class="card d-flex" id="load-more">
+                                    <button class="btn btn-outline-primary container-fluid p-0">load more...</button>
+                                </div>
                             </div>
                         </div>
                     </div>
