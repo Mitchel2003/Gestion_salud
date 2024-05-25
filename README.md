@@ -964,6 +964,3 @@ for the differents sections avaliables in this user, then when user click on the
     **2:** this method detect 'observer' a click on element context '.nav-tabs' = main navbar; then for example 'home'
             at click, we will activate the fetch of information specific for the current section
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-**#213** 
-**Mejor manejo de Promesas**: Al usar un bucle `for...of` or `map` en lugar de `forEach`, evitamos el problema de que `forEach` no maneja Promesas de manera predecible. Esto garantiza que las tarjetas se crean y se insertan en secuencia; anteriormente un supuesto "problema" al momento de rellenar los containers, el orden en que se plasmaban las targetas no iba de acuerdo con el orden de la consulta especificada, el problema radicaba en que el forEach no me controlaba las promesas, por tanto, podria estar ejecutandose una consulta en "const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, filter);", pero el for no esperaba por el, encontonces se saltaba al siguiente ciclo.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -28,25 +28,29 @@ class Section {
         try {
             onLoadWhile();
             const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
+            this.addEventToContainer(arrayContainer[0]);
             arrayContainer.map(async (container, index) => {//AC #002
-                if (handlerFormat && index != 0) { return }
-
-                const collection = arrayCollection[index];
-                const metaData = this.getRequest(indexSection, collection);
-                const arrayConfig = this.fixQueryConfig(index, metaData);
-
+                if (this.routerRequest(index, handlerFormat)) { return } //allow or deny the code flow according search
+                const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
                 const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, handlerFormat);
-
-                const elementContainer = document.getElementById(container);
-                this.toggleCardEmpty(elementContainer, res);
-
-                if (!handlerFormat) { this.cleanContainer(elementContainer) }//for load more function.
+                this.toggleCardEmpty(this.elementById(container), res);
+                if (!handlerFormat) { this.cleanContainer(this.elementById(container)) }//for load more function.
                 if (index === arrayContainer.length - 1) { offLoadWhile(); }
                 this.createItems(res, container, metaData.icon);
             });
         } catch (error) { console.error('Error fetching documents:', error); throw error }
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
+    static async addEventToContainer(container){ //working here...
+        this.elementById(container).addEventListener('click', async (e) => {
+            e.preventDefault();
+            console.log(e);
+            if(!card) { return }
+            if (card.matches('a.btn-outline-success, a.btn-outline-danger')) { /*handleSeeReports(target)*/ console.log(card);}
+            else if (card.matches('a.btn-outline-primary')) { /*handleMoreDetails(target)*/ console.log(card);}
+
+        });
+    }
     static createItems(query, container, icon) {
         query.forEach((e) => {
             const item = this.setContentCard(e.data(), container, icon);
@@ -56,6 +60,17 @@ class Section {
     static setContentCard(value, nameContainer, icon) {
         const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon) }
         for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
+    }
+    static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
+        const collection = array_collections[index_lopp];
+        const metaData = this.getRequest(index_section, collection, configQuery);
+        const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
+        return { metaData, collection ,arrayConfig }
+    }
+    static routerRequest(i, format) {
+        if (!format) return false;
+        if (format.list && i != 0) return i; //for actions in list (to the right of windown)
+        if (format.formats && i === 0) return i; //for actions in formats (to the left of windown)
     }
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
     /*call other methods according at context*/
@@ -100,6 +115,8 @@ class Section {
     static toggleCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
     /*remove all cards into container of context*/
     static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }//AC #001
+    /*for simplify*/
+    static elementById(nameContainer){ return document.getElementById(nameContainer) }
 }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
