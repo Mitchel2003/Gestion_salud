@@ -1,4 +1,5 @@
-¡Claro! Para manejar los clics de botones en un número indeterminado de elementos dinámicos como tus cards de dispositivos, puedes utilizar el patrón de Delegación de Eventos. Este enfoque es eficiente y limpio, ya que te permite adjuntar un único event listener al contenedor padre en lugar de asignar uno a cada botón individualmente.
+### patrón de Delegación de Eventos
+Este enfoque es eficiente y limpio, ya que te permite adjuntar un único event listener al contenedor padre en lugar de asignar uno a cada botón individualmente.
 
 ### HTML:
 ```html
