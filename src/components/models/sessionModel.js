@@ -3,21 +3,14 @@ import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding } from '../layout/cards.js';
 /*--------------------------------------------------mode--------------------------------------------------*/
 export async function modeAuxiliary() {
-    const side_bar = document.querySelector('.side-bar');
+    const side_bar = elementByClass('.side-bar');
     toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
     side_bar.addEventListener('pointerleave', () => { side_bar.classList.remove('spawn') });
 
-    await handlerSection('.nav-tabs');
+    await handlerSection(elementByClass('.nav-tabs'));
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
-async function handlerSection(navbar) {
-    const navigator = document.querySelector(navbar);
-    navigator.addEventListener('click', async (e) => {
-        const section = e.target.ariaCurrent;
-        if (!section) { return };
-        await Section.loadCurrentSection(section);
-    });
-}
+async function handlerSection(nav) { nav.addEventListener('click', async (e) => { e.target.ariaCurrent ? await Section.loadCurrentSection(e.target.ariaCurrent) : '' }) }
 /*--------------------------------------------------classes--------------------------------------------------*/
 class Section {
     static async loadCurrentSection(section) { await Section.init(section) }
@@ -28,33 +21,46 @@ class Section {
         try {
             onLoadWhile();
             const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
-            this.addEventToContainer(arrayContainer[0]);
+            await this.eventToContainer(arrayContainer[0], entity, section);
+
             arrayContainer.map(async (container, index) => {//AC #002
                 if (this.routerRequest(index, handlerFormat)) { return } //allow or deny the code flow according search
                 const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
                 const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, handlerFormat);
-                this.toggleCardEmpty(this.elementById(container), res);
-                if (!handlerFormat) { this.cleanContainer(this.elementById(container)) }//for load more function.
-                if (index === arrayContainer.length - 1) { offLoadWhile(); }
+
+                this.toggleVisibilityCardEmpty(elementById(container), res);//card empty by default
+                if (!handlerFormat) this.cleanContainer(elementById(container));//for function load more.
+                if (index === arrayContainer.length - 1) offLoadWhile();
                 this.createItems(res, container, metaData.icon);
             });
         } catch (error) { console.error('Error fetching documents:', error); throw error }
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
-    static async addEventToContainer(container){ //working here...
-        this.elementById(container).addEventListener('click', async (e) => {
-            e.preventDefault();
-            console.log(e);
-            if(!card) { return }
-            if (card.matches('a.btn-outline-success, a.btn-outline-danger')) { /*handleSeeReports(target)*/ console.log(card);}
-            else if (card.matches('a.btn-outline-primary')) { /*handleMoreDetails(target)*/ console.log(card);}
-
+    static async eventToContainer(container, entity, section){ //working here...
+        elementById(container).addEventListener('click', async (e) => { e.preventDefault();
+            const array = getTargetCard(e.target);
+        if (e.target.textContent === 'more details') { return await this.handlerMoreDetails(array, entity, section) }
+            /*handleSeeReports(target)*/
         });
     }
+    static async handlerMoreDetails(array, entity, section){
+        const { preparateCollection } = await import('../firebase/query.js');
+        const collection =  preparateCollection(array, entity, section);//config query
+        // console.log(collection);
+    }
+
+
+
+
+
+
+
+
+
     static createItems(query, container, icon) {
         query.forEach((e) => {
             const item = this.setContentCard(e.data(), container, icon);
-            document.getElementById(container).insertAdjacentHTML('afterbegin', item);
+            elementById(container).insertAdjacentHTML('afterbegin', item);
         });
     }
     static setContentCard(value, nameContainer, icon) {
@@ -112,12 +118,15 @@ class Section {
     /*contains all collections to search in database, sorted according to navigator bar*/
     static collectionToSearch(i) { const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']]; return array[i] }
     /*this is intended to inspect the card empty by default, if have response from database then change visivility at display: none;*/
-    static toggleCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
+    static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
     /*remove all cards into container of context*/
     static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }//AC #001
-    /*for simplify*/
-    static elementById(nameContainer){ return document.getElementById(nameContainer) }
 }
+function getTargetCard(button){ return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
+
+/*for simplify*/
+function elementById(nameContainer){ return document.getElementById(nameContainer) }
+function elementByClass(nameContainer){ return document.querySelector(nameContainer) }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
 #001: at moment of reload the section we could find case various; on click the main navbar "sections", the differents

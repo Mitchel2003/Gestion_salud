@@ -35,10 +35,15 @@ export class DataByRequest {
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
-export function getCollection() {
-    const collectionReference = collection(db, 'main');
-    return collectionReference;
+export function preparateCollection(array, entity, section) {
+    const preparate = ['departament', array[0]]; //departament
+    if (section.includes('user')) { preparate = ['user', array[0]] } //user
+    if (array.length === 2) { preparate.push('device', array[1]) } //device
+    if (array.length === 3) { preparate.push('device', array[1], 'finding', array[2]) } //finding
+    console.log(getCollection(), entity, ...preparate);
+    return query(getCollection(), entity, ...preparate);
 }
+export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) {
     const documentReference = doc(getCollection(), entityContext);
     const subCollection = collection(documentReference, 'user');
