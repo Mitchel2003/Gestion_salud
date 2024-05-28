@@ -31,6 +31,7 @@ export class DataByRequest {
         if (filter) { config.push(startAfter(filter.lastVisible)) }
         return query(subCollection, ...config);
     }
+    static getBasicRequest(){}
     static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
@@ -41,7 +42,7 @@ export function preparateCollection(array, entity, section) {
     if (array.length === 2) { preparate.push('device', array[1]) } //device
     if (array.length === 3) { preparate.push('device', array[1], 'finding', array[2]) } //finding
     console.log(getCollection(), entity, ...preparate);
-    return query(getCollection(), entity, ...preparate);
+    return doc(getCollection(), entity, ...preparate);
 }
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) {

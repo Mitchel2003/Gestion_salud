@@ -26,7 +26,8 @@ class Section {
             arrayContainer.map(async (container, index) => {//AC #002
                 if (this.routerRequest(index, handlerFormat)) { return } //allow or deny the code flow according search
                 const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
-                const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, handlerFormat);
+                const res = this.typeRequest(collection, entity, arrayConfig, handlerFormat);
+
 
                 this.toggleVisibilityCardEmpty(elementById(container), res);//card empty by default
                 if (!handlerFormat) this.cleanContainer(elementById(container));//for function load more.
@@ -36,23 +37,27 @@ class Section {
         } catch (error) { console.error('Error fetching documents:', error); throw error }
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
-    static async eventToContainer(container, entity, section){ //working here...
-        elementById(container).addEventListener('click', async (e) => { e.preventDefault();
+    static async eventToContainer(container, entity, section) { //working here...
+        elementById(container).addEventListener('click', async (e) => {
+            e.preventDefault();
             const array = getTargetCard(e.target);
-        if (e.target.textContent === 'more details') { return await this.handlerMoreDetails(array, entity, section) }
-            /*handleSeeReports(target)*/
+            if (e.target.textContent === 'more details') { return await this.handlerMoreDetails(array, entity, section) }
+            this.handleSeeReports(array);
         });
     }
-    static async handlerMoreDetails(array, entity, section){
-        const { preparateCollection } = await import('../firebase/query.js');
-        const collection =  preparateCollection(array, entity, section);//config query
+    static async handlerMoreDetails(array, entity, section) {
+        const collection = (await import('../firebase/query.js')).preparateCollection(array, entity, section); //config query
+        await Section.init(section, { formats: })
         // console.log(collection);
     }
+    static async handleSeeReports(array) {
 
+    }
 
+    static async typeRequest(collection, entity, arrayConfig, handlerFormat = null) {
+        const res = await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }, handlerFormat);
 
-
-
+    }
 
 
 
@@ -69,9 +74,9 @@ class Section {
     }
     static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
         const collection = array_collections[index_lopp];
-        const metaData = this.getRequest(index_section, collection, configQuery);
+        const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : '');//confifQuery is object
         const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
-        return { metaData, collection ,arrayConfig }
+        return { metaData, collection, arrayConfig }
     }
     static routerRequest(i, format) {
         if (!format) return false;
@@ -122,11 +127,11 @@ class Section {
     /*remove all cards into container of context*/
     static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }//AC #001
 }
-function getTargetCard(button){ return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
+function getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
 
 /*for simplify*/
-function elementById(nameContainer){ return document.getElementById(nameContainer) }
-function elementByClass(nameContainer){ return document.querySelector(nameContainer) }
+function elementById(nameContainer) { return document.getElementById(nameContainer) }
+function elementByClass(nameContainer) { return document.querySelector(nameContainer) }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
 #001: at moment of reload the section we could find case various; on click the main navbar "sections", the differents
