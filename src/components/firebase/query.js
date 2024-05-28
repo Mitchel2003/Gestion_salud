@@ -18,8 +18,7 @@ export class DataByRequest {
         if (!array) return await getDocs(getCollection());
         const querySnapshot = this.buildQuery(this.getSubCollection(array), array, filter);
         const response = await getDocs(querySnapshot);
-        this.lastDocumentVisible = response.docs[response.docs.length - 1];
-        return response;
+        this.lastDocumentVisible = response.docs[response.docs.length - 1];  return response;
     }
     static buildQuery(subCollection, array, filter = null) {
         const { queryConfig } = array;
@@ -31,28 +30,24 @@ export class DataByRequest {
         if (filter) { config.push(startAfter(filter.lastVisible)) }
         return query(subCollection, ...config);
     }
-    static getBasicRequest(){}
     static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
+export class DataByDocument{
+    static async get(array, entity, section){ return await getDocs(this.preparateDocument(array, entity, section)) }
+    static preparateDocument(array, entity, section) {
+        let preparate = ['departament', array[0]]; //departament
+        if (section.includes('user')) { preparate = ['user', array[0]] } //user
+        if (array.length === 2) { preparate.push('device', array[1]) } //device
+        if (array.length === 3) { preparate.push('device', array[1], 'finding', array[2]) } //finding
+        return doc(getCollection(), entity, ...preparate);
+    }
+}
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
-export function preparateCollection(array, entity, section) {
-    const preparate = ['departament', array[0]]; //departament
-    if (section.includes('user')) { preparate = ['user', array[0]] } //user
-    if (array.length === 2) { preparate.push('device', array[1]) } //device
-    if (array.length === 3) { preparate.push('device', array[1], 'finding', array[2]) } //finding
-    console.log(getCollection(), entity, ...preparate);
-    return doc(getCollection(), entity, ...preparate);
-}
 export function getCollection() { return collection(db, 'main') }
-export function getCollectionUser(entityContext) {
-    const documentReference = doc(getCollection(), entityContext);
-    const subCollection = collection(documentReference, 'user');
-    return subCollection;
-}
+export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
 export function getQueryParams() {
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
+    const searchParams = new URLSearchParams(window.location.search);
     return Object.fromEntries(searchParams.entries());
 }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
