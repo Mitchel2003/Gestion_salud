@@ -1,4 +1,4 @@
-import { db, auth, collection, doc, getDocs, query, where, orderBy, limit } from "./conection.js";
+import { db, auth, collection, getDoc, getDocs, query, where, orderBy, limit, doc } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
 export function getProfileUser() {
     const user = auth.currentUser;
@@ -12,13 +12,13 @@ export async function getDocumentUser(user, entity) {
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-export class DataByRequest {
+export class DataByRequest { //return querySnapshot "getDocs"
     static lastDocumentVisible;
     static async get(array = null, filter = null) {
         if (!array) return await getDocs(getCollection());
         const querySnapshot = this.buildQuery(this.getSubCollection(array), array, filter);
         const response = await getDocs(querySnapshot);
-        this.lastDocumentVisible = response.docs[response.docs.length - 1];  return response;
+        this.lastDocumentVisible = response.docs[response.docs.length - 1]; return response;
     }
     static buildQuery(subCollection, array, filter = null) {
         const { queryConfig } = array;
@@ -33,23 +33,22 @@ export class DataByRequest {
     static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
-export class DataByDocument{
-    static async get(array, entity, section){ return await getDocs(this.preparateDocument(array, entity, section)) }
-    static preparateDocument(array, entity, section) {
-        let preparate = ['departament', array[0]]; //departament
-        if (section.includes('user')) { preparate = ['user', array[0]] } //user
-        if (array.length === 2) { preparate.push('device', array[1]) } //device
-        if (array.length === 3) { preparate.push('device', array[1], 'finding', array[2]) } //finding
-        return doc(getCollection(), entity, ...preparate);
+export class DataByDocument { //return documentSnapshot "getDoc"
+    static async get(array, entity, section) {
+        return await getDoc(getReferenceEntity(entity), ...this.preparateDocument(array, section))
+    }
+    static preparateDocument(array, section) {
+        let prepare = section.includes('user') ? ['user', array[0].toString()] : ['departament', array[0].toString()]; //user and departament
+        if (array.length === 2) return [...prepare, 'device', array[1].toString()] //device
+        if (array.length === 3) return [...prepare, 'device', array[1].toString(), 'finding', array[2].toString()] //finding
+        return prepare;
     }
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
-export function getQueryParams() {
-    const searchParams = new URLSearchParams(window.location.search);
-    return Object.fromEntries(searchParams.entries());
-}
+export function getReferenceEntity(entityContext) { return doc(getCollection(), entityContext) }
+export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
 snapshot:

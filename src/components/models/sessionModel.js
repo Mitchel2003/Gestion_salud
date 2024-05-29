@@ -10,42 +10,52 @@ export async function modeAuxiliary() {
     await handlerSection(elementByClass('.nav-tabs'));
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
-async function handlerSection(nav) { nav.addEventListener('click', async (e) => { e.target.ariaCurrent ? await Section.loadCurrentSection(e.target.ariaCurrent) : '' }) }
+async function handlerSection(nav) {
+    nav.addEventListener('click', async (e) => {
+        e.target.ariaCurrent ? await Section.loadCurrentSection(e.target.ariaCurrent) : '';
+        eventContainer(Section.getContainerSection(0), Section.getCurrentSection());
+    })
+}
+async function eventContainer(container, section) {
+    elementById(container).addEventListener('click', async (e) => {
+        e.preventDefault();
+        const arrayCard = getTargetCard(e.target);
+        if (e.target.textContent === 'more details') { return await Section.loadMoreDetails(section, { idReq: 2, indexContainer: 1, moreDetails: arrayCard }) }
+        // this.loadSeeReports(array);
+    });
+}
 /*--------------------------------------------------classes--------------------------------------------------*/
 class Section {
+    static currentSection;
+    static arrayContainerSection;
     static async loadCurrentSection(section) { await Section.init(section) }
     static async loadMoreDetails(section, handler) { await Section.init(section, handler) }
-    static async loadContainerRight(section) { await Section.init(section) }
+    // static async loadShowMore(section, handler) { await Section.init(section, handler) }
+    // static async loadContainerRight(section) { await Section.init(section) }
 
     static async init(section, handlerFormat = null) {
-        try {
-            onLoadWhile();
-            const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
-            await this.eventToContainer(arrayContainer[0], section);
+        onLoadWhile();
+        const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
+        Section.arrayContainerSection = arrayContainer;
+        Section.currentSection = section;
 
-            arrayContainer.map(async (container, index) => {//AC #002
-                let routeByFormat = this.routerRequest(index, handlerFormat); if (routeByFormat) return; //allow or deny the code flow according search
+        arrayContainer.map(async (container, index) => {//AC #002
+            let routeByFormat = this.routerRequest(index, handlerFormat); if (routeByFormat) return; //allow or deny the code flow according search
 
-                const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
-                const res = await this.typeRequest(section, collection, entity, arrayConfig, handlerFormat);
+            const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
+            const res = await this.typeRequest(section, collection, entity, arrayConfig, handlerFormat);
 
-                this.toggleVisibilityCardEmpty(elementById(container), res);//card empty by default
-                if (!handlerFormat || !handlerFormat.moreDetails) this.cleanContainer(elementById(container));//for function load more.
-                if (index === arrayContainer.length - 1) offLoadWhile();
-                this.createItems(res, container, metaData.icon);
-            });
-        } catch (error) { console.error('Error fetching documents:', error); throw error }
-    }
-    /*--------------------------------------------------actions kit--------------------------------------------------*/
-    static async eventToContainer(container, section) {
-        elementById(container).addEventListener('click', async (e) => {
-            e.preventDefault();
-            const arrayCard = getTargetCard(e.target);
-            if (e.target.textContent === 'more details') { return await this.loadMoreDetails(section, { moreDetails: arrayCard }) }
-            // this.loadSeeReports(array);
+            this.toggleVisibilityCardEmpty(elementById(container), res);//set card empty by default 'display: flex;'
+            if (index === arrayContainer.length - 1) offLoadWhile();
+            if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(elementById(container));//not clean to load more...
+            
+            this.createItems(res, container, metaData.icon);
         });
     }
-    static async typeRequest(section, collection, entity, arrayConfig, handlerFormat = null) { return handlerFormat ? await DataByDocument.get(handlerFormat.moreDetails, entity, section) : await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig }) }
+    /*--------------------------------------------------actions kit--------------------------------------------------*/
+    static async typeRequest(section, collection, entity, arrayConfig, handlerFormat = null) {
+        return handlerFormat ? await DataByDocument.get(handlerFormat.moreDetails, entity, section) : await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig })
+    }
     static createItems(query, container, icon) {
         query.forEach((e) => {
             const item = this.setContentCard(e.data(), container, icon);
@@ -56,20 +66,17 @@ class Section {
         const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon), moreDetails: () => cardDetails(value, icon) }
         for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
     }
-    static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {//working here...
+    static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
         const collection = array_collections[index_lopp];
-        const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null);
-        let arrayConfig;
-        if (configQuery ? configQuery.query : false) arrayConfig = this.fixQueryConfig(index_lopp, metaData);
+        const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null); //query is equal to { query: {where: [], pagination: []} }
+        const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
         return { metaData, collection, arrayConfig }
     }
-    static routerRequest(i, format) {
-        if (!format) return false;
-        //i send id for get the element "key" at context
-        //indexContainerToWork is a section number that send in the handler format, with this i can handle the section to change status "list[0], formats[1]"
-        const id = format.idReq, indexContainerToWork = format.indexContainer;
-        const array = [ format.query, format.list, format.moreDetails ]
-        if(indexContainerToWork != i) return; 
+    static routerRequest(i, format = null) {
+        let indexContainer = format ? format.indexContainer : null;//this is a section number that we receive in the handler format "list[0](left), formats[1](right)"
+        if (!format || indexContainer != i) return;
+        const id = format.idReq;//I send id for get the element "key" at context
+        const array = [format.query, format.list, format.moreDetails, format.loadMore]
         return array[id];
         //format.query: actions in list (filter)
         //format.list: actions in list (to the right of windown)
@@ -108,6 +115,7 @@ class Section {
         let indexW = [0, 3], indexP = [0, 2];
         if (index === 2) { indexW = [6, 9], indexP = [4, 6] }
         if (index === 1) { indexW = [3, 6], indexP = [2, 4] }
+        if (!data.where || !data.pagination) return;//edited here...
         return [...data.where.slice(indexW[0], indexW[1]), ...data.pagination.slice(indexP[0], indexP[1])]
     }
     /*contains all containers of each section by him id, sorted according to navigator bar*/
@@ -118,6 +126,11 @@ class Section {
     static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
     /*remove all cards into container of context*/
     static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }//AC #001
+
+    //getters and setters
+    static getCurrentSection() { return Section.currentSection }
+    static getContainerSection(index) { return Section.arrayContainerSection[index] }
+
 }
 function getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
 

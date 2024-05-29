@@ -1,6 +1,6 @@
 /*--------------------------------------------------conecction with database--------------------------------------------------*/
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { getFirestore, collection, doc, addDoc, getDocs, setDoc, query, where, orderBy, limit, startAt, startAfter} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, getDoc, getDocs, setDoc, query, where, orderBy, limit, startAt, startAfter} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
 import { getAuth, signOut,signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, sendPasswordResetEmail, confirmPasswordReset, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -16,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-export { db, auth, collection, doc, addDoc, getDocs, setDoc, query, where, orderBy, limit, startAt, startAfter,    //first level
+export { db, auth, collection, doc, addDoc, getDoc, getDocs, setDoc, query, where, orderBy, limit, startAt, startAfter,    //first level
         signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile,    //second level
         sendEmailVerification, sendPasswordResetEmail, confirmPasswordReset, onAuthStateChanged    //third level
     };
