@@ -24,10 +24,10 @@ class Section {
             await this.eventToContainer(arrayContainer[0], section);
 
             arrayContainer.map(async (container, index) => {//AC #002
-                if (this.routerRequest(index, handlerFormat)) { return } //allow or deny the code flow according search                
+                let routeByFormat = this.routerRequest(index, handlerFormat); if (routeByFormat) return; //allow or deny the code flow according search
+
                 const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
                 const res = await this.typeRequest(section, collection, entity, arrayConfig, handlerFormat);
-
 
                 this.toggleVisibilityCardEmpty(elementById(container), res);//card empty by default
                 if (!handlerFormat || !handlerFormat.moreDetails) this.cleanContainer(elementById(container));//for function load more.
@@ -60,13 +60,20 @@ class Section {
         const collection = array_collections[index_lopp];
         const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null);
         let arrayConfig;
-        if (!configQuery && !configQuery.moreDetails) arrayConfig = this.fixQueryConfig(index_lopp, metaData);
+        if (configQuery ? configQuery.query : false) arrayConfig = this.fixQueryConfig(index_lopp, metaData);
         return { metaData, collection, arrayConfig }
     }
     static routerRequest(i, format) {
         if (!format) return false;
-        if (format.list && i != 0) return i; //for actions in list (to the right of windown)
-        if (format.moreDetails && i === 0) return i; //for actions in formats (to the left of windown) "moreDetails"
+        //i send id for get the element "key" at context
+        //indexContainerToWork is a section number that send in the handler format, with this i can handle the section to change status "list[0], formats[1]"
+        const id = format.idReq, indexContainerToWork = format.indexContainer;
+        const array = [ format.query, format.list, format.moreDetails ]
+        if(indexContainerToWork != i) return; 
+        return array[id];
+        //format.query: actions in list (filter)
+        //format.list: actions in list (to the right of windown)
+        //format.moreDetails: actions in formats (to the left of windown) "moreDetails"
     }
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
     /*call other methods according at context*/
