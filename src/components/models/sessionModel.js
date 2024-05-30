@@ -20,7 +20,7 @@ async function eventContainer(container, section) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
         const arrayCard = getTargetCard(e.target);
-        if (e.target.textContent === 'more details') { return await Section.loadMoreDetails(section, { idReq: 2, indexContainer: 1, moreDetails: arrayCard }) }
+        if (e.target.textContent === 'more details') { return await Section.loadMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
         // this.loadSeeReports(array);
     });
 }
@@ -30,36 +30,35 @@ class Section {
     static arrayContainerSection;
     static async loadCurrentSection(section) { await Section.init(section) }
     static async loadMoreDetails(section, handler) { await Section.init(section, handler) }
-    // static async loadShowMore(section, handler) { await Section.init(section, handler) }
-    // static async loadContainerRight(section) { await Section.init(section) }
 
     /*Initialize a query from database to section context (contain mode default and fixed).
       @param {String} section - The section context to operate.
-      @param {Object} handlerFormat - The format is optional for fix request, default is null; could have propierties like .moreDetails etc.
-      
-      Usage: ... */
+      @param {Object} handlerFormat - The format is optional for fix request, default is null; could have propierties like .moreDetails etc.*/
     static async init(section, handlerFormat = null) {
         const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
         Section.arrayContainerSection = arrayContainer;
         Section.currentSection = section;
         onLoadWhile();
-
         let promise = arrayContainer.map(async (container, index) => {//AC #002
-            let routeByFormat = this.routerRequest(index, handlerFormat); if (routeByFormat) return; //allow or deny the code flow according search
+            let route = this.handleRoute(index, handlerFormat); if (route === null) return; //allow or deny the code flow according search
 
             const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
             const res = await this.routeRequest(section, collection, entity, arrayConfig, handlerFormat);
-            this.toggleVisibilityCardEmpty(elementById(container), res);//set card empty by default 'display: flex;'
+            this.toggleVisibilityCardEmpty(elementById(container), res);
             this.clearContainerConditionally(elementById(container), handlerFormat);
-            // if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(elementById(container));//not clean to load more...
-
             this.createItems(res, container, metaData.icon);
         });
         await Promise.all(promise);
         offLoadWhile();
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
-    static async routeRequest(section, collection, entity, arrayConfig, handler) {
+    /*Redirect to correct request checking the handler
+      @param {String} section - Contain the name of the current section for a decide later
+      @param {String} collection - Is the name of collection to search into database
+      @param {String} entity - Is the name of entity in context, is the entity in which the user is subscribed
+      @param {Array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
+      @param {Object} handler - Is present for take a decision, if exist so query a document instead of query compound.*/
+    static async routeRequest(section, collection, entity, arrayConfig, handler = null) {
         return handler ?
             await DataByDocument.get(handler.moreDetails, entity, section) :
             await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig });
@@ -75,21 +74,36 @@ class Section {
         const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon), moreDetails: () => cardDetails(value, icon) }
         for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
     }
+    /*Configure the query basing into index of current container that are filling
+      @param {Integer} index_loop - Contain the current index of loop section; remember that one section have minime two containers, then if (containers.lenght === 2) index_loop could be (0 or 1);
+      @param {Integer} index_section - Just like we talk about indexs into containers of current section, also we have indexs for current section in context ("home" === 0, "handler-device" === 1 ...); then, this data refers at index of the current section.
+      @param {Array} array_collections - This list contain the names of the collections to query documents into database; then, depending of container to fill (index = 0 or 1), we get the collection specific according to index position (['device_references', 'finding_references'])
+      @param {Object} configQuery - Is optional, this is for queries specifics according to format preset
+      =>metaData = is equal to { query: {where: [], pagination: []} }
+      =>arrayConfig = is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination.*/
     static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
         const collection = array_collections[index_lopp];
-        const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null); //query is equal to { query: {where: [], pagination: []} }
+        const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null); //query 
         const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
         return { metaData, collection, arrayConfig }
     }
-    static routerRequest(i, format = null) {
-        let indexContainer = format ? format.indexContainer : null;//this is a section number that we receive in the handler format "list[0](left), formats[1](right)"
-        if (!format || indexContainer != i) return;
-        const id = format.idReq;//I send id for get the element "key" at context
+    /*Cleans the specified container based on the provided handlerFormat condition
+      @param {Integer} i - Represent the current index of loop definied by the section context (handler-device: ["device_list", "reports"]).
+      @param {Object} format - we will use this handler to decide; if(!format).then(continue flow), if(format but (indexToFill="1") != (indexLoop="0")).then(stop flow).
+      =>index = this is a section number that we receive in format "list[0](left), formats[1](right)"
+      =>id = for get the element "key" at context (array)
+
+      propierties:
+      .query = actions in list (filter),
+      .list = actions in list (to the right of windown)
+      .moreDetails = actions in formats (to the left of windown) "moreDetails"*/
+    static handleRoute(i, format = null) {
+        let index = format ? format.idContainer : null;
+        if (!format) return "allow";
+        if (format && index != i) return null;
         const array = [format.query, format.list, format.moreDetails, format.loadMore]
+        const id = format.idFormat;
         return array[id];
-        //format.query: actions in list (filter)
-        //format.list: actions in list (to the right of windown)
-        //format.moreDetails: actions in formats (to the left of windown) "moreDetails"
     }
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
     /*call other methods according at context*/
@@ -131,15 +145,12 @@ class Section {
     static containerToFill(i) { const array = [['id_container_home'], ['device-list', 'reports'], ['id_container_departament']]; return array[i] }
     /*contains all collections to search in database, sorted according to navigator bar*/
     static collectionToSearch(i) { const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']]; return array[i] }
-    /*this is intended to inspect the card empty by default, if have response from database then change visivility at display: none;*/
+    /*set the card empty by default 'display: flex;' to 'display: none;' this intended to inspect the card empty by default, if we have response from database then change visivility at display: none;*/
     static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
 
     /*Cleans the specified container based on the provided handlerFormat condition
       @param {HTMLElement} container - The container to potentially clean.
-      @param {Object} handler - The format handler which includes propierty loadMore.
-      
-      Usage:
-      this.cleanContainer(container);*/
+      @param {Object} handler - The format handler which includes propierty loadMore.*/
     static clearContainerConditionally(container, handlerFormat = null) { if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(container) }
 
     /*Clean the specified provide container #addComentary: 001
