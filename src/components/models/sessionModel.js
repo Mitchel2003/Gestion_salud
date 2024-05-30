@@ -33,33 +33,42 @@ class Section {
     // static async loadShowMore(section, handler) { await Section.init(section, handler) }
     // static async loadContainerRight(section) { await Section.init(section) }
 
+    /*Initialize a query from database to section context (contain mode default and fixed).
+      @param {String} section - The section context to operate.
+      @param {Object} handlerFormat - The format is optional for fix request, default is null; could have propierties like .moreDetails etc.
+      
+      Usage: ... */
     static async init(section, handlerFormat = null) {
-        onLoadWhile();
         const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
         Section.arrayContainerSection = arrayContainer;
         Section.currentSection = section;
+        onLoadWhile();
 
-        arrayContainer.map(async (container, index) => {//AC #002
+        let promise = arrayContainer.map(async (container, index) => {//AC #002
             let routeByFormat = this.routerRequest(index, handlerFormat); if (routeByFormat) return; //allow or deny the code flow according search
 
             const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
-            const res = await this.typeRequest(section, collection, entity, arrayConfig, handlerFormat);
-
+            const res = await this.routeRequest(section, collection, entity, arrayConfig, handlerFormat);
             this.toggleVisibilityCardEmpty(elementById(container), res);//set card empty by default 'display: flex;'
-            if (index === arrayContainer.length - 1) offLoadWhile();
-            if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(elementById(container));//not clean to load more...
-            
+            this.clearContainerConditionally(elementById(container), handlerFormat);
+            // if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(elementById(container));//not clean to load more...
+
             this.createItems(res, container, metaData.icon);
         });
+        await Promise.all(promise);
+        offLoadWhile();
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
-    static async typeRequest(section, collection, entity, arrayConfig, handlerFormat = null) {
-        return handlerFormat ? await DataByDocument.get(handlerFormat.moreDetails, entity, section) : await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig })
+    static async routeRequest(section, collection, entity, arrayConfig, handler) {
+        return handler ?
+            await DataByDocument.get(handler.moreDetails, entity, section) :
+            await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig });
     }
-    static createItems(query, container, icon) {
-        query.forEach((e) => {
-            const item = this.setContentCard(e.data(), container, icon);
-            elementById(container).insertAdjacentHTML('afterbegin', item);
+    static createItems(snapshot, nameContainer, icon) {
+        const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot.data()];
+        data.forEach(item => {
+            const card = this.setContentCard(item, nameContainer, icon);
+            elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
         });
     }
     static setContentCard(value, nameContainer, icon) {//show moreDetails target
@@ -124,8 +133,18 @@ class Section {
     static collectionToSearch(i) { const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']]; return array[i] }
     /*this is intended to inspect the card empty by default, if have response from database then change visivility at display: none;*/
     static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
-    /*remove all cards into container of context*/
-    static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }//AC #001
+
+    /*Cleans the specified container based on the provided handlerFormat condition
+      @param {HTMLElement} container - The container to potentially clean.
+      @param {Object} handler - The format handler which includes propierty loadMore.
+      
+      Usage:
+      this.cleanContainer(container);*/
+    static clearContainerConditionally(container, handlerFormat = null) { if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(container) }
+
+    /*Clean the specified provide container #addComentary: 001
+      @param {HTMLElement} container - The container to potentially clean.*/
+    static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }
 
     //getters and setters
     static getCurrentSection() { return Section.currentSection }
@@ -140,7 +159,7 @@ function elementByClass(nameContainer) { return document.querySelector(nameConta
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
 #001: at moment of reload the section we could find case various; on click the main navbar "sections", the differents
-parts of the current section are loads; however, at on click for example "laod more" in the list of element to the right
+parts of the current section are loads; however, at on click for example "load more" in the list of element to the right
 of the windown, we not load everyone elements in the section, just will be loaded the section to the left for show according information.
 
 #002: **Mejor manejo de Promesas**:
