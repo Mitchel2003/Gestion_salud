@@ -46,7 +46,7 @@ class Section {
             const res = await this.routeRequest(section, collection, entity, arrayConfig, handlerFormat);
             this.toggleVisibilityCardEmpty(elementById(container), res);
             this.clearContainerConditionally(elementById(container), handlerFormat);
-            this.createItems(res, container, metaData.icon);
+            this.createItems(res, container, metaData.icon, handlerFormat);
         });
         await Promise.all(promise);
         offLoadWhile();
@@ -63,14 +63,19 @@ class Section {
             await DataByDocument.get(handler.moreDetails, entity, section) :
             await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig });
     }
-    static createItems(snapshot, nameContainer, icon) {
+    /*create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
+      @param {Snapshot from firebase, metaData} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
+      @param {String} nameContainer - This name represent the container specific (loop context) of the current section we are in
+      @param {Object => String} icon - Correspond to a propierty of object, contain data static of the card specific.
+      =>data = is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)*/
+    static createItems(snapshot, nameContainer, icon, handler = null) {
         const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot.data()];
         data.forEach(item => {
-            const card = this.setContentCard(item, nameContainer, icon);
+            const card = this.setContentCard(item, nameContainer, icon, handler);
             elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
         });
     }
-    static setContentCard(value, nameContainer, icon) {//show moreDetails target
+    static setContentCard(value, nameContainer, icon, handler = null) {    
         const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon), moreDetails: () => cardDetails(value, icon) }
         for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
     }
