@@ -67,7 +67,11 @@ class Section {
       @param {Snapshot from firebase, metaData} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
       @param {String} nameContainer - This name represent the container specific (loop context) of the current section we are in
       @param {Object => String} icon - Correspond to a propierty of object, contain data static of the card specific.
-      =>data = is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)*/
+      @param {Object} handler - Is an optional object that could have properties that redirect card format; this way we show in the current container a card different to default.
+      =>data = is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
+      =>card = mean the card format selected for show in the current container of the section
+      
+      [^-^] type: method creator cards*/
     static createItems(snapshot, nameContainer, icon, handler = null) {
         const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot.data()];
         data.forEach(item => {
@@ -75,9 +79,37 @@ class Section {
             elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
         });
     }
-    static setContentCard(value, nameContainer, icon, handler = null) {    
-        const metaData = { user: '', device: () => cardDevice(value, icon), finding: () => cardFinding(value, icon), departament: '', reports: () => cardFinding(value, icon), moreDetails: () => cardDetails(value, icon) }
-        for (const key in metaData) { if (nameContainer.includes(key)) { return metaData[key]() } }
+    /*this module have the function of return a card format depending of nameContainer in a loop context (according to current section) or using a handler sent to config a specific card.
+      @param {Object snapshot} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
+      @param {String} nameContainer - Is the name of the current container in loop context main (ex: handler-device:{ div-right:"device-list", div-left:"reports" } )
+      @param {String} icon - Contain el nameClass to call a icon from Bootstrap-icons
+      @param {Object} handler - Is optional and correspond a propierties that configure the card returned
+      =>metaData = is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search);
+      
+      (¬_¬) example:
+      nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)' respectively.
+      nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)' respectively.
+      {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively.
+      
+      [^-^] type: return*/
+    static setContentCard(value, nameContainer, icon, handler = null) {
+        const metaData = { 
+            /*formats with handler*/
+            moreDetails: () => cardDetails(value, icon), 
+
+            /*associated with container(0) in a context section (ex: id_container="device-list")*/
+            user: () => "cardUser(value, icon)", 
+            device: () => cardDevice(value, icon),
+            finding: () => cardFinding(value, icon),
+            departament: () => "cardDepartament(value, icon)",
+
+            /*associated with container(1) in a context section (ex: id_container="reports")*/
+            reports: () => cardFinding(value, icon)
+        }
+        for (const [key, method] of Object.entries(metaData)) {
+            if (handler?handler[key]:null) return method();
+            else if (nameContainer.includes(key)) return method();
+        }
     }
     /*Configure the query basing into index of current container that are filling
       @param {Integer} index_loop - Contain the current index of loop section; remember that one section have minime two containers, then if (containers.lenght === 2) index_loop could be (0 or 1);
@@ -152,12 +184,10 @@ class Section {
     static collectionToSearch(i) { const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']]; return array[i] }
     /*set the card empty by default 'display: flex;' to 'display: none;' this intended to inspect the card empty by default, if we have response from database then change visivility at display: none;*/
     static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
-
-    /*Cleans the specified container based on the provided handlerFormat condition
+    /*Cleans the specified container based on the provided handlerFormat
       @param {HTMLElement} container - The container to potentially clean.
       @param {Object} handler - The format handler which includes propierty loadMore.*/
-    static clearContainerConditionally(container, handlerFormat = null) { if (handlerFormat ? handlerFormat.loadMore : true) this.cleanContainer(container) }
-
+    static clearContainerConditionally(container, handlerFormat = null) { if (handlerFormat ? handlerFormat.loadMore || handlerFormat.moreDetails : true) this.cleanContainer(container) }
     /*Clean the specified provide container #addComentary: 001
       @param {HTMLElement} container - The container to potentially clean.*/
     static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }

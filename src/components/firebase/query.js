@@ -34,9 +34,7 @@ export class DataByRequest { //return querySnapshot "getDocs"
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
 export class DataByDocument { //return documentSnapshot "getDoc"
-    static async get(array, entity, section) {
-        return await getDoc(getReferenceEntity(entity), ...this.preparateDocument(array, section))
-    }
+    static async get(array, entity, section) { return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section))) }
     static preparateDocument(array, section) {
         let prepare = section.includes('user') ? ['user', array[0].toString()] : ['departament', array[0].toString()]; //user and departament
         if (array.length === 2) return [...prepare, 'device', array[1].toString()] //device
@@ -47,7 +45,6 @@ export class DataByDocument { //return documentSnapshot "getDoc"
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
-export function getReferenceEntity(entityContext) { return doc(getCollection(), entityContext) }
 export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
