@@ -31,9 +31,12 @@ class Section {
     static async loadCurrentSection(section) { await Section.init(section) }
     static async loadMoreDetails(section, handler) { await Section.init(section, handler) }
 
-    /*Initialize a query from database to section context (contain mode default and fixed).
-      @param {String} section - The section context to operate.
-      @param {Object} handlerFormat - The format is optional for fix request, default is null; could have propierties like .moreDetails etc.*/
+    /**
+     * Initialize a query from database to section context (contain mode default and fixed).
+     * @param {string} section - The section context to operate
+     * @param {object} [handlerFormat = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
+     * @return {innerHTML} defines the content of the current section
+     */
     static async init(section, handlerFormat = null) {
         const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
         Section.arrayContainerSection = arrayContainer;
@@ -52,26 +55,30 @@ class Section {
         offLoadWhile();
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
-    /*Redirect to correct request checking the handler
-      @param {String} section - Contain the name of the current section for a decide later
-      @param {String} collection - Is the name of collection to search into database
-      @param {String} entity - Is the name of entity in context, is the entity in which the user is subscribed
-      @param {Array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
-      @param {Object} handler - Is present for take a decision, if exist so query a document instead of query compound.*/
+    /**
+     * Redirect to correct request checking the handler
+     * @param {string} section - Contain the name of the current section for a decide later
+     * @param {string} collection - Is the name of collection to search into database
+     * @param {string} entity - Is the name of entity in context, is the entity in which the user is subscribed
+     * @param {array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
+     * @param {object} [handler = null] - Is present for take a decision, if exist so query a document instead of query compound.
+     * @return {object} a snapshot (object) from database "firebase firestore"
+     */
     static async routeRequest(section, collection, entity, arrayConfig, handler = null) {
         return handler ?
             await DataByDocument.get(handler.moreDetails, entity, section) :
             await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig });
     }
-    /*create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
-      @param {Snapshot from firebase, metaData} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
-      @param {String} nameContainer - This name represent the container specific (loop context) of the current section we are in
-      @param {Object => String} icon - Correspond to a propierty of object, contain data static of the card specific.
-      @param {Object} handler - Is an optional object that could have properties that redirect card format; this way we show in the current container a card different to default.
-      =>data = is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
-      =>card = mean the card format selected for show in the current container of the section
-      
-      [^-^] type: method creator cards*/
+    /**
+     * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
+     * @param {Object} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
+     * @param {String} nameContainer - This name represent the container specific (loop context) of the current section we are in
+     * @param {String} icon - Correspond to a propierty of object, contain data static of the card specific
+     * @param {Object} handler - Is an optional object that could have properties that redirect card format; this way we show in the current container a card different to default
+     * @return {innerHTML} insert cards in the current container, this depends on the loop the container is in
+     * @const {object} data - is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
+     * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
+     */
     static createItems(snapshot, nameContainer, icon, handler = null) {
         const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot.data()];
         data.forEach(item => {
@@ -79,54 +86,57 @@ class Section {
             elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
         });
     }
-    /*this module have the function of return a card format depending of nameContainer in a loop context (according to current section) or using a handler sent to config a specific card.
-      @param {Object snapshot} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
-      @param {String} nameContainer - Is the name of the current container in loop context main (ex: handler-device:{ div-right:"device-list", div-left:"reports" } )
-      @param {String} icon - Contain el nameClass to call a icon from Bootstrap-icons
-      @param {Object} handler - Is optional and correspond a propierties that configure the card returned
-      =>metaData = is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search);
-      
-      (¬_¬) example:
-      nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)' respectively.
-      nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)' respectively.
-      {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively.
-      
-      [^-^] type: return*/
+    /**
+     * This module have the function of return a card format depending of nameContainer in a loop context (according to current section) or using a handler sent to config a specific card
+     * @param {snapshot} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
+     * @param {string} nameContainer - Is the name of the current container in loop context main (ex: handler-device:{ div-right:"device-list", div-left:"reports" } )
+     * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons
+     * @param {object} [handler = null] - Is optional and correspond a propierties that configure the card returned
+     * @return {HTMLElement} execute a method that return a DOMElement
+     * @const {object} metaData - is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search
+     * @example
+     * nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)' respectively.
+     * nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)' respectively.
+     * {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively
+     */
     static setContentCard(value, nameContainer, icon, handler = null) {
-        const metaData = { 
+        const metaData = {
             /*formats with handler*/
-            moreDetails: () => cardDetails(value, icon), 
+            moreDetails: () => cardDetails(value, icon),
 
             /*associated with container(0) in a context section (ex: id_container="device-list")*/
-            user: () => "cardUser(value, icon)", 
+            user: () => "cardUser(value, icon)",
             device: () => cardDevice(value, icon),
             finding: () => cardFinding(value, icon),
             departament: () => "cardDepartament(value, icon)",
 
-            /*associated with container(1) in a context section (ex: id_container="reports")*/
+            
             reports: () => cardFinding(value, icon)
         }
         for (const [key, method] of Object.entries(metaData)) {
-            if (handler?handler[key]:null) return method();
+            if (handler ? handler[key] : null) return method();
             else if (nameContainer.includes(key)) return method();
         }
     }
-    /*Configure the query basing into index of current container that are filling
-      @param {Integer} index_loop - Contain the current index of loop section; remember that one section have minime two containers, then if (containers.lenght === 2) index_loop could be (0 or 1);
-      @param {Integer} index_section - Just like we talk about indexs into containers of current section, also we have indexs for current section in context ("home" === 0, "handler-device" === 1 ...); then, this data refers at index of the current section.
-      @param {Array} array_collections - This list contain the names of the collections to query documents into database; then, depending of container to fill (index = 0 or 1), we get the collection specific according to index position (['device_references', 'finding_references'])
-      @param {Object} configQuery - Is optional, this is for queries specifics according to format preset
-      =>metaData = is equal to { query: {where: [], pagination: []} }
-      =>arrayConfig = is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination.*/
+    /**Configure the query basing into index of current container that are filling
+     * @param {number} index_lopp - Contain the current index of loop section; remember that one section have minime two containers, then if (containers.lenght === 2) index_loop could be (0 or 1);
+     * @param {number} index_section - Just like we talk about indexs into containers of current section, also we have indexs for current section in context ("home" === 0, "handler-device" === 1 ...); then, this data refers at index of the current section
+     * @param {array} array_collections - This list contain the names of the collections to query documents into database; then, depending of container to fill (index = 0 or 1), we get the collection specific according to index position (['device_references', 'finding_references'])
+     * @param {object} [configQuery = null] - Is optional, this is for queries specifics according to format preset
+     * @return {object} we obtained a config default for query 
+     * @const {object} metaData - is equal to { query: {where: [], pagination: []} }
+     * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination
+     */
     static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
         const collection = array_collections[index_lopp];
         const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null); //query 
         const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
         return { metaData, collection, arrayConfig }
     }
-    /*Cleans the specified container based on the provided handlerFormat condition
-      @param {Integer} i - Represent the current index of loop definied by the section context (handler-device: ["device_list", "reports"]).
-      @param {Object} format - we will use this handler to decide; if(!format).then(continue flow), if(format but (indexToFill="1") != (indexLoop="0")).then(stop flow).
+    /**
+     * Cleans the specified container based on the provided handlerFormat condition
+     * @param {number} i - Represent the current index of loop definied by the section context (handler-device: ["device_list", "reports"])
+     * @param {object} [format = null] - we will use this handler to decide; if(!format).then(continue flow), if(format but (indexToFill="1") != (indexLoop="0")).then(stop flow)
       =>index = this is a section number that we receive in format "list[0](left), formats[1](right)"
       =>id = for get the element "key" at context (array)
 
