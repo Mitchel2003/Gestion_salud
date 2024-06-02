@@ -1,6 +1,7 @@
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
 import { getProfileUser, DataByRequest, DataByDocument } from '../firebase/query.js';
 import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
+import { elementById, elementByClass } from '../utils/values.js';
 /*--------------------------------------------------mode--------------------------------------------------*/
 export async function modeAuxiliary() {
     const side_bar = elementByClass('.side-bar');
@@ -17,9 +18,9 @@ async function handlerSection(nav) {
     })
 }
 async function eventContainer(container, section) {
-    elementById(container).addEventListener('click', async (e) => {
+    elementById(container).addEventListener('click', async (e) => { 
         e.preventDefault();
-        const arrayCard = getTargetCard(e.target);
+        const arrayCard = Section.getTargetCard(e.target);
         if (e.target.textContent === 'more details') { return await Section.loadMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
         // this.loadSeeReports(array);
     });
@@ -85,20 +86,7 @@ class Section {
             const card = this.setContentCard(item, nameContainer, icon, handler);
             elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
         });
-    }
-    /**
-     * This module have the function of return a card format depending of nameContainer in a loop context (according to current section) or using a handler sent to config a specific card
-     * @param {snapshot} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
-     * @param {string} nameContainer - Is the name of the current container in loop context main (ex: handler-device:{ div-right:"device-list", div-left:"reports" } )
-     * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons
-     * @param {object} [handler = null] - Is optional and correspond a propierties that configure the card returned
-     * @return {HTMLElement} execute a method that return a DOMElement
-     * @const {object} metaData - is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search
-     * @example
-     * nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)' respectively.
-     * nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)' respectively.
-     * {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively
-     */
+    }    
     static setContentCard(value, nameContainer, icon, handler = null) {
         const metaData = {
             /*formats with handler*/
@@ -118,32 +106,12 @@ class Section {
             else if (nameContainer.includes(key)) return method();
         }
     }
-    /**Configure the query basing into index of current container that are filling
-     * @param {number} index_lopp - Contain the current index of loop section; remember that one section have minime two containers, then if (containers.lenght === 2) index_loop could be (0 or 1);
-     * @param {number} index_section - Just like we talk about indexs into containers of current section, also we have indexs for current section in context ("home" === 0, "handler-device" === 1 ...); then, this data refers at index of the current section
-     * @param {array} array_collections - This list contain the names of the collections to query documents into database; then, depending of container to fill (index = 0 or 1), we get the collection specific according to index position (['device_references', 'finding_references'])
-     * @param {object} [configQuery = null] - Is optional, this is for queries specifics according to format preset
-     * @return {object} we obtained a config default for query 
-     * @const {object} metaData - is equal to { query: {where: [], pagination: []} }
-     * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination
-     */
     static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
         const collection = array_collections[index_lopp];
         const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null); //query 
         const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
         return { metaData, collection, arrayConfig }
     }
-    /**
-     * Cleans the specified container based on the provided handlerFormat condition
-     * @param {number} i - Represent the current index of loop definied by the section context (handler-device: ["device_list", "reports"])
-     * @param {object} [format = null] - we will use this handler to decide; if(!format).then(continue flow), if(format but (indexToFill="1") != (indexLoop="0")).then(stop flow)
-      =>index = this is a section number that we receive in format "list[0](left), formats[1](right)"
-      =>id = for get the element "key" at context (array)
-
-      propierties:
-      .query = actions in list (filter),
-      .list = actions in list (to the right of windown)
-      .moreDetails = actions in formats (to the left of windown) "moreDetails"*/
     static handleRoute(i, format = null) {
         let index = format ? format.idContainer : null;
         if (!format) return "allow";
@@ -153,7 +121,6 @@ class Section {
         return array[id];
     }
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
-    /*call other methods according at context*/
     static currentCredentials(currentSection) {
         const { entity } = getProfileUser();
         const index = this.getIndexRequest(currentSection);
@@ -161,18 +128,15 @@ class Section {
         const collections = this.collectionToSearch(index);
         return { indexSection: index, arrayContainer: containers, arrayCollection: collections, entity };
     }
-    /*return a object "metaData" that mean the config of the snapshotDocument request by (getDocs) through at query() with a config specific, the above methods belongs to the backend from firebase*/
     static getRequest(indexSection, collectionToSearch, configQuery = null) {
         if (!configQuery) { configQuery = this.getDefaultQuery(indexSection); }
         const metaData = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };
         return { ...metaData[collectionToSearch], ...configQuery };//return object with keys; icon, where and paginatión
     }
-    /*preparate index for work with array[]; we can got a correspondent request*/
     static getIndexRequest(context) {//AC #007
         const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters'];
         return array.findIndex(value => value === context);
     }
-    /*while we dont have filters in the queries, we need make the pagination and ordenament in standard mode*/
     static getDefaultQuery(index) {
         const array = [
             { where: ['empty'], pagination: ['empty'] },
@@ -205,13 +169,8 @@ class Section {
     //getters and setters
     static getCurrentSection() { return Section.currentSection }
     static getContainerSection(index) { return Section.arrayContainerSection[index] }
-
+    static getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
 }
-function getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
-
-/*for simplify*/
-function elementById(nameContainer) { return document.getElementById(nameContainer) }
-function elementByClass(nameContainer) { return document.querySelector(nameContainer) }
 /* --------------------------------------------------addComentary-------------------------------------------------- */
 /*
 #001: at moment of reload the section we could find case various; on click the main navbar "sections", the differents

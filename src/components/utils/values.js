@@ -41,3 +41,6 @@ export function cleanInputRegister() {
     email.value = "";
     password.value = "";
 }
+/*--------------------------------------------------globals--------------------------------------------------*/
+export function elementById(nameContainer) { return document.getElementById(nameContainer) }
+export function elementByClass(nameContainer) { return document.querySelector(nameContainer) }

@@ -6,11 +6,10 @@ const getAlert = await import('../utils/alerts.js');
 export async function loginUser(user, password) {
     try {
         onLoadWhile();
-        const getQuery = await import('../firebase/query.js');
-
+        const {getProfileUser, getDocumentUser} = await import('../firebase/query.js');
         await onSession(user, password);//AC #208
-        const { entity } = getQuery.getProfileUser();
-        const { key, access: userFound } = await getQuery.getDocumentUser(user, entity);
+        const { entity } = getProfileUser();
+        const { key, access: userFound } = await getDocumentUser(user, entity);
 
         if (!userFound) {
             await showMessage('messageEmailNotFound', 'default');
@@ -19,7 +18,6 @@ export async function loginUser(user, password) {
             await showMessage('messageAccessNotFound', 'default');
             await offSession(); offLoadWhile(); return;
         }
-
         (await import('../utils/view.js')).goToSession();
         offLoadWhile();
     } catch (error) { offLoadWhile(); await getAlert.exceptionsLoginUser(error); }
@@ -58,31 +56,30 @@ export async function modeVerifyEmail(res) {
     const { access: userFound } = await getDocumentUser(userEmail, userEntity);
     if (userFound) {
         const response = await showMessage('messageTokenVerifyExpired', 'alertButtonAction');
-        if (response) { goToHome(); }
+        if (response) goToHome();
         offLoadWhile(); return;
     }
     await (await import('../firebase/authentication.js')).appenedDocumentReference(userName, userEmail, userAccess, userEntity);
 
     const response = await showMessage('messageUserSubmitted', 'alertButtonAction');
-    if (response) { goToHome(); }
+    if (response) goToHome();
     await offSession();
     offLoadWhile();
 }
 export async function modeChangePassword() {
-    const getValues = await import("../utils/values.js");
-    const getView = await import("../utils/view.js");
+    const {getSearchParams, getInputResetPassword, elementById} = await import("../utils/values.js");
+    const {setIconEye, goToHome} = await import("../utils/view.js");
 
     const srcIconOpen = "../../src/components/images/eye-open.webp";
     const srcIconClose = "../../src/components/images/eye-close.webp";
-    getView.setIconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
-    getView.setIconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
+    setIconEye('#eyeIcon-1', '#password-login', srcIconOpen, srcIconClose);
+    setIconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
 
-    document.getElementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
-        try {
-            event.preventDefault();
+    elementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
+        try { event.preventDefault();
             onLoadWhile();
-            const { oobCode } = await getValues.getSearchParams();
-            const { password, confirmPassword } = getValues.getInputResetPassword();
+            const { oobCode } = await getSearchParams();
+            const { password, confirmPassword } = getInputResetPassword();
 
             if (checkSamePasswords(password, confirmPassword)) {
                 await showMessage('messagePasswordNotSame', 'default');
@@ -95,16 +92,12 @@ export async function modeChangePassword() {
             await (await import('../firebase/authentication.js')).validateResetPassword(oobCode, password);
 
             const request = await showMessage('messageResetPasswordSuccess', 'alertButtonAction');
-            if (request) { getView.goToHome(); }
+            if (request) goToHome();
             await offSession();
             offLoadWhile();
         } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); }
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/
-function checkSamePasswords(item_1, item_2) {
-    if (item_1 !== item_2) { return item_1; }
-}
-function checkSizeAllowed(item) {
-    if (item.length < 6) { return item; }
-}
+function checkSamePasswords(item_1, item_2) { if (item_1 !== item_2) return item_1 }
+function checkSizeAllowed(item) { if (item.length < 6) return item }
