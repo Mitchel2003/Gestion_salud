@@ -1,31 +1,37 @@
-¡Claro, te ayudo con gusto!
-
-La sección que estás preguntando es sobre cómo trabajar con un objeto y seleccionar un método basado en las claves de ese objeto. Desglosémoslo paso a paso:
-
-### 1. Objeto `cardTypeMap`
-Primero, es importante entender que `cardTypeMap` es un objeto que mapea claves a métodos. Por ejemplo:
-
-```javascript
-const cardTypeMap = {
-    key1: method1,
-    key2: method2,
-    // Más claves y métodos...
-};
+```html
+<div class="card card-body container-fluid border border-4 border-primary-subtle shadow-lg p-3 mb-5 bg-body rounded" style="background: linear-gradient(135deg, #3498db 0%, #8e44ad 100%); color: #fff;">
+    <div class="row">
+        <div class="col-9">
+            <h2 class="card-title fw-bold">Device Details</h2>
+        </div>
+        <div class="col-3 text-end">
+            <button class="btn btn-primary">Close</button>
+        </div>
+    </div>
+    
+    <hr style="border-top: 1px solid rgba(255,255,255,0.5);">
+    
+    <div class="row">
+        <div class="col-12">
+            <p><strong>ID:</strong> ${data.serial}</p>
+            <p><strong>Device:</strong> ${data.specifications}</p>
+            <p><strong>Status:</strong> Available</p>
+            <!-- Add more data here -->
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <p><strong>Subject:</strong> Lorem ipsum dolor sit amet</p>
+            <p><strong>Type:</strong> Sed do eiusmod tempor incididunt</p>
+            <!-- Add more data here -->
+        </div>
+    </div>
+</div>
 ```
 
-En este objeto, `key1` y `key2` son claves y `method1` y `method2` son métodos (o funciones).
 
-### 2. Recorriendo `cardTypeMap`
 La línea `for (const [key, method] of Object.entries(cardTypeMap))` usa el método `Object.entries`, que convierte el objeto `cardTypeMap` en una matriz de pares `[clave, valor]`. Así, cada iteración del bucle `for` nos da una clave (key) y su método correspondiente.
-
-Para ejemplificar, si `cardTypeMap` fuera:
-
-```javascript
-const cardTypeMap = {
-    visa: handleVisa,
-    mastercard: handleMasterCard,
-};
-```
 
 `Object.entries(cardTypeMap)` resultará en:
 ```javascript
@@ -33,45 +39,16 @@ const cardTypeMap = {
     ['visa', handleVisa],
     ['mastercard', handleMasterCard],
 ]
-```
-
-Entonces, durante el primer ciclo del `for`, `key` será `'visa'` y `method` será `handleVisa`. En el segundo ciclo, `key` será `'mastercard'` y `method` será `handleMasterCard`.
-
-### 3. Condicional dentro del `for`
-Dentro del bucle `for`, se verifica si `newObject[key]` existe o es "truthy" (no `null`, `undefined`, `false`, etc.). Si esta condición se cumple, se retorna el método asociado. Básicamente, busca si `newObject` tiene una propiedad con el mismo nombre que la clave.
-
-```javascript
-if (newObject[key]) {
-    return method();
-}
-```
-
-Si `newObject` tiene `{ visa: true }` y `cardTypeMap` tiene `'visa'` como clave, entonces `handleVisa` sería ejecutado.
-
-### 4. Opción por defecto
-Si ninguna de las claves en `cardTypeMap` coincide con las claves en `newObject`, se retornará un método por defecto:
-
-```javascript
-return this.cardDefault(item, icon);
-```
-
-### Ejemplo completo:
-```javascript
 const cardTypeMap = {
     visa: handleVisa,
     mastercard: handleMasterCard,
 };
-
 function processPayment(newObject, item, icon) {
-    // Verificar y retornar el método correspondiente según newObject
     for (const [key, method] of Object.entries(cardTypeMap)) {
         if (newObject[key]) {
             return method();
         }
     }
-
-    // Opción por defecto si no coincide ningún caso
-    return this.cardDefault(item, icon);
 }
 ```
 

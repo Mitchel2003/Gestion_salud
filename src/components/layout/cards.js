@@ -42,26 +42,38 @@ export function cardFinding(data, icon) {
         </div>
     `;
 }
-export function cardDetails(data, icon) {
+export function cardDetails(snapshot, icon) {
+    const data = snapshot.data();
     return `
-        <div class="card card-body container-fluid border border-4 border-primary-subtle">
-                <div class="row">
-                    <div class="col-lg-11 col-md-11 col-sm-10 d-flex align-items-center me-auto order-2 order-sm-1">
-                        <h6 class="card-title m-0 me-auto">ID: ${data.serial}</h6>
-                        <h6 class="card-title m-0">Device: ${data.specifications}</h6>
-                    </div>
-                    <div class="col-lg-1 col-md-1 col-sm-2 d-flex justify-content-end order-1 order-sm-2">
-                        <i class="${icon} text-primary fs-1"></i>
-                    </div>
+        <div class="card card-body container-fluid border border-4 border-primary-subtle shadow-lg p-3 mb-5 bg-body rounded" style="background: linear-gradient(135deg, #3498db 0%, #8e44ad 100%); color: #fff;">
+            <div class="row">
+                <div class="col-lg-1 col-md-2 col-sm-2">
+                    <i class="${icon} text-warning fs-1"></i>
                 </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
-                        <p class="card-text m-0 me-auto">Subject:</p>
-                        <p class="card-text m-0">Type:</p>
-                        <p></p>    
-                    </div>
+                <div class="col-lg-11 col-md-10 col-sm-10 d-flex align-items-end">
+                    <h2 class="card-title fw-bold text-start">Device Details</h2>
+                    <h3 class="card-title fw-bold ms-auto"> ID: ${snapshot.id}</h3>
                 </div>
-                <a href="" class="btn border border-1 btn-outline-primary border-primary-subtle">show more</a>
+            </div>
+            
+            <hr style="border-top: 1px solid rgba(255,255,255,0.5);">
+            
+            <div class="row">
+                <div class="col-12">
+                    <p><strong>ID:</strong> ${data.serial}</p>
+                    <p><strong>Device:</strong> ${data.specifications}</p>
+                    <p><strong>Status:</strong> Available</p>
+                    <!-- Add more data here -->
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <p><strong>Subject:</strong> Lorem ipsum dolor sit amet</p>
+                    <p><strong>Type:</strong> Sed do eiusmod tempor incididunt</p>
+                    <!-- Add more data here -->
+                </div>
+            </div>
         </div>
     `;
 }

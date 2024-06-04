@@ -81,7 +81,7 @@ class Section {
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
     static createItems(snapshot, nameContainer, icon, handler = null) {
-        const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot.data()];
+        const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot];
         data.forEach(item => {
             const card = this.setContentCard(item, nameContainer, icon, handler);
             elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
