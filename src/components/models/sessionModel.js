@@ -21,7 +21,7 @@ async function eventContainer(container, section) {
     elementById(container).addEventListener('click', async (e) => { e.preventDefault();
         const arrayCard = Section.getTargetCard(e.target);
         if (e.target.textContent === 'more details') { return await Section.actionMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
-        else { return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard }) }
+        else { return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard, query:{ where: ['', '!=', 'true', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] } }) }
     });
 }
 /*--------------------------------------------------classes--------------------------------------------------*/
