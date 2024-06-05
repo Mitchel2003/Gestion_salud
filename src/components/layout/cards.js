@@ -23,7 +23,7 @@ export function cardDevice(data, icon) {
 }
 export function cardFinding(data, icon) {
     return `
-        <div class="card card-body container-fluid border border-4 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
+        <div class="card card-body container-fluid border border-4 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat; background-size: cover;">
                 <div class="row">
                     <div class="col-lg-0 col-md-1 col-sm-1 text-start">
                         <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
@@ -59,7 +59,7 @@ export function cardDetails(snapshot, icon) {
                     <h3 class="card-title fw-bold ms-auto"> ID: ${snapshot.id}</h3>
                 </div>
             </div>
-            
+
             <hr class="mt-auto" style="border-top: 1px solid rgba(255,255,255,0.5);">
 
             <div class="row">
@@ -70,7 +70,6 @@ export function cardDetails(snapshot, icon) {
                     <p class="ms-auto"><strong>Avaliable:</strong> ${data.avaliable ? '&#x2705;' : '&#x26D4;'}</p>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-7 d-flex">
                     <p class="text-start"><strong>Date last report:</strong> ${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}</p>
@@ -82,7 +81,6 @@ export function cardDetails(snapshot, icon) {
 
             <hr class="mt-auto" style="border-top: 1px solid rgba(255,255,255,0.5);">
 
-            <!-- Section for description -->
             <div class="container border border-primary rounded p-3" style="background-color: rgba(255, 255, 255, 0.1);">
                 <div class="row">
                     <div class="col-12">

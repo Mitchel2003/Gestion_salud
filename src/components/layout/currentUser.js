@@ -95,9 +95,13 @@ export function getUserContext(res) {//AC #205
                     <!-- hd navbar -->
                     <div class="col-lg-8 col-md-8 col-sm-5 align-items-end d-flex order-2 order-sm-1">
                         <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
-                            <div class="nav nav-tabs navbar-collapse" id="navbarHandlerDevice" role="tablist">
+                            <div class="nav nav-tabs navbar-collapse" id="subnavbar-handler-device" role="tablist">
                                 <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
                                     Reports
+                                </button>
+
+                                <button class="nav-link" id="nav-create-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#create-report" aria-current="create-report" aria-selected="false">
+                                    Create report
                                 </button>
 
                                 <button class="nav-link" id="nav-add-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-device" aria-current="add-device" aria-selected="false">
@@ -130,12 +134,53 @@ export function getUserContext(res) {//AC #205
                                             <p>nothing here</p>
                                         </div>
                                     </div>
+
+                                    <div class="tab-panel fade collapse" id="create-report" role="tabpanel" aria-labelledby="nav-create-report">
+                                        
+                                            <div class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
+                                        
+                                                <h2 class="card-title fw-bold text-start mb-4">Equipment Report Form</h2>
+                                        
+                                                <form>
+                                                    <div class="mb-3">
+                                                        <label for="reportDate" class="form-label">Report Date</label>
+                                                        <input type="date" class="form-control" id="reportDate">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="deviceId" class="form-label">Device ID</label>
+                                                        <input type="text" class="form-control" id="deviceId" placeholder="Enter Device ID">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="maintenanceType" class="form-label">Maintenance Type</label>
+                                                        <select class="form-select" id="maintenanceType">
+                                                            <option value="" selected disabled>Select Maintenance Type</option>
+                                                            <option value="preventive">Preventive</option>
+                                                            <option value="corrective">Corrective</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="subject" class="form-label">Subject</label>
+                                                        <input type="text" class="form-control" id="subject" placeholder="Enter Subject">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="description" class="form-label">Description</label>
+                                                        <textarea class="form-control" id="description" rows="3" placeholder="Enter Description"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Submit Report</button>
+                                                </form>
+                                        
+                                            </div>
+                                        
+
+                                    </div>
+
                                     <div class="tab-panel fade collapse" id="add-device" role="tabpanel" aria-labelledby="nav-add-device">
                                         <div class="empty">
                                             <h4>Empty here...</h4>
                                             <p>nothing that show</p>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>

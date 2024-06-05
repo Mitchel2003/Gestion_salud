@@ -18,10 +18,11 @@ async function handlerSection(nav) {
     })
 }
 async function eventContainer(container, section) {
-    elementById(container).addEventListener('click', async (e) => { e.preventDefault();
+    elementById(container).addEventListener('click', async (e) => {
+        e.preventDefault();
         const arrayCard = Section.getTargetCard(e.target);
         if (e.target.textContent === 'more details') { return await Section.actionMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
-        else { return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard, query:{ where: ['', '!=', 'true', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] } }) }
+        if (e.target.textContent === 'see reports') { return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard, query: { where: ['date', '!=', ''], pagination: ['date', 5] } }) }
     });
 }
 /*--------------------------------------------------classes--------------------------------------------------*/
@@ -44,7 +45,7 @@ class Section {
         Section.currentSection = section;
         onLoadWhile();
         let promise = arrayContainer.map(async (container, index) => {//AC #002
-            let route = this.handleRoute(index, handlerFormat); if (route === null) return; //allow or deny the code flow according search
+            let route = this.handleRoute(index, handlerFormat, container); if (route === null) return; //allow or deny the code flow according search
 
             const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
             const res = await this.routeRequest(section, collection, entity, arrayConfig, handlerFormat);
@@ -86,7 +87,7 @@ class Section {
             const card = this.setContentCard(item, nameContainer, icon, handler);
             elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
         });
-    }    
+    }
     static setContentCard(value, nameContainer, icon, handler = null) {
         const metaData = {
             /*formats with handler*/
@@ -98,7 +99,7 @@ class Section {
             finding: () => cardFinding(value, icon),
             departament: () => "cardDepartament(value, icon)",
 
-            
+
             reports: () => cardFinding(value, icon)
         }
         for (const [key, method] of Object.entries(metaData)) {
@@ -112,14 +113,18 @@ class Section {
         const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
         return { metaData, collection, arrayConfig }
     }
-    static handleRoute(i, format = null) {
+    static handleRoute(i, format = null, subSection) {
         let index = format ? format.idContainer : null;
         if (!format) return "allow";
         if (format && index != i) return null;
+        this.controllerSectionSubnavbar(subSection);
         const array = [format.query, format.seeReports, format.moreDetails, format.loadMore]
         const id = format.idFormat;
         return array[id];
     }
+    static controllerSectionSubnavbar(mainSection) { const element = elementById('nav-' + mainSection); element.click() }
+
+
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
     static currentCredentials(currentSection) {
         const { entity } = getProfileUser();
