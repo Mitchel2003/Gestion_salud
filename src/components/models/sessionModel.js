@@ -18,11 +18,10 @@ async function handlerSection(nav) {
     })
 }
 async function eventContainer(container, section) {
-    elementById(container).addEventListener('click', async (e) => { 
-        e.preventDefault();
+    elementById(container).addEventListener('click', async (e) => { e.preventDefault();
         const arrayCard = Section.getTargetCard(e.target);
-        if (e.target.textContent === 'more details') { return await Section.loadMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
-        // this.loadSeeReports(array);
+        if (e.target.textContent === 'more details') { return await Section.actionMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
+        else { return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard }) }
     });
 }
 /*--------------------------------------------------classes--------------------------------------------------*/
@@ -30,7 +29,8 @@ class Section {
     static currentSection;
     static arrayContainerSection;
     static async loadCurrentSection(section) { await Section.init(section) }
-    static async loadMoreDetails(section, handler) { await Section.init(section, handler) }
+    static async actionMoreDetails(section, handler) { await Section.init(section, handler) }
+    static async actionSeeReports(section, handler) { await Section.init(section, handler) }
 
     /**
      * Initialize a query from database to section context (contain mode default and fixed).
@@ -116,7 +116,7 @@ class Section {
         let index = format ? format.idContainer : null;
         if (!format) return "allow";
         if (format && index != i) return null;
-        const array = [format.query, format.list, format.moreDetails, format.loadMore]
+        const array = [format.query, format.seeReports, format.moreDetails, format.loadMore]
         const id = format.idFormat;
         return array[id];
     }
