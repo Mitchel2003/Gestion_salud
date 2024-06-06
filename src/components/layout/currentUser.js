@@ -136,40 +136,48 @@ export function getUserContext(res) {//AC #205
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="create-report" role="tabpanel" aria-labelledby="nav-create-report">
-                                        
-                                            <div class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
-                                        
-                                                <h2 class="card-title fw-bold text-start mb-4">Equipment Report Form</h2>
-                                        
-                                                <form>
-                                                    <div class="mb-3">
+
+                                        <div class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">                                    
+                                            <h2 class="card-title fw-bold text-start mb-3">Report Form</h2>                                    
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-2">
                                                         <label for="reportDate" class="form-label">Report Date</label>
                                                         <input type="date" class="form-control" id="reportDate">
                                                     </div>
-                                                    <div class="mb-3">
+                                                    <div class="col-lg-6 col-md-5 col-sm-5 mb-2 order-sm-1">
                                                         <label for="deviceId" class="form-label">Device ID</label>
                                                         <input type="text" class="form-control" id="deviceId" placeholder="Enter Device ID">
                                                     </div>
-                                                    <div class="mb-3">
-                                                        <label for="maintenanceType" class="form-label">Maintenance Type</label>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-5 col-sm-5 mb-2 order-sm-2">
+                                                        <label for="maintenanceType" class="form-label">Type maintenance</label>
                                                         <select class="form-select" id="maintenanceType">
-                                                            <option value="" selected disabled>Select Maintenance Type</option>
+                                                            <option value="" selected disabled>Choose a type</option>
                                                             <option value="preventive">Preventive</option>
                                                             <option value="corrective">Corrective</option>
                                                         </select>
                                                     </div>
-                                                    <div class="mb-3">
+                                                    <div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-1">
                                                         <label for="subject" class="form-label">Subject</label>
                                                         <input type="text" class="form-control" id="subject" placeholder="Enter Subject">
                                                     </div>
-                                                    <div class="mb-3">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 mb-3">
                                                         <label for="description" class="form-label">Description</label>
-                                                        <textarea class="form-control" id="description" rows="3" placeholder="Enter Description"></textarea>
+                                                        <textarea class="form-control" id="description" rows="2" placeholder="Enter Description"></textarea>
                                                     </div>
+                                                </div>
+
+                                                <div class="d-flex">
                                                     <button type="submit" class="btn btn-primary">Submit Report</button>
-                                                </form>
-                                        
-                                            </div>
+                                                </div>
+                                            </form>                                    
+                                        </div>
                                         
 
                                     </div>

@@ -22,12 +22,16 @@ async function eventContainer(container, section) {
         e.preventDefault();
         const card = e.target;
         const arrayCard = Section.getTargetCard(card);
-        if (card.classList.contains('btn-outline-primary')) return await Section.actionMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard })
-        if (card.classList.contains('btn-outline-success') || card.classList.contains('btn-outline-danger')) return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
+        if (card.classList.contains('btn-outline-primary')) return await Section.actionMoreDetails(section, { idFormat: 2, moreDetails: arrayCard })
+        if (card.classList.contains('btn-outline-success') || card.classList.contains('btn-outline-danger')) return await Section.actionSeeReports(section, { idFormat: 1, seeReports: arrayCard, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
 }
 /*--------------------------------------------------classes--------------------------------------------------*/
 class Section {
+    static loopIndex;
+    static loopContainer;
+    static handlerFormat;
+    static currentEntity;
     static currentSection;
     static arrayContainerSection;
     static async loadCurrentSection(section) { await Section.init(section) }
@@ -40,19 +44,24 @@ class Section {
      * @param {object} [handlerFormat = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
      * @return {innerHTML} defines the content of the current section
      */
-    static async init(section, handlerFormat = null) {
+    static async init(section, handler = null) {
         const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
         Section.arrayContainerSection = arrayContainer;
         Section.currentSection = section;
+        Section.currentEntity = entity;
+        Section.handlerFormat = handler;
         onLoadWhile();
         let promise = arrayContainer.map(async (container, index) => {//AC #002
-            let route = this.handleRoute(index, handlerFormat, container); if (route === null) return; //allow or deny the code flow according search
+            this.loopIndex = index;
+            this.loopContainer = container;
+            let route = this.handleRoute(); if (route === null) return;
 
-            const { metaData, collection, arrayConfig } = this.preparateRequest(index, indexSection, arrayCollection, handlerFormat);
-            const res = await this.routeRequest(section, collection, entity, arrayConfig, handlerFormat);
-            this.toggleVisibilityCardEmpty(elementById(container), res);
-            this.clearContainerConditionally(elementById(container), handlerFormat);
-            this.createItems(res, container, metaData.icon, handlerFormat);
+            const { metaData, collection, arrayConfig } = this.preparateRequest(indexSection, arrayCollection);
+            const res = await this.routeRequest(route, collection, arrayConfig);
+            const res =
+                this.toggleVisibilityCardEmpty(elementById(container), res);
+            this.clearContainerConditionally(elementById(container), handler);
+            this.createItems(res, container, metaData.icon, handler);
         });
         await Promise.all(promise);
         offLoadWhile();
@@ -60,17 +69,15 @@ class Section {
     /*--------------------------------------------------actions kit--------------------------------------------------*/
     /**
      * Redirect to correct request checking the handler
-     * @param {string} section - Contain the name of the current section for a decide later
      * @param {string} collection - Is the name of collection to search into database
-     * @param {string} entity - Is the name of entity in context, is the entity in which the user is subscribed
      * @param {array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @param {object} [handler = null] - Is present for take a decision, if exist so query a document instead of query compound.
      * @return {object} a snapshot (object) from database "firebase firestore"
      */
-    static async routeRequest(section, collection, entity, arrayConfig, handler = null) {
-        return handler ?
-            await DataByDocument.get(handler.moreDetails, entity, section) :
-            await DataByRequest.get({ req: collection, entity: entity, queryConfig: arrayConfig });
+    static async routeRequest(route, collection, arrayConfig) { //working here...
+        const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route, nameSection: this.currentSection };
+        const array = { entity: this.currentEntity, ...build };
+        return await DataByRequest.get(array, );
     }
     /**
      * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
@@ -108,22 +115,34 @@ class Section {
             else if (nameContainer.includes(key)) return method();
         }
     }
-    static preparateRequest(index_lopp, index_section, array_collections, configQuery = null) {
-        const collection = array_collections[index_lopp];
-        const metaData = this.getRequest(index_section, collection, configQuery ? configQuery.query : null); //query 
-        const arrayConfig = this.fixQueryConfig(index_lopp, metaData);
+    static preparateRequest(index_section, array_collections) {
+        const collection = array_collections[this.loopIndex];
+        const metaData = this.getRequest(index_section, collection, this.handlerFormat ? this.handlerFormat.query : null);
+        const arrayConfig = this.fixQueryConfig(metaData);
         return { metaData, collection, arrayConfig }
     }
-    static handleRoute(i, format = null, subSection) {
-        let index = format ? format.idContainer : null;
+    static handleRoute() {
+        const format = this.handlerFormat;
+        const array = [
+            format.query,
+            format.seeReports,
+            format.moreDetails,
+            format.loadMore
+        ]
         if (!format) return "allow";
-        if (format && index != i) return null;
-        this.controllerSectionSubnavbar(subSection);
-        const array = [format.query, format.seeReports, format.moreDetails, format.loadMore]
-        const id = format.idFormat;
-        return array[id];
+        if (format && this.loopIndex != 1) return null; //number "1" is equal to side left in the current section
+        this.controllerPositionSubnavbar(this.loopContainer);
+        return array[format.idFormat];
     }
-    static controllerSectionSubnavbar(mainSection) { const element = elementById('nav-' + mainSection); element.click() }
+    /**
+     * For control when iterating over the options in the side right, in same case like that;
+     * @example the user wish show "more details" about the card selected (side right);
+     * so maybe that the subnavbar (side left) its on section "create something" (static),
+     * we need redirect to main section in subnavbar because its the unique that have the capacity
+     * to change cards depending the iteraction of user, this way we show the data of specific card
+     * @param {string} mainSection - Is the name of the main section in the subnavbar
+     */
+    static controllerPositionSubnavbar(mainSection) { const element = elementById('nav-' + mainSection); element.click() }
 
 
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
@@ -151,11 +170,11 @@ class Section {
         ]; return array[index];
     }
     /*for optimize the code and logic better, according to index we can get a queryConfig specific*/
-    static fixQueryConfig(index, data) {
+    static fixQueryConfig(data) {
         let indexW = [0, 3], indexP = [0, 2];
-        if (index === 2) { indexW = [6, 9], indexP = [4, 6] }
-        if (index === 1) { indexW = [3, 6], indexP = [2, 4] }
-        if (!data.where || !data.pagination) return;//edited here...
+        if (!data.where || !data.pagination) return;
+        if (this.loopIndex === 2) { indexW = [6, 9], indexP = [4, 6] }
+        if (this.loopIndex === 1) { indexW = [3, 6], indexP = [2, 4] }        
         return [...data.where.slice(indexW[0], indexW[1]), ...data.pagination.slice(indexP[0], indexP[1])]
     }
     /*contains all containers of each section by him id, sorted according to navigator bar*/

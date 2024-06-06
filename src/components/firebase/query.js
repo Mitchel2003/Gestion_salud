@@ -14,33 +14,37 @@ export async function getDocumentUser(user, entity) {
 }
 export class DataByRequest { //return querySnapshot "getDocs"
     static lastDocumentVisible;
-    static async get(array = null, filter = null) {
+    static async get(array = null, handler = null) {
         if (!array) return await getDocs(getCollection());
-        const querySnapshot = this.buildQuery(this.getSubCollection(array), array, filter);
+        if (handler ? handler.document : false) return ;
+        
+        const querySnapshot = this.buildQuery(this.getSubCollection(array), array, handler);
         const response = await getDocs(querySnapshot);
         this.lastDocumentVisible = response.docs[response.docs.length - 1]; return response;
     }
-    static buildQuery(subCollection, array, filter = null) {
+    static preparateQuery(subCollection, array, filter = null) {
         const { queryConfig } = array;
         const config = [
             where(queryConfig[0], queryConfig[1], queryConfig[2]),
             orderBy(queryConfig[3]),
             limit(queryConfig[4]),
         ];
-        if (filter) { config.push(startAfter(filter.lastVisible)) }
+        if (filter ? filter.lastVisible : false) { config.push(startAfter(filter.lastVisible)) }
         return query(subCollection, ...config);
     }
-    static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
-    static getLastDocument() { return DataByRequest.lastDocumentVisible }
-}
-export class DataByDocument { //return documentSnapshot "getDoc"
-    static async get(array, entity, section) { return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section))) }
     static preparateDocument(array, section) {
         let prepare = section.includes('user') ? ['user', array[0].toString()] : ['departament', array[0].toString()]; //user and departament
         if (array.length === 2) return [...prepare, 'device', array[1].toString()] //device
         if (array.length === 3) return [...prepare, 'device', array[1].toString(), 'finding', array[2].toString()] //finding
         return prepare;
     }
+    /*------------------------------tools------------------------------*/
+    static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
+    static getLastDocument() { return DataByRequest.lastDocumentVisible }
+}
+export class DataByDocument { //return documentSnapshot "getDoc"
+    static async get(array, entity, section) { return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section))) }
+
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
