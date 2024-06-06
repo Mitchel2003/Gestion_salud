@@ -1,34 +1,9 @@
-¡Claro que sí! Aquí te dejo el código anterior convertido a un archivo SVG para que puedas implementarlo de manera más sencilla en tu proyecto:
-
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="100" height="100" fill="url(#grad)">
-    <animate attributeName="x" values="0;100;0" dur="10s" repeatCount="indefinite" />
-  </rect>
-</svg>
-```
-
-Este código SVG crea un rectángulo que se llena con el gradiente animado que se mueve de izquierda a derecha y viceversa. Puedes ajustar los valores y colores según tus preferencias. ¡Espero que te resulte útil y puedas integrarlo fácilmente en tu proyecto! ¡Si necesitas más ayuda, estaré aquí para asistirte en lo que necesites! ¡Que disfrutes implementando esta animación en tu diseño! 🎨
 
 
-// for (let section of elementById(parentContainer).children) { this.setStatusActiveNavbar(section, 'nav-' + nameSubsection) }
-    // static setStatusActiveNavbar(element, target) {
-    //     if (element.id === target) {
-    //         element.classList.toggle('active');
-    //         element.setAttribute('aria-selected', true);
-    //         element.removeAttribute('tabindex');
-    //         return;
-    //     }
-    //     element.classList.remove('active');
-    //     element.setAttribute('aria-selected', false);
-    //     element.setAttribute('tabindex', -1);
-    // }
+
+
+
+
 
 
 La línea `for (const [key, method] of Object.entries(cardTypeMap))` usa el método `Object.entries`, que convierte el objeto `cardTypeMap` en una matriz de pares `[clave, valor]`. Así, cada iteración del bucle `for` nos da una clave (key) y su método correspondiente.
