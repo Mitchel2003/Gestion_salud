@@ -20,9 +20,10 @@ async function handlerSection(nav) {
 async function eventContainer(container, section) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
-        const arrayCard = Section.getTargetCard(e.target);
-        if (e.target.textContent === 'more details') { return await Section.actionMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard }) }
-        if (e.target.textContent === 'see reports') { return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard, query: { where: ['date', '!=', ''], pagination: ['date', 5] } }) }
+        const card = e.target;
+        const arrayCard = Section.getTargetCard(card);
+        if (card.classList.contains('btn-outline-primary')) return await Section.actionMoreDetails(section, { idFormat: 2, idContainer: 1, moreDetails: arrayCard })
+        if (card.classList.contains('btn-outline-success') || card.classList.contains('btn-outline-danger')) return await Section.actionSeeReports(section, { idFormat: 1, idContainer: 1, seeReports: arrayCard, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
 }
 /*--------------------------------------------------classes--------------------------------------------------*/
