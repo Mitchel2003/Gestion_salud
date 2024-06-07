@@ -61,17 +61,17 @@ class Section {
             const res =
                 this.toggleVisibilityCardEmpty(elementById(container), res);
             this.clearContainerConditionally(elementById(container), handler);
-            this.createItems(res, container, metaData.icon, handler);
+            this.createItems(res, metaData.icon);
         });
         await Promise.all(promise);
         offLoadWhile();
     }
     /*--------------------------------------------------actions kit--------------------------------------------------*/
     /**
-     * Redirect to correct request checking the handler
+     * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
+     * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search
      * @param {string} collection - Is the name of collection to search into database
      * @param {array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
-     * @param {object} [handler = null] - Is present for take a decision, if exist so query a document instead of query compound.
      * @return {object} a snapshot (object) from database "firebase firestore"
      */
     static async routeRequest(route, collection, arrayConfig) { //working here...
@@ -82,45 +82,70 @@ class Section {
     /**
      * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
      * @param {Object} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
-     * @param {String} nameContainer - This name represent the container specific (loop context) of the current section we are in
      * @param {String} icon - Correspond to a propierty of object, contain data static of the card specific
-     * @param {Object} handler - Is an optional object that could have properties that redirect card format; this way we show in the current container a card different to default
      * @return {innerHTML} insert cards in the current container, this depends on the loop the container is in
      * @const {object} data - is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
-    static createItems(snapshot, nameContainer, icon, handler = null) {
+    static createItems(snapshot, icon) {
         const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot];
         data.forEach(item => {
-            const card = this.setContentCard(item, nameContainer, icon, handler);
-            elementById(nameContainer).insertAdjacentHTML('afterbegin', card);
+            const card = this.setContentCard(item, icon);
+            elementById(this.loopContainer).insertAdjacentHTML('afterbegin', card);
         });
     }
-    static setContentCard(value, nameContainer, icon, handler = null) {
+    /**
+     * This module have the function of return a card format depending of name container in a loop context (this.loopContainer) according to current section; or using a handler sent to config a specific card
+     * @param {object} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
+     * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons     
+     * @return {HTMLElement} execute a method that return a DOMElement
+     * @const {object} metaData - is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search
+     * @example
+     * nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)' respectively.
+     * nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)' respectively.
+     * {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively
+     */
+    static setContentCard(value, icon) {
         const metaData = {
             /*formats with handler*/
             moreDetails: () => cardDetails(value, icon),
 
-            /*associated with container(0) in a context section (ex: id_container="device-list")*/
+            /*associated with index(0)*/
             user: () => "cardUser(value, icon)",
             device: () => cardDevice(value, icon),
             finding: () => cardFinding(value, icon),
             departament: () => "cardDepartament(value, icon)",
 
-
+            /*associated with index(1)*/
             reports: () => cardFinding(value, icon)
         }
         for (const [key, method] of Object.entries(metaData)) {
-            if (handler ? handler[key] : null) return method();
-            else if (nameContainer.includes(key)) return method();
+            if (this.handlerFormat ? this.handlerFormat[key] : null) return method();
+            else if (this.loopContainer.includes(key)) return method();
         }
     }
-    static preparateRequest(index_section, array_collections) {
-        const collection = array_collections[this.loopIndex];
+    /** Configure the query basing into index of current container that we are filling (this.loopIndex)
+     * @param {number} index_section - Just like we talk about indexs into containers of current section, also we have indexs for current section in context ("home" === 0, "handler-device" === 1 ...); then, this data refers at index of the current section
+     * @param {array} array_collection - This list contain the names of the collections to query documents into database; then, depending of container to fill (index = 0 or 1), we get the collection specific according to index position (['device_references', 'finding_references'])
+     * @return {object} we get a object configured by default (or by configQuery param) to set a request
+     * @const {object} metaData - is equal to { query: {where: [], pagination: []} }
+     * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination
+     */
+    static preparateRequest(index_section, array_collection) {
+        const collection = array_collection[this.loopIndex];
         const metaData = this.getRequest(index_section, collection, this.handlerFormat ? this.handlerFormat.query : null);
         const arrayConfig = this.fixQueryConfig(metaData);
         return { metaData, collection, arrayConfig }
     }
+    /**
+     * Helps me control the flow of the current loop (containers in current section), through (allow/deny) we can fill a container specific by using a handler (handlerFormat)
+     * @return {boolean} with this boolean we can 
+     * @const {object} [format = null] - we will use this handler to decide; if(!format).then(continue flow), if(format but (indexToFill="1") != (indexLoop="0")).then(stop flow)
+     * @const {array} array - is a array of propierties from format; at least one of these properties must contain data, remember that if exist handlerFormat it is because we intend a request, we await a format according to a requerided action
+     * @example
+     * .query = actions in list (filter),
+     * .list = actions in list (to the right of windown)
+     * .moreDetails = actions in formats (to the left of windown) "moreDetails"*/
     static handleRoute() {
         const format = this.handlerFormat;
         const array = [
