@@ -13,14 +13,24 @@ export async function getDocumentUser(user, entity) {
     return { access, key };
 }
 export class DataByRequest { //return querySnapshot "getDocs"
+    static request;
+    static handler;
     static lastDocumentVisible;
+    
     static async get(array = null, handler = null) {
+        DataByRequest.request = array;
+        DataByRequest.handler = handler;
+
         if (!array) return await getDocs(getCollection());
-        if (handler ? handler.document : false) return ;
+        await this.isDocumentRequest(); //could be querySnapshot or documentSnapshot
+        return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section)));
         
         const querySnapshot = this.buildQuery(this.getSubCollection(array), array, handler);
         const response = await getDocs(querySnapshot);
         this.lastDocumentVisible = response.docs[response.docs.length - 1]; return response;
+    }
+    static isDocumentRequest(){
+        if (this.handler ? this.handler.document : false) return true;
     }
     static preparateQuery(subCollection, array, filter = null) {
         const { queryConfig } = array;
@@ -42,25 +52,10 @@ export class DataByRequest { //return querySnapshot "getDocs"
     static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
-export class DataByDocument { //return documentSnapshot "getDoc"
-    static async get(array, entity, section) { return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section))) }
-
-}
+// export class DataByDocument { //return documentSnapshot "getDoc"
+//     static async get(array, entity, section) { return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section))) }
+// }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
 export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
-/* --------------------------------------------------addComentary-------------------------------------------------- */
-/*
-snapshot:
-export async function getDataByRequest(array = null, filter = null) {
-    let querySnapshot;
-    if (!array) { return await getDocs(getCollection()); };
-    const { query, where, orderBy, limit, startAfter } = await import('./conection.js');
-    const subCollection = collection(getCollection(), array.entity, array.req);
-
-    if(!filter){ querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), limit(array.queryConfig[4])) }
-    else { querySnapshot = query(subCollection, where(array.queryConfig[0], array.queryConfig[1], array.queryConfig[2]), orderBy(array.queryConfig[3]), startAfter(filter.lastVisible), limit(array.queryConfig[4])) }
-    return await getDocs(querySnapshot);
-}
-*/

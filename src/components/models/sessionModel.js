@@ -30,10 +30,13 @@ async function eventContainer(container, section) {
 class Section {
     static loopIndex;
     static loopContainer;
-    static handlerFormat;
+    static arrayContainer;
+    static arrayCollection;
     static currentEntity;
     static currentSection;
-    static arrayContainerSection;
+    static handlerFormat;
+    static indexCurrentSection;
+
     static async loadCurrentSection(section) { await Section.init(section) }
     static async actionMoreDetails(section, handler) { await Section.init(section, handler) }
     static async actionSeeReports(section, handler) { await Section.init(section, handler) }
@@ -45,23 +48,17 @@ class Section {
      * @return {innerHTML} defines the content of the current section
      */
     static async init(section, handler = null) {
-        const { indexSection, arrayContainer, arrayCollection, entity } = this.currentCredentials(section);
-        Section.arrayContainerSection = arrayContainer;
-        Section.currentSection = section;
-        Section.currentEntity = entity;
-        Section.handlerFormat = handler;
         onLoadWhile();
-        let promise = arrayContainer.map(async (container, index) => {//AC #002
+        this.updateCredentials(section, handler);
+        let promise = this.arrayContainer.map(async (container, index) => {//AC #002
             this.loopIndex = index;
             this.loopContainer = container;
             let route = this.handleRoute(); if (route === null) return;
-
-            const { metaData, collection, arrayConfig } = this.preparateRequest(indexSection, arrayCollection);
+            const { dataStatic, collection, arrayConfig } = this.preparateRequest();
             const res = await this.routeRequest(route, collection, arrayConfig);
-            const res =
-                this.toggleVisibilityCardEmpty(elementById(container), res);
-            this.clearContainerConditionally(elementById(container), handler);
-            this.createItems(res, metaData.icon);
+            this.toggleVisibilityCardEmpty(elementById(this.loopContainer), res);
+            this.clearContainerConditionally(elementById(this.loopContainer));
+            this.createItems(res, dataStatic.icon);
         });
         await Promise.all(promise);
         offLoadWhile();
@@ -77,7 +74,7 @@ class Section {
     static async routeRequest(route, collection, arrayConfig) { //working here...
         const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route, nameSection: this.currentSection };
         const array = { entity: this.currentEntity, ...build };
-        return await DataByRequest.get(array, );
+        return await DataByRequest.get(array);
     }
     /**
      * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
@@ -125,17 +122,16 @@ class Section {
         }
     }
     /** Configure the query basing into index of current container that we are filling (this.loopIndex)
-     * @param {number} index_section - Just like we talk about indexs into containers of current section, also we have indexs for current section in context ("home" === 0, "handler-device" === 1 ...); then, this data refers at index of the current section
-     * @param {array} array_collection - This list contain the names of the collections to query documents into database; then, depending of container to fill (index = 0 or 1), we get the collection specific according to index position (['device_references', 'finding_references'])
      * @return {object} we get a object configured by default (or by configQuery param) to set a request
      * @const {object} metaData - is equal to { query: {where: [], pagination: []} }
      * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination
      */
-    static preparateRequest(index_section, array_collection) {
-        const collection = array_collection[this.loopIndex];
-        const metaData = this.getRequest(index_section, collection, this.handlerFormat ? this.handlerFormat.query : null);
-        const arrayConfig = this.fixQueryConfig(metaData);
-        return { metaData, collection, arrayConfig }
+    static preparateRequest() {
+        const collection = this.arrayCollection[this.loopIndex];
+        const dataStatic = this.getRequest(collection, this.handlerFormat ? this.handlerFormat.query : null);
+        //console.log(dataStatic); //need evalue this...
+        const arrayConfig = this.fixQueryConfig(dataStatic);
+        return { dataStatic, collection, arrayConfig }
     }
     /**
      * Helps me control the flow of the current loop (containers in current section), through (allow/deny) we can fill a container specific by using a handler (handlerFormat)
@@ -160,30 +156,41 @@ class Section {
         return array[format.idFormat];
     }
     /**
-     * For control when iterating over the options in the side right, in same case like that;
+     * For control when iterating over the options in the side right (scroll container), in same case like that;
+     * @param {string} mainSection - Is the name of the main section in the subnavbar
      * @example the user wish show "more details" about the card selected (side right);
      * so maybe that the subnavbar (side left) its on section "create something" (static),
      * we need redirect to main section in subnavbar because its the unique that have the capacity
-     * to change cards depending the iteraction of user, this way we show the data of specific card
-     * @param {string} mainSection - Is the name of the main section in the subnavbar
-     */
+     * to change cards depending the iteraction of user, this way we show the data of specific card*/
     static controllerPositionSubnavbar(mainSection) { const element = elementById('nav-' + mainSection); element.click() }
-
-
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
-    static currentCredentials(currentSection) {
-        const { entity } = getProfileUser();
-        const index = this.getIndexRequest(currentSection);
-        const containers = this.containerToFill(index);
-        const collections = this.collectionToSearch(index);
-        return { indexSection: index, arrayContainer: containers, arrayCollection: collections, entity };
+    /**
+     * Intend to define escential data to build the queries corresponding to user iteractivity, call data according at context
+     * @param {string} currentSection - Is the name of the current section
+     * @param {object} [handlerFormat = null] - Is optional and contain keys that coordinate a request data specific, according to context
+     * @return {object} get a object with propierties like indexSection and collections "correspond to a container asignated" this way, we get the data from database and fill containers in the section
+     * @example
+     * Sections = [home:0], [handler-device:1], [control-departaments:2], [user-management:3], [finding-data:4], [filters:5]
+     * @const {number} index - obtain the index of the current section to work with arrays later     
+     * @const {array} collections - obtain a array with names of the collections to inicialize the query to the database and fill the specific container with according data
+     * @const {array} containers - obtain a array with names of the containers present in the current section
+     */
+    static updateCredentials(currentSection, handlerFormat) {
+        const { entity: currentEntity } = getProfileUser();
+        Section.handlerFormat = handlerFormat;
+        Section.currentEntity = currentEntity;
+        Section.currentSection = currentSection;
+        Section.arrayCollection = this.collectionToSearch(index);
+        Section.arrayContainer = this.containerToFill(index);
+        Section.indexCurrentSection = this.getIndexCurrentSection(this.currentSection);
     }
-    static getRequest(indexSection, collectionToSearch, configQuery = null) {
-        if (!configQuery) { configQuery = this.getDefaultQuery(indexSection); }
+
+    static getRequest(collectionToSearch, configQuery = null) {
+        if (!configQuery) configQuery = this.getDefaultQuery(this.indexCurrentSection);
         const metaData = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };
         return { ...metaData[collectionToSearch], ...configQuery };//return object with keys; icon, where and paginatión
     }
-    static getIndexRequest(context) {//AC #007
+    static getIndexCurrentSection(context) {//AC #007
         const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters'];
         return array.findIndex(value => value === context);
     }
@@ -199,7 +206,7 @@ class Section {
         let indexW = [0, 3], indexP = [0, 2];
         if (!data.where || !data.pagination) return;
         if (this.loopIndex === 2) { indexW = [6, 9], indexP = [4, 6] }
-        if (this.loopIndex === 1) { indexW = [3, 6], indexP = [2, 4] }        
+        if (this.loopIndex === 1) { indexW = [3, 6], indexP = [2, 4] }
         return [...data.where.slice(indexW[0], indexW[1]), ...data.pagination.slice(indexP[0], indexP[1])]
     }
     /*contains all containers of each section by him id, sorted according to navigator bar*/
@@ -207,11 +214,11 @@ class Section {
     /*contains all collections to search in database, sorted according to navigator bar*/
     static collectionToSearch(i) { const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']]; return array[i] }
     /*set the card empty by default 'display: flex;' to 'display: none;' this intended to inspect the card empty by default, if we have response from database then change visivility at display: none;*/
-    static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) { card_empty.classList.toggle('d-none') } }
+    static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) card_empty.classList.toggle('d-none') }
     /*Cleans the specified container based on the provided handlerFormat
       @param {HTMLElement} container - The container to potentially clean.
       @param {Object} handler - The format handler which includes propierty loadMore.*/
-    static clearContainerConditionally(container, handlerFormat = null) { if (handlerFormat ? handlerFormat.loadMore || handlerFormat.moreDetails : true) this.cleanContainer(container) }
+    static clearContainerConditionally(container) { if (this.handlerFormat ? this.handlerFormat.loadMore || this.handlerFormat.moreDetails : true) this.cleanContainer(container) }
     /*Clean the specified provide container #addComentary: 001
       @param {HTMLElement} container - The container to potentially clean.*/
     static cleanContainer(container) { const cards = container.querySelectorAll('.card-body'); cards.forEach(card => card.remove()) }
