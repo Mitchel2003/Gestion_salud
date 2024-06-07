@@ -1,5 +1,5 @@
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
-import { getProfileUser, DataByRequest, DataByDocument } from '../firebase/query.js';
+import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 /*--------------------------------------------------mode--------------------------------------------------*/
@@ -27,7 +27,7 @@ async function eventContainer(container, section) {
     });
 }
 /*--------------------------------------------------classes--------------------------------------------------*/
-class Section {
+ class Section {
     static loopIndex;
     static loopContainer;
     static arrayContainer;
@@ -35,7 +35,7 @@ class Section {
     static currentEntity;
     static currentSection;
     static handlerFormat;
-    static indexCurrentSection;
+    static indexSection;
 
     static async loadCurrentSection(section) { await Section.init(section) }
     static async actionMoreDetails(section, handler) { await Section.init(section, handler) }
@@ -44,21 +44,26 @@ class Section {
     /**
      * Initialize a query from database to section context (contain mode default and fixed).
      * @param {string} section - The section context to operate
-     * @param {object} [handlerFormat = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
-     * @return {innerHTML} defines the content of the current section
+     * @param {object} [handler = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
+     * @return {HTMLElement} defines the content of the current section
      */
     static async init(section, handler = null) {
         onLoadWhile();
         this.updateCredentials(section, handler);
         let promise = this.arrayContainer.map(async (container, index) => {//AC #002
+
+            //working here, the problem is that loopIndex and loopContainer have a strange behavior; remember that .map not follow a normal way (loop)
+
             this.loopIndex = index;
             this.loopContainer = container;
+            console.log(this.loopContainer, this.loopIndex);
             let route = this.handleRoute(); if (route === null) return;
             const { dataStatic, collection, arrayConfig } = this.preparateRequest();
+
             const res = await this.routeRequest(route, collection, arrayConfig);
             this.toggleVisibilityCardEmpty(elementById(this.loopContainer), res);
             this.clearContainerConditionally(elementById(this.loopContainer));
-            this.createItems(res, dataStatic.icon);
+            this.createItems(res, dataStatic);
         });
         await Promise.all(promise);
         offLoadWhile();
@@ -66,15 +71,15 @@ class Section {
     /*--------------------------------------------------actions kit--------------------------------------------------*/
     /**
      * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
-     * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search
+     * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search (example: array.lenght = 2)
      * @param {string} collection - Is the name of collection to search into database
      * @param {array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @return {object} a snapshot (object) from database "firebase firestore"
      */
     static async routeRequest(route, collection, arrayConfig) { //working here...
-        const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route, nameSection: this.currentSection };
-        const array = { entity: this.currentEntity, ...build };
-        return await DataByRequest.get(array);
+        const type = this.handlerFormat ? this.handlerFormat.document : false;
+        const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route };
+        return await DataByRequest.get({ section: this.currentSection, entity: this.currentEntity, isDocument: type, ...build });
     }
     /**
      * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
@@ -117,8 +122,12 @@ class Section {
             reports: () => cardFinding(value, icon)
         }
         for (const [key, method] of Object.entries(metaData)) {
+            console.log(this.loopContainer);
             if (this.handlerFormat ? this.handlerFormat[key] : null) return method();
-            else if (this.loopContainer.includes(key)) return method();
+            
+            else if (this.loopContainer.includes(key)) {
+                return method();
+            }
         }
     }
     /** Configure the query basing into index of current container that we are filling (this.loopIndex)
@@ -129,9 +138,8 @@ class Section {
     static preparateRequest() {
         const collection = this.arrayCollection[this.loopIndex];
         const dataStatic = this.getRequest(collection, this.handlerFormat ? this.handlerFormat.query : null);
-        //console.log(dataStatic); //need evalue this...
         const arrayConfig = this.fixQueryConfig(dataStatic);
-        return { dataStatic, collection, arrayConfig }
+        return { dataStatic: dataStatic.icon, collection, arrayConfig }
     }
     /**
      * Helps me control the flow of the current loop (containers in current section), through (allow/deny) we can fill a container specific by using a handler (handlerFormat)
@@ -141,17 +149,18 @@ class Section {
      * @example
      * .query = actions in list (filter),
      * .list = actions in list (to the right of windown)
-     * .moreDetails = actions in formats (to the left of windown) "moreDetails"*/
+     * .moreDetails = actions in formats (to the left of windown) "moreDetails"
+     */
     static handleRoute() {
         const format = this.handlerFormat;
+        if (!format) return "allow";
+        if (format && this.loopIndex != 1) return null; //number "1" is equal to side left in the current section
         const array = [
             format.query,
             format.seeReports,
             format.moreDetails,
             format.loadMore
         ]
-        if (!format) return "allow";
-        if (format && this.loopIndex != 1) return null; //number "1" is equal to side left in the current section
         this.controllerPositionSubnavbar(this.loopContainer);
         return array[format.idFormat];
     }
@@ -161,36 +170,34 @@ class Section {
      * @example the user wish show "more details" about the card selected (side right);
      * so maybe that the subnavbar (side left) its on section "create something" (static),
      * we need redirect to main section in subnavbar because its the unique that have the capacity
-     * to change cards depending the iteraction of user, this way we show the data of specific card*/
+     * to change cards depending the iteraction of user, this way we show the data of specific card
+     */
     static controllerPositionSubnavbar(mainSection) { const element = elementById('nav-' + mainSection); element.click() }
     /*--------------------------------------------------modularization tools--------------------------------------------------*/
     /**
      * Intend to define escential data to build the queries corresponding to user iteractivity, call data according at context
      * @param {string} currentSection - Is the name of the current section
      * @param {object} [handlerFormat = null] - Is optional and contain keys that coordinate a request data specific, according to context
-     * @return {object} get a object with propierties like indexSection and collections "correspond to a container asignated" this way, we get the data from database and fill containers in the section
+     * @return {void} get a object with propierties like indexSection and collections "correspond to a container asignated" this way, we get the data from database and fill containers in the section
      * @example
      * Sections = [home:0], [handler-device:1], [control-departaments:2], [user-management:3], [finding-data:4], [filters:5]
-     * @const {number} index - obtain the index of the current section to work with arrays later     
-     * @const {array} collections - obtain a array with names of the collections to inicialize the query to the database and fill the specific container with according data
-     * @const {array} containers - obtain a array with names of the containers present in the current section
      */
     static updateCredentials(currentSection, handlerFormat) {
         const { entity: currentEntity } = getProfileUser();
         Section.handlerFormat = handlerFormat;
         Section.currentEntity = currentEntity;
         Section.currentSection = currentSection;
-        Section.arrayCollection = this.collectionToSearch(index);
-        Section.arrayContainer = this.containerToFill(index);
-        Section.indexCurrentSection = this.getIndexCurrentSection(this.currentSection);
+        Section.indexSection = this.getIndexSection(this.currentSection);
+        Section.arrayCollection = this.collectionToSearch(this.indexSection);
+        Section.arrayContainer = this.containerToFill(this.indexSection);
     }
 
     static getRequest(collectionToSearch, configQuery = null) {
-        if (!configQuery) configQuery = this.getDefaultQuery(this.indexCurrentSection);
+        if (!configQuery) configQuery = this.getDefaultQuery(this.indexSection);
         const metaData = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };
         return { ...metaData[collectionToSearch], ...configQuery };//return object with keys; icon, where and paginatión
     }
-    static getIndexCurrentSection(context) {//AC #007
+    static getIndexSection(context) {//AC #007
         const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters'];
         return array.findIndex(value => value === context);
     }
@@ -214,7 +221,7 @@ class Section {
     /*contains all collections to search in database, sorted according to navigator bar*/
     static collectionToSearch(i) { const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']]; return array[i] }
     /*set the card empty by default 'display: flex;' to 'display: none;' this intended to inspect the card empty by default, if we have response from database then change visivility at display: none;*/
-    static toggleVisibilityCardEmpty(container, response) { const card_empty = container.querySelector('.empty'); if (response && !card_empty.className.includes('d-none')) card_empty.classList.toggle('d-none') }
+    static toggleVisibilityCardEmpty(container, res) { const card_empty = container.querySelector('.empty'); if (res && !card_empty.className.includes('d-none')) card_empty.classList.toggle('d-none') }
     /*Cleans the specified container based on the provided handlerFormat
       @param {HTMLElement} container - The container to potentially clean.
       @param {Object} handler - The format handler which includes propierty loadMore.*/
@@ -225,7 +232,7 @@ class Section {
 
     //getters and setters
     static getCurrentSection() { return Section.currentSection }
-    static getContainerSection(index) { return Section.arrayContainerSection[index] }
+    static getContainerSection(index) { return Section.arrayContainer[index] }
     static getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }//closest to select card parent from button
 }
 /* --------------------------------------------------addComentary-------------------------------------------------- */

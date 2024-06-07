@@ -1,5 +1,4 @@
 import {timeStampToDate} from '../utils/convert.js';
-
 export function cardDevice(data, icon) {
     return `
         <div class="card card-body container-fluid" data-card='${JSON.stringify([ data.id_departament, data.id_device ])}' style="background: url('../components/images/bg-list.svg') no-repeat center; background-size: cover;">

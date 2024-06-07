@@ -1,4 +1,4 @@
-import { db, auth, collection, getDoc, getDocs, query, where, orderBy, limit, doc } from "./conection.js";
+import { db, auth, collection, doc, getDoc, getDocs, query, where, orderBy, limit, startAfter } from "./conection.js";
 /*--------------------------------------------------booleans and getters--------------------------------------------------*/
 export function getProfileUser() {
     const user = auth.currentUser;
@@ -12,44 +12,55 @@ export async function getDocumentUser(user, entity) {
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
 }
-export class DataByRequest { //return querySnapshot "getDocs"
+export class DataByRequest { //could be querySnapshot or documentSnapshot
+    static lastDocumentVisible;
+    static section;
     static request;
     static handler;
-    static lastDocumentVisible;
-    
-    static async get(array = null, handler = null) {
-        DataByRequest.request = array;
-        DataByRequest.handler = handler;
+    static entity;
 
-        if (!array) return await getDocs(getCollection());
-        await this.isDocumentRequest(); //could be querySnapshot or documentSnapshot
-        return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section)));
-        
-        const querySnapshot = this.buildQuery(this.getSubCollection(array), array, handler);
-        const response = await getDocs(querySnapshot);
-        this.lastDocumentVisible = response.docs[response.docs.length - 1]; return response;
+    static async get(data = null, handler = null) {
+        if (!data) return await getDocs(getCollection()); //by default
+        this.updateCredentials(data, handler);
+        const { isDocument } = this.request;
+        if (isDocument) return await this.getDocumentRequest();
+        return await this.getQueryRequest();
     }
-    static isDocumentRequest(){
-        if (this.handler ? this.handler.document : false) return true;
+    static async getDocumentRequest() {
+        const documentSnapshot = this.preparateDocument();
+        return await getDoc(documentSnapshot);
     }
-    static preparateQuery(subCollection, array, filter = null) {
-        const { queryConfig } = array;
+    static async getQueryRequest() {
+        const querySnapshot = this.preparateQuery();
+        const res = await getDocs(querySnapshot);
+        this.lastDocumentVisible = res.docs[res.docs.length - 1];
+        return res;
+    }
+    static preparateDocument() {
+        const { req, nameSection } = this.request;
+        let prepare = nameSection.includes('user') ? ['user', req[0].toString()] : ['departament', req[0].toString()]; //user and departament
+        if (req.length === 2) return [...prepare, 'device', req[1].toString()] //device
+        if (req.length === 3) return [...prepare, 'device', req[1].toString(), 'finding', req[2].toString()] //finding
+        return doc(getCollection(), this.entity, ...prepare);
+    }
+    static preparateQuery() {
+        const { queryConfig } = this.request;
         const config = [
             where(queryConfig[0], queryConfig[1], queryConfig[2]),
             orderBy(queryConfig[3]),
             limit(queryConfig[4]),
         ];
-        if (filter ? filter.lastVisible : false) { config.push(startAfter(filter.lastVisible)) }
-        return query(subCollection, ...config);
+        if (this.handler ? this.handler.lastVisible : false) config.push(startAfter(this.handler.lastVisible));
+        return query(this.getSubCollection(), ...config);
     }
-    static preparateDocument(array, section) {
-        let prepare = section.includes('user') ? ['user', array[0].toString()] : ['departament', array[0].toString()]; //user and departament
-        if (array.length === 2) return [...prepare, 'device', array[1].toString()] //device
-        if (array.length === 3) return [...prepare, 'device', array[1].toString(), 'finding', array[2].toString()] //finding
-        return prepare;
+    static updateCredentials(data, handler){
+        DataByRequest.request = data;
+        DataByRequest.handler = handler;
+        DataByRequest.entity = data.entity;
+        /*working in this*/if (this.section === null || this.section != data.section) { this.lastDocumentVisible = null; this.section = data.section }
     }
     /*------------------------------tools------------------------------*/
-    static getSubCollection(array) { return collection(getCollection(), array.entity, array.req) }
+    static getSubCollection() { return collection(getCollection(), this.request.entity, this.request.req) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
 // export class DataByDocument { //return documentSnapshot "getDoc"
