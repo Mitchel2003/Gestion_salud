@@ -40,7 +40,7 @@ class Section {
     static async actionSeeReports(section, handler) { await Section.init(section, handler) }
 
     /**
-     * Initialize a query from database to section context (contain mode default and fixed).
+     * Initialize a query data to database for fill the section in context (contain mode default and fixed).
      * @param {string} section - The section context to operate
      * @param {object} [handler = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
      * @returns {method} - this define the content present into containers of current section
@@ -66,7 +66,7 @@ class Section {
      * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search (example: array.lenght = 2)
      * @param {string} collection - Is the name of collection to search into database
      * @param {array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
-     * @return {object} a snapshot (object) from database "firebase firestore"
+     * @returns {object} a querySnapshot or documentSnapshot from database
      */
     static async routeRequest(route, collection, arrayConfig) { //working here...
         const type = this.handlerFormat ? this.handlerFormat.document : false;
@@ -76,7 +76,8 @@ class Section {
     /**
      * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
      * @param {Object} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
-     * @param {String} icon - Correspond to a propierty of object, contain data static of the card specific
+     * @param {string} container - Is the name container belongs to current loop, is one of the containers to fill in section context (example: "home")
+     * @param {string} icon - Is a name class to insert a icon in the card context, correspond to bootstrap icons
      * @return {HTMLElement} insert cards in the current container, this depends on the loop the container is in
      * @const {object} data - is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
