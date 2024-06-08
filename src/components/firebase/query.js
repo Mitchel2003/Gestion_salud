@@ -50,8 +50,10 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
         return res;
     }
     /**
-     * this prepare a deep fetch into database to get a document specific through array size "request" that correspond to deep location document (that corresponds to depth of the document location )
-     * @returns {querySnapshot} - get a await data query from database
+     * this prepare a deep fetch into database to get a document specific through array size that corresponds to depth of the document location
+     * @returns {querySnapshot} get a await data query from database
+     * @const {array} req - is a array that represent each specific document for access to inner collections, then we can access more and more depth
+     * @example [101: departament, 10001: device, 10001-1: finding]
      */
     static preparateDocument() {
         const { req, nameSection } = this.request;
@@ -60,6 +62,12 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
         if (req.length === 3) return [...prepare, 'device', req[1].toString(), 'finding', req[2].toString()] //finding
         return doc(getCollection(), this.entity, ...prepare);
     }
+    /**
+     * this prepare a query compound, we use 'where' to apply filter, 'orderBy' to format orden of querySnapshot and 'limit' to pagination; also have a conditional to 'loadMore' taking the last document shown in the container[0] (side right)
+     * @returns {querySnapshot} get a await data query from database
+     * @const {array} queryConfig - is a array with the configuration of 'where' and 'pagination' - .lenght is equal to 5
+     * @example ['avaliable', '!=', 'true', 'avaliable', 5]
+     */
     static preparateQuery() {
         const { queryConfig } = this.request;
         const config = [
@@ -74,7 +82,7 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
         DataByRequest.request = data;
         DataByRequest.handler = handler;
         DataByRequest.entity = data.entity;
-        /*working in this*/if (this.section === null || this.section != data.section) { this.lastDocumentVisible = null; this.section = data.section }
+        if (this.section === null || this.section != data.section) { this.lastDocumentVisible = null; this.section = data.section } /*working in this*/
     }
     /*------------------------------tools------------------------------*/
     static getSubCollection() { return collection(getCollection(), this.request.entity, this.request.req) }
