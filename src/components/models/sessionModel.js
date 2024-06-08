@@ -92,7 +92,8 @@ class Section {
     /**
      * This module have the function of return a card format depending of name container in a loop context (this.loopContainer) according to current section; or using a handler sent to config a specific card
      * @param {object} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
-     * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons     
+     * @param {string} nameContainer - Is the name of container in context to insert the data obtained from database
+     * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons
      * @return {HTMLElement} execute a method that return a DOMElement
      * @const {object} metaData - is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search
      * @example
@@ -120,6 +121,8 @@ class Section {
         }
     }
     /** Configure the query basing into index of current container that we are filling (this.loopIndex)
+     * @param {number} loopIndex - Is the number of the current index in the loop
+     * @param {string} loopCollection - Is the name of the collection through which query data to database
      * @return {object} we get a object configured by default (or by configQuery param) to set a request
      * @const {object} metaData - is equal to { query: {where: [], pagination: []} }
      * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent ...where and ...pagination

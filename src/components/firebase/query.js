@@ -18,7 +18,12 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
     static request;
     static handler;
     static entity;
-
+    /**
+     * This allow redirect a request by a query config sent
+     * @param {object} [data = null] - is a object {section, entity, isDocument = boolean, ...query} with config to direct the query, this allow update a variables that operate in this class
+     * @param {object} [handler = null] - correspond to query config for complex fetch to database, I use this param for the filter algoritm
+     * @returns {snapshot} - get a await data query from database
+     */
     static async get(data = null, handler = null) {
         if (!data) return await getDocs(getCollection()); //by default
         this.updateCredentials(data, handler);
@@ -26,16 +31,28 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
         if (isDocument) return await this.getDocumentRequest();
         return await this.getQueryRequest();
     }
+    /**
+     * prepare a documentRequest and get documentSnapshot from database (get a specific document)
+     * @returns {documentSnapshot} get a await data query from database "document"
+     */
     static async getDocumentRequest() {
         const documentSnapshot = this.preparateDocument();
         return await getDoc(documentSnapshot);
     }
+    /**
+     * prepare a queryRequest and get querySnapshot from database (get a lot documents "bigData"); also keep the last document of snapshot result for apply pagination
+     * @returns {querySnapshot} - get a await data query from database "big data"
+     */
     static async getQueryRequest() {
         const querySnapshot = this.preparateQuery();
         const res = await getDocs(querySnapshot);
         this.lastDocumentVisible = res.docs[res.docs.length - 1];
         return res;
     }
+    /**
+     * this prepare a deep fetch into database to get a document specific through array size "request" that correspond to deep location document (that corresponds to depth of the document location )
+     * @returns {querySnapshot} - get a await data query from database
+     */
     static preparateDocument() {
         const { req, nameSection } = this.request;
         let prepare = nameSection.includes('user') ? ['user', req[0].toString()] : ['departament', req[0].toString()]; //user and departament
@@ -53,7 +70,7 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
         if (this.handler ? this.handler.lastVisible : false) config.push(startAfter(this.handler.lastVisible));
         return query(this.getSubCollection(), ...config);
     }
-    static updateCredentials(data, handler){
+    static updateCredentials(data, handler) {
         DataByRequest.request = data;
         DataByRequest.handler = handler;
         DataByRequest.entity = data.entity;
@@ -63,9 +80,6 @@ export class DataByRequest { //could be querySnapshot or documentSnapshot
     static getSubCollection() { return collection(getCollection(), this.request.entity, this.request.req) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
 }
-// export class DataByDocument { //return documentSnapshot "getDoc"
-//     static async get(array, entity, section) { return await getDoc(doc(getCollection(), entity, ...this.preparateDocument(array, section))) }
-// }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
