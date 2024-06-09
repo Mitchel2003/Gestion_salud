@@ -18,10 +18,9 @@ async function handlerSection(nav) {
 async function eventContainer(container, section) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
-        const card = e.target;
-        const arrayCard = Section.getTargetCard(card);
-        if (card.classList.contains('btn-outline-primary')) return await Section.actionMoreDetails(section, { idFormat: 2, moreDetails: arrayCard })
-        if (card.classList.contains('btn-outline-success') || card.classList.contains('btn-outline-danger')) return await Section.actionSeeReports(section, { idFormat: 1, seeReports: arrayCard, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
+        const arrayData = Section.getTargetCard(e.target);
+        if (e.className.includes('btn-outline-primary')) return await Section.actionMoreDetails(section, { id: 2, moreDetails: arrayData, query: 'not apply here' })
+        if (e.className.includes('btn-outline-success') || e.className.includes('btn-outline-danger')) return await Section.actionSeeReports(section, { id: 1, seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -135,7 +134,7 @@ class Section {
             format.loadMore
         ]
         this.controllerPositionSubnavbar(loopContainer);
-        return array[format.idFormat];
+        return array[format.id];
     }
     /**
      * For control when iterating over the options in the side right (scroll container), in same case like that;
@@ -166,15 +165,23 @@ class Section {
     /**
      * This method allows us to configure the request that we send to Firebase method "getDocs()" with which we obtain the snapshot "documentSnapshot" or "querySnapshot"
      * @param {string} collectionToSearch - Contain name of the collection to query in database, with this name we can inspect the keys of object "data" to get static data customized (example: icon)
-     * @param {object} [configQuery = null] - Is optional, intend be a object with propierties like;
-     * @example where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5]
-     * @returns {object} we get a object with keys {icon, where, pagination} to config snapshot received by 'getDocs()' through at 'query()' that we send with a config specific. The above methods belongs to the backend of firebase
+     * @param {object} [query = null] - Have three status, could be this;
+     * @example
+     * null = when go through containers into current section (like 'home'); remember that we have a query default to main sections
+     * string = when request a documentSnapshot (dont need 'where' or 'pagination')
+     * object = to build a specific query, intend be a object like this { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] }
+     * @returns {object} we get a object with keys {icon, where, pagination} to fix the query() method that we will use to send a specific request. The above method belong to the backend of firebase
      * @const {object} data - is a object with keys that corresponding to specific collection, contain a default config like 'icon'
      */
-    static getRequest(collectionToSearch, configQuery = null) {
-        if (!configQuery) configQuery = this.getDefaultQuery(this.indexSection);
-        const data = { device_references: { icon: 'bi bi-display' }, finding_references: { icon: 'bi bi-file-earmark-text' }, departament: { icon: 'bx bx-buildings' }, user: { icon: 'bx bxs-id-card' } };
-        return { ...data[collectionToSearch], ...configQuery };
+    static getRequest(collectionToSearch, query = null) {
+        const data = {
+            device_references: { icon: 'bi bi-display' },
+            finding_references: { icon: 'bi bi-file-earmark-text' },
+            departament: { icon: 'bx bx-buildings' },
+            user: { icon: 'bx bxs-id-card' }
+        };
+        if (!query) query = this.getDefaultQuery(this.indexSection);
+        return { ...data[collectionToSearch], ...query };
     }
     /**
      * While we dont have handler in the query "example: filters", we need make the pagination and ordenament in standard mode, this method returns a default query
