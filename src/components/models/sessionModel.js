@@ -2,13 +2,12 @@ import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/vie
 import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
+
 /*--------------------------------------------------mode--------------------------------------------------*/
 export async function modeAuxiliary() {    
     controllerSideBar(elementByClass('.side-bar'));
     await handlerSection(elementByClass('.nav-tabs'));
 }
-/*-------------------------------------------------------------------------------------------------------------------*/
-
 /*--------------------------------------------------controllers--------------------------------------------------*/
 async function handlerSection(nav) {
     nav.addEventListener('click', async (e) => {
@@ -306,6 +305,7 @@ class Section {
     static getCurrentSection() { return Section.currentSection }
     /*-------------------------------------------------------------------------------------------------------------------*/
 }
+
 /**
  * Control the status of side-bar into section applying a toggle on click, also have a 'pointer leave' event to close when the mouse out of bar
  * @param {HTMLElement} params - This element correspond to sideBar
