@@ -4,23 +4,34 @@ import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 
 /*--------------------------------------------------mode--------------------------------------------------*/
+/**
+ * controller sesion of the user with auxiliary access
+ * @returns {method} allow the interactivity on the sections in context and their containers respective
+ */
 export async function modeAuxiliary() {    
     controllerSideBar(elementByClass('.side-bar'));
     await handlerSection(elementByClass('.nav-tabs'));
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
+/**
+ *
+ * @param {HTMLElement} nav - Correspond to element main navbar
+ * @returns {method} apply a event on click over the options in main navbar, so if user click
+ */
 async function handlerSection(nav) {
-    nav.addEventListener('click', async (e) => {
-        e.target.ariaCurrent ? await Section.loadCurrentSection(e.target.ariaCurrent) : '';
-        eventContainer(Section.getContainerSection(0), Section.getCurrentSection());
+        nav.addEventListener('click', async (e) => {
+        let item = e.target.ariaCurrent;
+        if (item) { await Section.loadCurrentSection(item); eventContainer(Section.getContainerSection(0)) }
     })
 }
-async function eventContainer(container, section) {
+async function eventContainer(container) { /*working here*/
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
+        const section = Section.getCurrentSection();
         const arrayData = Section.getTargetCard(e.target);
-        if (e.className.includes('btn-outline-primary')) return await Section.actionMoreDetails(section, { id: 2, moreDetails: arrayData, query: 'not apply here' })
-        if (e.className.includes('btn-outline-success') || e.className.includes('btn-outline-danger')) return await Section.actionSeeReports(section, { id: 1, seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
+        /*for delete "id" on the handler (this id we using to get arrayData )*/
+        if (e.className.includes('btn-outline-primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here' })
+        if (e.className.includes('btn-outline-success') || e.className.includes('btn-outline-danger')) return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -134,7 +145,8 @@ class Section {
             format.loadMore
         ]
         this.controllerPositionSubnavbar(loopContainer);
-        return array[format.id];
+        return array[1]; /*the second index [1] correspond to the array data in context*/
+        /*I need know how get data of the specific key through their id; this way resolve the logic and not use a array[]*/
     }
     /**
      * For control when iterating over the options in the side right (scroll container), in same case like that;
