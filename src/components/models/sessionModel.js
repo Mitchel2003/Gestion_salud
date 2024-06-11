@@ -1,12 +1,12 @@
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
-import { getProfileUser, DataByRequest } from '../firebase/query.js';
 import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
+import { DataByRequest } from '../firebase/query.js';
 
 /*--------------------------------------------------mode--------------------------------------------------*/
 /**
- * Controller sesion of the user with auxiliary access
- * @returns {method} allow the interactivity on the section in context and their containers respective
+ * Controller sesion of the user with auxiliary access, allow interactivity on the page with an access corresponding that which the user is subscribed
+ * @returns {method} Interactivity into content of current sesion
  */
 export async function modeAuxiliary() {
     controllerSideBar(elementByClass('.side-bar'));
@@ -14,7 +14,7 @@ export async function modeAuxiliary() {
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
 /**
- * Is used to coordinate the contain of section that user click on; this way we can fill the specific containers through a snapshot corresponding
+ * Is used to coordinate the contain of section that user click on; this way we can request data and fill the specific containers through a snapshot received
  * @param {HTMLElement} nav - Correspond to element main navbar
  * @returns {method} apply a event on click over the options in main navbar, so if user click
  */
@@ -36,18 +36,16 @@ async function eventContainer(container) {
         const card = e.target;
         const section = Section.getCurrentSection();
         const arrayData = Section.getTargetCard(card);
-        if (card.className.includes('primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here' })
+        if (card.className.includes('primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, document: true, query: 'not apply here' })
         if (card.className.includes('danger') ||
             card.className.includes('success')) return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
-    /*for delete "id" on the handler (this id we using to get arrayData)*/
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
-class Section {
+export class Section {
     static arrayContainer;
     static arrayCollection;
-    static currentEntity;
     static currentSection;
     static handlerFormat;
     static indexSection;
@@ -61,12 +59,9 @@ class Section {
      * @param {string} section - The section context to operate
      * @param {object} [handler = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
      * @returns {method} this define the content present into containers of current section
-     * @const {number} loopIndex - this represent the index of container that loop is in
-     * @example handler-device => containers['device-list', 'reports'] => index [0, 1]
-     * @const {string} loopContainer - is the name container that loop is in
-     * @example handler-device => containers['device-list', 'reports']
-     * @const {string} loopCollection - is the name of collection through wich obtain the data request to fill the current container, we use to find the data location
-     * @example handler-device => containers['device-list', 'reports'] => collections ['device_references', 'finding_references']
+     * @const {number} loopIndex - this represent the index of container that loop is in ([0, 1])
+     * @const {string} loopContainer - is the name container that loop is in (['device-list', 'reports'])
+     * @const {string} loopCollection - is the name of collection through wich obtain the data request to fill the current container, we use to find the data location (['device_references', 'finding_references'])
      */
     static async init(section, handler = null) {
         onLoadWhile();
@@ -87,17 +82,15 @@ class Section {
     /*--------------------------------------------------update credentials--------------------------------------------------*/
     /**
      * Intend to define escential data to build the queries corresponding to user iteractivity, call data according at context
-     * @param {string} currentSection - Is the name of the current section
-     * @param {object} [handlerFormat = null] - Is optional and contain keys that coordinate a request data specific, according to context
+     * @param {string} section - Is the name of the current section
+     * @param {object} [handler = null] - Is optional and contain keys that coordinate a request data specific, according to context
      * @returns {method} get a object with propierties like indexSection and collections "correspond to a container asignated" this way, we get the data from database and fill containers in the section
      * @example
      * Sections = [home:0], [handler-device:1], [control-departaments:2], [user-management:3], [finding-data:4], [filters:5]
      */
-    static updateCredentials(currentSection, handlerFormat) {
-        const { entity: currentEntity } = getProfileUser();
-        Section.handlerFormat = handlerFormat;
-        Section.currentEntity = currentEntity;
-        Section.currentSection = currentSection;
+    static updateCredentials(section, handler) {
+        Section.handlerFormat = handler;
+        Section.currentSection = section;
         Section.indexSection = this.getIndexSection(this.currentSection);
         Section.arrayCollection = this.collectionToSearch(this.indexSection);
         Section.arrayContainer = this.containerToFill(this.indexSection);
@@ -231,7 +224,7 @@ class Section {
     static async routeRequest(route, collection, arrayConfig) {
         const type = this.handlerFormat ? this.handlerFormat.document : false;
         const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route };
-        return await DataByRequest.get({ section: this.currentSection, entity: this.currentEntity, isDocument: type, ...build });
+        return await DataByRequest.get({ isDocument: type, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 

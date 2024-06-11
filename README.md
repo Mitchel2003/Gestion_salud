@@ -1,16 +1,6 @@
-¡Claro que sí! Creo que lo que estás buscando es desestructurar los datos de una manera elegante y profesional en lugar de depender de un índice numérico para acceder a las claves del objeto. Para lograr esto, puedes utilizar la desestructuración de objetos en JavaScript. Aquí tienes un ejemplo de cómo podrías reescribir tu función `handleRoute` para lograr una desestructuración elegante:
-
 ```javascript
-static handleRoute(loopIndex, loopContainer) {
-  const { query, seeReports, moreDetails, loadMore } = this.handlerFormat || {};
-  
-  if (!query) return "allow";
-  if (query && loopIndex !== 1) return null;
-  
-  this.controllerPositionSubnavbar(loopContainer);
-  
-  return { query, seeReports, moreDetails, loadMore }[Object.keys(this.handlerFormat)[0]];
-}
+    /*get key by id (location)*/
+    [Object.keys(this.handlerFormat)[0]];
 ```
 
 En este código, hemos utilizado la desestructuración de objetos para asignar las propiedades `query`, `seeReports`, `moreDetails` y `loadMore` del objeto `this.handlerFormat` a variables con los mismos nombres. Luego, hemos accedido a la primera clave del objeto `this.handlerFormat` dinámicamente en lugar de tener que depender de un índice estático.
