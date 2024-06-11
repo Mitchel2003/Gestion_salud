@@ -6,7 +6,7 @@ onLoadWhile();
 await fixContext();
 
 let status = new StatusConnection();
-let time = new TimerOut(300000);//timeOut 5 minuts
+let time = new TimerOut(900000);//timeOut 5 minuts "300000"
 /*--------------------------------------------------methods--------------------------------------------------*/
 async function fixContext() {
     const { email, entity } = await observerSessionActive();

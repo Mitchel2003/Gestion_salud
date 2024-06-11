@@ -14,7 +14,7 @@ export async function getDocumentUser(user, entity) {
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
-export class DataByRequest { //
+export class DataByRequest { //working here...
     static lastDocumentVisible;
     static section;
     static request;

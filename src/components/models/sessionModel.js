@@ -5,34 +5,42 @@ import { elementById, elementByClass } from '../utils/values.js';
 
 /*--------------------------------------------------mode--------------------------------------------------*/
 /**
- * controller sesion of the user with auxiliary access
- * @returns {method} allow the interactivity on the sections in context and their containers respective
+ * Controller sesion of the user with auxiliary access
+ * @returns {method} allow the interactivity on the section in context and their containers respective
  */
-export async function modeAuxiliary() {    
+export async function modeAuxiliary() {
     controllerSideBar(elementByClass('.side-bar'));
     await handlerSection(elementByClass('.nav-tabs'));
 }
 /*--------------------------------------------------controllers--------------------------------------------------*/
 /**
- *
+ * Is used to coordinate the contain of section that user click on; this way we can fill the specific containers through a snapshot corresponding
  * @param {HTMLElement} nav - Correspond to element main navbar
  * @returns {method} apply a event on click over the options in main navbar, so if user click
  */
 async function handlerSection(nav) {
-        nav.addEventListener('click', async (e) => {
+    nav.addEventListener('click', async (e) => {
         let item = e.target.ariaCurrent;
         if (item) { await Section.loadCurrentSection(item); eventContainer(Section.getContainerSection(0)) }
-    })
+    });
 }
-async function eventContainer(container) { /*working here*/
+/**
+ * Allow coordinate the data obtained of the card click on by user in the "container" specific; the buttons into cards execute their logic a according to the card its in
+ * @param {string} container - Correspond to container name for add event on click in their cards
+ * @returns {method} A action according to button clicked, execute a request with data belong to the card selected
+ * @example In the side right on current section we can see a container with cards and buttons of actions, this buttons have a fuction where are send the data of the card in context
+ */
+async function eventContainer(container) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
+        const card = e.target;
         const section = Section.getCurrentSection();
-        const arrayData = Section.getTargetCard(e.target);
-        /*for delete "id" on the handler (this id we using to get arrayData )*/
-        if (e.className.includes('btn-outline-primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here' })
-        if (e.className.includes('btn-outline-success') || e.className.includes('btn-outline-danger')) return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
+        const arrayData = Section.getTargetCard(card);
+        if (card.className.includes('primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here' })
+        if (card.className.includes('danger') ||
+            card.className.includes('success')) return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
+    /*for delete "id" on the handler (this id we using to get arrayData)*/
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -100,7 +108,7 @@ class Section {
      * @return {number} we get a number that represent the index of the current section in which the user is locate
      */
     static getIndexSection(context) {
-        const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters']; 
+        const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters'];
         return array.findIndex(value => value === context);
     }
     /**
@@ -129,24 +137,13 @@ class Section {
      * @return {string} by default throws a string 'allow', but if its request then return "null" or "idFormat = number"
      * @const {object} [format = null] - we will use this handler to decide; if(!format).then(continue flow), if(format but indexLoop != indexContainer[1](side left)  ).then(stop flow)
      * @const {array} array - is a array of propierties that belongs at format; at least one of these properties must contain data, remember that if exist handlerFormat its because we intend a request, we await a format according to a requerided action
-     * @example
-     * .query = actions in list (filter),
-     * .list = actions in list (to the right of windown)
-     * .moreDetails = actions in formats (to the left of windown) "moreDetails"
      */
     static handleRoute(loopIndex, loopContainer) {
-        const format = this.handlerFormat;
-        if (!format) return "allow";
-        if (format && loopIndex != 1) return null; //number "1" is equal to side left in the current section
-        const array = [
-            format.query,
-            format.seeReports,
-            format.moreDetails,
-            format.loadMore
-        ]
+        const handler = this.handlerFormat;
+        if (!handler) return "allow";
+        if (handler && loopIndex != 1) return null; //number "1" is equal to side left in the current section
         this.controllerPositionSubnavbar(loopContainer);
-        return array[1]; /*the second index [1] correspond to the array data in context*/
-        /*I need know how get data of the specific key through their id; this way resolve the logic and not use a array[]*/
+        return handler[Object.keys(handler)[0]]; //the first element into object corresponding to the request by user
     }
     /**
      * For control when iterating over the options in the side right (scroll container), in same case like that;
@@ -249,7 +246,7 @@ class Section {
         const element = elementById(container);
         const card_empty = element.querySelector('.empty');
         if (res && !card_empty.className.includes('d-none')) card_empty.classList.toggle('d-none');
-        if (this.handlerFormat ? this.handlerFormat.loadMore || this.handlerFormat.moreDetails : true) this.cleanContainer(element);        
+        if (this.handlerFormat ? this.handlerFormat.loadMore || this.handlerFormat.moreDetails : true) this.cleanContainer(element);
     }
     /**
      * Clean the specified container
