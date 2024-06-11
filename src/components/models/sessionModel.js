@@ -36,7 +36,7 @@ async function eventContainer(container) {
         const card = e.target;
         const section = Section.getCurrentSection();
         const arrayData = Section.getTargetCard(card);
-        if (card.className.includes('primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, document: true, query: 'not apply here' })
+        if (card.className.includes('primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here', document: true })
         if (card.className.includes('danger') ||
             card.className.includes('success')) return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
     });
@@ -168,11 +168,11 @@ export class Section {
      * This method allows us to configure the request that we send to Firebase method "getDocs()" with which we obtain the snapshot "documentSnapshot" or "querySnapshot"
      * @param {string} collectionToSearch - Contain name of the collection to query in database, with this name we can inspect the keys of object "data" to get static data customized (example: icon)
      * @param {object} [query = null] - Have three status, could be this;
+     * @returns {object} we get a object with keys {icon, where, pagination} to fix the query() method that we will use to send a specific request. The above method belong to the backend of firebase
      * @example
      * null = when go through containers into current section (like 'home'); remember that we have a query default to main sections
      * string = when request a documentSnapshot (dont need 'where' or 'pagination')
      * object = to build a specific query, intend be a object like this { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] }
-     * @returns {object} we get a object with keys {icon, where, pagination} to fix the query() method that we will use to send a specific request. The above method belong to the backend of firebase
      * @const {object} data - is a object with keys that corresponding to specific collection, contain a default config like 'icon'
      */
     static getRequest(collectionToSearch, query = null) {
@@ -199,17 +199,31 @@ export class Section {
         ]; return array[index];
     }
     /**
-     * This includes a logic to get the query config specific according to index in current loop
-     * @param {object} data - Is a object with properties 'where:[]' and 'pagination:[]'
+     * This includes a logic to get the query config according to extension of data (where and pagination)
+     * @param {object} data - Is an object with optional properties like 'where:[]' and 'pagination:[]'
      * @param {number} loopIndex - This represent the number of the current index in the loop
-     * @returns {array} an array with the current config based on an index that belongs to the context container
+     * @returns {array} an array with the current config to request
      */
     static fixQueryConfig(data, loopIndex) {
-        let indexW = [0, 3], indexP = [0, 2];
-        if (!data.where || !data.pagination) return;
-        if (loopIndex === 2) { indexW = [6, 9], indexP = [4, 6] }
-        if (loopIndex === 1) { indexW = [3, 6], indexP = [2, 4] }
-        return [...data.where.slice(indexW[0], indexW[1]), ...data.pagination.slice(indexP[0], indexP[1])]
+        const where = data.where;
+        const pagination = data.pagination;
+        if (!where || !pagination) return;
+        if (where.length > 3) return this.sortQuery(data, loopIndex);
+        return [...data.where, ...data.pagination]
+    }
+    /**
+     * Helps us to return a config query corresponding to the index of loop in context
+     * @param {object} data - 'where:[]' and 'pagination:[]'
+     * @param {number} index - Correspond to the index of the loop its we in
+     * @returns {array} an array with the current config based on an index that belongs to the context container
+     */
+    static sortQuery(data, index) {
+        let index_where = [0, 3], index_pagination = [0, 2];
+        if (index === 1) { index_where = [3, 6]; index_pagination = [2, 4] }
+        return [
+            ...data.where.slice(index_where[0], index_where[1]),
+            ...data.pagination.slice(index_pagination[0], index_pagination[1])
+        ]
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -223,7 +237,7 @@ export class Section {
      */
     static async routeRequest(route, collection, arrayConfig) {
         const type = this.handlerFormat ? this.handlerFormat.document : false;
-        const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route };
+        const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route, queryConfig: arrayConfig ? arrayConfig : null };
         return await DataByRequest.get({ isDocument: type, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/

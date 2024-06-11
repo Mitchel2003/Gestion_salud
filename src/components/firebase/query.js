@@ -10,10 +10,10 @@ export function getProfileUser() {
     return { email: user.email, entity: user.photoURL };
 }
 /**
- * 
- * @param {string} user - Correspond to 
- * @param {*} entity 
- * @returns 
+ * Its a method that search a user document, if exist then get data like (access, key)
+ * @param {string} user - Correspond to email of current user
+ * @param {string} entity - Mean the entity that user its in
+ * @returns {object} initially return a false if dont find a user with this email, else return a object with keys (access and key)
  */
 export async function getDocumentUser(user, entity) {
     let access, key;
@@ -106,15 +106,37 @@ export class DataByRequest {
      * @const {array} queryConfig - is a array with the configuration of 'where' and 'pagination' - .lenght is equal to 5
      * @example ['avaliable', '!=', 'true', 'avaliable', 5]
      */
-    static preparateQuery() {
+    static preparateQuery() { //working here...
         const { req, queryConfig } = this.request;
         const config = [
             where(queryConfig[0], queryConfig[1], queryConfig[2]),
             orderBy(queryConfig[3]),
             limit(queryConfig[4]),
         ];
-        if (this.handler ? this.handler.lastVisible : false) config.push(startAfter(this.handler.lastVisible));
+        if(Array.isArray(req)) return this.getDeepQuery();
+        if(this.isFilter()) config.push(startAfter(this.handler.lastVisible));
         return query(this.getSubCollection(req), ...config);
+    }
+    /**
+     * This method simplify the logic
+     * @returns a boolean; return "true" if value "handler.lastVisible" contain something, else return "false"
+     */
+    static isFilter(){
+        let value;
+        this.handler ? value = this.handler.lastVisible : value = null ;
+        return !value.empty;
+    }
+    /**
+     * This method simplify the logic of desition, allow return a boolean that redirect the flow to deep query in the order of the collections
+     * @returns return "true" if the request is a array, else return "false"
+     */
+    static isDeepCollection(){
+        let value;
+        this.handler ? value = this.handler.lastVisible : value = null ;
+        return !value.empty;
+    }
+    static getDeepQuery(){
+
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
