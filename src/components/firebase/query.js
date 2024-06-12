@@ -106,7 +106,7 @@ export class DataByRequest {
      * @const {array} queryConfig - is a array with the configuration of 'where' and 'pagination' - .lenght is equal to 5
      * @example ['avaliable', '!=', 'true', 'avaliable', 5]
      */
-    static preparateQuery() { //working here...
+    static preparateQuery() {
         const { req, queryConfig } = this.request;
         const config = [
             where(queryConfig[0], queryConfig[1], queryConfig[2]),
@@ -135,31 +135,33 @@ export class DataByRequest {
      * @returns {querySnapshot} - returns a configurated deep query
      */
     static getDeepQuery(request, configuration) {
-        const deepSnapshot = this.preparateDeepQuery(request);
-        console.log(deepSnapshot);
-        return query(this.getSubCollection('departament'), ...deepSnapshot, ...configuration);
+        const deepSnapshot = this.prepareDeepQuery(request);
+        return query(this.buildSubCollection(deepSnapshot), ...configuration);
     }
     /**
      * Allows us preparate the depth of the query(), this through the length of the array
      * @param {array} request - Is an array like (example: 101, 10001)
      * @returns {array} we get an array to complement building of the query with a depth specific
+     * @example addComentary: 001
      */
-    static preparateDeepQuery(request){
-        let prepare = ['departament', request[0].toString()]; //departament
-        if (request.length === 2) return [...prepare, 'device', request[1].toString()] //device
-        if (request.length === 3) return [...prepare, 'device', request[1].toString(), 'finding', request[2].toString()] //finding        
+    static prepareDeepQuery(request){
+        let prepare = ['departament', request[0].toString(), 'device'];
+        if (request.length === 2) return [...prepare, request[1].toString(), 'finding'];
         return prepare
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------tools--------------------------------------------------*/
     /**
+     *
+     */
+    static buildSubCollection(array){ return collection(getCollection(), this.entity, ...array) }
+    /**
      * This method simplify the code through access to subcollection in context
      * @param {string} subCollection - Is the name of the sub collection to inspect
      * @returns {collection} a element collection from firebase to build query
      * @example main => entity => device_references     
      */
-    static getSubCollectionBuilding
     static getSubCollection(subCollection) { return collection(getCollection(), this.entity, subCollection) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
     /*-------------------------------------------------------------------------------------------------------------------*/
@@ -169,3 +171,12 @@ export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
 export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
 /*-------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------addComentary--------------------------------------------------*/
+/**
+ * #001:
+ * device: in this section, at on click the cards (side right), could be show findings according
+ * departament: in this section, at on click the cards (side right), could be show devices according 
+ */
+/* ------------------------------------------------------------------------------------------------------------------- */
+

@@ -232,13 +232,14 @@ export class Section {
      * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
      * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search (example: array.lenght = 2)
      * @param {string} collection - Is the name of collection to search into database
-     * @param {array} arrayConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
+     * @param {array} fixQuery - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @returns {object} a querySnapshot or documentSnapshot from database
      */
-    static async routeRequest(route, collection, arrayConfig) {
+    static async routeRequest(route, collection, fixQuery) {
+        const query = fixQuery ? fixQuery : null;
         const type = this.handlerFormat ? this.handlerFormat.document : false;
-        const build = typeof route === 'string' ? { req: collection, queryConfig: arrayConfig } : { req: route, queryConfig: arrayConfig ? arrayConfig : null };
-        return await DataByRequest.get({ isDocument: type, ...build });
+        const build = typeof route === 'string' ? { req: collection } : { req: route };
+        return await DataByRequest.get({ isDocument: type, queryConfig: query, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -251,19 +252,37 @@ export class Section {
      */
     static clearContainerConditionally(container, res) {
         const element = elementById(container);
-        const card_empty = element.querySelector('.empty');
-        if (res && !card_empty.className.includes('d-none')) card_empty.classList.toggle('d-none');
-        if (this.handlerFormat ? this.handlerFormat.loadMore || this.handlerFormat.moreDetails : true) this.cleanContainer(element);
+        this.setToggle_cardNothingFound(element, res);
+        this.cleanContainer(element);
+    }
+    /**
+     * With this we can inspect "res" that is snapshot; if have data then the card be disable "nothing found", else will be enable
+     * @param {HTMLElement} container - Is the container to clean
+     * @param {snapshot} res - Is the response of the request snapshot from firebase
+     * @returns {method} - set the visibility of the card by default "nothing found" depending to data found in the snapshot
+     * @example addComentary: 004
+     */
+    static setToggle_cardNothingFound(container, res) {
+        const card = container.querySelector('.empty');
+        const isCardVisible = !card.className.includes('d-none');
+        const value = res.docs ? res.docs.length : res.id //I explain on addComentary
+        if (value != 0) return isCardVisible ? card.classList.toggle('d-none') : '';
+        else isCardVisible ? '' : card.classList.toggle('d-none');
     }
     /**
      * Clean the specified container
      * @param {HTMLElement} container - Is the container to clear cards, correspond to DOM element
-     * @returns {method} remove all cards into current container
+     * @returns {method} remove all cards into current container according to data received by the handler
      * @example addComentary: 001
      */
     static cleanContainer(container) {
         const cards = container.querySelectorAll('.card-body');
-        cards.forEach(card => card.remove());
+        const handler = this.handlerFormat;
+        const allow = handler ?
+            handler.seeReports ||
+            handler.moreDetails ||
+            handler.loadMore.allowClean : true;
+        if (allow) cards.forEach(card => card.remove());
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -297,6 +316,7 @@ export class Section {
      * {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively
      */
     static setContentCard(value, nameContainer, icon) {
+        const handler = this.handlerFormat;
         const data = {
             /*formats with handler*/
             moreDetails: () => cardDetails(value, icon),
@@ -311,8 +331,8 @@ export class Section {
             reports: () => cardFinding(value, icon)
         }
         for (const [key, method] of Object.entries(data)) {
-            if (this.handlerFormat ? this.handlerFormat[key] : null) return method()
-            else if (nameContainer.includes(key)) return method()
+            if (handler ? handler[key] : null) return method();
+            if (nameContainer.includes(key)) return method();
         }
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
@@ -353,5 +373,12 @@ function controllerSideBar(side_bar) {
  * #003: the user wish show "more details" about the card selected (side right); so maybe that the subnavbar (side left)
  * its on section "create something" (static), we need redirect to main section in subnavbar because its the unique that have the capacity
  * to change cards depending the iteraction of user, this way we show the data of specific card
+ * 
+ * #004:
+ *      const value = res.docs ? res.docs.length : res.id
+ * I use this sintaxis because we await a snapshot that could be 'querySnapshot' or 'documentSnapshot', these two have different formats;
+ * res.docs correspond to 'querySnapshot' and res.id correspond to UID of the document 'documentSnapshpt'
+ * 
+ * 
  */
 /* ------------------------------------------------------------------------------------------------------------------- */

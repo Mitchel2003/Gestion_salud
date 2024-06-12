@@ -22,7 +22,7 @@ export function cardDevice(data, icon) {
 }
 export function cardFinding(data, icon) {
     return `
-        <div class="card card-body container-fluid border border-4 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
+        <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
                 <div class="row">
                     <div class="col-lg-0 col-md-1 col-sm-1 text-start">
                         <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>

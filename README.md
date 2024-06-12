@@ -36,7 +36,7 @@ function processPayment(newObject, item, icon) {
   //add this for GPT4
   """necesito lograr esto de la manera mas profesional posible, usando patrones de diseño, optimizaciones de codigo y de rendimiento, eficiciencia en cuanto empleo de macanismos profesionales,
   
-  siempre opto por las maneras mas profesionales y esteticas de coseguir las cosas, recuerda que siempre busco maneras de hacer mejor las cosas, necesito la forma mas optima en cuanto a rendimiento y escalabilidad, eficiente en cuanto a codigo y profesional en cuanto a empleo de codigo limpio, mejores practicas y patrones de diseño, por favor, dame lo mas profesional que tengas; que cuando el CEO vea mi codigo, se impresione por el modelo de desestructurar datos tan bonita, !VAMOS!"""
+  siempre opto por las maneras mas profesionales y esteticas de conseguirlo, recuerda que siempre busco maneras de hacer mejor las cosas, necesito la forma mas optima en cuanto a rendimiento y escalabilidad, eficiente en cuanto a codigo y profesional en cuanto a empleo de codigo limpio, mejores practicas y patrones de diseño, por favor, dame lo mas profesional que tengas; que cuando el CEO vea mi codigo, se impresione por el modelo de desestructurar datos tan bonita, !VAMOS!"""
 ```
 ¡Entendido! Vamos a reorganizar el código para hacerlo más claro, modular, y profesional. En lugar de depender de cadenas literales para decidir qué tipo de tarjeta renderizar, utilizaremos un objeto que asociará directamente los datos de Firestore con los métodos correspondientes. Así logramos un código más limpio y mantenible.
 

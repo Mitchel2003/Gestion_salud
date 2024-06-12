@@ -129,9 +129,12 @@ export function getUserContext(res) {//AC #205
                                 <!-- content section left -->
                                 <div class="tab-content" id="nav-tabContent-handlerDevice">
                                     <div class="tab-panel fade collapse show active" id="reports" role="tabpanel" aria-labelledby="nav-reports">
-                                        <div class="empty">
-                                            <h4>Empty</h4>
-                                            <p>nothing here</p>
+                                        <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
+                                            <div class="w-75 text-center text-black py-5">
+                                                <i class="bi bi-info-circle-fill text-danger fs-1"></i>
+                                                <h5 class="card-title mb-3 fs-5">Nothing here</h5>
+                                                <p class="card-text">Please, create something to see here</p>
+                                            </div>
                                         </div>
                                     </div>
 
