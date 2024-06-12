@@ -113,30 +113,42 @@ export class DataByRequest {
             orderBy(queryConfig[3]),
             limit(queryConfig[4]),
         ];
-        if(Array.isArray(req)) return this.getDeepQuery();
-        if(this.isFilter()) config.push(startAfter(this.handler.lastVisible));
+        if (this.isLoadMore()) config.push(startAfter(this.handler.lastVisible));
+        if (this.isDeepCollection(req)) return this.getDeepQuery(req, config);
         return query(this.getSubCollection(req), ...config);
     }
     /**
-     * This method simplify the logic
-     * @returns a boolean; return "true" if value "handler.lastVisible" contain something, else return "false"
+     * This method simplify the logic, intend do query with a start position saved into "lastVisible" to obtain restant data from database "pagination"
+     * @returns {boolean} a boolean; return "something" if value "handler.lastVisible" contain something, else return "null"
      */
-    static isFilter(){
-        let value;
-        this.handler ? value = this.handler.lastVisible : value = null ;
-        return !value.empty;
+    static isLoadMore() { return this.handler ? this.handler.lastVisible : null }
+    /**
+     * Allow return a boolean according to request received; if "req" is an array, so the requeride documents is located at a deeper level
+     * @param {string} req - Naturally is a string, but if the query it's more deeper level, so its a array with values like [101, 10001] that correspond to document each time more deep
+     * @returns {boolean} return "true" if the request is a array, else return "false"
+     */
+    static isDeepCollection(req) { return Array.isArray(req) }
+    /**
+     * This intend build a query() basing in an array with a length corresponding to level of depth, this deep query its works by referencing the order in which collections are found in the database
+     * @param {array} request - Array with the documents to access in depth into database
+     * @param {array} configuration - Is an array with the builders of the query (where, orderBy, limit)
+     * @returns {querySnapshot} - returns a configurated deep query
+     */
+    static getDeepQuery(request, configuration) {
+        const deepSnapshot = this.preparateDeepQuery(request);
+        console.log(deepSnapshot);
+        return query(this.getSubCollection('departament'), ...deepSnapshot, ...configuration);
     }
     /**
-     * This method simplify the logic of desition, allow return a boolean that redirect the flow to deep query in the order of the collections
-     * @returns return "true" if the request is a array, else return "false"
+     * Allows us preparate the depth of the query(), this through the length of the array
+     * @param {array} request - Is an array like (example: 101, 10001)
+     * @returns {array} we get an array to complement building of the query with a depth specific
      */
-    static isDeepCollection(){
-        let value;
-        this.handler ? value = this.handler.lastVisible : value = null ;
-        return !value.empty;
-    }
-    static getDeepQuery(){
-
+    static preparateDeepQuery(request){
+        let prepare = ['departament', request[0].toString()]; //departament
+        if (request.length === 2) return [...prepare, 'device', request[1].toString()] //device
+        if (request.length === 3) return [...prepare, 'device', request[1].toString(), 'finding', request[2].toString()] //finding        
+        return prepare
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -147,6 +159,7 @@ export class DataByRequest {
      * @returns {collection} a element collection from firebase to build query
      * @example main => entity => device_references     
      */
+    static getSubCollectionBuilding
     static getSubCollection(subCollection) { return collection(getCollection(), this.entity, subCollection) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
     /*-------------------------------------------------------------------------------------------------------------------*/
