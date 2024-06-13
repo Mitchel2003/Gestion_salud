@@ -297,9 +297,10 @@ export class Section {
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
     static createItems(snapshot, container, icon) {
-        const data = snapshot.forEach ? snapshot.docs.map(e => e.data()) : [snapshot];
+        const data = snapshot.forEach ? snapshot.docs.map(e => e) : [snapshot];
         data.forEach(item => {
-            const card = this.setContentCard(item, container, icon);
+            const doc = { snapshot: item, data: item.data() }
+            const card = this.setContentCard(doc, container, icon);
             elementById(container).insertAdjacentHTML('afterbegin', card);
         });
     }

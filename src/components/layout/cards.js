@@ -1,10 +1,10 @@
 import {timeStampToDate} from '../utils/convert.js';
-export function cardDevice(data, icon) {
+export function cardDevice({data, snapshot}, icon) {
     return `
-        <div class="card card-body container-fluid" data-card='${JSON.stringify([ data.id_departament, data.id_device ])}' style="background: url('../components/images/bg-list.svg') no-repeat center; background-size: cover;">
+        <div class="card card-body container-fluid" data-card='${JSON.stringify([ data.id_departament, snapshot.id ])}' style="background: url('../components/images/bg-list.svg') no-repeat center; background-size: cover;">
             <div class="row flex-direction">
                 <div class="col-lg-9 col-md-9 col-sm-9 align-items-start me-auto">
-                    <h5 class="card-title m-0">ID: ${data.id_device}</h5>
+                    <h5 class="card-title m-0">ID: ${snapshot.id}</h5>
                     <p class="card-text m-0">Serial: ${data.serial}</p>
                     <p class="card-text m-0">Available: <span class="fs-5"> ${data.avaliable ? '&#x2705;' : '&#x26D4;'} </span> </p>
                 </div>
@@ -20,7 +20,7 @@ export function cardDevice(data, icon) {
         </div>
     `;
 }
-export function cardFinding(data, icon) {
+export function cardFinding({data, snapshot}, icon) {
     return `
         <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
                 <div class="row">
@@ -28,10 +28,9 @@ export function cardFinding(data, icon) {
                         <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
                     </div>
                     <div class="col-lg-12 col-md-11 col-sm-11 d-flex align-items-center me-auto">
-                        <h6 class="card-title m-0 me-auto">ID: ${data.id_finding}</h6>
+                        <h6 class="card-title m-0 me-auto">ID: ${snapshot.id}</h6>
                         <h6 class="card-title m-0">Device: ${data.id_device}</h6>
                     </div>
-                    
                 </div>
                 <div class="row align-items-center">
                     <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
@@ -40,12 +39,11 @@ export function cardFinding(data, icon) {
                         <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
                     </div>
                 </div>
-                <a href="" class="btn border border-2 ${data.type === 'preventive' ? 'btn-outline-primary border-primary-subtle' : 'btn-outline-warning border-warning-subtle'}">show more</a>
+                <a href="" class="btn border border-1 ${data.type === 'preventive' ? 'btn-outline-primary border-primary-subtle' : 'btn-outline-warning border-warning-subtle'}">show more</a>
         </div>
     `;
 }
-export function cardDetails(snapshot, icon) {
-    const data = snapshot.data();
+export function cardDetails({data, snapshot}, icon) {
     const time = timeStampToDate(data.lastReport);
     return `
         <div class="card card-body container-fluid border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: linear-gradient(135deg, #3498db 0%, #8e44ad 100%); color: #fff;">
