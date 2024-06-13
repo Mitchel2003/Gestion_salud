@@ -46,17 +46,34 @@ async function handlerSection(nav) {
 async function eventContainer(container) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
-        const section = Section.getCurrentSection();
+        let nameReq;
         const card = e.target.getAttribute('request');
         const arrayData = Section.getTargetCard(e.target);
-        if (card === 'more details') return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here', document: true })        
-        if (card === 'see reports') return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
-        if (card === 'load more') return console.log('message')
+
+        if (!card) return;
+
+        const customObj = buildRequest(card, arrayData);
+
+
+        return await Section.actionByRequest(object);
     });
-/* I need the index of the loop in context to save the last document found for again */
+    /* I need the index of the loop in context to save the last document found for again */
+}
+
+function buildRequest(req, arrayData) {//working here...
+    let object;
+    if (req === 'see reports') object = { query: { where: ['date', '!=', ''], pagination: ['date', 5] } }
+    if (req === 'more details') object = { query: 'nothing here', document: true }
+    if (req === 'load more') 'something';
+
+    let obj;
+    obj[req] = arrayData;
+    return {
+        ...obj,
+        query: ''
+    };
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
-
 export class Section {
     static arrayContainer;
     static arrayCollection;
@@ -66,18 +83,17 @@ export class Section {
 
     /*--------------------------------------------------initialize--------------------------------------------------*/
     static async loadCurrentSection(section) { await Section.init(section) }
-    static async actionMoreDetails(section, handler) { await Section.init(section, handler) }
-    static async actionSeeReports(section, handler) { await Section.init(section, handler) }
+    static async actionByRequest(handler) { await Section.init(null, handler) }
     /**
      * Initialize a query data to database for fill the section in context (contain mode default and fixed).
-     * @param {string} section - The section context to operate
+     * @param {string} [section = null] - Is the section in context to operate; will be null if we are trying a request in the current section
      * @param {object} [handler = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
      * @returns {method} this define the content present into containers of current section
      * @const {number} loopIndex - this represent the index of container that loop is in ([0, 1])
      * @const {string} loopContainer - is the name container that loop is in (['device-list', 'reports'])
      * @const {string} loopCollection - is the name of collection through wich obtain the data request to fill the current container, we use to find the data location (['device_references', 'finding_references'])
      */
-    static async init(section, handler = null) {
+    static async init(section = null, handler = null) {
         onLoadWhile();
         this.updateCredentials(section, handler);
         let promise = this.arrayContainer.map(async (loopContainer, loopIndex) => {//AC #002
@@ -96,15 +112,15 @@ export class Section {
     /*--------------------------------------------------update credentials--------------------------------------------------*/
     /**
      * Intend to define escential data to build the queries corresponding to user iteractivity, call data according at context
-     * @param {string} section - Is the name of the current section
+     * @param {string} [section = null] - Is the name of the current section, may be null, its mean that request action is to current section
      * @param {object} [handler = null] - Is optional and contain keys that coordinate a request data specific, according to context
      * @returns {method} get a object with propierties like indexSection and collections "correspond to a container asignated" this way, we get the data from database and fill containers in the section
      * @example
      * Sections = [home:0], [handler-device:1], [control-departaments:2], [user-management:3], [finding-data:4], [filters:5]
      */
     static updateCredentials(section, handler) {
+        if (section) Section.currentSection = section;
         Section.handlerFormat = handler;
-        Section.currentSection = section;
         Section.indexSection = this.getIndexSection(this.currentSection);
         Section.arrayCollection = this.collectionToSearch(this.indexSection);
         Section.arrayContainer = this.containerToFill(this.indexSection);
