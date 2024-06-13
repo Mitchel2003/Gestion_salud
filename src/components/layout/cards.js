@@ -14,8 +14,8 @@ export function cardDevice({data, snapshot}, icon) {
             </div>
 
             <div class="d-flex m-0">
-                <a href="" class="btn ${data.avaliable ? 'btn-outline-success' : 'btn-outline-danger'} container-fluid rounded-end-0">see reports</a>
-                <a href="" class="btn btn-outline-primary container-fluid rounded-start-0">more details</a>
+                <a request="see reports" class="btn ${data.avaliable ? 'btn-outline-success' : 'btn-outline-danger'} container-fluid rounded-end-0">see reports</a>
+                <a request="more details" class="btn btn-outline-primary container-fluid rounded-start-0">more details</a>
             </div>
         </div>
     `;
@@ -44,7 +44,7 @@ export function cardFinding({data, snapshot}, icon) {
     `;
 }
 export function cardDetails({data, snapshot}, icon) {
-    const time = timeStampToDate(data.lastReport);
+    const time = data.lastReport ? timeStampToDate(data.lastReport) : null;
     return `
         <div class="card card-body container-fluid border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: linear-gradient(135deg, #3498db 0%, #8e44ad 100%); color: #fff;">
             <div class="row">
@@ -69,7 +69,7 @@ export function cardDetails({data, snapshot}, icon) {
             </div>
             <div class="row">
                 <div class="col-7 d-flex">
-                    <p class="text-start"><strong>Date last report:</strong> ${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}</p>
+                    <p class="text-start"><strong>Date last report:</strong> ${time ? `${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}` : 'Nothing here'}</p>
                 </div>
                 <div class="col-5 d-flex">
                     <p class="ms-auto"><strong>Warranty:</strong> ${data.garantie === 'empty'? `&#x1F534;`:`${data.garantie} &#x1F535;`}</p>

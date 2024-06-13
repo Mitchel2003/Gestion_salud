@@ -1,7 +1,9 @@
+/*--------------------------------------------------imports--------------------------------------------------*/
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
 import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 import { DataByRequest } from '../firebase/query.js';
+/*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------mode--------------------------------------------------*/
 /**
@@ -12,7 +14,18 @@ export async function modeAuxiliary() {
     controllerSideBar(elementByClass('.side-bar'));
     await handlerSection(elementByClass('.nav-tabs'));
 }
+/*-------------------------------------------------------------------------------------------------------------------*/
+
 /*--------------------------------------------------controllers--------------------------------------------------*/
+/**
+ * Control the status of side-bar into section applying a toggle on click, also have a 'pointer leave' event to close when the mouse out of bar
+ * @param {HTMLElement} params - This element correspond to sideBar
+ * @returns {method} apply a behavior to sidebar
+ */
+function controllerSideBar(side_bar) {
+    toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
+    side_bar.addEventListener('pointerleave', () => { side_bar.classList.remove('spawn') });
+}
 /**
  * Is used to coordinate the contain of section that user click on; this way we can request data and fill the specific containers through a snapshot received
  * @param {HTMLElement} nav - Correspond to element main navbar
@@ -33,13 +46,14 @@ async function handlerSection(nav) {
 async function eventContainer(container) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
-        const card = e.target;
         const section = Section.getCurrentSection();
-        const arrayData = Section.getTargetCard(card);
-        if (card.className.includes('primary')) return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here', document: true })
-        if (card.className.includes('danger') ||
-            card.className.includes('success')) return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
+        const card = e.target.getAttribute('request');
+        const arrayData = Section.getTargetCard(e.target);
+        if (card === 'more details') return await Section.actionMoreDetails(section, { moreDetails: arrayData, query: 'not apply here', document: true })        
+        if (card === 'see reports') return await Section.actionSeeReports(section, { seeReports: arrayData, query: { where: ['date', '!=', ''], pagination: ['date', 5] } })
+        if (card === 'load more') return console.log('message')
     });
+/* I need the index of the loop in context to save the last document found for again */
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -194,7 +208,7 @@ export class Section {
     static getDefaultQuery(index) {
         const array = [
             { where: ['empty'], pagination: ['empty'] },
-            { where: ['avaliable', '!=', 'true', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
+            { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
             { where: ['empty'], pagination: ['empty'] }
         ]; return array[index];
     }
@@ -256,7 +270,7 @@ export class Section {
         this.cleanContainer(element);
     }
     /**
-     * With this we can inspect "res" that is snapshot; if have data then the card be disable "nothing found", else will be enable
+     * With these we can inspect "res" that is snapshot; if have data then the card be disable "nothing found", else will be enable
      * @param {HTMLElement} container - Is the container to clean
      * @param {snapshot} res - Is the response of the request snapshot from firebase
      * @returns {method} - set the visibility of the card by default "nothing found" depending to data found in the snapshot
@@ -342,24 +356,13 @@ export class Section {
     /**
      * On click a button in any card, we can take him the data to operate more actions through the information obtained about card in context
      * @param {target} button - correspond to data of the card clicked by user
-     * @returns {array} returns an array that contain the UID of one or a lot documents according to query deep that we need
+     * @returns {array} returns an array that contain the UIDs of the documents according to query deep that we need, another case will be null
      */
     static getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }
     static getContainerSection(index) { return Section.arrayContainer[index] }
     static getCurrentSection() { return Section.currentSection }
     /*-------------------------------------------------------------------------------------------------------------------*/
 }
-
-/**
- * Control the status of side-bar into section applying a toggle on click, also have a 'pointer leave' event to close when the mouse out of bar
- * @param {HTMLElement} params - This element correspond to sideBar
- * @returns {method} apply a behavior to sidebar
- */
-function controllerSideBar(side_bar) {
-    toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
-    side_bar.addEventListener('pointerleave', () => { side_bar.classList.remove('spawn') });
-}
-
 /*--------------------------------------------------addComentary--------------------------------------------------*/
 /**
  * #001: at moment of reload the section we could find case various; on click the main navbar "sections", the differents
