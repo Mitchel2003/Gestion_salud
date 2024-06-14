@@ -220,7 +220,7 @@ export function getUserContext(res) {//AC #205
                                     </div>
                                 </div>
                                 <div class="card d-flex" id="load-more">
-                                    <button request="loadMore" class="btn btn-outline-warning container-fluid p-0">load more...</button>
+                                    <button request="loadMore" class="btn btn-primary container-fluid p-0">load more...</button>
                                 </div>
 
                             </div>

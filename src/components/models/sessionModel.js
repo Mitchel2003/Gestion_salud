@@ -59,12 +59,24 @@ async function eventContainer(container) {
  * @returns {object} returns an object with keys like { customKey: [], query: '', document: boolean }
  */
 function buildRequest(req, array) {
-    let object = {};
-    object[req] = array;
-    if (req === 'seeReports') object.query = { where: ['date', '!=', ''], pagination: ['date', 5] };
-    if (req === 'moreDetails') object.query = 'nothing here', object.document = true;
-    if (req === 'loadMore') 'something';
-    return object;
+    let data = {};
+    data[req] = array;
+    switch (req) {
+        case 'seeReports':
+            data.idContainer = 1; data.document = false;
+            data.query = { where: ['date', '!=', ''], pagination: ['date', 5] };
+            break;
+        case 'moreDetails':
+            data.idContainer = 1; data.document = true;
+            data.query = 'nothing here';
+            break;
+        case 'loadMore':
+            data.idContainer = 0; data.document = false;
+            data.query = { where: ['date', '!=', ''], pagination: ['date', 5] }
+            break;
+        default: break;
+    }
+    return data;
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 export class Section {
@@ -157,9 +169,9 @@ export class Section {
     static handleRoute(loopIndex, loopContainer) {
         const handler = this.handlerFormat;
         if (!handler) return "allow";
-        if (handler && loopIndex != 1) return null; //number "1" is equal to side left in the current section
+        if (handler && loopIndex != handler.idContainer) return null;
         this.controllerPositionSubnavbar(loopContainer);
-        return handler[Object.keys(handler)[0]]; //the first element into object corresponding to the request by user
+        return handler[Object.keys(handler)[0]]; //the first element into object corresponding to the request by user (more details, see reports .etc)
     }
     /**
      * For control when iterating over the options in the side right (scroll container), in same case like that;
@@ -287,8 +299,8 @@ export class Section {
      */
     static setToggle_cardNothingFound(container, res) {
         const card = container.querySelector('.empty');
+        const value = res.docs ? res.docs.length : res.id
         const isCardVisible = !card.className.includes('d-none');
-        const value = res.docs ? res.docs.length : res.id //I explain on addComentary
         if (value != 0) return isCardVisible ? card.classList.toggle('d-none') : '';
         else isCardVisible ? '' : card.classList.toggle('d-none');
     }
