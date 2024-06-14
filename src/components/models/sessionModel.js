@@ -63,16 +63,16 @@ function buildRequest(req, array) {
     data[req] = array;
     switch (req) {
         case 'seeReports':
-            data.idContainer = 1; data.document = false;
+            data.index = 1; data.document = false;
             data.query = { where: ['date', '!=', ''], pagination: ['date', 5] };
             break;
         case 'moreDetails':
-            data.idContainer = 1; data.document = true;
+            data.index = 1; data.document = true;
             data.query = 'nothing here';
             break;
         case 'loadMore':
-            data.idContainer = 0; data.document = false;
-            data.query = { where: ['date', '!=', ''], pagination: ['date', 5] }
+            data.index = 0; data.document = false;
+            data.query = { where: ['avaliable', '!=', ''], pagination: ['avaliable', 5] }
             break;
         default: break;
     }
@@ -273,8 +273,9 @@ export class Section {
     static async routeRequest(route, collection, fixQuery) {
         const query = fixQuery ? fixQuery : null;
         const type = this.handlerFormat ? this.handlerFormat.document : false;
+        const indexContainer = this.handlerFormat ? this.handlerFormat.index : false;
         const build = typeof route === 'string' ? { req: collection } : { req: route };
-        return await DataByRequest.get({ isDocument: type, queryConfig: query, ...build });
+        return await DataByRequest.get({ id: indexContainer, isDocument: type, queryConfig: query, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 

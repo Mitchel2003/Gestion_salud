@@ -26,7 +26,7 @@ export async function getDocumentUser(user, entity) {
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
 export class DataByRequest {
-    static lastDocumentVisible;
+    static lastDocumentVisible = [];
     static section;
     static request;
     static handler;
@@ -57,7 +57,7 @@ export class DataByRequest {
     static updateCredentials(data, handler) {
         const section = Section.getCurrentSection();
         const { entity } = getProfileUser();
-        if (this.section != section) this.lastDocumentVisible = null;
+        if (this.section != section) this.lastDocumentVisible = [];
         DataByRequest.section = section;
         DataByRequest.handler = handler;
         DataByRequest.entity = entity;
@@ -95,10 +95,11 @@ export class DataByRequest {
      * @returns {querySnapshot} - get a await data query from database "big data"
      */
     static async getQueryRequest() {
+        //if is by request.id then who i do for save the last document in the array[] according to the container
         const querySnapshot = this.preparateQuery();
         const res = await getDocs(querySnapshot);
-        this.lastDocumentVisible = res.docs[res.docs.length - 1];
-        return res;
+        const index = this.request.id;
+        this.lastDocumentVisible[index] = res.docs[res.docs.length - 1]; return res;
     }
     /**
      * This prepare a query compound, we use 'where' to apply filter, 'orderBy' to format orden of querySnapshot and 'limit' to pagination; also have a conditional to 'loadMore' taking the last document shown in the container[0] (side right)
