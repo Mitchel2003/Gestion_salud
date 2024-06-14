@@ -64,12 +64,9 @@ function buildRequest(req, array) {
     if (req === 'see reports') object = { query: { where: ['date', '!=', ''], pagination: ['date', 5] } }
     if (req === 'more details') object = { query: 'nothing here', document: true }
     if (req === 'load more') 'something';
-
-    let obj;
     
     return {
-        ...obj,
-        query: ''
+        ...object
     };
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
