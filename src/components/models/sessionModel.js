@@ -34,7 +34,7 @@ function controllerSideBar(side_bar) {
 async function handlerSection(nav) {
     nav.addEventListener('click', async (e) => {
         let item = e.target.ariaCurrent;
-        if (item) { await Section.loadCurrentSection(item); eventContainer(Section.getContainerSection(0)) }
+        if (item) { await Section.loadCurrentSection(item); await eventContainer(Section.getContainerSection(0)) }
     });
 }
 /**
@@ -46,28 +46,25 @@ async function handlerSection(nav) {
 async function eventContainer(container) {
     elementById(container).addEventListener('click', async (e) => {
         e.preventDefault();
-        let nameReq;
-        const card = e.target.getAttribute('request');
+        const card = e.target.getAttribute('request'); if (!card) return;
         const arrayData = Section.getTargetCard(e.target);
-
-        if (!card) return;
-
         const customObj = buildRequest(card, arrayData);
-
-
-        return await Section.actionByRequest(object);
+        return await Section.actionByRequest(customObj);
     });/*I need the index of the loop in context to save the last document found for again*/
 }
-
+/**
+ * This create the handler format to request data query from database; helps me to build a custom key depending to action button clicked
+ * @param {string} req - This is the name of the request clicked by the user, correspond to action of the button
+ * @param {array} array - Correspond to data from card in context example [101, 10001]
+ * @returns {object} returns an object with keys like { customKey: [], query: '', document: boolean }
+ */
 function buildRequest(req, array) {
-    let object; object[req] = array;
-    if (req === 'see reports') object = { query: { where: ['date', '!=', ''], pagination: ['date', 5] } }
-    if (req === 'more details') object = { query: 'nothing here', document: true }
-    if (req === 'load more') 'something';
-    
-    return {
-        ...object
-    };
+    let object = {};
+    object[req] = array;
+    if (req === 'seeReports') object.query = { where: ['date', '!=', ''], pagination: ['date', 5] };
+    if (req === 'moreDetails') object.query = 'nothing here', object.document = true;
+    if (req === 'loadMore') 'something';
+    return object;
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 export class Section {

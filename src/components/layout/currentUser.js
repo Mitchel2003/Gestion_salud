@@ -129,6 +129,7 @@ export function getUserContext(res) {//AC #205
                                 <!-- content section left -->
                                 <div class="tab-content" id="nav-tabContent-handlerDevice">
                                     <div class="tab-panel fade collapse show active" id="reports" role="tabpanel" aria-labelledby="nav-reports">
+
                                         <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
                                             <div class="w-75 text-center text-black py-5">
                                                 <i class="bi bi-info-circle-fill text-danger fs-1"></i>
@@ -136,6 +137,7 @@ export function getUserContext(res) {//AC #205
                                                 <p class="card-text">Please, create something to see here</p>
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="create-report" role="tabpanel" aria-labelledby="nav-create-report">
@@ -182,13 +184,15 @@ export function getUserContext(res) {//AC #205
                                             </form>                                    
                                         </div>
                                         
-
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="add-device" role="tabpanel" aria-labelledby="nav-add-device">
-                                        <div class="empty">
-                                            <h4>Empty here...</h4>
-                                            <p>nothing that show</p>
+                                        <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
+                                            <div class="w-75 text-center text-black py-5">
+                                                <i class="bi bi-info-circle-fill text-danger fs-1"></i>
+                                                <h5 class="card-title mb-3 fs-5">Nothing here</h5>
+                                                <p class="card-text">Please, create something to see here</p>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -207,13 +211,18 @@ export function getUserContext(res) {//AC #205
                                 </div>
                             </div>
                             <div id="device-list" class="scroll-container overflow-auto p-0 rounded-2" style="max-height: 75vh;">
-                                <div class="empty">
-                                    <h4>Empty</h4>
-                                    <p>nothing here</p>
+                                
+                                <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
+                                    <div class="w-75 text-center text-black py-5">
+                                        <i class="bi bi-info-circle-fill text-danger fs-1"></i>
+                                        <h5 class="card-title mb-3 fs-5">Nothing here</h5>
+                                        <p class="card-text">Please, create something to see here</p>
+                                    </div>
                                 </div>
                                 <div class="card d-flex" id="load-more">
-                                    <button request="load more" class="btn btn-outline-warning container-fluid p-0">load more...</button>
+                                    <button request="loadMore" class="btn btn-outline-warning container-fluid p-0">load more...</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>

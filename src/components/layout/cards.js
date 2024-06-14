@@ -14,8 +14,8 @@ export function cardDevice({data, snapshot}, icon) {
             </div>
 
             <div class="d-flex m-0">
-                <a request="see reports" class="btn ${data.avaliable ? 'btn-outline-success' : 'btn-outline-danger'} container-fluid rounded-end-0">see reports</a>
-                <a request="more details" class="btn btn-outline-primary container-fluid rounded-start-0">more details</a>
+                <a request="seeReports" class="btn ${data.avaliable ? 'btn-outline-success' : 'btn-outline-danger'} container-fluid rounded-end-0">see reports</a>
+                <a request="moreDetails" class="btn btn-outline-primary container-fluid rounded-start-0">more details</a>
             </div>
         </div>
     `;
