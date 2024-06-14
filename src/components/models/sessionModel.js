@@ -56,18 +56,17 @@ async function eventContainer(container) {
 
 
         return await Section.actionByRequest(object);
-    });
-    /* I need the index of the loop in context to save the last document found for again */
+    });/*I need the index of the loop in context to save the last document found for again*/
 }
 
-function buildRequest(req, arrayData) {//working here...
-    let object;
+function buildRequest(req, array) {
+    let object; object[req] = array;
     if (req === 'see reports') object = { query: { where: ['date', '!=', ''], pagination: ['date', 5] } }
     if (req === 'more details') object = { query: 'nothing here', document: true }
     if (req === 'load more') 'something';
 
     let obj;
-    obj[req] = arrayData;
+    
     return {
         ...obj,
         query: ''
