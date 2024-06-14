@@ -105,7 +105,7 @@ export class Section {
             let loopCollection = this.arrayCollection[loopIndex];
             let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
             const { dataDefault, arrayConfig } = this.preparateRequest(loopIndex, loopCollection);
-            const res = await this.routeRequest(route, loopCollection, arrayConfig);
+            const res = await this.routeRequest(route, loopCollection, loopIndex, arrayConfig);
             this.clearContainerConditionally(loopContainer, res);
             this.createItems(res, loopContainer, dataDefault);
         });
@@ -270,12 +270,13 @@ export class Section {
      * @param {array} fixQuery - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @returns {object} a querySnapshot or documentSnapshot from database
      */
-    static async routeRequest(route, collection, fixQuery) {
+    static async routeRequest(route, collection, indexContainer, fixQuery) {
         const query = fixQuery ? fixQuery : null;
         const type = this.handlerFormat ? this.handlerFormat.document : false;
-        const indexContainer = this.handlerFormat ? this.handlerFormat.index : false;
+        const index = this.handlerFormat ? this.handlerFormat.index : indexContainer;
         const build = typeof route === 'string' ? { req: collection } : { req: route };
-        return await DataByRequest.get({ id: indexContainer, isDocument: type, queryConfig: query, ...build });
+        console.log(index);
+        return await DataByRequest.get({ id: index, isDocument: type, queryConfig: query, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 

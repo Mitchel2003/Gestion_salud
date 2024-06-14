@@ -43,7 +43,7 @@ export class DataByRequest {
         this.updateCredentials(data, handler);
         const { isDocument } = this.request;
         if (isDocument) return await this.getDocumentRequest();
-        return await this.getQueryRequest();
+        return await this.getQueryRequest(data.id);
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -94,12 +94,13 @@ export class DataByRequest {
      * Prepare a queryRequest and get querySnapshot from database (get a lot documents "bigData"); also keep the last document of snapshot result for apply pagination
      * @returns {querySnapshot} - get a await data query from database "big data"
      */
-    static async getQueryRequest() {
+    static async getQueryRequest(id) {
         //if is by request.id then who i do for save the last document in the array[] according to the container
         const querySnapshot = this.preparateQuery();
         const res = await getDocs(querySnapshot);
-        const index = this.request.id;
-        this.lastDocumentVisible[index] = res.docs[res.docs.length - 1]; return res;
+        this.lastDocumentVisible[id] = res.docs[res.docs.length - 1];
+        console.log(this.lastDocumentVisible); //WORKING HERE...
+        return res;
     }
     /**
      * This prepare a query compound, we use 'where' to apply filter, 'orderBy' to format orden of querySnapshot and 'limit' to pagination; also have a conditional to 'loadMore' taking the last document shown in the container[0] (side right)
