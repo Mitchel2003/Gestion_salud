@@ -1,3 +1,18 @@
+TypeError: n.indexOf is not a function
+    at ResourcePath.fromString (path.ts:232:11)
+    at collection (reference.ts:435:5)
+    at DataByRequest.getSubCollection (query.js:164:53)
+    at DataByRequest.preparateQuery (query.js:117:27)
+    at DataByRequest.getQueryRequest (query.js:98:36)
+    at DataByRequest.get (query.js:46:27)
+    at Section.routeRequest (sessionModel.js:278:36)
+    at sessionModel.js:109:40
+    at Array.map (<anonymous>)
+    at Section.init (sessionModel.js:105:47)
+
+
+
+
 ```javascript
 // Objeto donde queremos añadir una clave con nombre variable
 let miObjeto = {};

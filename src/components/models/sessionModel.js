@@ -60,7 +60,7 @@ async function eventContainer(container) {
  */
 function buildRequest(req, array) {
     let data = {};
-    data[req] = array;
+    data[req] = array ? array : true; //working here...
     switch (req) {
         case 'seeReports':
             data.index = 1; data.document = false;
@@ -105,8 +105,8 @@ export class Section {
             let promise = this.arrayContainer.map(async (loopContainer, loopIndex) => {//AC #002
                 let loopCollection = this.arrayCollection[loopIndex];
                 let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
-                const { dataDefault, arrayConfig } = this.preparateRequest(loopIndex, loopCollection);
-                const res = await this.routeRequest(route, loopCollection, loopIndex, arrayConfig);
+                const { dataDefault, arrayQuery } = this.preparateRequest(loopIndex, loopCollection);
+                const res = await this.routeRequest(route, loopCollection, loopIndex, arrayQuery);                
                 this.clearContainerConditionally(loopContainer, res);
                 this.createItems(res, loopContainer, dataDefault);
             });
@@ -127,10 +127,10 @@ export class Section {
      */
     static updateCredentials(section, handler) {
         if (section) Section.currentSection = section;
-        Section.handlerFormat = handler;
         Section.indexSection = this.getIndexSection(this.currentSection);
-        Section.arrayCollection = this.collectionToSearch(this.indexSection);
-        Section.arrayContainer = this.containerToFill(this.indexSection);
+        Section.arrayCollection = this.collectionToSearch();
+        Section.arrayContainer = this.containerToFill();
+        Section.handlerFormat = handler;
     }
     /**
      * Through param "context" that represent the name of the current section clicked by the user (main navbar); we can work more easy
@@ -171,7 +171,8 @@ export class Section {
     static handleRoute(loopIndex, loopContainer) {
         const handler = this.handlerFormat;
         if (!handler) return "allow";
-        if (handler && loopIndex != handler.idContainer) return null;
+        if (handler && loopIndex != handler.index) return null;
+        console.log(handler); //working here...
         this.controllerPositionSubnavbar(loopContainer);
         return handler[Object.keys(handler)[0]]; //the first element into object corresponding to the request by user (more details, see reports .etc)
     }
@@ -182,7 +183,7 @@ export class Section {
      */
     static controllerPositionSubnavbar(mainSection) {
         const element = elementById('nav-' + mainSection);
-        element.click();
+        if(element) element.click();
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -199,18 +200,15 @@ export class Section {
         const config = this.handlerFormat ? this.handlerFormat.query : null;
         const data = this.getRequest(loopCollection, config);
         const arrayConfig = this.fixQueryConfig(data, loopIndex);
-        return { dataDefault: data.icon, arrayConfig }
+        return { dataDefault: data.icon, arrayQuery: arrayConfig }
     }
     /**
      * This method allows us to configure the request that we send to Firebase method "getDocs()" with which we obtain the snapshot "documentSnapshot" or "querySnapshot"
      * @param {string} collectionToSearch - Contain name of the collection to query in database, with this name we can inspect the keys of object "data" to get static data customized (example: icon)
      * @param {object} [query = null] - Have three status, could be this;
      * @returns {object} we get a object with keys {icon, where, pagination} to fix the query() method that we will use to send a specific request. The above method belong to the backend of firebase
-     * @example
-     * null = when go through containers into current section (like 'home'); remember that we have a query default to main sections
-     * string = when request a documentSnapshot (dont need 'where' or 'pagination')
-     * object = to build a specific query, intend be a object like this { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] }
      * @const {object} data - is a object with keys that corresponding to specific collection, contain a default config like 'icon'
+     * @example addComentary: 005
      */
     static getRequest(collectionToSearch, query = null) {
         const data = {
@@ -219,21 +217,21 @@ export class Section {
             departament: { icon: 'bx bx-buildings' },
             user: { icon: 'bx bxs-id-card' }
         };
-        if (!query) query = this.getDefaultQuery(this.indexSection);
+        if (!query) query = this.getDefaultQuery();
         return { ...data[collectionToSearch], ...query };
     }
     /**
      * While we dont have handler in the query "example: filters", we need make the pagination and ordenament in standard mode, this method returns a default query
-     * @param {number} index - is the index that belongs to main loop
      * @returns {object} a object with keys ('where' lenght = 3) and ('pagination' lenght = 2)
      * @const {array} array - with a index we can obtain a object to config the query
+     * @const {number} this.indexSection - is the index that belongs to current section in context, for example 'home' or 'handler-device'
      */
-    static getDefaultQuery(index) {
+    static getDefaultQuery() {
         const array = [
             { where: ['empty'], pagination: ['empty'] },
             { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
             { where: ['empty'], pagination: ['empty'] }
-        ]; return array[index];
+        ]; return array[this.indexSection];
     }
     /**
      * This includes a logic to get the query config according to extension of data (where and pagination)
@@ -269,15 +267,14 @@ export class Section {
      * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
      * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search (example: array.lenght = 2)
      * @param {string} collection - Is the name of collection to search into database
-     * @param {array} fixQuery - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
+     * @param {array} arrayQueryConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @returns {object} a querySnapshot or documentSnapshot from database
      */
-    static async routeRequest(route, collection, indexContainer, fixQuery) {
-        const query = fixQuery ? fixQuery : null;
+    static async routeRequest(route, collection, indexContainer, arrayQuery) {
+        const query = arrayQuery ? arrayQuery : null;
         const type = this.handlerFormat ? this.handlerFormat.document : false;
         const index = this.handlerFormat ? this.handlerFormat.index : indexContainer;
         const build = typeof route === 'string' ? { req: collection } : { req: route };
-        console.log(build); //working here...
         return await DataByRequest.get({ id: index, isDocument: type, queryConfig: query, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
@@ -408,6 +405,10 @@ export class Section {
  * I use this sintaxis because we await a snapshot that could be 'querySnapshot' or 'documentSnapshot', these two have different formats;
  * res.docs correspond to 'querySnapshot' and res.id correspond to UID of the document 'documentSnapshpt'
  * 
+ * #005:
+ * null = when go through containers into current section (like 'home'); remember that we have a query default to main sections
+ * string = when request a documentSnapshot (dont need 'where' or 'pagination')
+ * object = to build a specific query, intend be a object like this { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] }
  * 
  */
 /* ------------------------------------------------------------------------------------------------------------------- */
