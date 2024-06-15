@@ -29,21 +29,20 @@ export class DataByRequest {
     static lastDocumentVisible = [];
     static section;
     static request;
-    static handler;
     static entity;
     /*--------------------------------------------------DataByRequest.get--------------------------------------------------*/
     /**
      * This allow redirect a request by a query config sent
      * @param {object} [data = null] - is a object {section, entity, isDocument = boolean, ...query} with config to direct the query, this allow update a variables that operate in this class
-     * @param {object} [handler = null] - correspond to query config for complex fetch to database, I use this param for the filter algoritm
-     * @returns {snapshot} - get a await data query from database
+     * @returns {snapshot} - get a await data query from database according a request sent
+     * @const {number} data.index - correspond to index of container in context
      */
-    static async get(data = null, handler = null) {
+    static async get(data = null) {
         if (!data) return await getDocs(getCollection()); //by default
-        this.updateCredentials(data, handler);
+        this.updateCredentials(data);
         const { isDocument } = this.request;
         if (isDocument) return await this.getDocumentRequest();
-        return await this.getQueryRequest(data.id);
+        return await this.getQueryRequest(data.index);
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -51,15 +50,13 @@ export class DataByRequest {
     /**
      * Define the variables that we will use to redirect the query that returns a snapshot element
      * @param {object} data - Correspond to request for execute the fetch into database
-     * @param {object} handler - Is the query config sent to direct a complex snapshot, this way we can get data applying filters
      * @returns {method} set data to use
      */
-    static updateCredentials(data, handler) {
+    static updateCredentials(data) {
         const section = Section.getCurrentSection();
         const { entity } = getProfileUser();
         if (this.section != section) this.lastDocumentVisible = [];
         DataByRequest.section = section;
-        DataByRequest.handler = handler;
         DataByRequest.entity = entity;
         DataByRequest.request = data;
     }
@@ -92,15 +89,17 @@ export class DataByRequest {
     /*--------------------------------------------------query request--------------------------------------------------*/
     /**
      * Prepare a queryRequest and get querySnapshot from database (get a lot documents "bigData"); also keep the last document of snapshot result for apply pagination
+     * @param {number} index - Correspond to index of the container in which we are [0][1]
      * @returns {querySnapshot} - get a await data query from database "big data"
      */
-    static async getQueryRequest(indexKey) {
-        const querySnapshot = this.preparateQuery(indexKey);
+    static async getQueryRequest(index) {
+        const querySnapshot = this.preparateQuery(index);
         const res = await getDocs(querySnapshot);
         this.lastDocumentVisible.push(res.docs[res.docs.length - 1]); return res;
     }
     /**
      * This prepare a query compound, we use 'where' to apply filter, 'orderBy' to format orden of querySnapshot and 'limit' to pagination; also have a conditional to 'loadMore' taking the last document shown in the container[0] (side right)
+     * @param {number} index - Is the index that we will use to indicate the last document "to pagination"; its are relacioned with the container (side left or right);
      * @returns {querySnapshot} get a await data query from database
      * @const {array} queryConfig - is a array with the configuration of 'where' and 'pagination' - .lenght is equal to 5
      * @example ['avaliable', '!=', 'true', 'avaliable', 5]
@@ -120,7 +119,11 @@ export class DataByRequest {
      * This method simplify the logic, intend do query with a start position saved into "lastVisible" to obtain restant data from database "pagination"
      * @returns {boolean} a boolean; return "something" if value "handler.lastVisible" contain something, else return "null"
      */
-    static isLoadMore() { return this.handler ? true : false }
+    static isLoadMore() {
+        let value;
+        const { nameRequest } = this.request;
+        nameRequest === 'loadMore' ? value = true : value = false; return value;
+    }
     /**
      * Allow return a boolean according to request received; if "req" is an array, so the requeride documents is located at a deeper level
      * @param {string} req - Naturally is a string, but if the query it's more deeper level, so its a array with values like [101, 10001] that correspond to document each time more deep

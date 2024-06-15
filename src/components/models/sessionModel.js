@@ -57,10 +57,11 @@ async function eventContainer(container) {
  * @param {string} req - This is the name of the request clicked by the user, correspond to action of the button
  * @param {array} array - Correspond to data from card in context example [101, 10001]
  * @returns {object} returns an object with keys like { customKey: [], query: '', document: boolean }
+ * @example addComentary: 006
  */
 function buildRequest(req, array) {
     let data = {};
-    data[req] = array ? array : true; //working here...
+    data[req] = array ? array : 'loadMore'; //better explained in example ^°^
     switch (req) {
         case 'seeReports':
             data.index = 1; data.document = false;
@@ -72,7 +73,7 @@ function buildRequest(req, array) {
             break;
         case 'loadMore':
             data.index = 0; data.document = false;
-            data.query = { where: ['avaliable', '!=', ''], pagination: ['avaliable', 5] }
+            data.query = { where: ['avaliable', '!=', 'nothing'], pagination: ['avaliable', 2] }
             break;
         default: break;
     }
@@ -172,7 +173,6 @@ export class Section {
         const handler = this.handlerFormat;
         if (!handler) return "allow";
         if (handler && loopIndex != handler.index) return null;
-        console.log(handler); //working here...
         this.controllerPositionSubnavbar(loopContainer);
         return handler[Object.keys(handler)[0]]; //the first element into object corresponding to the request by user (more details, see reports .etc)
     }
@@ -229,7 +229,7 @@ export class Section {
     static getDefaultQuery() {
         const array = [
             { where: ['empty'], pagination: ['empty'] },
-            { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
+            { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 2, 'date', 2] },
             { where: ['empty'], pagination: ['empty'] }
         ]; return array[this.indexSection];
     }
@@ -266,16 +266,23 @@ export class Section {
     /**
      * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
      * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search (example: array.lenght = 2)
-     * @param {string} collection - Is the name of collection to search into database
+     * @param {string} collection - Is the name of collection to search into database and get data correspond (firebase)
+     * @param {number} index - This is the container index in which we are [0] device-list [1] report
      * @param {array} arrayQueryConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @returns {object} a querySnapshot or documentSnapshot from database
      */
-    static async routeRequest(route, collection, indexContainer, arrayQuery) {
-        const query = arrayQuery ? arrayQuery : null;
-        const type = this.handlerFormat ? this.handlerFormat.document : false;
-        const index = this.handlerFormat ? this.handlerFormat.index : indexContainer;
+    static async routeRequest(route, collection, index, arrayQuery) {
         const build = typeof route === 'string' ? { req: collection } : { req: route };
-        return await DataByRequest.get({ id: index, isDocument: type, queryConfig: query, ...build });
+        const action = this.handlerFormat ? Object.keys(this.handlerFormat)[0] : false;
+        const typeSnapshot = this.handlerFormat ? this.handlerFormat.document : false;
+        const id = this.handlerFormat ? this.handlerFormat.index : index;
+        return await DataByRequest.get({
+            ...build,
+            index: id,
+            nameRequest: action,
+            isDocument: typeSnapshot,
+            queryConfig: arrayQuery
+        });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -337,8 +344,9 @@ export class Section {
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
             const card = this.setContentCard(doc, container, icon);
-            elementById(container).insertAdjacentHTML('afterbegin', card);
+            elementById(container).insertAdjacentHTML('beforeend', card);
         });
+        /*after of create cards i would add the button load more ... */
     }
     /**
      * This module have the function that return a card format depending of name container in the loop context, according to current section; or using a handler sent to config a specific card
@@ -410,5 +418,6 @@ export class Section {
  * string = when request a documentSnapshot (dont need 'where' or 'pagination')
  * object = to build a specific query, intend be a object like this { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] }
  * 
+ * #006: with this string we cant continue the flow in handlerRoute() "handler[0] != null => continue" and in the routeRequest() we have a comparation "route (type) = 'string' => req: collectionContext"
  */
 /* ------------------------------------------------------------------------------------------------------------------- */
