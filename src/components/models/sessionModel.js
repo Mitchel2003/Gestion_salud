@@ -99,18 +99,20 @@ export class Section {
      * @const {string} loopCollection - is the name of collection through wich obtain the data request to fill the current container, we use to find the data location (['device_references', 'finding_references'])
      */
     static async init(section = null, handler = null) {
-        onLoadWhile();
-        this.updateCredentials(section, handler);
-        let promise = this.arrayContainer.map(async (loopContainer, loopIndex) => {//AC #002
-            let loopCollection = this.arrayCollection[loopIndex];
-            let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
-            const { dataDefault, arrayConfig } = this.preparateRequest(loopIndex, loopCollection);
-            const res = await this.routeRequest(route, loopCollection, loopIndex, arrayConfig);
-            this.clearContainerConditionally(loopContainer, res);
-            this.createItems(res, loopContainer, dataDefault);
-        });
-        await Promise.all(promise);
-        offLoadWhile();
+        try {
+            onLoadWhile();
+            this.updateCredentials(section, handler);
+            let promise = this.arrayContainer.map(async (loopContainer, loopIndex) => {//AC #002
+                let loopCollection = this.arrayCollection[loopIndex];
+                let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
+                const { dataDefault, arrayConfig } = this.preparateRequest(loopIndex, loopCollection);
+                const res = await this.routeRequest(route, loopCollection, loopIndex, arrayConfig);
+                this.clearContainerConditionally(loopContainer, res);
+                this.createItems(res, loopContainer, dataDefault);
+            });
+            await Promise.all(promise);
+            offLoadWhile();    
+        } catch (error) {console.log(error)}
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -275,7 +277,7 @@ export class Section {
         const type = this.handlerFormat ? this.handlerFormat.document : false;
         const index = this.handlerFormat ? this.handlerFormat.index : indexContainer;
         const build = typeof route === 'string' ? { req: collection } : { req: route };
-        console.log(index);
+        console.log(build); //working here...
         return await DataByRequest.get({ id: index, isDocument: type, queryConfig: query, ...build });
     }
     /*-------------------------------------------------------------------------------------------------------------------*/

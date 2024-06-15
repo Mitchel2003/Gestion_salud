@@ -31,7 +31,6 @@ export async function observerSessionActive() {//AC #209
         onAuthStateChanged(auth, async (user) => {
             const getAlert = await import('../utils/alerts.js');
             const getView = await import('../utils/view.js');
-
             if (!user) { await getAlert.showMessage('messageSessionFailed', 'alertButtonAction'); getView.goToHome(); }
             else { resolve({ email: user.email, entity: user.photoURL }); }
         });

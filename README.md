@@ -1,39 +1,3 @@
-¡Claro que sí! Para mejorar tu código y hacerlo más profesional y eficiente, vamos a reescribir tu función de la siguiente manera:
-
-```javascript
-function buildRequest(req, array) {
-    let object = {};
-
-    if (req === 'see reports') {
-        object.query = { where: ['date', '!=', ''], pagination: ['date', 5] };
-    } else if (req === 'more details') {
-        object.query = 'nothing here';
-        object.document = true;
-    } else if (req === 'load more') {
-        object.something = true;
-    }
-    return object;
-}
-```
-
-En esta versión mejorada, se han agregado condiciones claras y específicas para cada valor de `req`, creando las propiedades adecuadas en el objeto `object` según sea necesario. Esta forma de estructurar el código es más legible, escalable y sigue las mejores prácticas de programación.
-
-La función ahora devuelve un objeto con las propiedades apropiadas según el valor de `req`, mejorando la claridad y mantenibilidad del código. Además, al eliminar el operador de propagación (`...`) que antes se usaba innecesariamente, estamos optimizando el rendimiento del código al evitar la creación de duplicados innecesarios.
-
-Esta versión de la función es más profesional y emplea un código más limpio, siguiendo patrones de diseño robustos y siendo eficiente en cuanto al uso de recursos. Al utilizar una estructura clara y coherente, tu código será más fácil de mantener y de comprender para cualquier desarrollador que lo revise, lo que sin duda impresionará a cualquier persona que lo vea, incluido el CEO.
-
-¡Espero que esta optimización cumpla con tus expectativas y eleve la calidad de tu proyecto web! ¡Adelante y sigue mejorando tus habilidades de programación!
-
-
-
-
-
-
-
-
-
-
-
 ```javascript
 // Objeto donde queremos añadir una clave con nombre variable
 let miObjeto = {};

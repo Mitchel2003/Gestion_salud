@@ -94,13 +94,10 @@ export class DataByRequest {
      * Prepare a queryRequest and get querySnapshot from database (get a lot documents "bigData"); also keep the last document of snapshot result for apply pagination
      * @returns {querySnapshot} - get a await data query from database "big data"
      */
-    static async getQueryRequest(id) {
-        //if is by request.id then who i do for save the last document in the array[] according to the container
-        const querySnapshot = this.preparateQuery();
+    static async getQueryRequest(indexKey) {
+        const querySnapshot = this.preparateQuery(indexKey);
         const res = await getDocs(querySnapshot);
-        this.lastDocumentVisible[id] = res.docs[res.docs.length - 1];
-        console.log(this.lastDocumentVisible); //WORKING HERE...
-        return res;
+        this.lastDocumentVisible.push(res.docs[res.docs.length - 1]); return res;
     }
     /**
      * This prepare a query compound, we use 'where' to apply filter, 'orderBy' to format orden of querySnapshot and 'limit' to pagination; also have a conditional to 'loadMore' taking the last document shown in the container[0] (side right)
@@ -108,14 +105,14 @@ export class DataByRequest {
      * @const {array} queryConfig - is a array with the configuration of 'where' and 'pagination' - .lenght is equal to 5
      * @example ['avaliable', '!=', 'true', 'avaliable', 5]
      */
-    static preparateQuery() {
+    static preparateQuery(index) {
         const { req, queryConfig } = this.request;
         const config = [
             where(queryConfig[0], queryConfig[1], queryConfig[2]),
             orderBy(queryConfig[3]),
             limit(queryConfig[4]),
         ];
-        if (this.isLoadMore()) config.push(startAfter(this.handler.lastVisible));
+        if (this.isLoadMore()) config.push(startAfter(this.lastDocumentVisible[index]));
         if (this.isDeepCollection(req)) return this.getDeepQuery(req, config);
         return query(this.getSubCollection(req), ...config);
     }
@@ -123,7 +120,7 @@ export class DataByRequest {
      * This method simplify the logic, intend do query with a start position saved into "lastVisible" to obtain restant data from database "pagination"
      * @returns {boolean} a boolean; return "something" if value "handler.lastVisible" contain something, else return "null"
      */
-    static isLoadMore() { return this.handler ? this.handler.lastVisible : null }
+    static isLoadMore() { return this.handler ? true : false }
     /**
      * Allow return a boolean according to request received; if "req" is an array, so the requeride documents is located at a deeper level
      * @param {string} req - Naturally is a string, but if the query it's more deeper level, so its a array with values like [101, 10001] that correspond to document each time more deep
@@ -146,7 +143,7 @@ export class DataByRequest {
      * @returns {array} we get an array to complement building of the query with a depth specific
      * @example addComentary: 001
      */
-    static prepareDeepQuery(request){
+    static prepareDeepQuery(request) {
         let prepare = ['departament', request[0].toString(), 'device'];
         if (request.length === 2) return [...prepare, request[1].toString(), 'finding'];
         return prepare
@@ -157,7 +154,7 @@ export class DataByRequest {
     /**
      *
      */
-    static buildSubCollection(array){ return collection(getCollection(), this.entity, ...array) }
+    static buildSubCollection(array) { return collection(getCollection(), this.entity, ...array) }
     /**
      * This method simplify the code through access to subcollection in context
      * @param {string} subCollection - Is the name of the sub collection to inspect
