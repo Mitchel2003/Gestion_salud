@@ -1,6 +1,6 @@
 /*--------------------------------------------------imports--------------------------------------------------*/
+import { cardDevice, cardFinding, cardDetails, buttonLoadMore } from '../layout/cards.js';
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
-import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 import { DataByRequest } from '../firebase/query.js';
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -107,13 +107,13 @@ export class Section {
                 let loopCollection = this.arrayCollection[loopIndex];
                 let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
                 const { dataDefault, arrayQuery } = this.preparateRequest(loopIndex, loopCollection);
-                const res = await this.routeRequest(route, loopCollection, loopIndex, arrayQuery);                
+                const res = await this.routeRequest(route, loopCollection, loopIndex, arrayQuery);
                 this.clearContainerConditionally(loopContainer, res);
                 this.createItems(res, loopContainer, dataDefault);
             });
             await Promise.all(promise);
-            offLoadWhile();    
-        } catch (error) {console.log(error)}
+            offLoadWhile();
+        } catch (error) { console.log(error) }
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -183,7 +183,7 @@ export class Section {
      */
     static controllerPositionSubnavbar(mainSection) {
         const element = elementById('nav-' + mainSection);
-        if(element) element.click();
+        if (element) element.click();
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -340,12 +340,14 @@ export class Section {
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
     static createItems(snapshot, container, icon) {
+        const element = elementById(container);
         const data = snapshot.forEach ? snapshot.docs.map(e => e) : [snapshot];
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
             const card = this.setContentCard(doc, container, icon);
-            elementById(container).insertAdjacentHTML('beforeend', card);
+            this.insertIntoContainer(element, card);
         });
+        this.insertIntoContainer(element, buttonLoadMore());
         /*after of create cards i would add the button load more ... */
     }
     /**
@@ -380,6 +382,8 @@ export class Section {
             if (nameContainer.includes(key)) return method();
         }
     }
+
+    static insertIntoContainer(container, card) { container.insertAdjacentHTML('beforeend', card) }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------getters--------------------------------------------------*/
