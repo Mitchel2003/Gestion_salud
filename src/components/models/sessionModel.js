@@ -6,10 +6,7 @@ import { DataByRequest } from '../firebase/query.js';
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------mode--------------------------------------------------*/
-/**
- * Controller sesion of the user with auxiliary access, allow interactivity on the page with an access corresponding that which the user is subscribed
- * @returns {method} Interactivity into content of current sesion
- */
+/** Controller sesion of the user with auxiliary access, allow interactivity into content of current sesion */
 export async function modeAuxiliary() {
     controllerSideBar(elementByClass('.side-bar'));
     await handlerSection(elementByClass('.nav-tabs'));
@@ -20,7 +17,6 @@ export async function modeAuxiliary() {
 /**
  * Control the status of side-bar into section applying a toggle on click, also have a 'pointer leave' event to close when the mouse out of bar
  * @param {HTMLElement} params - This element correspond to sideBar
- * @returns {method} apply a behavior to sidebar
  */
 function controllerSideBar(side_bar) {
     toggleClassList_onClick('.user-options', '.close-options span', 'spawn', side_bar);
@@ -29,7 +25,6 @@ function controllerSideBar(side_bar) {
 /**
  * Is used to coordinate the contain of section that user click on; this way we can request data and fill the specific containers through a snapshot received
  * @param {HTMLElement} nav - Correspond to element main navbar
- * @returns {method} apply a event on click over the options in main navbar, so if user click
  */
 async function handlerSection(nav) {
     nav.addEventListener('click', async (e) => {
@@ -40,7 +35,6 @@ async function handlerSection(nav) {
 /**
  * Allow coordinate the data obtained of the card click on by user in the "container" specific; the buttons into cards execute their logic a according to the card its in
  * @param {string} container - Correspond to container name for add event on click in their cards
- * @returns {method} A action according to button clicked, execute a request with data belong to the card selected
  * @example In the side right on current section we can see a container with cards and buttons of actions, this buttons have a fuction where are send the data of the card in context
  */
 async function eventContainer(container) {
@@ -50,7 +44,7 @@ async function eventContainer(container) {
         const arrayData = Section.getTargetCard(e.target);
         const customObj = buildRequest(card, arrayData);
         return await Section.actionByRequest(customObj);
-    });/*I need the index of the loop in context to save the last document found for again*/
+    });
 }
 /**
  * This create the handler format to request data query from database; helps me to build a custom key depending to action button clicked
@@ -80,7 +74,14 @@ function buildRequest(req, array) {
     return data;
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
-export class Section {
+/**
+ * Is designed to handle behavior into current section that user its in; it are compound of the following mechanisms:
+ * @example
+ * init(); its the main controller
+ * updateCredentials(); handle the static variables over the present class
+ * handleRoute(); allow control the flow of the request; by default allow fill containers into section
+ */
+export class Section {//working here...
     static extensionQuerySnapshot = []
     //
     static arrayContainer;
@@ -94,10 +95,9 @@ export class Section {
     static async loadCurrentSection(section) { await Section.init(section) }
     static async actionByRequest(handler) { await Section.init(null, handler) }
     /**
-     * Initialize a query data to database for fill the section in context (contain mode default and fixed).
+     * Initialize a query data to database for fill the section in context (contain mode default and fixed). Define the content present into containers of current section
      * @param {string} [section = null] - Is the section in context to operate; will be null if we are trying a request in the current section
      * @param {object} [handler = null] - The format is optional for fix request, default is null; could have propierties like moreDetails for example
-     * @returns {method} this define the content present into containers of current section
      * @const {number} loopIndex - this represent the index of container that loop is in ([0, 1])
      * @const {string} loopContainer - is the name container that loop is in (['device-list', 'reports'])
      * @const {string} loopCollection - is the name of collection through wich obtain the data request to fill the current container, we use to find the data location (['device_references', 'finding_references'])
@@ -110,7 +110,8 @@ export class Section {
                 let loopCollection = this.arrayCollection[loopIndex];
                 let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
                 const { dataDefault, arrayQuery } = this.preparateRequest(loopIndex, loopCollection);
-                const res = await this.routeRequest(route, loopCollection, loopIndex, arrayQuery);
+                const addressRequest = {routeDeep: route, routeRelative: loopCollection}
+                const res = await this.routeRequest(addressRequest, loopIndex, arrayQuery);
                 this.clearContainerConditionally(loopContainer, res);
                 this.createItems(res, loopContainer, dataDefault);
             });
@@ -265,7 +266,7 @@ export class Section {
             ...data.pagination.slice(index_pagination[0], index_pagination[1])
         ]
     }
-    static saveExtensionLimit(pagination, index){
+    static saveExtensionLimit(pagination, index) {
         const documentsExpected = pagination[1];
         this.extensionQuerySnapshot[index] = documentsExpected;
     }
@@ -274,14 +275,17 @@ export class Section {
     /*--------------------------------------------------route request--------------------------------------------------*/
     /**
      * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
-     * @param {array} [route = 'allow'] - Naturaly have a value default like string, but if user iterate over options into list of cards (side right) so its a array with data for deep search (example: array.lenght = 2)
-     * @param {string} collection - Is the name of collection to search into database and get data correspond (firebase)
+     * @param {object} addressRequest - {routeDeep: [] or "", routeRelative:  ""}
      * @param {number} index - This is the container index in which we are [0] device-list [1] report
      * @param {array} arrayQueryConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
      * @returns {object} a querySnapshot or documentSnapshot from database
+     * @example 
+     * route deep is represented like a array with data for deep search (departament, 101, device, 10001) in database
+     * route relative correspond to string with name of collection to search (user, departament, device_references, finding_references)
      */
-    static async routeRequest(route, collection, index, arrayQuery) {
-        const build = typeof route === 'string' ? { req: collection } : { req: route };
+    static async routeRequest(addressRequest, index, arrayQuery) {
+        const {routeDeep, routeRelative} = addressRequest;
+        const build = typeof routeDeep === 'string' ? { req: routeRelative } : { req: routeDeep };
         const action = this.handlerFormat ? Object.keys(this.handlerFormat)[0] : false;
         const typeSnapshot = this.handlerFormat ? this.handlerFormat.document : false;
         const id = this.handlerFormat ? this.handlerFormat.index : index;
@@ -356,7 +360,7 @@ export class Section {
             const card = this.setContentCard(doc, container, icon);
             elementContainer.insertAdjacentHTML('afterbegin', card);
         });
-        this.handleLoadMore(elementContainer);
+        this.handleLoadMore(elementContainer, snapshot);
         /*after of create cards i would add the button load more ... */
     }
     /**
@@ -391,8 +395,11 @@ export class Section {
             if (nameContainer.includes(key)) return method();
         }
     }
-    static handleLoadMore(element){
+    static handleLoadMore(element, snapshot) {
         //but... only if have more elements into database
+        const isQuery = snapshot.forEach ? true : false; if (!isQuery) return;
+        snapshot.length 
+
         element.insertAdjacentHTML('beforeend', buttonLoadMore());
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
