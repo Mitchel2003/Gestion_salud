@@ -73,7 +73,7 @@ function buildRequest(req, array) {
             break;
         case 'loadMore':
             data.index = 0; data.document = false;
-            data.query = { where: ['avaliable', '!=', 'nothing'], pagination: ['avaliable', 2] }
+            data.query = { where: ['avaliable', '!=', 'nothing'], pagination: ['avaliable', 5] }
             break;
         default: break;
     }
@@ -229,7 +229,7 @@ export class Section {
     static getDefaultQuery() {
         const array = [
             { where: ['empty'], pagination: ['empty'] },
-            { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 2, 'date', 2] },
+            { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
             { where: ['empty'], pagination: ['empty'] }
         ]; return array[this.indexSection];
     }
@@ -340,14 +340,14 @@ export class Section {
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
     static createItems(snapshot, container, icon) {
-        const element = elementById(container);
+        const elementContainer = elementById(container);
         const data = snapshot.forEach ? snapshot.docs.map(e => e) : [snapshot];
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
             const card = this.setContentCard(doc, container, icon);
-            this.insertIntoContainer(element, card);
+            elementContainer.insertAdjacentHTML('afterbegin', card);
         });
-        this.insertIntoContainer(element, buttonLoadMore());
+        this.handleLoadMore(elementContainer);
         /*after of create cards i would add the button load more ... */
     }
     /**
@@ -382,8 +382,10 @@ export class Section {
             if (nameContainer.includes(key)) return method();
         }
     }
-
-    static insertIntoContainer(container, card) { container.insertAdjacentHTML('beforeend', card) }
+    static handleLoadMore(element){
+        //but... only if have more elements into database
+        element.insertAdjacentHTML('beforeend', buttonLoadMore());
+    }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------getters--------------------------------------------------*/
