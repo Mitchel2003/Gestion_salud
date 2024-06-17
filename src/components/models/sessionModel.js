@@ -81,8 +81,11 @@ function buildRequest(req, array) {
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 export class Section {
+    static extensionQuerySnapshot = []
+    //
     static arrayContainer;
     static arrayCollection;
+    //
     static currentSection;
     static handlerFormat;
     static indexSection;
@@ -128,6 +131,7 @@ export class Section {
      */
     static updateCredentials(section, handler) {
         if (section) Section.currentSection = section;
+        if (!handler) Section.extensionQuerySnapshot = [];
         Section.indexSection = this.getIndexSection(this.currentSection);
         Section.arrayCollection = this.collectionToSearch();
         Section.arrayContainer = this.containerToFill();
@@ -244,6 +248,7 @@ export class Section {
         const pagination = data.pagination;
         if (!where || !pagination) return;
         if (where.length > 3) return this.sortQuery(data, loopIndex);
+        this.saveExtensionLimit(pagination, loopIndex);
         return [...data.where, ...data.pagination]
     }
     /**
@@ -259,6 +264,10 @@ export class Section {
             ...data.where.slice(index_where[0], index_where[1]),
             ...data.pagination.slice(index_pagination[0], index_pagination[1])
         ]
+    }
+    static saveExtensionLimit(pagination, index){
+        const documentsExpected = pagination[1];
+        this.extensionQuerySnapshot[index] = documentsExpected;
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 

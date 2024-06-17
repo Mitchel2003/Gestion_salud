@@ -1,3 +1,12 @@
+mira, estoy usando firebase para la base de datos de mi proyecto web; la cuestion es que puedo recibir 2 tipos de snapshot de la base de datos; me refiero a documentSnapshot and querySnapshot; un query se ve algo asi [QueryDocumentSnapshot] mientras un document se ve así, [DocumentSnapshot], al cuestion es que quiero que si recibimos un document snapshot entonces entrar en un if; no sabria como hacerlo, no se como hacer para saber si es un document o un query y la verdad no quiero usar un length y si es 1 entonces es document; justamente porque puede que una consulta query tenga 1 documento encontrado; recuerda que siempre busco maneras de hacer mejor las cosas, necesito la forma mas optima en cuanto a rendimiento y escalabilidad, eficiente en cuanto a codigo y profesional en cuanto a empleo de codigo limpio y mejores practicas, por favor, dame lo mas profesional que tengas; que cuando el CEO vea mi codigo, se impresione por el modelo de desestructurar datos tan bonita, !VAMOS!
+
+
+
+
+
+
+
+
 TypeError: n.indexOf is not a function
     at ResourcePath.fromString (path.ts:232:11)
     at collection (reference.ts:435:5)
