@@ -89,6 +89,9 @@ function buildRequest(req, array) {
  * createItems(); 'Finally, this allows us create a card to each document finding in the snapshot of the request query by the user'
  */
 export class Section {
+    static loop_index;
+    static loop_container;
+
     static extensionQuerySnapshot = []
     //
     static arrayContainer;
@@ -108,19 +111,21 @@ export class Section {
      * @const {number} loopIndex - this represent the index of container that loop is in ([0, 1])
      * @const {string} loopContainer - is the name container that loop is in (['device-list', 'reports'])
      * @const {string} loopCollection - is the name of collection through wich obtain the data request to fill the current container, we use to find the data location (['device_references', 'finding_references'])
+     * @example addComentary: 002
      */
     static async init(section = null, handler = null) {
         try {
             onLoadWhile();
             this.updateCredentials(section, handler);
-            let promise = this.arrayContainer.map(async (loopContainer, loopIndex) => {//AC #002
+            let promise = this.arrayContainer.map(async (loopContainer, loopIndex) => {//better explained in example ^°^
                 let loopCollection = this.arrayCollection[loopIndex];
                 let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
                 const { dataDefault, arrayQuery } = this.preparateRequest(loopIndex, loopCollection);
-                const addressRequest = { routeDeep: route, routeRelative: loopCollection }
+                const addressRequest = { routeDeep: route, routeRelative: loopCollection };
                 const res = await this.routeRequest(addressRequest, loopIndex, arrayQuery);
-                this.clearContainerConditionally(loopContainer, res);
-                this.createItems(res, loopContainer, dataDefault);
+                this.loop_container = loopContainer; this.loop_index = loopIndex; //002-02 ^°^
+                this.clearContainerConditionally(res);
+                this.createItems(res, dataDefault);
             });
             await Promise.all(promise);
             offLoadWhile();
@@ -311,11 +316,10 @@ export class Section {
     /*--------------------------------------------------clear container conditionally--------------------------------------------------*/
     /**
      * Cleans the specified container based on the provided handlerFormat, then according to finding data received, the text "nothing found" wil be removed
-     * @param {string} container - The name container to clean.
      * @param {snapshot} res - Contain data response of the request in context of the loop
      */
-    static clearContainerConditionally(container, res) {
-        const element = elementById(container);
+    static clearContainerConditionally(res) {
+        const element = elementById(this.loop_container);
         this.setToggle_cardNothingFound(element, res);
         this.cleanContainer(element);
     }
@@ -352,24 +356,23 @@ export class Section {
     /**
      * Create the cards that will fill the container in context through a loop; with "snapshot" received, we can go through the data got from database "querySnapshot or documentSnapshot"
      * @param {Object} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
-     * @param {string} container - Is the name container belongs to current loop, is one of the containers to fill in section context (example: "home")
      * @param {string} icon - Is a name class to insert a icon in the card context, correspond to bootstrap icons
      * @const {array} data - is converted to element that contain all data from query received, this allow sort the data as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
-    static createItems(snapshot, container, icon) {
+    static createItems(snapshot, icon) {
+        const element = elementById(this.loop_container);
         const data = snapshot.forEach ? snapshot.docs.map(e => e) : [snapshot];
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
-            const card = this.setContentCard(doc, container, icon);
-            elementById(container).insertAdjacentHTML('afterbegin', card);
+            const card = this.setContentCard(doc, icon);
+            element.insertAdjacentHTML('afterbegin', card);
         });
-        this.handleLoadMore(elementById(container), snapshot);
+        this.handleLoadMore(element, snapshot);
     }
     /**
      * This module have the function that return a card format depending of name container in the loop context, according to current section; or using a handler sent to config a specific card
      * @param {object} value - Contain one of much documents from database coresponding to a snapshot, snapshot: (contain id document) and data: (contain attributes)
-     * @param {string} nameContainer - Is the name of container in context to insert the data obtained from database
      * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons
      * @const {object} data - is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search
      * @example
@@ -377,7 +380,7 @@ export class Section {
      * nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)'
      * this.handlerFormat = handler contains moreDetails; so the method returned is 'handler[key]'
      */
-    static setContentCard(value, nameContainer, icon) {
+    static setContentCard(value, icon) {
         const handler = this.handlerFormat;
         const data = {
             /*formats with handler*/
@@ -394,7 +397,7 @@ export class Section {
         }
         for (const [key, method] of Object.entries(data)) {
             if (handler ? handler[key] : null) return method();
-            if (nameContainer.includes(key)) return method();
+            if (this.loop_container.includes(key)) return method();
         }
     }
     /**
@@ -403,11 +406,12 @@ export class Section {
      * @param {snapshot} snapshot - Correspond to result of the query from the database; could be a documentSnapshot or querySnapshot
      */
     static handleLoadMore(element, snapshot) {
-        const isQuery = snapshot.forEach ? true : false; if (!isQuery) return;
-        snapshot.length
-
+        const query = snapshot.forEach ? snapshot.docs : false; if (!query) return;
+        if (query.length < this.extensionQuerySnapshot[this.loop_index]) return;
         element.insertAdjacentHTML('beforeend', buttonLoadMore());
     }
+
+    
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------getters--------------------------------------------------*/
