@@ -29,7 +29,9 @@ function controllerSideBar(side_bar) {
 async function handlerSection(nav) {
     nav.addEventListener('click', async (e) => {
         let item = e.target.ariaCurrent;
-        if (item) { await Section.loadCurrentSection(item); await eventContainer(Section.getContainerSection(0)) }
+        if (!item) return;
+        await Section.loadCurrentSection(item);
+        await eventContainer(Section.getContainerSection(0));
     });
 }
 /**
@@ -77,9 +79,14 @@ function buildRequest(req, array) {
 /**
  * Is designed to handle behavior into current section that user its in; it are compound of the following mechanisms:
  * @example
- * init(); its the main controller
- * updateCredentials(); handle the static variables over the present class
- * handleRoute(); allow control the flow of the request; by default allow fill containers into section
+ * init(); 'its the main controller'
+ * updateCredentials(); 'handle the static variables over the present class'
+ * handleRoute(); 'allow control the flow of the request; by default allow fill the containers into current section, but with request we can omit the flow on containers off focus'
+ * preparateRequest(); 'prepares us a request basing on existence of a handle param, contain a config default to fill containers static defined on the differents sections'
+ * routeRequest(); 'configure a route for send request to the database (document or query) depending to the status of the handler in case that exist'
+ * clearContainerConditionally(); 'through to the inspect of actions events, we can know if clear container or not do it'
+ * @example to reload the section, we need clear the data in the containers to get the new snapshot query
+ * createItems(); 'Finally, this allows us create a card to each document finding in the snapshot of the request query by the user'
  */
 export class Section {//working here...
     static extensionQuerySnapshot = []
@@ -110,7 +117,7 @@ export class Section {//working here...
                 let loopCollection = this.arrayCollection[loopIndex];
                 let route = this.handleRoute(loopIndex, loopContainer); if (route === null) return;
                 const { dataDefault, arrayQuery } = this.preparateRequest(loopIndex, loopCollection);
-                const addressRequest = {routeDeep: route, routeRelative: loopCollection}
+                const addressRequest = { routeDeep: route, routeRelative: loopCollection }
                 const res = await this.routeRequest(addressRequest, loopIndex, arrayQuery);
                 this.clearContainerConditionally(loopContainer, res);
                 this.createItems(res, loopContainer, dataDefault);
@@ -126,9 +133,7 @@ export class Section {//working here...
      * Intend to define escential data to build the queries corresponding to user iteractivity, call data according at context
      * @param {string} [section = null] - Is the name of the current section, may be null, its mean that request action is to current section
      * @param {object} [handler = null] - Is optional and contain keys that coordinate a request data specific, according to context
-     * @returns {method} get a object with propierties like indexSection and collections "correspond to a container asignated" this way, we get the data from database and fill containers in the section
-     * @example
-     * Sections = [home:0], [handler-device:1], [control-departaments:2], [user-management:3], [finding-data:4], [filters:5]
+     * @example Sections = [home:0], [handler-device:1], [control-departaments:2], [user-management:3], [finding-data:4], [filters:5]
      */
     static updateCredentials(section, handler) {
         if (section) Section.currentSection = section;
@@ -170,16 +175,15 @@ export class Section {//working here...
      * Helps me control the flow of the current loop (containers in current section), through (allow/deny) we can fill a container specific by using a handler (handlerFormat)
      * @param {number} loopIndex - this represent the index of container that loop is in
      * @param {string} loopContainer - is the name container that loop is in
-     * @return {string} by default throws a string 'allow', but if its request then return "null" or "idFormat = number"
-     * @const {object} [format = null] - we will use this handler to decide; if(!format).then(continue flow), if(format but indexLoop != indexContainer[1](side left)  ).then(stop flow)
-     * @const {array} array - is a array of propierties that belongs at format; at least one of these properties must contain data, remember that if exist handlerFormat its because we intend a request, we await a format according to a requerided action
+     * @return {string} by default throws a string 'allow', but if exist request so return "null" or "array[]"
+     * @const {object} [handler = null] - we will use this handler to decide; if(!handler).then(continue flow default)
      */
     static handleRoute(loopIndex, loopContainer) {
         const handler = this.handlerFormat;
         if (!handler) return "allow";
         if (handler && loopIndex != handler.index) return null;
         this.controllerPositionSubnavbar(loopContainer);
-        return handler[Object.keys(handler)[0]]; //the first element into object corresponding to the request by user (more details, see reports .etc)
+        return handler[Object.keys(handler)[0]]; //[0] corresponding to customized key
     }
     /**
      * For control when iterating over the options in the side right (scroll container), in same case like that;
@@ -198,7 +202,7 @@ export class Section {//working here...
      * @param {number} loopIndex - Is the number of the current index in the loop
      * @param {string} loopCollection - Is the name of the collection through which query data to database
      * @returns {object} we get a object configured by default (or by this.handlerFormat.query) to set a request
-     * @const {object} data - is equal to { query: {where: [], pagination: []} }
+     * @const {object} data - is equal to { where: [], pagination: [], icon: '' }
      * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent 'where' and 'pagination'
      */
     static preparateRequest(loopIndex, loopCollection) {
@@ -209,9 +213,9 @@ export class Section {//working here...
     }
     /**
      * This method allows us to configure the request that we send to Firebase method "getDocs()" with which we obtain the snapshot "documentSnapshot" or "querySnapshot"
-     * @param {string} collectionToSearch - Contain name of the collection to query in database, with this name we can inspect the keys of object "data" to get static data customized (example: icon)
+     * @param {string} collectionToSearch - Contain name of the collection to query in database, with this name we can inspect the keys of object "data"
      * @param {object} [query = null] - Have three status, could be this;
-     * @returns {object} we get a object with keys {icon, where, pagination} to fix the query() method that we will use to send a specific request. The above method belong to the backend of firebase
+     * @returns {object} we get a object with keys {icon, where, pagination} to fix the query() method that we will use to send a specific request
      * @const {object} data - is a object with keys that corresponding to specific collection, contain a default config like 'icon'
      * @example addComentary: 005
      */
@@ -242,7 +246,7 @@ export class Section {//working here...
      * This includes a logic to get the query config according to extension of data (where and pagination)
      * @param {object} data - Is an object with optional properties like 'where:[]' and 'pagination:[]'
      * @param {number} loopIndex - This represent the number of the current index in the loop
-     * @returns {array} an array with the current config to request
+     * @returns {array} an array with the current config based into index of the loop in execute, gives us [length = 5]
      */
     static fixQueryConfig(data, loopIndex) {
         const where = data.where;
@@ -266,6 +270,11 @@ export class Section {//working here...
             ...data.pagination.slice(index_pagination[0], index_pagination[1])
         ]
     }
+    /**
+     * This intend save the length of the requested queries, this way we can know if a request dont have more results, then we do hide the button (load more...)
+     * @param {array} pagination - This is an array with length of 2; this represent values to build the orderBy() and limit(), both methods from firebase
+     * @param {number} index - This is the index in which its in locate the current loop in execute
+     */
     static saveExtensionLimit(pagination, index) {
         const documentsExpected = pagination[1];
         this.extensionQuerySnapshot[index] = documentsExpected;
@@ -275,16 +284,16 @@ export class Section {//working here...
     /*--------------------------------------------------route request--------------------------------------------------*/
     /**
      * Prepare the request according at "route" defined by the handler received; this way we can send a request to the database and get the assigned snapshot
-     * @param {object} addressRequest - {routeDeep: [] or "", routeRelative:  ""}
-     * @param {number} index - This is the container index in which we are [0] device-list [1] report
-     * @param {array} arrayQueryConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5, the three first are to "where", and the last two is for "pagination"
-     * @returns {object} a querySnapshot or documentSnapshot from database
+     * @param {object} addressRequest - {routeDeep: [] or "", routeRelative:  ""} to direct the query to database
+     * @param {number} index - This is the container index in which we are (device-list[0] reports[1])
+     * @param {array} arrayQueryConfig - Contain the current config to fix the query(method created by firebase) for container in context; is a array with lenght of 5 "where" and "pagination"
+     * @returns {snapshot} a querySnapshot or documentSnapshot from database
      * @example 
      * route deep is represented like a array with data for deep search (departament, 101, device, 10001) in database
      * route relative correspond to string with name of collection to search (user, departament, device_references, finding_references)
      */
     static async routeRequest(addressRequest, index, arrayQuery) {
-        const {routeDeep, routeRelative} = addressRequest;
+        const { routeDeep, routeRelative } = addressRequest;
         const build = typeof routeDeep === 'string' ? { req: routeRelative } : { req: routeDeep };
         const action = this.handlerFormat ? Object.keys(this.handlerFormat)[0] : false;
         const typeSnapshot = this.handlerFormat ? this.handlerFormat.document : false;
@@ -304,7 +313,6 @@ export class Section {//working here...
      * Cleans the specified container based on the provided handlerFormat, then according to finding data received, the text "nothing found" wil be removed
      * @param {string} container - The name container to clean.
      * @param {snapshot} res - Contain data response of the request in context of the loop
-     * @returns {method} apply at behavior to containers to organize the visual presentation
      */
     static clearContainerConditionally(container, res) {
         const element = elementById(container);
@@ -312,23 +320,21 @@ export class Section {//working here...
         this.cleanContainer(element);
     }
     /**
-     * With these we can inspect "res" that is snapshot; if have data then the card be disable "nothing found", else will be enable
+     * Set the visibility of the card by default "nothing found" depending to data found in the snapshot
      * @param {HTMLElement} container - Is the container to clean
-     * @param {snapshot} res - Is the response of the request snapshot from firebase
-     * @returns {method} - set the visibility of the card by default "nothing found" depending to data found in the snapshot
+     * @param {snapshot} res - Is the response of the request snapshot from firebase, with these we can inspect the response from firebase
      * @example addComentary: 004
      */
     static setToggle_cardNothingFound(container, res) {
         const card = container.querySelector('.empty');
         const value = res.docs ? res.docs.length : res.id
         const isCardVisible = !card.className.includes('d-none');
-        if (value != 0) return isCardVisible ? card.classList.toggle('d-none') : '';
+        if (value != 0) isCardVisible ? card.classList.toggle('d-none') : '';
         else isCardVisible ? '' : card.classList.toggle('d-none');
     }
     /**
-     * Clean the specified container
+     * Remove all cards into current container according to data received by the handler, clean the specified container
      * @param {HTMLElement} container - Is the container to clear cards, correspond to DOM element
-     * @returns {method} remove all cards into current container according to data received by the handler
      * @example addComentary: 001
      */
     static cleanContainer(container) {
@@ -348,8 +354,7 @@ export class Section {//working here...
      * @param {Object} snapshot - Contain data obtained from database, is represented with a querySnapshot or documentSnapshot format, depending on the request sent
      * @param {string} container - Is the name container belongs to current loop, is one of the containers to fill in section context (example: "home")
      * @param {string} icon - Is a name class to insert a icon in the card context, correspond to bootstrap icons
-     * @returns {HTMLElement} insert cards in the current container, this depends on the loop the container is in
-     * @const {object} data - is converted to element that contain all data from query received, this format the snapshot as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
+     * @const {array} data - is converted to element that contain all data from query received, this allow sort the data as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
     static createItems(snapshot, container, icon) {
@@ -365,15 +370,14 @@ export class Section {//working here...
     }
     /**
      * This module have the function that return a card format depending of name container in the loop context, according to current section; or using a handler sent to config a specific card
-     * @param {object} value - Contain one of much documents from database coresponding to a snapshot, this is a data that belong to one document (ex: device with UID:10001)
+     * @param {object} value - Contain one of much documents from database coresponding to a snapshot, snapshot: (contain id document) and data: (contain attributes)
      * @param {string} nameContainer - Is the name of container in context to insert the data obtained from database
      * @param {string} icon - Contain el nameClass to call a icon from Bootstrap-icons
-     * @returns {HTMLElement} execute a method that return a DOMElement
      * @const {object} data - is a object with keys that initially correspond to names of containers got from currect section, thats why we into loop for/of used "nameContainer.includes()" because if(!handler).then(nameContainer contain the key to search
      * @example
-     * nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)' respectively.
-     * nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)' respectively.
-     * {with format included} = handler contains moreDetails; so the method returned is 'handler[key]' respectively
+     * nameContainer = "device-list" => index(0); so the method returned is 'device: () => cardDevice(value, icon)'
+     * nameContainer = "reports" => index(1); so the method returned is 'reports: () => cardFinding(value, icon)'
+     * this.handlerFormat = handler contains moreDetails; so the method returned is 'handler[key]'
      */
     static setContentCard(value, nameContainer, icon) {
         const handler = this.handlerFormat;
@@ -395,10 +399,14 @@ export class Section {//working here...
             if (nameContainer.includes(key)) return method();
         }
     }
+    /**
+     * This intend control the behavior of spawn of the load more button, this through inspect and compared the length of the snapshot with the extension of the pagination saved {pagination: 'limit'}; this represent the maximum number of documents provided by the request
+     * @param {HTMLElement} element - Is the container target to insert the button load more
+     * @param {snapshot} snapshot - Correspond to result of the query from the database; could be a documentSnapshot or querySnapshot
+     */
     static handleLoadMore(element, snapshot) {
-        //but... only if have more elements into database
         const isQuery = snapshot.forEach ? true : false; if (!isQuery) return;
-        snapshot.length 
+        snapshot.length
 
         element.insertAdjacentHTML('beforeend', buttonLoadMore());
     }
@@ -411,7 +419,16 @@ export class Section {//working here...
      * @returns {array} returns an array that contain the UIDs of the documents according to query deep that we need, another case will be null
      */
     static getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }
+    /**
+     * Method get to container section
+     * @param {number} index - This is the number of the container requested, remember that a section is compound by [0][1]
+     * @returns {string} returns the id name of the container basings us an index specific
+     */
     static getContainerSection(index) { return Section.arrayContainer[index] }
+    /**
+     * Method get to current section in context ("home", "handler-device", "control-departaments") etc
+     * @returns {string} returns the name of the current container in which user its are
+     */
     static getCurrentSection() { return Section.currentSection }
     /*-------------------------------------------------------------------------------------------------------------------*/
 }
