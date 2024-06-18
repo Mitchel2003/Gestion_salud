@@ -88,7 +88,7 @@ function buildRequest(req, array) {
  * @example to reload the section, we need clear the data in the containers to get the new snapshot query
  * createItems(); 'Finally, this allows us create a card to each document finding in the snapshot of the request query by the user'
  */
-export class Section {//working here...
+export class Section {
     static extensionQuerySnapshot = []
     //
     static arrayContainer;
@@ -253,7 +253,6 @@ export class Section {//working here...
         const pagination = data.pagination;
         if (!where || !pagination) return;
         if (where.length > 3) return this.sortQuery(data, loopIndex);
-        this.saveExtensionLimit(pagination, loopIndex);
         return [...data.where, ...data.pagination]
     }
     /**
@@ -263,6 +262,7 @@ export class Section {//working here...
      * @returns {array} an array with the current config based on an index that belongs to the context container
      */
     static sortQuery(data, index) {
+        this.saveExtensionLimit(data.pagination, index);
         let index_where = [0, 3], index_pagination = [0, 2];
         if (index === 1) { index_where = [3, 6]; index_pagination = [2, 4] }
         return [
@@ -271,7 +271,7 @@ export class Section {//working here...
         ]
     }
     /**
-     * This intend save the length of the requested queries, this way we can know if a request dont have more results, then we do hide the button (load more...)
+     * This intend save the length of the requested queries, this way we can know if a request dont have more results, then we could do hide the button (load more...)
      * @param {array} pagination - This is an array with length of 2; this represent values to build the orderBy() and limit(), both methods from firebase
      * @param {number} index - This is the index in which its in locate the current loop in execute
      */
@@ -358,15 +358,13 @@ export class Section {//working here...
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
      */
     static createItems(snapshot, container, icon) {
-        const elementContainer = elementById(container);
         const data = snapshot.forEach ? snapshot.docs.map(e => e) : [snapshot];
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
             const card = this.setContentCard(doc, container, icon);
-            elementContainer.insertAdjacentHTML('afterbegin', card);
+            elementById(container).insertAdjacentHTML('afterbegin', card);
         });
-        this.handleLoadMore(elementContainer, snapshot);
-        /*after of create cards i would add the button load more ... */
+        this.handleLoadMore(elementById(container), snapshot);
     }
     /**
      * This module have the function that return a card format depending of name container in the loop context, according to current section; or using a handler sent to config a specific card
