@@ -183,7 +183,7 @@ export function getUserContext(res) {//AC #205
                                                 </div>
 
                                                 <div class="d-flex">
-                                                    <button type="submit" class="btn btn-primary">Submit Report</button>
+                                                    <button type="button" class="btn btn-primary" action-button="create-report" onclick="handleCustomRequest(event)">Submit Report</button>
                                                 </div>
                                             </form>                                    
                                         </div>

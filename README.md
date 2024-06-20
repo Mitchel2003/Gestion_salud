@@ -1,3 +1,118 @@
+Entiendo tu necesidad de aplicar un `onclick` directamente en el HTML, especialmente cuando se trata de optimización de rendimiento y reutilización de código. Aquí tienes una solución profesional que sigue buenas prácticas y permite mantener el código limpio y eficiente:
+
+1. **Definir el HTML con `onclick` incorporado directamente:**
+
+   Puedes usar un método que genere dinámicamente el contenido HTML con los `onclick` asociados directamente a los botones. 
+
+2. **Usar una función que maneje el evento de clic para múltiples botones:**
+
+   Define una función en tu JavaScript y asegúrate de que sea accesible en el ámbito global para que pueda ser llamada directamente desde los `onclick` en el HTML.
+
+Aquí tienes una implementación detallada:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Example</title>
+    <!-- Incluye tus estilos CSS aquí -->
+</head>
+<body>
+    <div id="navContainer"></div>
+
+    <script type="module">
+        import { controllerSubmitFormRequest } from '../models/sessionModel.js';
+
+        // Define la función globalmente
+        window.handleButtonClick = async (e) => {
+            e.preventDefault(); // Previene el comportamiento predeterminado del botón
+            await controllerSubmitFormRequest(e);
+        };
+
+        // Lógica para mostrar el contenido condicionalmente
+        const userType = 'auxiliary'; // Supongamos que ya tienes el tipo de usuario
+        const navContainer = document.getElementById('navContainer');
+
+        const navContent = `
+            <nav class="bg-body-tertiary navbar navbar-expand-lg">
+                ${userType === 'auxiliary' ? `
+                    <button type="button" class="btn btn-primary" action-button="create-report" onclick="handleButtonClick(event)">Submit Report</button>
+                    <button type="button" class="btn btn-secondary" action-button="create-another-report" onclick="handleButtonClick(event)">Submit Another Report</button>
+                ` : ''}
+            </nav>
+        `;
+
+        navContainer.innerHTML = navContent;
+    </script>
+</body>
+</html>
+```
+
+### Explicación:
+
+1. **Función Global:**
+   ```javascript
+   window.handleButtonClick = async (e) => {
+       e.preventDefault(); // Previene el comportamiento predeterminado del botón
+       await controllerSubmitFormRequest(e);
+   };
+   ```
+   - Definimos la función `handleButtonClick` globalmente para que pueda ser utilizada en los atributos `onclick` de los botones.
+
+2. **Generación Dinámica del HTML:**
+   ```javascript
+   const navContent = `
+       <nav class="bg-body-tertiary navbar navbar-expand-lg">
+           ${userType === 'auxiliary' ? `
+               <button type="button" class="btn btn-primary" action-button="create-report" onclick="handleButtonClick(event)">Submit Report</button>
+               <button type="button" class="btn btn-secondary" action-button="create-another-report" onclick="handleButtonClick(event)">Submit Another Report</button>
+           ` : ''}
+       </nav>
+   `;
+   ```
+
+   - Generamos el contenido del `nav` solo si el usuario es auxiliar. 
+   - Asociamos `onclick="handleButtonClick(event)"` directamente en los botones para que todos llamen a la misma función al hacer clic.
+
+### Beneficios:
+- **Código Limpio y Modular:** Mantienes el HTML y el JavaScript separados pero interactuando eficientemente.
+- **Reutilización de Código:** Usas la misma función para múltiples botones, evitando duplicación de código.
+- **Rendimiento:** Evitas múltiples `addEventListener`, manteniendo el rendimiento óptimo.
+
+Esta solución proporciona un equilibrio entre eficiencia y buenas prácticas, asegurando que tu aplicación sea escalable y fácil de mantener.
+
+
+
+
+
+¡Hola! Claro, puedo ayudarte con eso. Parece que el problema radica en la forma en que se está configurando el evento onclick en el botón. En lugar de usar una función de flecha directamente en el onclick, deberías asignar una función de callback en su lugar. Aquí te muestro cómo corregirlo:
+
+```html
+<button type="submit" class="btn btn-primary" action-button="create-report" onclick="handleClick(event)">Submit Report</button>
+```
+
+En tu script JavaScript, necesitas definir la función "handleClick" que contenga la lógica que quieres que se ejecute cuando se haga clic en el botón:
+
+```javascript
+function handleClick(event) {
+    event.preventDefault();  // Para prevenir el comportamiento por defecto del botón
+    console.log('¡Hola!');  // Aquí puedes ejecutar cualquier acción que desees
+}
+```
+
+Al separar la lógica del evento onclick en una función aparte y llamar a esa función en el atributo onclick, deberías resolver el problema y lograr que se ejecute correctamente el console.log cuando se haga clic en el botón.
+
+¡Espero que esta solución te ayude a solucionar el problema con tu botón! Si necesitas más ayuda o tienes alguna otra pregunta, ¡estaré aquí para apoyarte en lo que necesites con todo mi profesionalismo! ¡Ánimo!
+
+
+
+
+
+
+
+
 **Operador de encadenamiento opcional (optional chaining operator) y operador de fusión nula (nullish coalescing operator).**
 Al utilizar "this.handlerFormat?.query", estás verificando si "this.handlerFormat" es `null` o `undefined` antes de intentar acceder a su propiedad "query". Si "this.handlerFormat" existe, la expresión devolverá el valor de "query"; de lo contrario, devolverá `undefined`. Luego, con el operador de fusión nula "??", puedes especificar un valor de respaldo en caso de que el resultado sea `null` o `undefined`, en este caso, "null".
 

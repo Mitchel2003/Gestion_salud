@@ -13,6 +13,39 @@ export async function modeAuxiliary() {
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
+/*--------------------------------------------------button actions--------------------------------------------------*/
+export async function controllerSubmitFormRequest(e) {//working here...
+    const req = e.target.getAttribute('action-button');
+    const { arrayValues } = getFormValues(elementById(req));
+}
+
+function getFormValues(container) {
+    const textArea = elementById(req).querySelector('#description');
+    
+}
+// static setContentCard(value, icon) {
+//     const handler = this.handlerFormat;
+//     const data = {
+//         /*formats with handler*/
+//         moreDetails: () => cardDetails(value, icon),
+
+//         /*associated with index(0)*/
+//         user: () => "cardUser(value, icon)",
+//         device: () => cardDevice(value, icon),
+//         finding: () => cardFinding(value, icon),
+//         departament: () => "cardDepartament(value, icon)",
+
+//         /*associated with index(1)*/
+//         reports: () => cardFinding(value, icon)
+//     }
+//     for (const [key, method] of Object.entries(data)) {
+//         if (handler ? handler[key] : null) return method();
+//         if (this.loop_container.includes(key)) return method();
+//     }
+// }
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+
 /*--------------------------------------------------controllers--------------------------------------------------*/
 /**
  * Control the status of side-bar into section applying a toggle on click, also have a 'pointer leave' event to close when the mouse out of bar
@@ -425,10 +458,16 @@ export class Section {
     /*--------------------------------------------------getters--------------------------------------------------*/
     /**
      * On click a button in any card, we can take him the data to operate more actions through the information obtained about card in context
-     * @param {target} button - correspond to data of the card clicked by user
+     * @param {HTMLElement} button - correspond to data of the card clicked by user
      * @returns {array} returns an array that contain the UIDs of the documents according to query deep that we need, another case will be null
      */
     static getTargetCard(button) { return JSON.parse(button.closest('.card').getAttribute('data-card')) }
+    /**
+     * On click to submit in a form of request, we obtain the type of the action to operate (for example 'create'), this way send data to database
+     * @param {HTMLElement} button - Correspond to button 'submit' into form with an attribute "action-button" to direct the action requested by the user
+     * @returns {string} returns a string that contain the name of the current query requested by user, for example "Create report"
+     */
+    static getTargetButton(button) { return JSON.parse(button.getAttribute('action-button')) }
     /**
      * Method get to container section
      * @param {number} index - This is the number of the container requested, remember that a section is compound by [0][1]

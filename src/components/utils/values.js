@@ -1,3 +1,4 @@
+/*--------------------------------------------------login--------------------------------------------------*/
 export function getInputLogin() {
     const user = document.querySelector('.signContainer input[type="email"]').value;
     const password = document.querySelector('#bx-password-login input').value;
@@ -11,6 +12,19 @@ export function getInputRegister() {
     const entity = document.querySelector('.registerContainer #select-entity').value;
     return { name, email, password, access, entity };
 }
+/*-------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------session forms--------------------------------------------------*/
+export function getInputCreateReport(context){
+    const name = context.querySelector('.registerContainer input[type="text"]').value;
+    const email = document.querySelector('.registerContainer input[type="email"]').value;
+    const password = document.querySelector('#bx-password-register input').value;
+    const access = document.querySelector('.registerContainer #select-access').value;
+    const entity = document.querySelector('.registerContainer #select-entity').value;
+    return { name, email, password, access, entity };
+}
+/*-------------------------------------------------------------------------------------------------------------------*/
+
 /*--------------------------------------------------server--------------------------------------------------*/
 export function getInputResetPassword() {
     const password = document.querySelector('#password-login').value;
@@ -32,6 +46,8 @@ export async function getSearchParams(res = null) {
         return { oobCode };
     }
 }
+/*-------------------------------------------------------------------------------------------------------------------*/
+
 /*--------------------------------------------------clean windown--------------------------------------------------*/
 export function cleanInputRegister() {
     const name = document.querySelector('.registerContainer input[type="text"]');
@@ -41,6 +57,9 @@ export function cleanInputRegister() {
     email.value = "";
     password.value = "";
 }
+/*-------------------------------------------------------------------------------------------------------------------*/
+
 /*--------------------------------------------------globals--------------------------------------------------*/
 export function elementById(nameContainer) { return document.getElementById(nameContainer) }
 export function elementByClass(nameContainer) { return document.querySelector(nameContainer) }
+/*-------------------------------------------------------------------------------------------------------------------*/

@@ -1,4 +1,5 @@
 import { TimerOut, observerSessionActive, StatusConnection } from '../firebase/authentication.js';
+import { controllerSubmitFormRequest } from '../models/sessionModel.js';
 import { onLoadWhile, offLoadWhile } from '../utils/view.js';
 import { getDocumentUser } from '../firebase/query.js';
 /*--------------------------------------------------runtime--------------------------------------------------*/
@@ -7,7 +8,9 @@ await fixContext();
 
 let status = new StatusConnection();
 let time = new TimerOut(900000);//timeOut 5 minuts "300000"
-/*--------------------------------------------------methods--------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------methods to session--------------------------------------------------*/
 async function fixContext() {
     const { email, entity } = await observerSessionActive();
     const { access } = await getDocumentUser(email, entity);
@@ -20,8 +23,13 @@ async function managementSession(access) {
     else if (access === 'admin') { await (await import('../models/sessionModel.js')).modeAdmin(); }
     offLoadWhile();
 }
-/*--------------------------------------------------tools--------------------------------------------------*/
 async function insertHtml(data) {
-    const road = (await import('../layout/currentUser.js')).getUserContext(data);
+    const { getUserContext } = await import('../layout/currentUser.js');
+    const road = getUserContext(data);
     document.body.insertAdjacentHTML('afterbegin', road);
 }
+/*-------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------tools--------------------------------------------------*/
+window.handleCustomRequest = async (e) => { e.preventDefault(); await controllerSubmitFormRequest(e) };
+/*-------------------------------------------------------------------------------------------------------------------*/
