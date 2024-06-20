@@ -88,18 +88,26 @@ function buildRequest(req, array) {
  * createItems(); 'Finally, this allows us create a card to each document finding in the snapshot of the request query by the user'
  */
 export class Section {
+    /*-------------------------on loop (index, container)-------------------------*/
     static loop_index;
     static loop_container;
+    /*-----------------------------------------------------------------------------*/
 
+    /*-----save limit() of the requested query to operate property loadMore...-----*/
     static extensionQuerySnapshot = []
-    //
+    /*-----------------------------------------------------------------------------*/
+
+    /*----------containers and collections to operate into current section----------*/
     static arrayContainer;
     static arrayCollection;
-    //
+    /*-----------------------------------------------------------------------------*/
+    
+    /*-name and index of the current section; also the handler to specific request-*/
     static currentSection;
     static handlerFormat;
     static indexSection;
-
+    /*-----------------------------------------------------------------------------*/
+    
     /*--------------------------------------------------initialize--------------------------------------------------*/
     static async loadCurrentSection(section) { await Section.init(section) }
     static async actionByRequest(handler) { await Section.init(null, handler) }
@@ -210,7 +218,7 @@ export class Section {
      * @const {array} arrayConfig - is equals to say ["name", "!=", "pedro", "name", "5"] that represent 'where' and 'pagination'
      */
     static preparateRequest(loopIndex, loopCollection) {
-        const config = this.handlerFormat ? this.handlerFormat.query : null;
+        const config = this.handlerFormat?.query ?? null;
         const data = this.getRequest(loopCollection, config);
         const arrayConfig = this.fixQueryConfig(data, loopIndex);
         return { dataDefault: data.icon, arrayQuery: arrayConfig }
@@ -300,8 +308,8 @@ export class Section {
         const { routeDeep, routeRelative } = addressRequest;
         const build = typeof routeDeep === 'string' ? { req: routeRelative } : { req: routeDeep };
         const action = this.handlerFormat ? Object.keys(this.handlerFormat)[0] : false;
-        const typeSnapshot = this.handlerFormat ? this.handlerFormat.document : false;
-        const id = this.handlerFormat ? this.handlerFormat.index : index;
+        const typeSnapshot = this.handlerFormat?.document ?? false;
+        const id = this.handlerFormat?.index ?? index;
         return await DataByRequest.get({
             ...build,
             index: id,
@@ -330,9 +338,9 @@ export class Section {
      */
     static setToggle_cardEmpty(container, res) {
         const card = container.querySelector('.empty');
-        const value = res.docs ? res.docs.length : res.id
+        const numDocuments = res.docs?.length ?? res.id;
         const isCardVisible = !card.className.includes('d-none');
-        if (value != 0) isCardVisible ? card.classList.toggle('d-none') : '';
+        if (numDocuments != 0) isCardVisible ? card.classList.toggle('d-none') : '';
         else isCardVisible ? '' : card.classList.toggle('d-none');
     }
     /**
@@ -361,13 +369,14 @@ export class Section {
      */
     static createItems(snapshot, icon) {
         const element = elementById(this.loop_container);
-        const data = snapshot.forEach ? snapshot.docs.map(e => e) : [snapshot];
+        const btnReference = element.querySelector('#load-more');
+        const data = snapshot.docs?.map(e => e) ?? [snapshot];
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
-            const card = this.setContentCard(doc, icon);
-            element.insertAdjacentHTML('afterbegin', card);
-        }); 
-        this.handleLoadMore(element, snapshot);
+            const card = this.setContentCard(doc, icon);            
+            btnReference.insertAdjacentHTML('beforebegin', card);
+        });
+        this.handleLoadMore(btnReference, snapshot);
     }
     /**
      * This module have the function that return a card format depending of name container in the loop context, according to current section; or using a handler sent to config a specific card
@@ -401,16 +410,14 @@ export class Section {
     }
     /**
      * This intend control the behavior of spawn of the load more button, this through inspect and compared the length of the snapshot with the extension of the pagination saved {pagination: 'limit'}; this represent the maximum number of documents provided by the request
-     * @param {HTMLElement} element - Is the container target to insert the button load more
+     * @param {HTMLElement} loadMore - This is the element 'loadMore' to enable and disable; its are present into container of context
      * @param {snapshot} snapshot - Correspond to result of the query from the database; could be a documentSnapshot or querySnapshot
      */
-    static handleLoadMore(element, snapshot) {//working here...
-        const query = snapshot.forEach ? snapshot.docs : false; if (!query) return;//this if could be removed
-        const data = query.length < this.extensionQuerySnapshot[this.loop_index];
-        const loadMore = element.getElementById('load-more');
-
+    static handleLoadMore(loadMore, snapshot) {//working here...
+        const query = snapshot.docs || [];
         const isCardVisible = !loadMore.className.includes('d-none');
-        if (data) isCardVisible ? loadMore.classList.toggle('d-none') : ''
+        const data = query.length < this.extensionQuerySnapshot[this.loop_index];
+        if (data) isCardVisible ? loadMore.classList.toggle('d-none') : '';
         else isCardVisible ? '' : loadMore.classList.toggle('d-none');
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
@@ -451,7 +458,7 @@ export class Section {
  * to change cards depending the iteraction of user, this way we show the data of specific card
  * 
  * #004:
- *      const value = res.docs ? res.docs.length : res.id
+ *      const numDocuments = res.docs?.length ?? res.id;
  * I use this sintaxis because we await a snapshot that could be 'querySnapshot' or 'documentSnapshot', these two have different formats;
  * res.docs correspond to 'querySnapshot' and res.id correspond to UID of the document 'documentSnapshpt'
  * 

@@ -95,7 +95,8 @@ export class DataByRequest {
     static async getQueryRequest(index) {
         const querySnapshot = this.preparateQuery(index);
         const res = await getDocs(querySnapshot);
-        this.lastDocumentVisible.push(res.docs[res.docs.length - 1]); return res;
+        this.lastDocumentVisible.push(res.docs[res.docs.length - 1]);
+        return res;
     }
     /**
      * This prepare a query compound, we use 'where' to apply filter, 'orderBy' to format orden of querySnapshot and 'limit' to pagination; also have a conditional to 'loadMore' taking the last document shown in the container[0] (side right)
@@ -120,9 +121,9 @@ export class DataByRequest {
      * @returns {boolean} a boolean; return "something" if value "handler.lastVisible" contain something, else return "null"
      */
     static isLoadMore() {
-        let value;
         const { nameRequest } = this.request;
-        nameRequest === 'loadMore' ? value = true : value = false; return value;
+        const value = nameRequest === 'loadMore';
+        return value;
     }
     /**
      * Allow return a boolean according to request received; if "req" is an array, so the requeride documents is located at a deeper level
