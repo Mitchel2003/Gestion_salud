@@ -413,7 +413,7 @@ export class Section {
      * @param {HTMLElement} loadMore - This is the element 'loadMore' to enable and disable; its are present into container of context
      * @param {snapshot} snapshot - Correspond to result of the query from the database; could be a documentSnapshot or querySnapshot
      */
-    static handleLoadMore(loadMore, snapshot) {//working here...
+    static handleLoadMore(loadMore, snapshot) {
         const query = snapshot.docs || [];
         const isCardVisible = !loadMore.className.includes('d-none');
         const data = query.length < this.extensionQuerySnapshot[this.loop_index];
