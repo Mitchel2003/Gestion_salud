@@ -1,6 +1,6 @@
 /*--------------------------------------------------imports--------------------------------------------------*/
-import { cardDevice, cardFinding, cardDetails, buttonLoadMore } from '../layout/cards.js';
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
+import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 import { DataByRequest } from '../firebase/query.js';
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -28,8 +28,7 @@ function controllerSideBar(side_bar) {
  */
 async function handlerSection(nav) {
     nav.addEventListener('click', async (e) => {
-        let item = e.target.ariaCurrent;
-        if (!item) return;
+        let item = e.target.ariaCurrent; if (!item) return;
         await Section.loadCurrentSection(item);
         await eventContainer(Section.getContainerSection(0));
     });
@@ -123,7 +122,7 @@ export class Section {
                 const { dataDefault, arrayQuery } = this.preparateRequest(loopIndex, loopCollection);
                 const addressRequest = { routeDeep: route, routeRelative: loopCollection };
                 const res = await this.routeRequest(addressRequest, loopIndex, arrayQuery);
-                this.loop_container = loopContainer; this.loop_index = loopIndex; //002-02 ^°^
+                this.loop_index = loopIndex; this.loop_container = loopContainer;
                 this.clearContainerConditionally(res);
                 this.createItems(res, dataDefault);
             });
@@ -320,7 +319,7 @@ export class Section {
      */
     static clearContainerConditionally(res) {
         const element = elementById(this.loop_container);
-        this.setToggle_cardNothingFound(element, res);
+        this.setToggle_cardEmpty(element, res);
         this.cleanContainer(element);
     }
     /**
@@ -329,7 +328,7 @@ export class Section {
      * @param {snapshot} res - Is the response of the request snapshot from firebase, with these we can inspect the response from firebase
      * @example addComentary: 004
      */
-    static setToggle_cardNothingFound(container, res) {
+    static setToggle_cardEmpty(container, res) {
         const card = container.querySelector('.empty');
         const value = res.docs ? res.docs.length : res.id
         const isCardVisible = !card.className.includes('d-none');
@@ -367,7 +366,7 @@ export class Section {
             const doc = { snapshot: item, data: item.data() }
             const card = this.setContentCard(doc, icon);
             element.insertAdjacentHTML('afterbegin', card);
-        });
+        }); 
         this.handleLoadMore(element, snapshot);
     }
     /**
@@ -405,13 +404,15 @@ export class Section {
      * @param {HTMLElement} element - Is the container target to insert the button load more
      * @param {snapshot} snapshot - Correspond to result of the query from the database; could be a documentSnapshot or querySnapshot
      */
-    static handleLoadMore(element, snapshot) {
-        const query = snapshot.forEach ? snapshot.docs : false; if (!query) return;
-        if (query.length < this.extensionQuerySnapshot[this.loop_index]) return;
-        element.insertAdjacentHTML('beforeend', buttonLoadMore());
-    }
+    static handleLoadMore(element, snapshot) {//working here...
+        const query = snapshot.forEach ? snapshot.docs : false; if (!query) return;//this if could be removed
+        const data = query.length < this.extensionQuerySnapshot[this.loop_index];
+        const loadMore = element.getElementById('load-more');
 
-    
+        const isCardVisible = !loadMore.className.includes('d-none');
+        if (data) isCardVisible ? loadMore.classList.toggle('d-none') : ''
+        else isCardVisible ? '' : loadMore.classList.toggle('d-none');
+    }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------getters--------------------------------------------------*/

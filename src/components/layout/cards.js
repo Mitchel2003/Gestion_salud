@@ -89,10 +89,3 @@ export function cardDetails({data, snapshot}, icon) {
         </div>
     `;
 }
-export function buttonLoadMore() {
-    return `
-        <div class="card d-flex" id="load-more">
-            <button request="loadMore" class="btn btn-primary container-fluid p-0">load more...</button>
-        </div>
-    `;
-}

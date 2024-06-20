@@ -138,6 +138,10 @@ export function getUserContext(res) {//AC #205
                                             </div>
                                         </div>
 
+                                        <div class="card d-none" id="load-more">
+                                            <button request="loadMore" class="btn btn-secondary container-fluid p-0">load more...</button>
+                                        </div>
+
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="create-report" role="tabpanel" aria-labelledby="nav-create-report">
@@ -218,6 +222,10 @@ export function getUserContext(res) {//AC #205
                                         <h5 class="card-title mb-3 fs-5">Nothing here</h5>
                                         <p class="card-text">Please, create something to see here</p>
                                     </div>
+                                </div>
+
+                                <div class="card d-none" id="load-more">
+                                    <button request="loadMore" class="btn btn-primary container-fluid p-0">load more...</button>
                                 </div>
 
                             </div>
