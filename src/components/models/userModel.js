@@ -6,7 +6,7 @@ const getAlert = await import('../utils/alerts.js');
 export async function loginUser(user, password) {
     try {
         onLoadWhile();
-        const {getProfileUser, getDocumentUser} = await import('../firebase/query.js');
+        const { getProfileUser, getDocumentUser } = await import('../firebase/query.js');
         await onSession(user, password);//AC #208
         const { entity } = getProfileUser();
         const { key, access: userFound } = await getDocumentUser(user, entity);
@@ -41,16 +41,20 @@ export async function requestResetPassword() {
     try {
         const email = await showMessage('messageRestorePassword', 'alertInput');
         onLoadWhile();
-        if (email) { await (await import('../firebase/authentication.js')).sendToEmailResetPassword(email); await showMessage('messageTokenSubmitted', 'default'); }
+        if (email) {
+            const getAuth = await import('../firebase/authentication.js');
+            await getAuth.sendToEmailResetPassword(email);
+            await showMessage('messageTokenSubmitted', 'default');
+        }
         offLoadWhile();
     } catch (error) { offLoadWhile(); await getAlert.exceptionsResetPassword(error); }
 }
 /*--------------------------------------------------server--------------------------------------------------*/
 export async function modeVerifyEmail(res) {
     onLoadWhile();
-    const {getDocumentUser} = await import('../firebase/query.js');
-    const {getSearchParams} = await import('../utils/values.js');
-    const {goToHome} = await import('../utils/view.js');
+    const { getDocumentUser } = await import('../firebase/query.js');
+    const { getSearchParams } = await import('../utils/values.js');
+    const { goToHome } = await import('../utils/view.js');
 
     const { userName, userEmail, userAccess, userEntity } = await getSearchParams(res);
     const { access: userFound } = await getDocumentUser(userEmail, userEntity);
@@ -67,8 +71,8 @@ export async function modeVerifyEmail(res) {
     offLoadWhile();
 }
 export async function modeChangePassword() {
-    const {getSearchParams, getInputResetPassword, elementById} = await import("../utils/values.js");
-    const {setIconEye, goToHome} = await import("../utils/view.js");
+    const { getSearchParams, getInputResetPassword, elementById } = await import("../utils/values.js");
+    const { setIconEye, goToHome } = await import("../utils/view.js");
 
     const srcIconOpen = "../../src/components/images/eye-open.webp";
     const srcIconClose = "../../src/components/images/eye-close.webp";
@@ -76,7 +80,8 @@ export async function modeChangePassword() {
     setIconEye('#eyeIcon-2', '#password-register', srcIconOpen, srcIconClose);
 
     elementById('resetPassword_form').addEventListener('submit', async function (event) {//AC #204
-        try { event.preventDefault();
+        try {
+            event.preventDefault();
             onLoadWhile();
             const { oobCode } = await getSearchParams();
             const { password, confirmPassword } = getInputResetPassword();

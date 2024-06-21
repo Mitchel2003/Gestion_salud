@@ -151,39 +151,39 @@ export function getUserContext(res) {//AC #205
                                             <form>
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-2">
-                                                        <label for="reportDate" class="form-label">Report Date</label>
-                                                        <input type="date" class="form-control" id="reportDate">
+                                                        <label for="create-report-date" class="form-label">Report Date</label>
+                                                        <input type="date" class="form-control" id="create-report-date">
                                                     </div>
                                                     <div class="col-lg-6 col-md-5 col-sm-5 mb-2 order-sm-1">
-                                                        <label for="deviceId" class="form-label">Device ID</label>
-                                                        <input type="text" class="form-control" id="deviceId" placeholder="Enter Device ID">
+                                                        <label for="create-report-idDevice" class="form-label">Device ID</label>
+                                                        <input type="text" class="form-control" id="create-report-idDevice" placeholder="Enter Device ID">
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-5 col-sm-5 mb-2 order-sm-2">
-                                                        <label for="maintenanceType" class="form-label">Type maintenance</label>
-                                                        <select class="form-select" id="maintenanceType">
+                                                        <label for="create-report-maintenance" class="form-label">Type maintenance</label>
+                                                        <select class="form-select" id="create-report-maintenance">
                                                             <option value="" selected disabled>Choose a type</option>
                                                             <option value="preventive">Preventive</option>
                                                             <option value="corrective">Corrective</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-1">
-                                                        <label for="subject" class="form-label">Subject</label>
-                                                        <input type="text" class="form-control" id="subject" placeholder="Enter Subject">
+                                                        <label for="create-report-subject" class="form-label">Subject</label>
+                                                        <input type="text" class="form-control" id="create-report-subject" placeholder="Enter Subject">
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
                                                     <div class="col-12 mb-3">
-                                                        <label for="description" class="form-label">Description</label>
-                                                        <textarea class="form-control" id="description" rows="2" placeholder="Enter Description"></textarea>
+                                                        <label for="create-report-description" class="form-label">Description</label>
+                                                        <textarea class="form-control" id="create-report-description" rows="2" placeholder="Enter Description"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="d-flex">
-                                                    <button type="button" class="btn btn-primary" action-button="create-report" onclick="handleCustomRequest(event)">Submit Report</button>
+                                                    <button type="button" class="btn btn-primary" action-btn="create-report" onclick="handleCustomRequest(event)">Submit Report</button>
                                                 </div>
                                             </form>                                    
                                         </div>

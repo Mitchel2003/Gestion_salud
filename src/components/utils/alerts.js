@@ -4,7 +4,6 @@ export function customAlert(title, message, icon) {//alert default
         text: message,
         icon: icon,
         allowEscapeKey: true,
-        allowEnterKey: false,
         allowOutsideClick: false,
         customClass: { popup: 'customAlert' },
     });
@@ -61,27 +60,27 @@ export async function alertButtonAction(title, message, icon) {
 /*--------------------------------------------------view message--------------------------------------------------*/
 export async function showMessage(text, alert) {
     const { title, message, typeAlert } = getMessageAlert(text);
-    if (alert === 'alertToast') { return alertToast(title, message, selectIcon(typeAlert)); }
-    if (alert === 'alertInput') { return await alertInput(title, message, selectIcon(typeAlert)); }
-    if (alert === 'alertButtonAction') { return await alertButtonAction(title, message, selectIcon(typeAlert)); }
+    if (alert === 'alertToast') return alertToast(title, message, selectIcon(typeAlert));
+    if (alert === 'alertInput') return await alertInput(title, message, selectIcon(typeAlert));
+    if (alert === 'alertButtonAction') return await alertButtonAction(title, message, selectIcon(typeAlert));
     return customAlert(title, message, selectIcon(typeAlert));
 }
 /*--------------------------------------------------exceptions (fetch)--------------------------------------------------*/
 export async function exceptionsLoginUser(error) {
-    if (error.code === 'auth/invalid-login-credentials') { return await showMessage('messageCredentialsIncorrects', 'default'); }
-    if (error.code === 'auth/too-many-requests') { return await showMessage('messageManyRequests', 'default'); }
+    if (error.code === 'auth/invalid-login-credentials') return await showMessage('messageCredentialsIncorrects', 'default');
+    if (error.code === 'auth/too-many-requests') return await showMessage('messageManyRequests', 'default');
     return await showMessage('messageTempUnknow', 'default');
 }
 export async function exceptionsRegisterUser(error) {
-    if (error.code === 'auth/invalid-email') { return await showMessage('messageEmailUnknow', 'default'); }
-    if (error.code === 'auth/email-already-in-use') { return await showMessage('messageEmailUsed', 'default'); }
-    if (error.code === 'auth/weak-password') { return await showMessage('messagePasswordSizeShort', 'default'); }
+    if (error.code === 'auth/invalid-email') return await showMessage('messageEmailUnknow', 'default');
+    if (error.code === 'auth/email-already-in-use') return await showMessage('messageEmailUsed', 'default');
+    if (error.code === 'auth/weak-password') return await showMessage('messagePasswordSizeShort', 'default');
     return await showMessage('messageTempUnknow', 'default');
 }
 export async function exceptionsResetPassword(error) {
-    if (error.code === 'auth/too-many-requests') { return await showMessage('messageManyRequests', 'default'); }
-    if (error.code === 'auth/invalid-email') { return await showMessage('messageEmailUnknow', 'default'); }
-    if (error.code === 'invalid-argument') { return }//nothing
+    if (error.code === 'auth/too-many-requests') return await showMessage('messageManyRequests', 'default');
+    if (error.code === 'auth/invalid-email') return await showMessage('messageEmailUnknow', 'default');
+    if (error.code === 'invalid-argument') return  //nothing
     return await showMessage('messageTempUnknow', 'default');
 }
 /*--------------------------------------------------text--------------------------------------------------*/
@@ -101,6 +100,8 @@ function getMessageAlert(type) {
     if (type === 'messageCredentialsIncorrects') { title = "Credentials incorrects"; message = "The email or password may not be correct"; typeAlert = "w"; }
     if (type === 'messageSelectEmpty') { title = "Field select empty"; message = "please check the selects, this information is obligatory"; typeAlert = "w"; }
     if (type === 'messageRestorePassword') { title = "Restore password"; message = "Enter a registered email to send token"; typeAlert = "q"; }
+    if (type === 'messageFieldEmpty') { title = "Some field empty"; message = "Please chech the text fields and try again"; typeAlert = "w"; }
+
     //error
     if (type === 'messageEmailUsed') { title = "Email is used"; message = "Please, retry with other email address"; typeAlert = "e"; }
     if (type === 'messageEmailUnknow') { title = "Email invalid"; message = "Please check email, retry with an email valid"; typeAlert = "e"; }

@@ -15,13 +15,13 @@ export function getInputRegister() {
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------session forms--------------------------------------------------*/
-export function getInputCreateReport(context){
-    const name = context.querySelector('.registerContainer input[type="text"]').value;
-    const email = document.querySelector('.registerContainer input[type="email"]').value;
-    const password = document.querySelector('#bx-password-register input').value;
-    const access = document.querySelector('.registerContainer #select-access').value;
-    const entity = document.querySelector('.registerContainer #select-entity').value;
-    return { name, email, password, access, entity };
+export function getInputCreateReport(context) {
+    const id_device = context.querySelector('#create-report-idDevice').value;
+    const date = context.querySelector('#create-report-date').value;
+    const subject = context.querySelector('#create-report-subject').value;
+    const typeMaintenance = context.querySelector('#create-report-maintenance').value;
+    const description = context.querySelector('#create-report-description').value;
+    return [id_device, date, subject, typeMaintenance, description];
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

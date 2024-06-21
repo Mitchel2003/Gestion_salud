@@ -3,6 +3,7 @@ import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/vie
 import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 import { DataByRequest } from '../firebase/query.js';
+import { showMessage } from '../utils/alerts.js';
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------mode--------------------------------------------------*/
@@ -15,35 +16,26 @@ export async function modeAuxiliary() {
 
 /*--------------------------------------------------button actions--------------------------------------------------*/
 export async function controllerSubmitFormRequest(e) {//working here...
-    const req = e.target.getAttribute('action-button');
-    const { arrayValues } = getFormValues(elementById(req));
+    const btn = e.target;
+    const req = btn.getAttribute('action-btn');
+    const indexAction = getIndexActionBtn(req);
+    const array = await getValuesForm(req, indexAction);
+    if(!array) return
+
+    // await createReport 
+
 }
-
-function getFormValues(container) {
-    const textArea = elementById(req).querySelector('#description');
-    
+async function getValuesForm(nameContainer, index) {
+    const element = elementById(nameContainer);
+    const imp = await import('../utils/values.js');
+    const data = [imp.getInputCreateReport(element)];
+    for (const field of data[index]) { if(field === '') return await showMessage('messageFieldEmpty', 'default') }
+    return data[index];
 }
-// static setContentCard(value, icon) {
-//     const handler = this.handlerFormat;
-//     const data = {
-//         /*formats with handler*/
-//         moreDetails: () => cardDetails(value, icon),
-
-//         /*associated with index(0)*/
-//         user: () => "cardUser(value, icon)",
-//         device: () => cardDevice(value, icon),
-//         finding: () => cardFinding(value, icon),
-//         departament: () => "cardDepartament(value, icon)",
-
-//         /*associated with index(1)*/
-//         reports: () => cardFinding(value, icon)
-//     }
-//     for (const [key, method] of Object.entries(data)) {
-//         if (handler ? handler[key] : null) return method();
-//         if (this.loop_container.includes(key)) return method();
-//     }
-// }
-
+function getIndexActionBtn(req) {
+    const array = ['create-report', 'nothing'];
+    return array.findIndex(value => value === req);
+}
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------controllers--------------------------------------------------*/
@@ -134,13 +126,13 @@ export class Section {
     static arrayContainer;
     static arrayCollection;
     /*-----------------------------------------------------------------------------*/
-    
+
     /*-name and index of the current section; also the handler to specific request-*/
     static currentSection;
     static handlerFormat;
     static indexSection;
     /*-----------------------------------------------------------------------------*/
-    
+
     /*--------------------------------------------------initialize--------------------------------------------------*/
     static async loadCurrentSection(section) { await Section.init(section) }
     static async actionByRequest(handler) { await Section.init(null, handler) }
@@ -406,7 +398,7 @@ export class Section {
         const data = snapshot.docs?.map(e => e) ?? [snapshot];
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
-            const card = this.setContentCard(doc, icon);            
+            const card = this.setContentCard(doc, icon);
             btnReference.insertAdjacentHTML('beforebegin', card);
         });
         this.handleLoadMore(btnReference, snapshot);
