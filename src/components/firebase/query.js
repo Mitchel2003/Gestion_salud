@@ -1,4 +1,4 @@
-import { db, auth, collection, doc, getDoc, getDocs, query, where, orderBy, limit, startAfter } from "./conection.js";
+import { db, auth, collection, doc, getDoc, getDocs, setDoc, query, where, orderBy, limit, startAfter } from "./conection.js";
 import { Section } from "../models/sessionModel.js";
 /*--------------------------------------------------getters--------------------------------------------------*/
 /**
@@ -22,6 +22,20 @@ export async function getDocumentUser(user, entity) {
     if (!querySnapshot) { return !querySnapshot.empty; }
     querySnapshot.forEach((doc) => { const value = doc.data(); access = value.access; key = value.key; });
     return { access, key };
+}
+/*-------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------getters--------------------------------------------------*/
+export async function createReport(data) {
+    await setDoc(doc(getSubCollection('finding_references'), "id..."), {
+        id_device: data.id_device,
+        id_departament: '...',
+        name_departament: '...',
+        serial_device: '...',
+        subject: data.subject,
+        type: data.typeMaintenance,
+        date: data.date,
+    });
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
@@ -114,7 +128,7 @@ export class DataByRequest {
         ];
         if (this.isLoadMore()) config.push(startAfter(this.lastDocumentVisible[index]));
         if (this.isDeepCollection(req)) return this.getDeepQuery(req, config);
-        return query(this.getSubCollection(req), ...config);
+        return query(getSubCollection(req), ...config);
     }
     /**
      * This method simplify the logic, intend do query with a start position saved into "lastVisible" to obtain restant data from database "pagination"
@@ -155,23 +169,24 @@ export class DataByRequest {
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------tools--------------------------------------------------*/
-    /**
-     *
-     */
     static buildSubCollection(array) { return collection(getCollection(), this.entity, ...array) }
-    /**
-     * This method simplify the code through access to subcollection in context
-     * @param {string} subCollection - Is the name of the sub collection to inspect
-     * @returns {collection} a element collection from firebase to build query
-     * @example main => entity => device_references     
-     */
-    static getSubCollection(subCollection) { return collection(getCollection(), this.entity, subCollection) }
     static getLastDocument() { return DataByRequest.lastDocumentVisible }
+    /*-------------------------------------------------------------------------------------------------------------------*/
+
+    /*--------------------------------------------------getters--------------------------------------------------*/
+    static getEntityInstantiated(){ return DataByRequest.entity }
     /*-------------------------------------------------------------------------------------------------------------------*/
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
+/**
+     * This method simplify the code through access to subcollection in context
+     * @param {string} subCollection - Is the name of the sub collection to inspect
+     * @returns {collection} a element collection from firebase to build query
+     * @example main => entity => device_references     
+     */
+export function getSubCollection(subCollection) { return collection(getCollection(), DataByRequest.getEntityInstantiated(), subCollection)}
 export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

@@ -15,26 +15,55 @@ export async function modeAuxiliary() {
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------button actions--------------------------------------------------*/
-export async function controllerSubmitFormRequest(e) {//working here...
+export async function controllerSubmitFormRequest(e) {
     const btn = e.target;
     const req = btn.getAttribute('action-btn');
-    const indexAction = getIndexActionBtn(req);
-    const array = await getValuesForm(req, indexAction);
-    if(!array) return
-
-    // await createReport 
-
+    await ActionButton.resolve(req);
 }
-async function getValuesForm(nameContainer, index) {
-    const element = elementById(nameContainer);
-    const imp = await import('../utils/values.js');
-    const data = [imp.getInputCreateReport(element)];
-    for (const field of data[index]) { if(field === '') return await showMessage('messageFieldEmpty', 'default') }
-    return data[index];
-}
-function getIndexActionBtn(req) {
-    const array = ['create-report', 'nothing'];
-    return array.findIndex(value => value === req);
+
+class ActionButton{
+    static request;
+    static index_request;
+    static async resolve(request){
+        this.request = request;
+        this.index_request = this.getIndexAction(request);
+        const object = await this.getValues(); if (!array) return
+
+        // await createReport 
+        const res = await this.documentPath(object);
+    }
+    static getIndexAction(req) {
+        const array = ['create-report', 'nothing'];
+        return array.findIndex(value => value === req);
+    }
+    /**
+     * @param {*} nameContainer 
+     * @param {*} index 
+     * @returns returns an array because we could have a number indefined of data to operate
+     */
+    static async getValues() {
+        const element = elementById(this.request);
+        const imp = await import('../utils/values.js');
+        const data = [imp.getInputCreateReport(element)];
+        const objectFieldValues = data[this.index_request];
+        return await this.checkCompletedFields(objectFieldValues);
+    }
+    /**
+     * 
+     * @param {object} obj this correspond to data on the fields of current format
+     * @returns 
+     */
+    static async checkCompletedFields(obj) {
+        const empty = Object.keys(obj).some(key => obj[key] === '');
+        if (empty) return await showMessage('messageFieldEmpty', 'default');
+        return obj;
+    }
+    
+    static async documentPath(obj) {
+        const imp = await import('../firebase/query.js');
+        const data = [await imp.createReport(obj)]
+        return data[this.index_request];
+    }
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

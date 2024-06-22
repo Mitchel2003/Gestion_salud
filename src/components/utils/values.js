@@ -21,7 +21,7 @@ export function getInputCreateReport(context) {
     const subject = context.querySelector('#create-report-subject').value;
     const typeMaintenance = context.querySelector('#create-report-maintenance').value;
     const description = context.querySelector('#create-report-description').value;
-    return [id_device, date, subject, typeMaintenance, description];
+    return {id_device: id_device, date: date, subject: subject, typeMaintenance: typeMaintenance, description: description};
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
