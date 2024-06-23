@@ -29,38 +29,46 @@ export async function getDocumentUser(user, entity) {
 export async function createReport(data) {
     /*first need query data reference of the device (collection device_references)
     to obtain "id_departament" "name_departament" and "serial" */
-    const DR = getSubDocument('device_references', data.id_device);
-    const device_references = await getDoc(DR);
+    const doc = getSubDocument('device_references', data.id_device);
+    const deviceReferences = await getDoc(doc);
+    const DR_docs = deviceReferences.data();
     
-    /*search if exist df_length and get*/
+    /*search if exist fr_length and get*/
     const { entity } = getProfileUser();
     const global = await getDoc(getCollection(), entity);
-    const sizeCollection = global.data()?.df_references ?? 0;
+    const documentGlobal = global.data();
+    const lengthFR = documentGlobal?.fr_references ?? 0;
 
     /*create uid to create report (finding_references)*/
-    const uid_report = data.id_device....
-    
-    /*then, create document with UID, we can generate a data into subcollection main (user, departament...)
-    to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
-    await setDoc(doc(getCollection(), entity), { //working here...
-      df_length: sizeCollection,
-    });
-    
+    const uid_report = `${data.id_device}-${lengthFR++}`
 
-    /*so, we create doc finding_references with corresponding values/*
-    
-    /*then create finding on depth level collection (departament + 101 + device + 10001 + finding)*/
-    
-    
-    await setDoc(doc(getSubCollection('finding_references'), "id..."), {
+    /*update global variable*/
+    /*to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
+    await setDoc(doc(getCollection(), entity), { fr_length: lengthFR++ });
+
+    /*so, we create doc finding_references with corresponding values*/
+    await setDoc(doc(getSubCollection('finding_references'), uid_report), {
         id_device: data.id_device,
-        id_departament: '...',
-        name_departament: '...',
-        serial_device: '...',
+        id_departament: DR_docs.id_departament,
+        name_departament: DR_docs.name_departament,
+        serial_device: DR_docs.serial,
+        subject: data.subject,
+        type: data.typeMaintenance,
+        date: data.date
+    });
+
+    /*then create finding on depth level collection (departament + 101 + device + 10001 + finding)*/
+    const depth = [DR_docs.id_departament, 'device', data.id_device, 'finding', uid_report];
+    await setDoc(doc(getSubCollection('departament'), ...depth), {
+        specifications: data.specifications,
         subject: data.subject,
         type: data.typeMaintenance,
         date: data.date,
-    });
+        ...
+    }); //working here...
+
+    //update info global of device like lastReport
+    
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
