@@ -27,6 +27,28 @@ export async function getDocumentUser(user, entity) {
 
 /*--------------------------------------------------getters--------------------------------------------------*/
 export async function createReport(data) {
+    /*first need query data reference of the device (collection device_references)
+    to obtain "id_departament" "name_departament" and "serial" */
+    const DR = getSubDocument('device_references', data.id_device);
+    const device_references = await getDoc(DR);
+    
+    /*search if exist df_length and get*/
+    const { entity } = getProfileUser();
+    const global = await getDoc(getCollection(), entity);
+    const sizeCollection = global.data()?.df_references ?? 0;
+    
+    /*then, create document with UID, we can generate a data into subcollection main (user, departament...)
+    to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
+    await setDoc(doc(getCollection(), entity), { //working here...
+      df_length: sizeCollection,
+    });
+    
+
+    /*so, we create doc finding_references with corresponding values/*
+    
+    /*then create finding on depth level collection (departament + 101 + device + 10001 + finding)*/
+    
+    
     await setDoc(doc(getSubCollection('finding_references'), "id..."), {
         id_device: data.id_device,
         id_departament: '...',
@@ -181,12 +203,20 @@ export class DataByRequest {
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
 /**
-     * This method simplify the code through access to subcollection in context
-     * @param {string} subCollection - Is the name of the sub collection to inspect
-     * @returns {collection} a element collection from firebase to build query
-     * @example main => entity => device_references     
-     */
-export function getSubCollection(subCollection) { return collection(getCollection(), DataByRequest.getEntityInstantiated(), subCollection)}
+ * This method simplify the code through access to subcollection in context
+ * @param {string} subCollection - Is the name of the sub collection to inspect
+ * @returns {collection} an element collection from firebase to build query
+ * @example main => entity => device_references     
+ */
+export function getSubCollection(subCollection) { return collection(getCollection(), DataByRequest.getEntityInstantiated(), subCollection) }
+/**
+ * This method simplify the code through access to document specific on a requested subcollection
+ * @param {string} collection - Correspond to name of subCollection to operate
+ * @param {string} uid_document - Represent the ID of the document that we request
+ * @returns {document} an element doc from firebase to build query
+ * @example main => entity => device_references => 10001
+ */
+export function getSubDocument(collection, uid_document) { return doc(getSubCollection(collection), uid_document) }
 export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
