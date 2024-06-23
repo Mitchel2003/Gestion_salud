@@ -25,7 +25,7 @@ export async function getDocumentUser(user, entity) {
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
-/*--------------------------------------------------getters--------------------------------------------------*/
+/*--------------------------------------------------setters--------------------------------------------------*/
 export async function createReport(data) {
     /*first need query data reference of the device (collection device_references)
     to obtain "id_departament" "name_departament" and "serial" */
@@ -36,6 +36,9 @@ export async function createReport(data) {
     const { entity } = getProfileUser();
     const global = await getDoc(getCollection(), entity);
     const sizeCollection = global.data()?.df_references ?? 0;
+
+    /*create uid to create report (finding_references)*/
+    const uid_report = data.id_device....
     
     /*then, create document with UID, we can generate a data into subcollection main (user, departament...)
     to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
