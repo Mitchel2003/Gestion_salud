@@ -1,4 +1,4 @@
-import { db, auth, collection, doc, getDoc, getDocs, setDoc, query, where, orderBy, limit, startAfter } from "./conection.js";
+import { db, auth, collection, doc, getDoc, getDocs, setDoc, updateDoc, query, where, orderBy, limit, startAfter, Timestamp } from "./conection.js";
 import { Section } from "../models/sessionModel.js";
 /*--------------------------------------------------getters--------------------------------------------------*/
 /**
@@ -29,46 +29,65 @@ export async function getDocumentUser(user, entity) {
 export async function createReport(data) {
     /*first need query data reference of the device (collection device_references)
     to obtain "id_departament" "name_departament" and "serial" */
-    const doc = getSubDocument('device_references', data.id_device);
-    const deviceReferences = await getDoc(doc);
-    const DR_docs = deviceReferences.data();
-    
-    /*search if exist fr_length and get*/
+    const collection = getSubCollection('device_references');
+    const snapshot_deviceRef = await getDoc(doc(collection, data.id_device));
+    const device_references = snapshot_deviceRef.data();
+    console.log('check 1');
+
+    /*search if exist fr_length and get (finding_references)*/
     const { entity } = getProfileUser();
-    const global = await getDoc(getCollection(), entity);
-    const documentGlobal = global.data();
-    const lengthFR = documentGlobal?.fr_references ?? 0;
+    const docReferenceGlobal = doc(getCollection(), entity);
+    new Promise(() => {}) //working here...
+    const snapshotGlobal = await getDoc(docReferenceGlobal);
+    await 
+    const dataGlobal = snapshotGlobal.data();
+    let length_fr = dataGlobal?.fr_references ?? 0;
+    console.log('check 2');
 
     /*create uid to create report (finding_references)*/
-    const uid_report = `${data.id_device}-${lengthFR++}`
+    const uid_report = `${data.id_device}-${length_fr+1}`
+    console.log('check 3', uid_report);
+
+
+    //before, i need convert to timestamp the date time selected by user
+    const { getTimestampFromDateTime } = await import('../utils/convert.js');
+    const timestamp = getTimestampFromDateTime(data.date, data.time);
 
     /*update global variable*/
     /*to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
-    await setDoc(doc(getCollection(), entity), { fr_length: lengthFR++ });
+    await setDoc(doc(getCollection(), entity), { fr_length: length_fr++ });
+    console.log('check 4');
 
     /*so, we create doc finding_references with corresponding values*/
     await setDoc(doc(getSubCollection('finding_references'), uid_report), {
         id_device: data.id_device,
-        id_departament: DR_docs.id_departament,
-        name_departament: DR_docs.name_departament,
-        serial_device: DR_docs.serial,
+        id_departament: device_references.id_departament,
+        name_departament: device_references.name_departament,
+        serial_device: device_references.serial,
         subject: data.subject,
         type: data.typeMaintenance,
-        date: data.date
+        date: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6)),
     });
+    console.log('check 5');
 
     /*then create finding on depth level collection (departament + 101 + device + 10001 + finding)*/
-    const depth = [DR_docs.id_departament, 'device', data.id_device, 'finding', uid_report];
-    await setDoc(doc(getSubCollection('departament'), ...depth), {
-        specifications: data.specifications,
+    const depthFinding = [device_references.id_departament, 'device', data.id_device, 'finding', uid_report];
+    await setDoc(doc(getSubCollection('departament'), ...depthFinding), {
+        info: data.description,
         subject: data.subject,
         type: data.typeMaintenance,
-        date: data.date,
-        ...
-    }); //working here...
+        date: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6)),
+        id_device: data.id_device
+    });
+    console.log('check 6');
 
     //update info global of device like lastReport
-    
+    const depthDevice = [device_references.id_departament, 'device', data.id_device];
+    await updateDoc(doc(getSubCollection('departament'), ...depthDevice), {
+        lastReport: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6))
+    }); //working here...
+    console.log('check 7');
+
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
@@ -207,7 +226,7 @@ export class DataByRequest {
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     /*--------------------------------------------------getters--------------------------------------------------*/
-    static getEntityInstantiated(){ return DataByRequest.entity }
+    static getEntity() { return DataByRequest.entity }
     /*-------------------------------------------------------------------------------------------------------------------*/
 }
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
@@ -219,15 +238,7 @@ export function getCollectionUser(entityContext) { return collection(getCollecti
  * @returns {collection} an element collection from firebase to build query
  * @example main => entity => device_references     
  */
-export function getSubCollection(subCollection) { return collection(getCollection(), DataByRequest.getEntityInstantiated(), subCollection) }
-/**
- * This method simplify the code through access to document specific on a requested subcollection
- * @param {string} collection - Correspond to name of subCollection to operate
- * @param {string} uid_document - Represent the ID of the document that we request
- * @returns {document} an element doc from firebase to build query
- * @example main => entity => device_references => 10001
- */
-export function getSubDocument(collection, uid_document) { return doc(getSubCollection(collection), uid_document) }
+export function getSubCollection(subCollection) { return collection(getCollection(), DataByRequest.getEntity(), subCollection) }
 export function getQueryParams() { const searchParams = new URLSearchParams(window.location.search); return Object.fromEntries(searchParams.entries()) }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

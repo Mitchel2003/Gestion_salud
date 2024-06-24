@@ -150,7 +150,11 @@ export function getUserContext(res) {//AC #205
                                             <h2 class="card-title fw-bold text-start mb-3">Report Form</h2>                                    
                                             <form>
                                                 <div class="row">
-                                                    <div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-2">
+                                                    <div class="col-lg-3 col-md-3 col-sm-3 mb-2 order-sm-3">
+                                                        <label for="create-report-time" class="form-label">Report Time</label>
+                                                        <input type="time" class="form-control" id="create-report-time">
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-4 col-sm-4 mb-2 order-sm-2">
                                                         <label for="create-report-date" class="form-label">Report Date</label>
                                                         <input type="date" class="form-control" id="create-report-date">
                                                     </div>

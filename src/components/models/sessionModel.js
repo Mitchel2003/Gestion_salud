@@ -27,10 +27,12 @@ class ActionButton{
     static async resolve(request){
         this.request = request;
         this.index_request = this.getIndexAction(request);
-        const object = await this.getValues(); if (!array) return
-
-        // await createReport 
-        const res = await this.documentPath(object);
+        
+        onLoadWhile();
+        const object = await this.getValues();
+        if (!object) return offLoadWhile();
+        await this.documentPath(object);
+        offLoadWhile();
     }
     static getIndexAction(req) {
         const array = ['create-report', 'nothing'];

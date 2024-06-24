@@ -17,11 +17,19 @@ export function getInputRegister() {
 /*--------------------------------------------------session forms--------------------------------------------------*/
 export function getInputCreateReport(context) {
     const id_device = context.querySelector('#create-report-idDevice').value;
+    const time = context.querySelector('#create-report-time').value;
     const date = context.querySelector('#create-report-date').value;
     const subject = context.querySelector('#create-report-subject').value;
     const typeMaintenance = context.querySelector('#create-report-maintenance').value;
     const description = context.querySelector('#create-report-description').value;
-    return {id_device: id_device, date: date, subject: subject, typeMaintenance: typeMaintenance, description: description};
+    return {
+        time: time,
+        date: date,
+        subject: subject,
+        id_device: id_device,
+        description: description,
+        typeMaintenance: typeMaintenance
+    };
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

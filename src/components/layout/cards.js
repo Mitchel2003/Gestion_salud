@@ -1,4 +1,4 @@
-import {timeStampToDate} from '../utils/convert.js';
+import {timestampToDate} from '../utils/convert.js';
 export function cardDevice({data, snapshot}, icon) {
     return `
         <div class="card card-body container-fluid" data-card='${JSON.stringify([ data.id_departament, snapshot.id ])}' style="background: url('../components/images/bg-list.svg') no-repeat center; background-size: cover;">
@@ -44,7 +44,7 @@ export function cardFinding({data, snapshot}, icon) {
     `;
 }
 export function cardDetails({data, snapshot}, icon) {
-    const time = data.lastReport ? timeStampToDate(data.lastReport) : null;
+    const time = data.lastReport ? timestampToDate(data.lastReport) : null;
     return `
         <div class="card card-body container-fluid border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: linear-gradient(135deg, #3498db 0%, #8e44ad 100%); color: #fff;">
             <div class="row">
