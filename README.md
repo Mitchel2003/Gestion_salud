@@ -1,3 +1,64 @@
+static createItems(snapshot, icon) {
+    const element = document.getElementById(this.loop_container);
+    const btnReference = element.querySelector('#load-more');
+
+    const data = (snapshot.docs ?? [snapshot]).reverse();
+
+    data.forEach(item => {
+        const doc = { snapshot: item, data: item.data() };
+        const card = this.setContentCard(doc, icon);
+        btnReference.insertAdjacentHTML('beforebegin', card);
+    });
+
+    this.handleLoadMore(btnReference, snapshot);
+}
+
+static setContentCard(doc, icon) {
+    const { snapshot, data } = doc;
+    return `
+        <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
+            <div class="row">
+                <div class="col-lg-0 col-md-1 col-sm-1 text-start">
+                    <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
+                </div>
+                <div class="col-lg-12 col-md-11 col-sm-11 d-flex align-items-center me-auto">
+                    <h6 class="card-title m-0 me-auto">ID: ${snapshot.id}</h6>
+                    <h6 class="card-title m-0">Device: ${data.id_device}</h6>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
+                    <p class="card-text m-0 me-auto">Subject: ${data.subject}</p>
+                    <p class="card-text m-0">Type: ${data.type}</p>
+                    <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
+                </div>
+            </div>
+            <div class="accordion" id="accordion-${snapshot.id}">
+                <div class="accordion-item custom-accordion-item">
+                    <h2 class="accordion-header custom-accordion-header" id="heading-${snapshot.id}">
+                        <button class="accordion-button collapsed custom-accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-expanded="false" aria-controls="collapse-${snapshot.id}">
+                            Show More
+                        </button>
+                    </h2>
+                    <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
+                        <div class="accordion-body text-dark">
+                            <p><strong>Creation Date:</strong> ${data.creation_date}</p>
+                            <p><strong>Description:</strong> ${data.description}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+
+
+
+
+
+
 static setContentCard(doc, icon) {
     const { snapshot, data } = doc;
     return `
