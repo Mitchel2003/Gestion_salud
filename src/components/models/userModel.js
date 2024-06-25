@@ -12,10 +12,10 @@ export async function loginUser(user, password) {
         const { key, access: userFound } = await getDocumentUser(user, entity);
 
         if (!userFound) {
-            await showMessage('messageEmailNotFound', 'default');
+            await showMessage('messageEmailNotFound');
             await offSession(); offLoadWhile(); return;
         } if (!key) {
-            await showMessage('messageAccessNotFound', 'default');
+            await showMessage('messageAccessNotFound');
             await offSession(); offLoadWhile(); return;
         }
         (await import('../utils/view.js')).goToSession();
@@ -25,14 +25,14 @@ export async function loginUser(user, password) {
 export async function registerUser(name, email, password, access, entity) {
     try {
         onLoadWhile();
-        if (!access || !entity) { await showMessage('messageSelectEmpty', 'default'); offLoadWhile(); return; }
+        if (!access || !entity) { await showMessage('messageSelectEmpty'); offLoadWhile(); return; }
         const getAuth = await import('../firebase/authentication.js');
         await getAuth.createUser(email, password);
         await getAuth.updateDataUser(name, entity);
         await getAuth.verificationEmailAddress(name, email, access, entity);
         (await import('../utils/values.js')).cleanInputRegister();
 
-        await showMessage('messageEmailVerify', 'default');
+        await showMessage('messageEmailVerify');
         await offSession();
         offLoadWhile();
     } catch (error) { offLoadWhile(); await getAlert.exceptionsRegisterUser(error); }
@@ -44,7 +44,7 @@ export async function requestResetPassword() {
         if (email) {
             const getAuth = await import('../firebase/authentication.js');
             await getAuth.sendToEmailResetPassword(email);
-            await showMessage('messageTokenSubmitted', 'default');
+            await showMessage('messageTokenSubmitted');
         }
         offLoadWhile();
     } catch (error) { offLoadWhile(); await getAlert.exceptionsResetPassword(error); }
@@ -87,11 +87,11 @@ export async function modeChangePassword() {
             const { password, confirmPassword } = getInputResetPassword();
 
             if (checkSamePasswords(password, confirmPassword)) {
-                await showMessage('messagePasswordNotSame', 'default');
+                await showMessage('messagePasswordNotSame');
                 offLoadWhile(); return;
             }
             if (checkSizeAllowed(password)) {
-                await showMessage('messagePasswordSizeShort', 'default');
+                await showMessage('messagePasswordSizeShort');
                 offLoadWhile(); return;
             }
             await (await import('../firebase/authentication.js')).validateResetPassword(oobCode, password);
@@ -100,7 +100,7 @@ export async function modeChangePassword() {
             if (request) goToHome();
             await offSession();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired', 'default'); }
+        } catch (error) { offLoadWhile(); await showMessage('messageTokenExpired'); }
     });
 }
 /*--------------------------------------------------tools--------------------------------------------------*/

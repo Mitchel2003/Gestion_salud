@@ -58,7 +58,7 @@ export async function alertButtonAction(title, message, icon) {
     }); return request;
 }
 /*--------------------------------------------------view message--------------------------------------------------*/
-export async function showMessage(text, alert) {
+export async function showMessage(text, alert = null) {
     const { title, message, typeAlert } = getMessageAlert(text);
     if (alert === 'alertToast') return alertToast(title, message, selectIcon(typeAlert));
     if (alert === 'alertInput') return await alertInput(title, message, selectIcon(typeAlert));
@@ -67,21 +67,21 @@ export async function showMessage(text, alert) {
 }
 /*--------------------------------------------------exceptions (fetch)--------------------------------------------------*/
 export async function exceptionsLoginUser(error) {
-    if (error.code === 'auth/invalid-login-credentials') return await showMessage('messageCredentialsIncorrects', 'default');
-    if (error.code === 'auth/too-many-requests') return await showMessage('messageManyRequests', 'default');
-    return await showMessage('messageTempUnknow', 'default');
+    if (error.code === 'auth/invalid-login-credentials') return await showMessage('messageCredentialsIncorrects');
+    if (error.code === 'auth/too-many-requests') return await showMessage('messageManyRequests');
+    return await showMessage('messageTempUnknow');
 }
 export async function exceptionsRegisterUser(error) {
-    if (error.code === 'auth/invalid-email') return await showMessage('messageEmailUnknow', 'default');
-    if (error.code === 'auth/email-already-in-use') return await showMessage('messageEmailUsed', 'default');
-    if (error.code === 'auth/weak-password') return await showMessage('messagePasswordSizeShort', 'default');
-    return await showMessage('messageTempUnknow', 'default');
+    if (error.code === 'auth/invalid-email') return await showMessage('messageEmailUnknow');
+    if (error.code === 'auth/email-already-in-use') return await showMessage('messageEmailUsed');
+    if (error.code === 'auth/weak-password') return await showMessage('messagePasswordSizeShort');
+    return await showMessage('messageTempUnknow');
 }
 export async function exceptionsResetPassword(error) {
-    if (error.code === 'auth/too-many-requests') return await showMessage('messageManyRequests', 'default');
-    if (error.code === 'auth/invalid-email') return await showMessage('messageEmailUnknow', 'default');
+    if (error.code === 'auth/too-many-requests') return await showMessage('messageManyRequests');
+    if (error.code === 'auth/invalid-email') return await showMessage('messageEmailUnknow');
     if (error.code === 'invalid-argument') return  //nothing
-    return await showMessage('messageTempUnknow', 'default');
+    return await showMessage('messageTempUnknow');
 }
 /*--------------------------------------------------text--------------------------------------------------*/
 function getMessageAlert(type) {
@@ -91,7 +91,9 @@ function getMessageAlert(type) {
     if (type === 'messageEmailVerify') { title = "Pre-registration successfull"; message = "Checkout your mailbox and validate this email to continue"; typeAlert = "s"; }
     if (type === 'messageResetPasswordSuccess') { title = "Reset password success"; message = "Now, you can entry to app"; typeAlert = "s"; }
     if (type === 'messageTokenSubmitted') { title = "Token generated"; message = "Check your email to continue reset password"; typeAlert = "s"; }
+    if (type === 'messageCreateReportDone') { title = "Successful creation"; message = "Report create successfully"; typeAlert = "s"; }
     if (type === 'messageStatusOnline') { title = "Online"; message = "Connection restored"; typeAlert = "s"; }
+    
     //warning
     if (type === 'messageEmailNotFound') { title = "Email unknow"; message = "If the account has been registered before, checkout you mailbox"; typeAlert = "w"; }
     if (type === 'messageAccessNotFound') { title = "Without access"; message = "It has been found that this account does not have access; comunicate with the management"; typeAlert = "w"; }

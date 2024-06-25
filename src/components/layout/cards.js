@@ -39,7 +39,21 @@ export function cardFinding({data, snapshot}, icon) {
                         <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
                     </div>
                 </div>
-                <a href="" class="btn border border-1 ${data.type === 'preventive' ? 'btn-outline-primary border-primary-subtle' : 'btn-outline-warning border-warning-subtle'}">show more</a>
+                <div class="accordion" id="accordion-${snapshot.id}">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header bg-body-tertiary bg-opacity-50" id="heading-${snapshot.id}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-expanded="false" aria-controls="collapse-${snapshot.id}">
+                                Show More
+                            </button>
+                        </h2>
+                        <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
+                            <div class="accordion-body text-dark">
+                                <p><strong>Creation Date:</strong> ${data.creation_date}</p>
+                                <p><strong>Description:</strong> ${data.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     `;
 }

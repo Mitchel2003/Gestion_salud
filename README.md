@@ -1,127 +1,74 @@
-```html
-<!-- Agregamos un botón de enviar y un form para manejar el submit -->
-<script>
-  // Your Firebase configuration
-    const dateInput = document.getElementById('create-report-date');
-    const timeInput = document.getElementById('create-report-time');
+static setContentCard(doc, icon) {
+    const { snapshot, data } = doc;
+    return `
+        <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
+            <div class="row">
+                <div class="col-lg-0 col-md-1 col-sm-1 text-start">
+                    <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
+                </div>
+                <div class="col-lg-12 col-md-11 col-sm-11 d-flex align-items-center me-auto">
+                    <h6 class="card-title m-0 me-auto">ID: ${snapshot.id}</h6>
+                    <h6 class="card-title m-0">Device: ${data.id_device}</h6>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
+                    <p class="card-text m-0 me-auto">Subject: ${data.subject}</p>
+                    <p class="card-text m-0">Type: ${data.type}</p>
+                    <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
+                </div>
+            </div>
+            <div class="accordion" id="accordion-${snapshot.id}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-${snapshot.id}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-expanded="false" aria-controls="collapse-${snapshot.id}">
+                            Show More
+                        </button>
+                    </h2>
+                    <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
+                        <div class="accordion-body text-dark">
+                            <p><strong>Creation Date:</strong> ${data.creation_date}</p>
+                            <p><strong>Description:</strong> ${data.description}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    `;
+}
 
-    const dateValue = dateInput.value;
-    const timeValue = timeInput.value;
-    const timestamp = getTimestampFromDateTime(dateValue, timeValue);
-    const firestoreTimestamp = firebase.firestore.Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6));
+
+### ---------------------------------------------------------------------------------------------------- ###
 
 
-  function getTimestampFromDateTime(date, time) {
-    const dateTimeString = `${date}T${time}:00`;
-    const dateObj = new Date(dateTimeString);
-    const seconds = Math.floor(dateObj.getTime() / 1000);
-    const nanoseconds = (dateObj.getTime() % 1000) * 1e6;
 
-    return { seconds, nanoseconds };
-  }
 
-  function timeStampToDate({ seconds, nanoseconds }) {
-    const date = new Date(seconds * 1000 + nanoseconds / 1e6);
-    return {
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear(),
-      hour: date.getHours(),
-      minutes: date.getMinutes(),
-      seconds: date.getSeconds()
-    }
-  }
-</script>
-```
-
-Para lograr obtener y formatear la fecha con la hora local de manera óptima y profesional, es importante seguir las mejores prácticas de desarrollo, incluyendo el uso de funciones bien estructuradas y código limpio. A continuación te presento un enfoque utilizando JavaScript para capturar la fecha y hora del usuario, convertirla a un timestamp y luego formatearla de manera adecuada:
-
-1. **HTML**: Mantendremos el input de tipo `date` y agregaremos un input de tipo `time` para capturar la hora.
-2. **JavaScript**: Capturaremos ambos inputs, combinaremos la fecha y la hora, y luego convertiremos esta combinación a un timestamp.
-
-### HTML
-
-```html
-<div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-2">
-    <label for="create-report-date" class="form-label">Report Date</label>
-    <input type="date" class="form-control" id="create-report-date">
-</div>
-<div class="col-lg-6 col-md-7 col-sm-7 mb-2 order-sm-2">
-    <label for="create-report-time" class="form-label">Report Time</label>
-    <input type="time" class="form-control" id="create-report-time">
-</div>
-```
-
-### JavaScript
 
 ```javascript
-document.addEventListener('DOMContentLoaded', () => {
-    const dateInput = document.getElementById('create-report-date');
-    const timeInput = document.getElementById('create-report-time');
+static createItems(snapshot, icon) {
+    // Obtenemos los datos y los revertimos
+    const data = (snapshot.docs ?? [snapshot]).reverse();
 
-    // Example function to handle form submission
-    document.getElementById('report-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const dateValue = dateInput.value;
-        const timeValue = timeInput.value;
-
-        if (dateValue && timeValue) {
-            const timestamp = getTimestampFromDateTime(dateValue, timeValue);
-            const formattedDate = timeStampToDate(timestamp);
-
-            console.log('Timestamp:', timestamp);
-            console.log('Formatted Date:', formattedDate);
-        } else {
-            console.error('Please fill both date and time fields.');
-        }
+    // Insertamos cada elemento antes del botón de "load more"
+    data.forEach(item => {
+        const doc = { snapshot: item, data: item.data() };
+        const card = this.setContentCard(doc, icon);
+        btnReference.insertAdjacentHTML('beforebegin', card);
     });
-});
-
-/**
- * Function to combine date and time inputs and convert to a timestamp
- * @param {string} date - The date input value (YYYY-MM-DD)
- * @param {string} time - The time input value (HH:MM)
- * @returns {Object} - An object with seconds and nanoseconds
- */
-function getTimestampFromDateTime(date, time) {
-    const dateTimeString = `${date}T${time}:00`;
-    const dateObj = new Date(dateTimeString);
-    const seconds = Math.floor(dateObj.getTime() / 1000);
-    const nanoseconds = (dateObj.getTime() % 1000) * 1e6;
-
-    return { seconds, nanoseconds };
-}
-
-/**
- * Function to format timestamp to a readable date-time object
- * @param {Object} param0 - The timestamp object with seconds and nanoseconds
- * @returns {Object} - A formatted date-time object
- */
-function timeStampToDate({ seconds, nanoseconds }) {
-    const date = new Date(seconds * 1000 + nanoseconds / 1e6);
-    return {
-        day: date.getDate(),
-        month: date.getMonth() + 1,
-        year: date.getFullYear(),
-        hour: date.getHours(),
-        minutes: date.getMinutes(),
-        seconds: date.getSeconds()
-    }
 }
 ```
-
-### Explicación
-
-1. **HTML**:
-   - Añadimos un input de tipo `time` para capturar la hora.
-
-2. **JavaScript**:
-   - Añadimos un listener al evento `DOMContentLoaded` para asegurar que el DOM esté completamente cargado antes de acceder a los elementos.
-   - Capturamos los valores de los inputs de fecha y hora cuando se envía el formulario.
-   - Combinamos estos valores en una cadena de fecha y hora, y luego creamos un objeto `Date` a partir de esta cadena.
-   - Calculamos los segundos y nanosegundos desde la época (epoch) y devolvemos un objeto con estos valores.
-   - La función `timeStampToDate` convierte estos valores en un objeto de fecha legible.
+### Detalles importantes:
+1. **Uso de métodos de arrays**:
+    - `snapshot.docs ?? [snapshot]` se utiliza para manejar casos donde `docs` podría no estar definido, garantizando que siempre trabajemos con un array.
+    - `reverse()` invierte el array para que los elementos se presenten en el orden requerido.
+2. **Uso de `insertAdjacentHTML`**:
+    - Este método es muy eficiente para insertar grandes cantidades de HTML sin afectar significativamente el rendimiento.
+3. **Manejo del botón "load more"**:
+    - La lógica para manejar la paginación se mantiene separada, asegurando un código modular y fácil de mantener.
+### Mejores prácticas:
+- **Declaraciones claras**: Cada paso en el código tiene una declaración clara de lo que está haciendo, facilitando la comprensión y el mantenimiento del código.
+- **Eficiencia y rendimiento**: El uso de métodos nativos de arrays garantiza un rendimiento óptimo y una manipulación eficiente de los datos.
+- **Escalabilidad**: Este enfoque es escalable y puede manejar grandes cantidades de datos sin problemas.
 
 ### ---------------------------------------------------------------------------------------------------- ###
 

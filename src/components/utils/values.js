@@ -65,6 +65,13 @@ export function cleanInputRegister() {
     email.value = "";
     password.value = "";
 }
+export function cleanInputCreateReport(e) {
+    const time = e.querySelector('#create-report-time').value = '';
+    const date = e.querySelector('#create-report-date').value = '';
+    const subject = e.querySelector('#create-report-subject').value = '';
+    const id_device = e.querySelector('#create-report-idDevice').value = '';
+    const description = e.querySelector('#create-report-description').value = '';
+}
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------globals--------------------------------------------------*/

@@ -15,33 +15,49 @@ export async function modeAuxiliary() {
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------button actions--------------------------------------------------*/
+/**
+ * Helps us to resolve a requested submit by the user
+ * @param {HTMLElement} e - This element correspond to button into request form, contain an attribute "action-btn" with the value of type request
+ */
 export async function controllerSubmitFormRequest(e) {
     const btn = e.target;
     const req = btn.getAttribute('action-btn');
     await ActionButton.resolve(req);
 }
 
-class ActionButton{
+class ActionButton {
     static request;
+    static values = {};
     static index_request;
-    static async resolve(request){
-        this.request = request;
-        this.index_request = this.getIndexAction(request);
-        
-        onLoadWhile();
-        const object = await this.getValues();
-        if (!object) return offLoadWhile();
-        await this.documentPath(object);
-        offLoadWhile();
-    }
-    static getIndexAction(req) {
-        const array = ['create-report', 'nothing'];
-        return array.findIndex(value => value === req);
+    /**
+     * This resolve a form submit according to the type of request, example ["create-report"]
+     * @param {string} request - This mean the name of the type request clicked by the user
+     */
+    static async resolve(request) {
+        try {
+            onLoadWhile();
+            this.request = request;
+            this.index_request = this.getIndexAction();
+            const object = await this.getValues();
+            if (!object) return offLoadWhile();
+            this.values = object;
+            await this.documentPath();
+            await this.actionDone();
+            await this.clearFields();
+            offLoadWhile();
+        } catch (error) { offLoadWhile(); return await showMessage('messageTempUnknow') }
     }
     /**
-     * @param {*} nameContainer 
-     * @param {*} index 
-     * @returns returns an array because we could have a number indefined of data to operate
+     * To get the index corresponding to current request
+     * @returns {number} returns the index associated to the request, this allows us to submit the form in a method corresponding
+     */
+    static getIndexAction() {
+        const array = ['create-report', ''];
+        return array.findIndex(value => value === this.request);
+    }
+    /**
+     * This intend get the values from form in an object
+     * @returns {object} returns an object that contain all values from the form diligenced
      */
     static async getValues() {
         const element = elementById(this.request);
@@ -51,20 +67,34 @@ class ActionButton{
         return await this.checkCompletedFields(objectFieldValues);
     }
     /**
-     * 
+     * Inspect the "keys" of an param obtained (obj) that represent the different fields filled by the user; we check if some its empty
      * @param {object} obj this correspond to data on the fields of current format
-     * @returns 
+     * @returns {object} returns an object that represent the values of each field from format
      */
     static async checkCompletedFields(obj) {
         const empty = Object.keys(obj).some(key => obj[key] === '');
-        if (empty) return await showMessage('messageFieldEmpty', 'default');
+        if (empty) return await showMessage('messageFieldEmpty');
         return obj;
     }
-    
-    static async documentPath(obj) {
+    /** Execute the submit according to current context and an index_request */
+    static async documentPath() {
         const imp = await import('../firebase/query.js');
-        const data = [await imp.createReport(obj)]
-        return data[this.index_request];
+        const data = [await imp.createReport(this.values)];
+        data[this.index_request];
+    }
+    /**
+     * Allow show a message 'operation done' according to request specific
+     */
+    static async actionDone() {
+        const data = ['messageCreateReportDone', ''];
+        await showMessage(data[this.index_request]);
+    }
+    /** To clear the the form */
+    static async clearFields(){
+        const e = elementById(this.request);
+        const imp = await import('../utils/values.js');
+        const data = [imp.cleanInputCreateReport(e)];
+        data[this.index_request];
     }
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -124,7 +154,7 @@ function buildRequest(req, array) {
             break;
         case 'loadMore':
             data.index = 0; data.document = false;
-            data.query = { where: ['avaliable', '!=', 'nothing'], pagination: ['avaliable', 5] }
+            data.query = { where: ['avaliable', '!=', ''], pagination: ['avaliable', 5] }
             break;
         default: break;
     }
@@ -306,7 +336,7 @@ export class Section {
     static getDefaultQuery() {
         const array = [
             { where: ['empty'], pagination: ['empty'] },
-            { where: ['avaliable', '!=', 'nothing', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
+            { where: ['avaliable', '!=', '', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
             { where: ['empty'], pagination: ['empty'] }
         ]; return array[this.indexSection];
     }
@@ -422,11 +452,12 @@ export class Section {
      * @param {string} icon - Is a name class to insert a icon in the card context, correspond to bootstrap icons
      * @const {array} data - is converted to element that contain all data from query received, this allow sort the data as iterable element, regardless of type document obtained (querySanpshot or documentSnapshot)
      * @const {HTMLElement} card - mean the card format selected for show in the current container of the section
+     * @example addComentary: 007
      */
     static createItems(snapshot, icon) {
         const element = elementById(this.loop_container);
         const btnReference = element.querySelector('#load-more');
-        const data = snapshot.docs?.map(e => e) ?? [snapshot];
+        const data = (snapshot.docs ?? [snapshot]).reverse() //better explained in example ^°^
         data.forEach(item => {
             const doc = { snapshot: item, data: item.data() }
             const card = this.setContentCard(doc, icon);
@@ -530,5 +561,30 @@ export class Section {
  * object = to build a specific query, intend be a object like this { where: ['avaliable', '!=', 'true'], pagination: ['avaliable', 5] }
  * 
  * #006: with this string we cant continue the flow in handlerRoute() "handler[0] != null => continue" and in the routeRequest() we have a comparation "route (type) = 'string' => req: collectionContext"
+ * 
+ * #007: the dilem here is that the snapshot received by firebase firestore have this structure:
+ * 
+ *              ["103", "102", "101"]
+ * 
+ *       then, when we trying insert targets with this values, way through will its on this way:
+ * 
+ *              [103]
+ *                -
+ *              [102]
+ *                -
+ *              [101]
+ * 
+ *      this if we insert data from down side (button)
+ * 
+ *      so, the last element printed, always be the first document with applied filter "snapshot query configurated" example:
+ *      if its a filter of "Avaliable" so:
+ *      
+ *             [not avaliable]
+ *                     -
+ *             [not avaliable]
+ *                     - 
+ *               [avaliable]
+ * 
+ *      because this i need convert the snapshot data in reverse()
  */
 /* ------------------------------------------------------------------------------------------------------------------- */

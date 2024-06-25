@@ -25,58 +25,53 @@ export async function getDocumentUser(user, entity) {
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
-/*--------------------------------------------------setters--------------------------------------------------*/
-export async function createReport(data) {
-    /*first need query data reference of the device (collection device_references)
-    to obtain "id_departament" "name_departament" and "serial" */
-    const collection = getSubCollection('device_references');
-    const snapshot_deviceRef = await getDoc(doc(collection, data.id_device));
-    const device_references = snapshot_deviceRef.data();
-
-    /*search if exist fr_length and get (finding_references)*/
-    const { entity } = getProfileUser(); //working here...
-    const docReferenceGlobal = doc(getCollection(), entity);
-    const snapshot = await getDoc(docReferenceGlobal);
-    const dataGlobal = snapshot.data();
-    let length_fr = dataGlobal?.fr_length ?? 0;
-
-    //before, i need convert to timestamp the date time selected by user
+/*--------------------------------------------------creators--------------------------------------------------*/
+export async function createReport({time, date, subject, id_device, description, typeMaintenance}) {
+    //I need convert to timestamp the date time selected by user
     const { getTimestampFromDateTime } = await import('../utils/convert.js');
-    const timestamp = getTimestampFromDateTime(data.date, data.time);
+    const timestamp = getTimestampFromDateTime(date, time);
+    const dateTimestamp = Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6));
 
-    /*update global variable*/
-    /*to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
-    await updateDoc(doc(getCollection(), entity), { fr_length: length_fr + 1 });
+    /*first need query data reference of the device (collection device_references) to obtain "id_departament" "name_departament" and "serial" */
+    const collection = getSubCollection('device_references');
+    const device_references = await getDoc(doc(collection, id_device));
+    const {id_departament, name_departament, serial} = device_references.data();
+
+    /*search if length_finding exist and get value (general data of device)*/
+    const docReference = doc(getSubCollection('departament'), id_departament, 'device', id_device);
+    const snapshot = await getDoc(docReference);
+    const generalDeviceData = snapshot.data();
+    let length_finding = generalDeviceData?.length_finding ?? 0;
+    length_finding++; //increment 1 more
 
     /*create uid to create report (finding_references)*/
-    const uid_report = `${data.id_device}-${length_fr}`
-    console.log('check 4', uid_report);
+    const uid_report = `${id_device}-${length_finding}`;
 
     /*so, we create doc finding_references with corresponding values*/
     await setDoc(doc(getSubCollection('finding_references'), uid_report), {
-        id_device: data.id_device,
-        id_departament: device_references.id_departament,
-        name_departament: device_references.name_departament,
-        serial_device: device_references.serial,
-        subject: data.subject,
-        type: data.typeMaintenance,
-        date: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6)),
+        subject: subject,
+        date: dateTimestamp,
+        id_device: id_device,
+        type: typeMaintenance,
+        serial_device: serial,
+        id_departament: id_departament,
+        name_departament: name_departament,
+    });
+    
+    /*also, we can create finding on depth level collection (example: departament + 101 + device + 10001 + finding)*/
+    const toDeepDevice = [id_departament, 'device', id_device];
+    await setDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', uid_report ), {
+        subject: subject,
+        info: description,
+        date: dateTimestamp,
+        id_device: id_device,
+        type: typeMaintenance,
     });
 
-    /*then create finding on depth level collection (departament + 101 + device + 10001 + finding)*/
-    const depthFinding = [device_references.id_departament, 'device', data.id_device, 'finding', uid_report];
-    await setDoc(doc(getSubCollection('departament'), ...depthFinding), {
-        info: data.description,
-        subject: data.subject,
-        type: data.typeMaintenance,
-        date: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6)),
-        id_device: data.id_device
-    });
-
-    //update info global of device like lastReport
-    const depthDevice = [device_references.id_departament, 'device', data.id_device];
-    await updateDoc(doc(getSubCollection('departament'), ...depthDevice), {
-        lastReport: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6))
+    //update info global of device like lastReport and length_finding
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), {
+        lastReport: dateTimestamp,
+        length_finding: length_finding
     });
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -239,4 +234,3 @@ export function getQueryParams() { const searchParams = new URLSearchParams(wind
  * departament: in this section, at on click the cards (side right), could be show devices according 
  */
 /* ------------------------------------------------------------------------------------------------------------------- */
-

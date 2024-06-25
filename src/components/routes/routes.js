@@ -31,5 +31,9 @@ async function insertHtml(data) {
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------tools--------------------------------------------------*/
+/**
+ * Allows us handle the submit action of request through a form button clicked, this button have this fuction(handlerCustomRequest) inner on click
+ * @param {HTMLElement} e - Correspond to button from form clicked by user; this action allow create, modify and delete as appropriate
+ */
 window.handleCustomRequest = async (e) => { e.preventDefault(); await controllerSubmitFormRequest(e) };
 /*-------------------------------------------------------------------------------------------------------------------*/

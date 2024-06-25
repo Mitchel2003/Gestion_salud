@@ -48,3 +48,7 @@
 }.close-options span:hover, .side-bar a:hover{
     background-color: rgb(240, 240, 240, 0.5);
 }.spawn{ transform: translateX(0); opacity: 1; }/*class spawn side-bar*/
+
+/*cards reports*/
+/* Ajustar el color del fondo cuando el acordeón está activo */
+/* .custom-accordion-button:not(.collapsed) { background-color: rgba(255, 255, 255, 0.3); color: #000; } */
