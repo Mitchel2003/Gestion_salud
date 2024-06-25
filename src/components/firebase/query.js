@@ -32,22 +32,13 @@ export async function createReport(data) {
     const collection = getSubCollection('device_references');
     const snapshot_deviceRef = await getDoc(doc(collection, data.id_device));
     const device_references = snapshot_deviceRef.data();
-    console.log('check 1');
 
     /*search if exist fr_length and get (finding_references)*/
-    const { entity } = getProfileUser();
+    const { entity } = getProfileUser(); //working here...
     const docReferenceGlobal = doc(getCollection(), entity);
-    new Promise(() => {}) //working here...
-    const snapshotGlobal = await getDoc(docReferenceGlobal);
-    await 
-    const dataGlobal = snapshotGlobal.data();
-    let length_fr = dataGlobal?.fr_references ?? 0;
-    console.log('check 2');
-
-    /*create uid to create report (finding_references)*/
-    const uid_report = `${data.id_device}-${length_fr+1}`
-    console.log('check 3', uid_report);
-
+    const snapshot = await getDoc(docReferenceGlobal);
+    const dataGlobal = snapshot.data();
+    let length_fr = dataGlobal?.fr_length ?? 0;
 
     //before, i need convert to timestamp the date time selected by user
     const { getTimestampFromDateTime } = await import('../utils/convert.js');
@@ -55,8 +46,11 @@ export async function createReport(data) {
 
     /*update global variable*/
     /*to save for example the length of the documents into device_references and finding_references (dr_length and fr_length)*/
-    await setDoc(doc(getCollection(), entity), { fr_length: length_fr++ });
-    console.log('check 4');
+    await updateDoc(doc(getCollection(), entity), { fr_length: length_fr + 1 });
+
+    /*create uid to create report (finding_references)*/
+    const uid_report = `${data.id_device}-${length_fr}`
+    console.log('check 4', uid_report);
 
     /*so, we create doc finding_references with corresponding values*/
     await setDoc(doc(getSubCollection('finding_references'), uid_report), {
@@ -68,7 +62,6 @@ export async function createReport(data) {
         type: data.typeMaintenance,
         date: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6)),
     });
-    console.log('check 5');
 
     /*then create finding on depth level collection (departament + 101 + device + 10001 + finding)*/
     const depthFinding = [device_references.id_departament, 'device', data.id_device, 'finding', uid_report];
@@ -79,15 +72,12 @@ export async function createReport(data) {
         date: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6)),
         id_device: data.id_device
     });
-    console.log('check 6');
 
     //update info global of device like lastReport
     const depthDevice = [device_references.id_departament, 'device', data.id_device];
     await updateDoc(doc(getSubCollection('departament'), ...depthDevice), {
         lastReport: Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6))
-    }); //working here...
-    console.log('check 7');
-
+    });
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
