@@ -1,3 +1,89 @@
+Para conseguir lo que deseas únicamente con clases de Bootstrap, puedes utilizar las utilidades de fondo de Bootstrap y las clases de estado activo. A continuación, te muestro cómo puedes aplicar estilos personalizados usando solo clases de Bootstrap para lograr el efecto deseado:
+
+1. **Utiliza las clases de Bootstrap para el fondo y la transparencia**: 
+    - Utiliza las clases de utilidad de Bootstrap como `bg-*` para los colores y `bg-opacity-*` para la opacidad.
+
+2. **Asegúrate de que los estilos se apliquen tanto en estado normal como en estado activo**: 
+    - Usa las clases de Bootstrap para aplicar estilos a los elementos del acordeón tanto cuando están colapsados como cuando están activos.
+
+### Código actualizado:
+
+```javascript
+static createItems(snapshot, icon) {
+    const element = document.getElementById(this.loop_container);
+    const btnReference = element.querySelector('#load-more');
+
+    const data = (snapshot.docs ?? [snapshot]).reverse();
+
+    data.forEach(item => {
+        const doc = { snapshot: item, data: item.data() };
+        const card = this.setContentCard(doc, icon);
+        btnReference.insertAdjacentHTML('beforebegin', card);
+    });
+
+    this.handleLoadMore(btnReference, snapshot);
+}
+
+static setContentCard(doc, icon) {
+    const { snapshot, data } = doc;
+    return `
+        <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
+            <div class="row">
+                <div class="col-lg-0 col-md-1 col-sm-1 text-start">
+                    <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
+                </div>
+                <div class="col-lg-12 col-md-11 col-sm-11 d-flex align-items-center me-auto">
+                    <h6 class="card-title m-0 me-auto">ID: ${snapshot.id}</h6>
+                    <h6 class="card-title m-0">Device: ${data.id_device}</h6>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
+                    <p class="card-text m-0 me-auto">Subject: ${data.subject}</p>
+                    <p class="card-text m-0">Type: ${data.type}</p>
+                    <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
+                </div>
+            </div>
+            <div class="accordion" id="accordion-${snapshot.id}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-${snapshot.id}">
+                        <button class="accordion-button collapsed bg-light bg-opacity-75 text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-expanded="false" aria-controls="collapse-${snapshot.id}">
+                            Show More
+                        </button>
+                    </h2>
+                    <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
+                        <div class="accordion-body text-dark">
+                            <p><strong>Creation Date:</strong> ${data.creation_date}</p>
+                            <p><strong>Description:</strong> ${data.description}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+```
+
+### Explicación:
+
+1. **Clases de Bootstrap para fondo y transparencia**:
+    - `bg-light bg-opacity-75`: Estas clases aplican un fondo claro con un 75% de opacidad al botón del acordeón, incluso cuando está colapsado.
+
+2. **Estado activo del acordeón**:
+    - La clase `collapsed` se asegura de que el botón tenga los estilos deseados cuando el acordeón está cerrado.
+
+### Notas adicionales:
+- **Transparencia y colores**: Ajusta las clases `bg-light` y `bg-opacity-75` según tus necesidades específicas de diseño. Bootstrap ofrece varias opciones de colores (`bg-primary`, `bg-secondary`, etc.) y niveles de opacidad (`bg-opacity-50`, `bg-opacity-100`, etc.).
+- **Textos y colores**: `text-dark` asegura que el texto del botón sea oscuro y visible sobre el fondo claro.
+
+Con estos ajustes, puedes personalizar el aspecto del encabezado del acordeón utilizando solo las clases de Bootstrap, sin necesidad de CSS adicional, manteniendo así el código limpio y fácil de mantener.
+
+
+
+
+
+
+
 static createItems(snapshot, icon) {
     const element = document.getElementById(this.loop_container);
     const btnReference = element.querySelector('#load-more');
