@@ -49,11 +49,22 @@ export async function alertButtonAction(title, message, icon) {
         icon: icon,
         allowOutsideClick: false,
         allowEscapeKey: true,
-        allowEnterKey: false,
         showCancelButton: true,
         cancelButtonColor: "#d33",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Go to home",
+        customClass: { popup: 'customAlert' }
+    }); return request;
+}
+export async function alertButtonActionConfirm(title, message, icon) {
+    const { value: request } = await Swal.fire({
+        title: title,
+        text: message,
+        icon: icon,
+        allowOutsideClick: false,
+        allowEscapeKey: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
         customClass: { popup: 'customAlert' }
     }); return request;
 }
@@ -63,6 +74,7 @@ export async function showMessage(text, alert = null) {
     if (alert === 'alertToast') return alertToast(title, message, selectIcon(typeAlert));
     if (alert === 'alertInput') return await alertInput(title, message, selectIcon(typeAlert));
     if (alert === 'alertButtonAction') return await alertButtonAction(title, message, selectIcon(typeAlert));
+    if (alert === 'alertButtonActionConfirm') return await alertButtonActionConfirm(title, message, selectIcon(typeAlert));
     return customAlert(title, message, selectIcon(typeAlert));
 }
 /*--------------------------------------------------exceptions (fetch)--------------------------------------------------*/
@@ -92,6 +104,7 @@ function getMessageAlert(type) {
     if (type === 'messageResetPasswordSuccess') { title = "Reset password success"; message = "Now, you can entry to app"; typeAlert = "s"; }
     if (type === 'messageTokenSubmitted') { title = "Token generated"; message = "Check your email to continue reset password"; typeAlert = "s"; }
     if (type === 'messageCreateReportDone') { title = "Successful creation"; message = "Report create successfully"; typeAlert = "s"; }
+    if (type === 'messageReportDeleted') { title = "Successful remove"; message = "Report has been deleted"; typeAlert = "s"; }
     if (type === 'messageStatusOnline') { title = "Online"; message = "Connection restored"; typeAlert = "s"; }
     
     //warning

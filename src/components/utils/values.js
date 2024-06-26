@@ -22,10 +22,12 @@ export function getInputCreateReport(context) {
     const subject = context.querySelector('#create-report-subject').value;
     const typeMaintenance = context.querySelector('#create-report-maintenance').value;
     const description = context.querySelector('#create-report-description').value;
+    const available = context.querySelector('#create-report-avaliable').checked;
     return {
         time: time,
         date: date,
         subject: subject,
+        available: available,
         id_device: id_device,
         description: description,
         typeMaintenance: typeMaintenance

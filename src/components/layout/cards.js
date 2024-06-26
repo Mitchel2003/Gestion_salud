@@ -41,19 +41,19 @@ export function cardFinding({data, snapshot}, icon) {
                     </div>
                 </div>
                 <div class="accordion" id="accordion-${snapshot.id}">
-                    <div class="accordion-item bg-body-tertiary bg-opacity-25 rounded-4 text-white">
-                        <button class="accordion-button collapsed p-1 px-2 bg-body-tertiary bg-opacity-25 rounded-4 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-controls="collapse-${snapshot.id}" aria-expanded="false">
+                    <div class="accordion-item bg-body-tertiary bg-opacity-25 rounded-3 text-white">
+                        <button class="accordion-button collapsed p-1 px-2 bg-body-tertiary bg-opacity-25 rounded-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-controls="collapse-${snapshot.id}" aria-expanded="false">
                             Show More
                         </button>
                         <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
                             <div class="accordion-body">
                                 <div class="row">
-                                    <div class="col-lg-11 col-md-10 col-sm-10">
+                                    <div class="col-lg-10 col-md-10 col-sm-7 d-flex order-2 order-sm-1">
                                         <p><strong>Creation Date:</strong> ${`${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}`}</p>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-2 d-flex">
-                                        <button class="btn btn-lg btn-outline-danger rounded-2 ms-auto p-0" type="button">
-                                            <span ref="${data.id_device}" action-btn="delete-report" onclick="handleCustomRequest(event)" class="bi bi-trash3-fill d-flex p-2 fs-4"></span>
+                                    <div class="col-lg-2 col-md-2 col-sm-5 d-flex order-1 order-sm-2">
+                                        <button class="btn btn-lg btn-warning rounded-3 ms-auto p-0" type="button">
+                                            <span ref='${JSON.stringify( {id_device: data.id_device, id_report: snapshot.id} )}' action-btn="delete-report" onclick="handleCustomRequest(event)" class="bi bi-trash3-fill d-flex p-2 fs-4"></span>
                                         </button>
                                     </div>
                                 </div>                                

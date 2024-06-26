@@ -436,7 +436,7 @@ export class Section {
      * @param {HTMLElement} button - Correspond to button 'submit' into form with an attribute "action-button" to direct the action requested by the user
      * @returns {string} returns a string that contain the name of the current query requested by user, for example "Create report"
      */
-    static getTargetButton(button) { return JSON.parse(button.getAttribute('action-button')) }
+    static getTargetButton(button) { return JSON.parse(button.getAttribute('ref')) }
     /**
      * Method get to container section
      * @param {number} index - This is the number of the container requested, remember that a section is compound by [0][1]
@@ -458,16 +458,16 @@ export class Section {
  */
 export async function controllerSubmitFormRequest(e) {
     const btn = e.target;
-    const req = btn.getAttribute('action-btn'); if(!req) return;
-    let data = btn.getAttribute('ref') ?? null;
-    if (!data) return await ActionButton.resolve(req);
-    await ActionButton.modify(req, data);
+    const req = btn.getAttribute('action-btn'); if (!req) return;
+    const objectData = Section.getTargetButton(btn) ?? null; // let objReference = btn.getAttribute('ref') ?? null;
+    if (!objectData) return await ActionButton.resolve(req);
+    await ActionButton.modify(req, objectData);
 }
 
 class ActionButton {
     static request;
-    static reference;
     static values = {};
+    static reference = {};
     static index_request;
     /**
      * This resolve a form submit according to the type of request, example ["create-report"]
@@ -485,14 +485,14 @@ class ActionButton {
             await this.actionDone();
             await this.clearFields();
             offLoadWhile();
-        } catch (error) { offLoadWhile(); return await showMessage('messageTempUnknow') }
+        } catch (e) { offLoadWhile(); console.log(e); return await showMessage('messageTempUnknow') }
     }
     /**
      * To get the index corresponding to current request
      * @returns {number} returns the index associated to the request, this allows us to submit the form in a method corresponding
      */
     static getIndexAction() {
-        const array = ['create-report', ''];
+        const array = ['create-report', 'delete-report'];
         return array.findIndex(value => value === this.request);
     }
     /**
@@ -522,9 +522,7 @@ class ActionButton {
         const data = [await imp.createReport(this.values)];
         data[this.index_request];
     }
-    /**
-     * Allow show a message 'operation done' according to request specific
-     */
+    /** Allow show a message 'operation done' according to request specific */
     static async actionDone() {
         const data = ['messageCreateReportDone', ''];
         await showMessage(data[this.index_request]);
@@ -539,10 +537,37 @@ class ActionButton {
     /**
      * This modify (set or delet) a requested element according to the type of request, example ["create-report"]
      * @param {string} request - This mean the name of the type request clicked by the user
-     * @param {string} reference - Correspond to additional data to operate changes into database
+     * @param {object} reference - Correspond to additional data to operate changes into database
      */
-    static async modify(request, reference) { //working here...
-        console.log('modify');
+    static async modify(request, reference) { //working here... about avaliable form
+        try {
+            onLoadWhile();
+            this.request = request;
+            this.reference = reference;
+            this.index_request = this.getIndexModify();
+            await this.routeActionModify();
+            const response = await this.modifyDone();
+            if(response) await this.reloadSection();
+            offLoadWhile();
+        } catch (e) { offLoadWhile(); return await showMessage('messageTempUnknow') }
+    }
+    static getIndexModify() {
+        const array = ['delete-report'];
+        return array.findIndex(value => value === this.request);
+    }
+    static async routeActionModify() {
+        const imp = await import('../firebase/query.js');
+        const data = [imp.deleteReport(this.reference)];
+        data[this.index_request]
+    }
+    /** Allow show a message 'operation done' according to request specific */
+    static async modifyDone() {
+        const data = ['messageReportDeleted'];
+        return await showMessage(data[this.index_request], 'alertButtonActionConfirm');
+    }
+    static async reloadSection(){
+        let section = Section.getCurrentSection();
+        await Section.loadCurrentSection(section);
     }
 }
 /*-------------------------------------------------------------------------------------------------------------------*/

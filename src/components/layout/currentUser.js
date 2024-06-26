@@ -165,7 +165,7 @@ export function getUserContext(res) {//AC #205
 
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-5 col-sm-5 mb-2 order-sm-2">
-                                                        <label for="create-report-maintenance" class="form-label">Type maintenance</label>
+                                                        <label for="create-report-maintenance" class="form-label">Maintenance</label>
                                                         <select class="form-select" id="create-report-maintenance">
                                                             <option value="" selected disabled>Choose a type</option>
                                                             <option value="preventive">Preventive</option>
@@ -187,6 +187,10 @@ export function getUserContext(res) {//AC #205
 
                                                 <div class="d-flex">
                                                     <button type="button" class="btn btn-primary" action-btn="create-report" onclick="handleCustomRequest(event)">Submit Report</button>
+                                                    <div class="form-check form-switch ms-auto">
+                                                        <label class="form-check-label fs-5" for="create-report-avaliable">Avaliable</label>
+                                                        <input class="form-check-input fs-4" type="checkbox" role="switch" id="create-report-avaliable" checked>
+                                                    </div>
                                                 </div>
                                             </form>                                    
                                         </div>

@@ -1,4 +1,4 @@
-import { db, auth, collection, doc, getDoc, getDocs, setDoc, updateDoc, query, where, orderBy, limit, startAfter, Timestamp } from "./conection.js";
+import { db, auth, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, query, where, orderBy, limit, startAfter, Timestamp } from "./conection.js";
 import { Section } from "../models/sessionModel.js";
 /*--------------------------------------------------getters--------------------------------------------------*/
 /**
@@ -37,8 +37,10 @@ export async function createReport({time, date, subject, id_device, description,
     const device_references = await getDoc(doc(collection, id_device));
     const {id_departament, name_departament, serial} = device_references.data();
 
+
     /*search if length_finding exist and get value (general data of device)*/
-    const docReference = doc(getSubCollection('departament'), id_departament, 'device', id_device);
+    const toDeepDevice = [id_departament, 'device', id_device];
+    const docReference = doc(getSubCollection('departament'), ...toDeepDevice);
     const snapshot = await getDoc(docReference);
     const generalDeviceData = snapshot.data();
     let length_finding = generalDeviceData?.length_finding ?? 0;
@@ -60,7 +62,6 @@ export async function createReport({time, date, subject, id_device, description,
     });
     
     /*also, we can create finding on depth level collection (example: departament + 101 + device + 10001 + finding)*/
-    const toDeepDevice = [id_departament, 'device', id_device];
     await setDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', uid_report ), {
         subject: subject,
         info: description,
@@ -74,6 +75,33 @@ export async function createReport({time, date, subject, id_device, description,
         lastReport: dateTimestamp,
         length_finding: length_finding
     });
+}
+export async function deleteReport({id_device, id_report}){
+    //first we need the deviceReference to navigate over collections into database
+    const collection = getSubCollection('device_references');
+    const device_references = await getDoc(doc(collection, id_device));
+    const {id_departament} = device_references.data();
+
+    //obtain length_finding into device to chage status (number)
+    const toDeepDevice = [id_departament, 'device', id_device];
+    const docReference = doc(getSubCollection('departament'), ...toDeepDevice);
+    const snapshot = await getDoc(docReference);
+    const generalDeviceData = snapshot.data();
+    let length_finding = generalDeviceData?.length_finding ?? 0;
+
+    //logic to reset id_report (only if the report deleted is the last)
+    const [device, report] = id_report.split('-');
+    const numberReport = parseInt(report, 10);
+    if(numberReport === length_finding) length_finding--; //decrement 1 less
+
+    //delete report from finding_references
+    await deleteDoc(doc(getSubCollection('finding_references'), id_report));
+
+    //delete report from departament=>device=>finding (document to depth)
+    await deleteDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', id_report));
+
+    //update info global of device like lastReport and length_finding
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { length_finding: length_finding });
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
