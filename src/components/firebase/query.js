@@ -50,6 +50,7 @@ export async function createReport({time, date, subject, id_device, description,
     /*so, we create doc finding_references with corresponding values*/
     await setDoc(doc(getSubCollection('finding_references'), uid_report), {
         subject: subject,
+        info: description,
         date: dateTimestamp,
         id_device: id_device,
         type: typeMaintenance,

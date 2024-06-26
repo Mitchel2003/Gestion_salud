@@ -18,9 +18,10 @@ async function fixContext() {
 }
 async function managementSession(access) {
     await insertHtml(access);
-    if (access === 'auxiliary') { await (await import('../models/sessionModel.js')).modeAuxiliary(); }
-    else if (access === 'auditor') { await (await import('../models/sessionModel.js')).modeAuditor(); }
-    else if (access === 'admin') { await (await import('../models/sessionModel.js')).modeAdmin(); }
+    const imp = await import('../models/sessionModel.js');
+    if (access === 'auxiliary') await imp.modeAuxiliary();
+    else if (access === 'auditor') await imp.modeAuditor();
+    else if (access === 'admin') await imp.modeAdmin();
     offLoadWhile();
 }
 async function insertHtml(data) {

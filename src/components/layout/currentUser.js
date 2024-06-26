@@ -1,7 +1,7 @@
 /*--------------------------------------------------return html--------------------------------------------------*/
 export function getUserContext(res) {//AC #205
     document.title = "Session";
-    if (res === 'auxiliary') {
+    if (res === 'admin') {
         return `
         <nav class="bg-body-tertiary navbar navbar-expand-lg">
             <div class="container-fluid">
@@ -138,10 +138,9 @@ export function getUserContext(res) {//AC #205
                                             </div>
                                         </div>
 
-                                        <div class="card d-none" id="load-more">
+                                        <div request='loadMore' class="card d-none" id="load-more">
                                             <button request="loadMore" class="btn btn-secondary container-fluid p-0">load more...</button>
                                         </div>
-
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="create-report" role="tabpanel" aria-labelledby="nav-create-report">
@@ -263,7 +262,7 @@ export function getUserContext(res) {//AC #205
         return `
         
         `;
-    } if (res === 'admin') {
+    } if (res === 'auxiliary') {
         return `
         
         `;

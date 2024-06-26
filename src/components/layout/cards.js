@@ -21,6 +21,7 @@ export function cardDevice({data, snapshot}, icon) {
     `;
 }
 export function cardFinding({data, snapshot}, icon) {
+    const time = data.date ? timestampToDate(data.date) : null;
     return `
         <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
                 <div class="row">
@@ -40,16 +41,23 @@ export function cardFinding({data, snapshot}, icon) {
                     </div>
                 </div>
                 <div class="accordion" id="accordion-${snapshot.id}">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header bg-body-tertiary bg-opacity-50" id="heading-${snapshot.id}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-expanded="false" aria-controls="collapse-${snapshot.id}">
-                                Show More
-                            </button>
-                        </h2>
+                    <div class="accordion-item bg-body-tertiary bg-opacity-25 rounded-4 text-white">
+                        <button class="accordion-button collapsed p-1 px-2 bg-body-tertiary bg-opacity-25 rounded-4 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-controls="collapse-${snapshot.id}" aria-expanded="false">
+                            Show More
+                        </button>
                         <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
-                            <div class="accordion-body text-dark">
-                                <p><strong>Creation Date:</strong> ${data.creation_date}</p>
-                                <p><strong>Description:</strong> ${data.description}</p>
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-lg-11 col-md-10 col-sm-10">
+                                        <p><strong>Creation Date:</strong> ${`${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}`}</p>
+                                    </div>
+                                    <div class="col-lg-1 col-md-2 col-sm-2 d-flex">
+                                        <button class="btn btn-lg btn-outline-danger rounded-2 ms-auto p-0" type="button">
+                                            <span ref="${data.id_device}" action-btn="delete-report" onclick="handleCustomRequest(event)" class="bi bi-trash3-fill d-flex p-2 fs-4"></span>
+                                        </button>
+                                    </div>
+                                </div>                                
+                                <p><strong>Description:</strong> ${data.info}</p>
                             </div>
                         </div>
                     </div>

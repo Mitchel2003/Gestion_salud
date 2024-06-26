@@ -8,94 +8,9 @@ import { showMessage } from '../utils/alerts.js';
 
 /*--------------------------------------------------mode--------------------------------------------------*/
 /** Controller sesion of the user with auxiliary access, allow interactivity into content of current sesion */
-export async function modeAuxiliary() {
+export async function modeAdmin() {
     controllerSideBar(elementByClass('.side-bar'));
     await handlerSection(elementByClass('.nav-tabs'));
-}
-/*-------------------------------------------------------------------------------------------------------------------*/
-
-/*--------------------------------------------------button actions--------------------------------------------------*/
-/**
- * Helps us to resolve a requested submit by the user
- * @param {HTMLElement} e - This element correspond to button into request form, contain an attribute "action-btn" with the value of type request
- */
-export async function controllerSubmitFormRequest(e) {
-    const btn = e.target;
-    const req = btn.getAttribute('action-btn');
-    await ActionButton.resolve(req);
-}
-
-class ActionButton {
-    static request;
-    static values = {};
-    static index_request;
-    /**
-     * This resolve a form submit according to the type of request, example ["create-report"]
-     * @param {string} request - This mean the name of the type request clicked by the user
-     */
-    static async resolve(request) {
-        try {
-            onLoadWhile();
-            this.request = request;
-            this.index_request = this.getIndexAction();
-            const object = await this.getValues();
-            if (!object) return offLoadWhile();
-            this.values = object;
-            await this.documentPath();
-            await this.actionDone();
-            await this.clearFields();
-            offLoadWhile();
-        } catch (error) { offLoadWhile(); return await showMessage('messageTempUnknow') }
-    }
-    /**
-     * To get the index corresponding to current request
-     * @returns {number} returns the index associated to the request, this allows us to submit the form in a method corresponding
-     */
-    static getIndexAction() {
-        const array = ['create-report', ''];
-        return array.findIndex(value => value === this.request);
-    }
-    /**
-     * This intend get the values from form in an object
-     * @returns {object} returns an object that contain all values from the form diligenced
-     */
-    static async getValues() {
-        const element = elementById(this.request);
-        const imp = await import('../utils/values.js');
-        const data = [imp.getInputCreateReport(element)];
-        const objectFieldValues = data[this.index_request];
-        return await this.checkCompletedFields(objectFieldValues);
-    }
-    /**
-     * Inspect the "keys" of an param obtained (obj) that represent the different fields filled by the user; we check if some its empty
-     * @param {object} obj this correspond to data on the fields of current format
-     * @returns {object} returns an object that represent the values of each field from format
-     */
-    static async checkCompletedFields(obj) {
-        const empty = Object.keys(obj).some(key => obj[key] === '');
-        if (empty) return await showMessage('messageFieldEmpty');
-        return obj;
-    }
-    /** Execute the submit according to current context and an index_request */
-    static async documentPath() {
-        const imp = await import('../firebase/query.js');
-        const data = [await imp.createReport(this.values)];
-        data[this.index_request];
-    }
-    /**
-     * Allow show a message 'operation done' according to request specific
-     */
-    static async actionDone() {
-        const data = ['messageCreateReportDone', ''];
-        await showMessage(data[this.index_request]);
-    }
-    /** To clear the the form */
-    static async clearFields(){
-        const e = elementById(this.request);
-        const imp = await import('../utils/values.js');
-        const data = [imp.cleanInputCreateReport(e)];
-        data[this.index_request];
-    }
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -535,6 +450,103 @@ export class Section {
     static getCurrentSection() { return Section.currentSection }
     /*-------------------------------------------------------------------------------------------------------------------*/
 }
+
+/*--------------------------------------------------button actions--------------------------------------------------*/
+/**
+ * Helps us to resolve a requested submit by the user
+ * @param {HTMLElement} e - This element correspond to button into request form, contain an attribute "action-btn" with the value of type request
+ */
+export async function controllerSubmitFormRequest(e) {
+    const btn = e.target;
+    const req = btn.getAttribute('action-btn'); if(!req) return;
+    let data = btn.getAttribute('ref') ?? null;
+    if (!data) return await ActionButton.resolve(req);
+    await ActionButton.modify(req, data);
+}
+
+class ActionButton {
+    static request;
+    static reference;
+    static values = {};
+    static index_request;
+    /**
+     * This resolve a form submit according to the type of request, example ["create-report"]
+     * @param {string} request - This mean the name of the type request clicked by the user
+     */
+    static async resolve(request) {
+        try {
+            onLoadWhile();
+            this.request = request;
+            this.index_request = this.getIndexAction();
+            const object = await this.getValues();
+            if (!object) return offLoadWhile();
+            this.values = object;
+            await this.documentPath();
+            await this.actionDone();
+            await this.clearFields();
+            offLoadWhile();
+        } catch (error) { offLoadWhile(); return await showMessage('messageTempUnknow') }
+    }
+    /**
+     * To get the index corresponding to current request
+     * @returns {number} returns the index associated to the request, this allows us to submit the form in a method corresponding
+     */
+    static getIndexAction() {
+        const array = ['create-report', ''];
+        return array.findIndex(value => value === this.request);
+    }
+    /**
+     * This intend get the values from form in an object
+     * @returns {object} returns an object that contain all values from the form diligenced
+     */
+    static async getValues() {
+        const element = elementById(this.request);
+        const imp = await import('../utils/values.js');
+        const data = [imp.getInputCreateReport(element)];
+        const objectFieldValues = data[this.index_request];
+        return await this.checkCompletedFields(objectFieldValues);
+    }
+    /**
+     * Inspect the "keys" of an param obtained (obj) that represent the different fields filled by the user; we check if some its empty
+     * @param {object} obj this correspond to data on the fields of current format
+     * @returns {object} returns an object that represent the values of each field from format
+     */
+    static async checkCompletedFields(obj) {
+        const empty = Object.keys(obj).some(key => obj[key] === '');
+        if (empty) return await showMessage('messageFieldEmpty');
+        return obj;
+    }
+    /** Execute the submit according to current context and an index_request */
+    static async documentPath() {
+        const imp = await import('../firebase/query.js');
+        const data = [await imp.createReport(this.values)];
+        data[this.index_request];
+    }
+    /**
+     * Allow show a message 'operation done' according to request specific
+     */
+    static async actionDone() {
+        const data = ['messageCreateReportDone', ''];
+        await showMessage(data[this.index_request]);
+    }
+    /** To clear the the form */
+    static async clearFields() {
+        const e = elementById(this.request);
+        const imp = await import('../utils/values.js');
+        const data = [imp.cleanInputCreateReport(e)];
+        data[this.index_request];
+    }
+    /**
+     * This modify (set or delet) a requested element according to the type of request, example ["create-report"]
+     * @param {string} request - This mean the name of the type request clicked by the user
+     * @param {string} reference - Correspond to additional data to operate changes into database
+     */
+    static async modify(request, reference) { //working here...
+        console.log('modify');
+    }
+}
+/*-------------------------------------------------------------------------------------------------------------------*/
+
 /*--------------------------------------------------addComentary--------------------------------------------------*/
 /**
  * #001: at moment of reload the section we could find case various; on click the main navbar "sections", the differents
