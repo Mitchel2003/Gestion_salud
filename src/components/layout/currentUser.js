@@ -68,24 +68,20 @@ export function getUserContext(res) {//AC #205
 
             <!-- Home -->
             <div class="tab-panel p-3 fade collapse show active" id="home" role="tabpanel" aria-labelledby="nav-home">
-                <div class="container-fluid">
-                    <div class="accordion" id="accordionExample1">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Accordion Item #1
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample1">
-                                <div class="accordion-body">
-                                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                <div class="container-fluid p-0 rounded-2">
+                    <div class="top-0 start-0 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-sm-10 col-lg-8">
+                                    <h5 class="text-primary mb-3 animated slideInDown">Sofware gestion salud</h5>
+                                    <h1 class="display-3 text-white animated slideInDown">The Best Online Learning Platform</h1>
+                                    <p class="fs-5 text-white mb-4 pb-2">Sofware destinado al manejo de informes y reportes asociados a equipos, promete manejo de datos</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Handler device -->
             <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
 

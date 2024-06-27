@@ -26,7 +26,7 @@ export async function getDocumentUser(user, entity) {
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------creators--------------------------------------------------*/
-export async function createReport({time, date, subject, id_device, description, typeMaintenance}) {
+export async function createReport({time, date, subject, avaliable, id_device, description, typeMaintenance}) {
     //I need convert to timestamp the date time selected by user
     const { getTimestampFromDateTime } = await import('../utils/convert.js');
     const timestamp = getTimestampFromDateTime(date, time);
@@ -36,7 +36,6 @@ export async function createReport({time, date, subject, id_device, description,
     const collection = getSubCollection('device_references');
     const device_references = await getDoc(doc(collection, id_device));
     const {id_departament, name_departament, serial} = device_references.data();
-
 
     /*search if length_finding exist and get value (general data of device)*/
     const toDeepDevice = [id_departament, 'device', id_device];
@@ -71,10 +70,13 @@ export async function createReport({time, date, subject, id_device, description,
     });
 
     //update info global of device like lastReport and length_finding
-    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), {
-        lastReport: dateTimestamp,
-        length_finding: length_finding
-    });
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { lastReport: dateTimestamp, length_finding: length_finding });
+
+    //update avaliable device_references
+    await updateDoc(doc(getSubCollection('device_references'), id_device), { avaliable: avaliable });
+
+    //update avaliable device (collection deep)
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { avaliable: avaliable });
 }
 export async function deleteReport({id_device, id_report}){
     //first we need the deviceReference to navigate over collections into database

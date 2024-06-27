@@ -482,8 +482,9 @@ class ActionButton {
             if (!object) return offLoadWhile();
             this.values = object;
             await this.documentPath();
-            await this.actionDone();
             await this.clearFields();
+            const res = await this.actionDone();
+            if (res) await this.reloadSection();
             offLoadWhile();
         } catch (e) { offLoadWhile(); console.log(e); return await showMessage('messageTempUnknow') }
     }
@@ -492,7 +493,7 @@ class ActionButton {
      * @returns {number} returns the index associated to the request, this allows us to submit the form in a method corresponding
      */
     static getIndexAction() {
-        const array = ['create-report', 'delete-report'];
+        const array = ['create-report'];
         return array.findIndex(value => value === this.request);
     }
     /**
@@ -524,8 +525,8 @@ class ActionButton {
     }
     /** Allow show a message 'operation done' according to request specific */
     static async actionDone() {
-        const data = ['messageCreateReportDone', ''];
-        await showMessage(data[this.index_request]);
+        const data = ['messageCreateReportDone'];
+        return await showMessage(data[this.index_request], 'alertButtonActionConfirm');
     }
     /** To clear the the form */
     static async clearFields() {
@@ -539,7 +540,7 @@ class ActionButton {
      * @param {string} request - This mean the name of the type request clicked by the user
      * @param {object} reference - Correspond to additional data to operate changes into database
      */
-    static async modify(request, reference) { //working here... about avaliable form
+    static async modify(request, reference) { //working here...
         try {
             onLoadWhile();
             this.request = request;
@@ -547,7 +548,7 @@ class ActionButton {
             this.index_request = this.getIndexModify();
             await this.routeActionModify();
             const response = await this.modifyDone();
-            if(response) await this.reloadSection();
+            if (response) await this.reloadSection();
             offLoadWhile();
         } catch (e) { offLoadWhile(); return await showMessage('messageTempUnknow') }
     }
@@ -565,7 +566,7 @@ class ActionButton {
         const data = ['messageReportDeleted'];
         return await showMessage(data[this.index_request], 'alertButtonActionConfirm');
     }
-    static async reloadSection(){
+    static async reloadSection() {
         let section = Section.getCurrentSection();
         await Section.loadCurrentSection(section);
     }

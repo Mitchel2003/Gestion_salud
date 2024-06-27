@@ -24,44 +24,44 @@ export function cardFinding({data, snapshot}, icon) {
     const time = data.date ? timestampToDate(data.date) : null;
     return `
         <div class="card card-body container-fluid border border-1 text-white ${data.type === 'preventive' ? 'border-primary-subtle' : 'border-warning-subtle'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
-                <div class="row">
-                    <div class="col-lg-0 col-md-1 col-sm-1 text-start">
-                        <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
-                    </div>
-                    <div class="col-lg-12 col-md-11 col-sm-11 d-flex align-items-center me-auto">
-                        <h6 class="card-title m-0 me-auto">ID: ${snapshot.id}</h6>
-                        <h6 class="card-title m-0">Device: ${data.id_device}</h6>
-                    </div>
+            <div class="row">
+                <div class="col-lg-0 col-md-1 col-sm-1 text-start">
+                    <i class="${icon} ${data.type === 'preventive' ? 'text-primary' : 'text-warning'} fs-1"></i>
                 </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
-                        <p class="card-text m-0 me-auto">Subject: ${data.subject}</p>
-                        <p class="card-text m-0">Type: ${data.type}</p>
-                        <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
-                    </div>
+                <div class="col-lg-12 col-md-11 col-sm-11 d-flex align-items-center me-auto">
+                    <h6 class="card-title m-0 me-auto">ID: ${snapshot.id}</h6>
+                    <h6 class="card-title m-0">Device: ${data.id_device}</h6>
                 </div>
-                <div class="accordion" id="accordion-${snapshot.id}">
-                    <div class="accordion-item bg-body-tertiary bg-opacity-25 rounded-3 text-white">
-                        <button class="accordion-button collapsed p-1 px-2 bg-body-tertiary bg-opacity-25 rounded-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-controls="collapse-${snapshot.id}" aria-expanded="false">
-                            Show More
-                        </button>
-                        <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-lg-10 col-md-10 col-sm-7 d-flex order-2 order-sm-1">
-                                        <p><strong>Creation Date:</strong> ${`${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}`}</p>
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-5 d-flex order-1 order-sm-2">
-                                        <button class="btn btn-lg btn-warning rounded-3 ms-auto p-0" type="button">
-                                            <span ref='${JSON.stringify( {id_device: data.id_device, id_report: snapshot.id} )}' action-btn="delete-report" onclick="handleCustomRequest(event)" class="bi bi-trash3-fill d-flex p-2 fs-4"></span>
-                                        </button>
-                                    </div>
-                                </div>                                
-                                <p><strong>Description:</strong> ${data.info}</p>
-                            </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-12 col-md-12 col-sm-12 d-flex me-auto">
+                    <p class="card-text m-0 me-auto">Subject: ${data.subject}</p>
+                    <p class="card-text m-0">Type: ${data.type}</p>
+                    <p>${data.type === 'preventive' ? '&#x1F537;' : '&#x1F536;'}</p>    
+                </div>
+            </div>
+            <div class="accordion" id="accordion-${snapshot.id}">
+                <div class="accordion-item bg-body-tertiary bg-opacity-25 rounded-3 text-white">
+                    <button class="accordion-button collapsed p-1 px-2 bg-body-tertiary bg-opacity-25 rounded-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${snapshot.id}" aria-controls="collapse-${snapshot.id}" aria-expanded="false">
+                        Show More
+                    </button>
+                    <div id="collapse-${snapshot.id}" class="accordion-collapse collapse" aria-labelledby="heading-${snapshot.id}" data-bs-parent="#accordion-${snapshot.id}">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-10 col-md-10 col-sm-7 d-flex order-2 order-sm-1">
+                                    <p><strong>Creation Date:</strong> ${`${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}`}</p>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-5 d-flex order-1 order-sm-2">
+                                    <button class="btn btn-lg btn-danger rounded-3 ms-auto p-0" type="button">
+                                        <span ref='${JSON.stringify( {id_device: data.id_device, id_report: snapshot.id} )}' action-btn="delete-report" onclick="handleCustomRequest(event)" class="bi bi-trash3-fill d-flex p-2 fs-4"></span>
+                                    </button>
+                                </div>
+                            </div>                                
+                            <p><strong>Description:</strong> ${data.info}</p>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     `;
 }
