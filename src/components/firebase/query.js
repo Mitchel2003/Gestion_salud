@@ -27,28 +27,28 @@ export async function getDocumentUser(user, entity) {
 
 /*--------------------------------------------------creators--------------------------------------------------*/
 export async function createReport({time, date, subject, avaliable, id_device, description, typeMaintenance}) {
-    //I need convert to timestamp the date time selected by user
+    //Convert to timestamp the date and time selected by user
     const { getTimestampFromDateTime } = await import('../utils/convert.js');
     const timestamp = getTimestampFromDateTime(date, time);
     const dateTimestamp = Timestamp.fromDate(new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6));
 
-    /*first need query data reference of the device (collection device_references) to obtain "id_departament" "name_departament" and "serial" */
+    /*get data device_references to obtain path tools*/
     const collection = getSubCollection('device_references');
     const device_references = await getDoc(doc(collection, id_device));
     const {id_departament, name_departament, serial} = device_references.data();
 
-    /*search if length_finding exist and get value (general data of device)*/
+    /*query global data from device (length_finding) and get "length" od reports*/
     const toDeepDevice = [id_departament, 'device', id_device];
     const docReference = doc(getSubCollection('departament'), ...toDeepDevice);
     const snapshot = await getDoc(docReference);
-    const generalDeviceData = snapshot.data();
-    let length_finding = generalDeviceData?.length_finding ?? 0;
+    const dataDevice = snapshot.data();
+    let length_finding = dataDevice?.length_finding ?? 0;
     length_finding++; //increment 1 more
 
-    /*create uid to create report (finding_references)*/
+    /*define uid to create report*/
     const uid_report = `${id_device}-${length_finding}`;
 
-    /*so, we create doc finding_references with corresponding values*/
+    /*create document on collection findign_references*/
     await setDoc(doc(getSubCollection('finding_references'), uid_report), {
         subject: subject,
         info: description,
@@ -60,7 +60,7 @@ export async function createReport({time, date, subject, avaliable, id_device, d
         name_departament: name_departament,
     });
     
-    /*also, we can create finding on depth level collection (example: departament + 101 + device + 10001 + finding)*/
+    /*create document finding on depth level collection*/
     await setDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', uid_report ), {
         subject: subject,
         info: description,
@@ -69,22 +69,19 @@ export async function createReport({time, date, subject, avaliable, id_device, d
         type: typeMaintenance,
     });
 
-    //update info global of device like lastReport and length_finding
-    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { lastReport: dateTimestamp, length_finding: length_finding });
-
     //update avaliable device_references
     await updateDoc(doc(getSubCollection('device_references'), id_device), { avaliable: avaliable });
 
-    //update avaliable device (collection deep)
-    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { avaliable: avaliable });
+    //update global data device (collection deep)
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { lastReport: dateTimestamp, length_finding: length_finding, avaliable: avaliable });
 }
 export async function deleteReport({id_device, id_report}){
-    //first we need the deviceReference to navigate over collections into database
+    //get data device_references to obtain path tools
     const collection = getSubCollection('device_references');
     const device_references = await getDoc(doc(collection, id_device));
     const {id_departament} = device_references.data();
 
-    //obtain length_finding into device to chage status (number)
+    //get global data "length_finding" to chage status
     const toDeepDevice = [id_departament, 'device', id_device];
     const docReference = doc(getSubCollection('departament'), ...toDeepDevice);
     const snapshot = await getDoc(docReference);
@@ -99,11 +96,19 @@ export async function deleteReport({id_device, id_report}){
     //delete report from finding_references
     await deleteDoc(doc(getSubCollection('finding_references'), id_report));
 
-    //delete report from departament=>device=>finding (document to depth)
+    //delete report from finding (deep collection)
     await deleteDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', id_report));
 
-    //update info global of device like lastReport and length_finding
+    //update info global associated with this device
     await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { length_finding: length_finding });
+}
+
+//working here...
+export async function updateDataDevice(){
+    
+}
+export async function createDevice(){
+    //i need a comboBox with departament to create device 
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
