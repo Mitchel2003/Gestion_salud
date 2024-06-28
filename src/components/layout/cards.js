@@ -20,6 +20,44 @@ export function cardDevice({data, snapshot}, icon) {
         </div>
     `;
 }
+export function cardDevicesOnDepartament({data, snapshot}, icon){
+    return `
+        <div class="card card-body container-fluid border border-1 text-white ${data.avaliable ? 'border-success' : 'border-danger'}" style="background: url('../components/images/bg-report.svg') no-repeat center; background-size: cover;">
+            <div class="row flex-direction">
+                <div class="col-lg-9 col-md-9 col-sm-9 align-items-start me-auto">
+                    <h5 class="card-title m-0">ID: ${snapshot.id}</h5>
+                    <p class="card-text m-0">Serial: ${data.serial}</p>
+                    <p class="card-text m-0">Available: <span class="fs-5"> ${data.avaliable ? '&#x2705;' : '&#x26D4;'} </span> </p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 d-flex justify-content-end">
+                    <i class="${icon} ${data.avaliable ? 'text-primary' : 'text-warning'} fs-1"></i>
+                </div>
+            </div>
+        </div>
+    `;
+}
+export function cardDepartament({data, snapshot}, icon){
+    return `
+        <div class="card card-body container-fluid" data-card='${JSON.stringify([ snapshot.id ])}' style="background: url('../components/images/bg-list.svg') no-repeat center; background-size: cover;">
+            <div class="row flex-direction">
+                <div class="col-lg-9 col-md-9 col-sm-9 align-items-start me-auto">
+                    <h5 class="card-title m-0">ID: ${snapshot.id}</h5>
+                    <p class="card-text m-0">Name room: ${data.name_room}</p>
+                    <p class="card-text m-0">Responsible: ${data.responsible}</p>
+                    <p class="card-text m-0">Position: ${data.responsible_position}</p>
+                    <p class="card-text m-0">Devices found: ${data.length_device}</p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 d-flex justify-content-end">
+                    <i class="${icon} text-primary fs-1"></i>
+                </div>
+            </div>
+
+            <div class="d-flex m-0 mt-1">
+                <a request="seeDepartaments" class="btn btn-outline-success container-fluid">see departaments</a>
+            </div>
+        </div>
+    `;
+}
 export function cardFinding({data, snapshot}, icon) {
     const time = data.date ? timestampToDate(data.date) : null;
     return `

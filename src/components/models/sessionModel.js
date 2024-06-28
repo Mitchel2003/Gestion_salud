@@ -1,6 +1,6 @@
 /*--------------------------------------------------imports--------------------------------------------------*/
+import { cardDevice, cardDepartament, cardFinding, cardDetails, cardDevicesOnDepartament } from '../layout/cards.js';
 import { onLoadWhile, offLoadWhile, toggleClassList_onClick } from '../utils/view.js';
-import { cardDevice, cardFinding, cardDetails } from '../layout/cards.js';
 import { elementById, elementByClass } from '../utils/values.js';
 import { DataByRequest } from '../firebase/query.js';
 import { showMessage } from '../utils/alerts.js';
@@ -163,7 +163,11 @@ export class Section {
      * @return {number} we get a number that represent the index of the current section in which the user is locate
      */
     static getIndexSection(context) {
-        const array = ['home', 'handler-device', 'control-departaments', 'user-management', 'finding-data', 'filters'];
+        const array = [
+            'home',
+            'handler-device',
+            'control-departaments'
+        ];
         return array.findIndex(value => value === context);
     }
     /**
@@ -171,7 +175,11 @@ export class Section {
      * @returns {array} returns an array with collections that belongs to containers in current section, this way each container is filled according to collection referenced, return shorted [0],[1]
      */
     static collectionToSearch() {
-        const array = [['id_collection_home'], ['device_references', 'finding_references'], ['departament', 'device_references']];
+        const array = [
+            ['nothing'],
+            ['device_references', 'finding_references'],
+            ['departament', 'device_references']
+        ];
         return array[this.indexSection]
     }
     /**
@@ -179,7 +187,11 @@ export class Section {
      * @returns {array} returns an array with containers that belongs to current section, return shorted [0],[1]
      */
     static containerToFill() {
-        const array = [['nothing'], ['device-list', 'reports'], ['departament-list', 'devices-on-departament']];
+        const array = [
+            ['nothing'],
+            ['device-list', 'reports'],
+            ['departament-list', 'devices-on-departament']
+        ];
         return array[this.indexSection];
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
@@ -251,9 +263,9 @@ export class Section {
      */
     static getDefaultQuery() {
         const array = [
-            { where: ['empty'], pagination: ['empty'] },
+            { Home:'nothing' },
             { where: ['avaliable', '!=', '', 'date', '!=', ''], pagination: ['avaliable', 5, 'date', 5] },
-            { where: ['empty'], pagination: ['empty'] }
+            { where: ['name_room', '!=', '', 'avaliable', '!=', '' ], pagination: ['name_room', 5, 'avaliable', 5] }
         ]; return array[this.indexSection];
     }
     /**
@@ -396,12 +408,13 @@ export class Section {
         const data = {
             /*formats with handler*/
             moreDetails: () => cardDetails(value, icon),
+            'devices-on-departament': () => cardDevicesOnDepartament(value, icon),
 
             /*associated with index(0)*/
             user: () => "cardUser(value, icon)",
             device: () => cardDevice(value, icon),
             finding: () => cardFinding(value, icon),
-            departament: () => "cardDepartament(value, icon)",
+            departament: () => cardDepartament(value, icon),
 
             /*associated with index(1)*/
             reports: () => cardFinding(value, icon)
@@ -427,23 +440,25 @@ export class Section {
 
     /*--------------------------------------------------actions extras--------------------------------------------------*/
     static async actionsExtraSection() {
-        const data = ['', await this.extraHandlerDevice()];
-        data[this.indexSection];
+        const data = [
+            'async () => await this.something()',
+            async () => await this.extraHandlerDevice(),
+            async () => await this.extraControlDepartaments()
+        ];
+        await data[this.indexSection]();
     }
-    static async extraHandlerDevice(){
-        await this.fillSelect_createDevice();
-    }
+    static async extraHandlerDevice(){ await this.fillSelect_createDevice() }
+    static async extraControlDepartaments(){ /*nothing*/ }
+
     static async fillSelect_createDevice() {
-        //get docs from collection
-        const { getCollectionDepartament } = await import('../firebase/query.js');
+        const { getCollectionDepartament } = await import('../firebase/query.js');//get docs from collection
         const departaments = await getCollectionDepartament();
 
-        //reference "select" into DOM
-        const currentSection = elementById(this.currentSection);
+        const currentSection = elementById(this.currentSection);//reference "select" into DOM
         const select = currentSection.querySelector('#create-device-departament');
 
-        //keep default option and clear select (to items accumulated)
-        const defaultOption = select.querySelector('option[value=""]'); select.innerHTML = ''; select.appendChild(defaultOption);
+        const defaultOption = select.querySelector('option[value=""]');//keep default option and clear select (to items accumulated)
+        select.innerHTML = ''; select.appendChild(defaultOption);
         departaments.forEach((e) => { select.appendChild(this.optionDepartament(e.id)) });
     }
     static optionDepartament(e){
