@@ -104,6 +104,8 @@ function getMessageAlert(type) {
     if (type === 'messageResetPasswordSuccess') { title = "Reset password success"; message = "Now, you can entry to app"; typeAlert = "s"; }
     if (type === 'messageTokenSubmitted') { title = "Token generated"; message = "Check your email to continue reset password"; typeAlert = "s"; }
     if (type === 'messageCreateReportDone') { title = "Successful creation"; message = "Report create successfully"; typeAlert = "s"; }
+    if (type === 'messageCreateDeviceDone') { title = "Successful creation"; message = "Device create successfully"; typeAlert = "s"; }
+    
     if (type === 'messageReportDeleted') { title = "Successful remove"; message = "Report has been deleted"; typeAlert = "s"; }
     if (type === 'messageStatusOnline') { title = "Online"; message = "Connection restored"; typeAlert = "s"; }
     

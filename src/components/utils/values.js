@@ -37,13 +37,13 @@ export function getInputCreateDevice(context) {
     const serial = context.querySelector('#create-device-serial').value;
     const id_departament = context.querySelector('#create-device-departament').value;
     const warranty = context.querySelector('#create-device-warranty').value;
-    const description = context.querySelector('#create-device-description').value;
+    const specifications = context.querySelector('#create-device-specifications').value;
     const avaliable = context.querySelector('#create-device-avaliable').checked;
     return {
         serial: serial,
         warranty: warranty,
         avaliable: avaliable,
-        description: description,
+        specifications: specifications,
         id_departament: id_departament
     };
 }
@@ -87,6 +87,10 @@ export function cleanInputCreateReport(e) {
     const subject = e.querySelector('#create-report-subject').value = '';
     const id_device = e.querySelector('#create-report-idDevice').value = '';
     const description = e.querySelector('#create-report-description').value = '';
+}
+export function cleanInputCreateDevice(e) {
+    const serial = e.querySelector('#create-device-serial').value = '';
+    const specifications = e.querySelector('#create-device-specifications').value = '';
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

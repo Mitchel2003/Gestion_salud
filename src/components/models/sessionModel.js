@@ -488,9 +488,9 @@ export class Section {
 export async function controllerSubmitFormRequest(e) {
     const btn = e.target;
     const req = btn.getAttribute('action-btn'); if (!req) return;
-    const dataRef = Section.getTargetButton(btn) ?? null;
-    if (!dataRef) return await ActionButton.resolve(req);
-    await ActionButton.modify(req, dataRef);
+    const attributeRef = Section.getTargetButton(btn) ?? null;
+    if (!attributeRef) return await ActionButton.resolve(req);
+    await ActionButton.modify(req, attributeRef);
 }
 
 class ActionButton {
@@ -566,15 +566,17 @@ class ActionButton {
      * @returns {message} get a message that comunicate to the user about state of request
      */
     static async actionDone() {
-        const data = ['messageCreateReportDone'];
+        const data = ['messageCreateReportDone', 'messageCreateDeviceDone'];
         return await showMessage(data[this.index_request], 'alertButtonActionConfirm');
     }
-    /** To clear the the form */
-    static async clearFields() {
-        const e = elementById(this.request);
+    static async clearFields() {/** To clear the the form */
+        const element = elementById(this.request);
         const imp = await import('../utils/values.js');
-        const data = [imp.cleanInputCreateReport(e)];
-        data[this.index_request];
+        const data = [
+            () => imp.cleanInputCreateReport(element),
+            () => imp.cleanInputCreateDevice(element),
+        ];
+        data[this.index_request]();
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
@@ -605,8 +607,7 @@ class ActionButton {
         const data = [imp.deleteReport(this.reference)];
         data[this.index_request]
     }
-    /** Allow show a message 'operation done' according to request specific */
-    static async modifyDone() {
+    static async modifyDone() {/** Allow show a message 'operation done' according to request specific */
         const data = ['messageReportDeleted'];
         return await showMessage(data[this.index_request], 'alertButtonActionConfirm');
     }

@@ -223,8 +223,8 @@ export function getUserContext(res) {//AC #205
 
                                                 <div class="row">
                                                     <div class="col-12 mb-3">
-                                                        <label for="create-device-description" class="form-label">Description</label>
-                                                        <textarea class="form-control" id="create-device-description" rows="3" placeholder="Enter Description"></textarea>
+                                                        <label for="create-device-specifications" class="form-label">Description</label>
+                                                        <textarea class="form-control" id="create-device-specifications" rows="3" placeholder="Enter Description"></textarea>
                                                     </div>
                                                 </div>
 
