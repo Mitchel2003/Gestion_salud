@@ -81,8 +81,8 @@ export async function deleteReport({id_device, id_report}){
     const toDeepDevice = [id_departament, 'device', id_device];
     const docReference = doc(getSubCollection('departament'), ...toDeepDevice);
     const snapshot = await getDoc(docReference);
-    const generalDeviceData = snapshot.data();
-    let length_finding = generalDeviceData?.length_finding ?? 0;
+    const dataDevice = snapshot.data();
+    let length_finding = dataDevice?.length_finding ?? 0;
 
     //logic to reset id_report (only if the report deleted is the last)
     const [device, report] = id_report.split('-');
@@ -94,10 +94,41 @@ export async function deleteReport({id_device, id_report}){
     await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { length_finding: length_finding });//update info global associated with this device
 }
 export async function createDevice({serial, warranty, avaliable, description, id_departament}) {
+    //get global data 'length_device' to change status
+    const docReference = doc(getSubCollection('departament'), id_departament);
+    const snapshot = await getDoc(docReference);
+    const dataDepartament = snapshot.data();
+    const length_device = dataDepartament?.length_device ?? 0;
+    length_device++; //inclement 1 more
+
+    //define uid to create device
+    const uid_device = 10000 + length_device;
     
+    //create device document
+    const toDeepDevice = [id_departament, 'device', uid_device];
+    await setDoc(doc(getSubCollection('departament'), ...toDeepDevice), {
+        serial: serial,
+        warranty: warranty,
+        avaliable: avaliable,
+        specifications: description
+    });
+    //create device_references
+    await setDoc(doc('device_references', uid_device), {
+       //corresponding data
+    });
+    await updateDoc(doc(getSubCollection('departament'), id_departament), { length_device: length_device });//update global data departament
 }
-export async function updateDataDevice(){
-    
+export async function createDepartament({data}){
+    //query how many departments exist to increment in 1++
+    const snapshot = await getDocs(getSubCollection('departament'));
+
+    let cantDepartaments = 0;
+    snapshot.forEach((e) = { cantDepartaments++ })
+
+    let id_departament = 100 + cantDepartament + 1;
+}
+export async function createUser(){
+    //
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
@@ -242,11 +273,7 @@ export class DataByRequest {
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
-/** to call all departments over entity we its in */
-export async function getCollectionDepartament() {
-    const path = query(getSubCollection('departament'), where("name-room", "!=", ''));
-    return await getDocs(path);
-}
+export async function getCollectionDepartament() { return await getDocs(getSubCollection('departament')) } //to call all departments over entity we its in
 /**
  * This method simplify the code through access to subcollection in context
  * @param {string} subCollection - Is the name of the sub collection to inspect
