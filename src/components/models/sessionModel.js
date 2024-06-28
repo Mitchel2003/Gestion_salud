@@ -171,7 +171,7 @@ export class Section {
      * @returns {array} returns an array with collections that belongs to containers in current section, this way each container is filled according to collection referenced, return shorted [0],[1]
      */
     static collectionToSearch() {
-        const array = [['id_collection_home'], ['device_references', 'finding_references'], ['id_container_departament']];
+        const array = [['id_collection_home'], ['device_references', 'finding_references'], ['departament', 'device_references']];
         return array[this.indexSection]
     }
     /**
@@ -179,7 +179,7 @@ export class Section {
      * @returns {array} returns an array with containers that belongs to current section, return shorted [0],[1]
      */
     static containerToFill() {
-        const array = [['id_container_home'], ['device-list', 'reports'], ['id_container_departament']];
+        const array = [['nothing'], ['device-list', 'reports'], ['departament-list', 'devices-on-departament']];
         return array[this.indexSection];
     }
     /*-------------------------------------------------------------------------------------------------------------------*/

@@ -67,6 +67,7 @@ export function getUserContext(res) {//AC #205
         <div class="tab-content" id="nav-tabContent">   <!-- content of section -->
 
             <!-- Home -->
+
             <div class="tab-panel p-3 fade collapse show active" id="home" role="tabpanel" aria-labelledby="nav-home">
                 <div class="container-fluid p-0 rounded-2">
                     <div class="top-0 start-0 d-flex align-items-center" style="background: rgba(24, 29, 56, 0.7);">
@@ -82,12 +83,12 @@ export function getUserContext(res) {//AC #205
                     </div>
                 </div>
             </div>
-            <!-- Handler device -->
-            <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
 
+            <!-- Handler device -->
+
+            <div class="tab-panel p-3 fade collapse" id="handler-device" role="tabpanel" aria-labelledby="nav-handler-device">
                 <!-- hd top -->
                 <div class="row">
-
                     <!-- hd navbar -->
                     <div class="col-lg-8 col-md-8 col-sm-5 align-items-end d-flex order-2 order-sm-1">
                         <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
@@ -95,11 +96,9 @@ export function getUserContext(res) {//AC #205
                                 <button class="nav-link active" id="nav-reports" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#reports" aria-current="reports" aria-selected="true">
                                     Reports
                                 </button>
-
                                 <button class="nav-link" id="nav-create-report" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#create-report" aria-current="create-report" aria-selected="false">
                                     Create report
                                 </button>
-
                                 <button class="nav-link" id="nav-add-device" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#add-device" aria-current="add-device" aria-selected="false">
                                     Add device
                                 </button>
@@ -122,10 +121,9 @@ export function getUserContext(res) {//AC #205
                         <!-- container left -->
                         <div class="col-lg-8 col-md-8 col-sm-6 p-1">
                             <div class="scroll-container overflow-auto rounded-2" style="max-height: 75vh;">
-                                <!-- content section left -->
                                 <div class="tab-content" id="nav-tabContent-handlerDevice">
-                                    <div class="tab-panel fade collapse show active" id="reports" role="tabpanel" aria-labelledby="nav-reports">
 
+                                    <div class="tab-panel fade collapse show active" id="reports" role="tabpanel" aria-labelledby="nav-reports">
                                         <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
                                             <div class="w-75 text-center text-black py-5">
                                                 <i class="bi bi-info-circle-fill text-danger fs-1"></i>
@@ -133,14 +131,12 @@ export function getUserContext(res) {//AC #205
                                                 <p class="card-text">Please, create something to see here</p>
                                             </div>
                                         </div>
-
                                         <div request='loadMore' class="card d-none" id="load-more">
                                             <button request="loadMore" class="btn btn-secondary container-fluid p-0">load more...</button>
                                         </div>
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="create-report" role="tabpanel" aria-labelledby="nav-create-report">
-
                                         <div class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
                                             <h2 class="card-title fw-bold text-start mb-3">Report Form</h2>
                                             <form>
@@ -158,7 +154,6 @@ export function getUserContext(res) {//AC #205
                                                         <input type="text" class="form-control" id="create-report-idDevice" placeholder="Enter Device ID">
                                                     </div>
                                                 </div>
-
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-5 col-sm-5 mb-2 order-sm-2">
                                                         <label for="create-report-maintenance" class="form-label">Maintenance</label>
@@ -173,14 +168,12 @@ export function getUserContext(res) {//AC #205
                                                         <input type="text" class="form-control" id="create-report-subject" placeholder="Enter Subject">
                                                     </div>
                                                 </div>
-
                                                 <div class="row">
                                                     <div class="col-12 mb-3">
                                                         <label for="create-report-description" class="form-label">Description</label>
                                                         <textarea class="form-control" id="create-report-description" rows="2" placeholder="Enter Description"></textarea>
                                                     </div>
                                                 </div>
-
                                                 <div class="d-flex">
                                                     <button type="button" class="btn btn-primary" action-btn="create-report" onclick="handleCustomRequest(event)">Submit Report</button>
                                                     <div class="form-check form-switch ms-auto">
@@ -189,12 +182,10 @@ export function getUserContext(res) {//AC #205
                                                     </div>
                                                 </div>
                                             </form>                                    
-                                        </div>
-                                        
+                                        </div>                            
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="add-device" role="tabpanel" aria-labelledby="nav-add-device">
-                                        
                                         <div id="create-device" class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
                                             <h2 class="card-title fw-bold text-start mb-3">Device Form</h2>
                                             <form>
@@ -220,14 +211,12 @@ export function getUserContext(res) {//AC #205
                                                         </select>
                                                     </div>
                                                 </div>
-
                                                 <div class="row">
                                                     <div class="col-12 mb-3">
                                                         <label for="create-device-specifications" class="form-label">Description</label>
                                                         <textarea class="form-control" id="create-device-specifications" rows="3" placeholder="Enter Description"></textarea>
                                                     </div>
                                                 </div>
-
                                                 <div class="d-flex">
                                                     <button type="button" class="btn btn-primary" action-btn="create-device" onclick="handleCustomRequest(event)">Submit device</button>
                                                     <div class="form-check form-switch ms-auto">
@@ -237,7 +226,6 @@ export function getUserContext(res) {//AC #205
                                                 </div>
                                             </form>                                    
                                         </div>
-
                                     </div>
                                     
                                 </div>
@@ -254,8 +242,8 @@ export function getUserContext(res) {//AC #205
                                     <h3>Devices</h3>
                                 </div>
                             </div>
+
                             <div id="device-list" class="scroll-container overflow-auto p-0 rounded-2" style="max-height: 75vh;">
-                                
                                 <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
                                     <div class="w-75 text-center text-black py-5">
                                         <i class="bi bi-info-circle-fill text-danger fs-1"></i>
@@ -263,19 +251,91 @@ export function getUserContext(res) {//AC #205
                                         <p class="card-text">Please, create something to see here</p>
                                     </div>
                                 </div>
-
                                 <div class="card d-none" id="load-more">
                                     <button request="loadMore" class="btn btn-primary container-fluid p-0">load more...</button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Control departament -->
+
             <div class="tab-panel fade collapse p-3" id="control-departaments" role="tabpanel" aria-labelledby="nav-control-departaments">
-                <h1>control-departaments</h1>
+                <!-- hd top -->
+                <div class="row">
+                    <!-- hd navbar -->
+                    <div class="col-lg-8 col-md-8 col-sm-5 align-items-end d-flex order-2 order-sm-1">
+                        <nav class="navbar navbar-expand-lg p-0 bg-primary-subtle border border-primary-subtle bg-opacity-75 rounded-top-2">
+                            <div class="nav nav-tabs navbar-collapse" id="subnavbar-control-departaments" role="tablist">
+                                <button class="nav-link active" id="nav-devices-on-departament" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#devices-on-departament" aria-current="devices-on-departament" aria-selected="true">
+                                    Devices on departament
+                                </button>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!-- hd search -->
+                    <div class="col-lg-4 col-md-4 col-sm-7 mb-1 d-flex order-1 order-sm-2">
+                        <button class="btn btn-lg btn-warning rounded-end-0 rounded-start-4 ms-auto" type="button"> <span class="bx bx-filter-alt mt-1 fs-5"></span> </button>
+                        <input class="form-control w-100 rounded-0" type="search" placeholder="Search device" aria-label="Search">
+                        <button class="btn btn-lg btn-info rounded-start-0 " type="submit"> <span class="bx bx-search fs-5"></span> </button>
+                    </div>
+                </div>
+
+                <!-- hd container -->
+                <div class="container-fluid rounded-2 bg-body-tertiary bg-opacity-50">
+                    <div class="row">
+
+                        <!-- container left -->
+                        <div class="col-lg-8 col-md-8 col-sm-6 p-1">
+                            <div class="scroll-container overflow-auto rounded-2" style="max-height: 75vh;">
+                                <div class="tab-content" id="nav-tabContent-controlDepartaments">
+
+                                    <div class="tab-panel fade collapse show active" id="devices-on-departament" role="tabpanel" aria-labelledby="nav-devices-on-departament">
+                                        <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
+                                            <div class="w-75 text-center text-black py-5">
+                                                <i class="bi bi-info-circle-fill text-danger fs-1"></i>
+                                                <h5 class="card-title mb-3 fs-5">Nothing here</h5>
+                                                <p class="card-text">Please, create something to see here</p>
+                                            </div>
+                                        </div>
+                                        <div request='loadMore' class="card d-none" id="load-more">
+                                            <button request="loadMore" class="btn btn-secondary container-fluid p-0">load more...</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- container right -->
+                        <div class="col-lg-4 col-md-4 col-sm-6 p-1 rounded-2 bg-body-tertiary bg-opacity-75">
+                            <div class="d-flex px-1 d-sm-none">
+                                <div class="me-auto">
+                                    <i class="bi bi-pc-display text-primary fs-1"></i>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <h3>Departament</h3>
+                                </div>
+                            </div>
+
+                            <div id="departament-list" class="scroll-container overflow-auto p-0 rounded-2" style="max-height: 75vh;">
+                                <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
+                                    <div class="w-75 text-center text-black py-5">
+                                        <i class="bi bi-info-circle-fill text-danger fs-1"></i>
+                                        <h5 class="card-title mb-3 fs-5">Nothing here</h5>
+                                        <p class="card-text">Please, create something to see here</p>
+                                    </div>
+                                </div>
+                                <div class="card d-none" id="load-more">
+                                    <button request="loadMore" class="btn btn-primary container-fluid p-0">load more...</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="tab-panel fade collapse p-3" id="user-management" role="tabpanel" aria-labelledby="nav-user-management">
