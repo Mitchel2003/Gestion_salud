@@ -124,6 +124,7 @@ function getMessageAlert(type) {
     if (type === 'messagePasswordSizeShort') { title = "Password so short"; message = "Please, retry with 6 or more caracters"; typeAlert = "e"; }
     if (type === 'messageTokenExpired') { title = "Token expired"; message = "Try to generate another token"; typeAlert = "e"; }
     if (type === 'messageTokenVerifyExpired') { title = "Token expired"; message = "This account has already been verified"; typeAlert = "e"; }
+    if (type === 'messageErrorSubmitCheckConnection') { title = "Error submit"; message = "Check your conecction and try again"; typeAlert = "e"; }
     if (type === 'messageTempUnknow') { title = "Exception Unknow"; typeAlert = "e"; }
     return { title, message, typeAlert };
 }

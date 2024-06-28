@@ -69,7 +69,7 @@ export function getUserContext(res) {//AC #205
             <!-- Home -->
             <div class="tab-panel p-3 fade collapse show active" id="home" role="tabpanel" aria-labelledby="nav-home">
                 <div class="container-fluid p-0 rounded-2">
-                    <div class="top-0 start-0 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                    <div class="top-0 start-0 d-flex align-items-center" style="background: rgba(24, 29, 56, 0.7);">
                         <div class="container">
                             <div class="row justify-content-start">
                                 <div class="col-sm-10 col-lg-8">
@@ -194,13 +194,50 @@ export function getUserContext(res) {//AC #205
                                     </div>
 
                                     <div class="tab-panel fade collapse" id="add-device" role="tabpanel" aria-labelledby="nav-add-device">
-                                        <div class="empty card rounded-3 border-0 align-items-center shadow" style="background: url('../components/images/bg-not-found.svg') no-repeat center; background-size: cover;">
-                                            <div class="w-75 text-center text-black py-5">
-                                                <i class="bi bi-info-circle-fill text-danger fs-1"></i>
-                                                <h5 class="card-title mb-3 fs-5">Nothing here</h5>
-                                                <p class="card-text">Please, create something to see here</p>
-                                            </div>
+                                        
+                                        <div class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
+                                            <h2 class="card-title fw-bold text-start mb-3">Device Form</h2>
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 col-sm-4 mb-2 order-sm-2">
+                                                        <label for="create-device-departament" class="form-label">Departament</label>
+                                                        <select class="form-select" id="create-device-departament">
+                                                            <option value="" selected disabled>Choose a departament</option>
+                                                            <!-- load content -->
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-4 col-sm-4 mb-2 order-sm-1">
+                                                        <label for="create-device-serial" class="form-label">Serial</label>
+                                                        <input type="text" class="form-control" id="create-device-serial" placeholder="Enter serial">
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-4 col-sm-4 mb-2 order-sm-3">
+                                                        <label for="create-device-warranty" class="form-label">Warranty</label>
+                                                        <select class="form-select" id="create-device-warranty">
+                                                            <option value="" selected disabled>Choose a time</option>
+                                                            <option value="preventive">Not apply</option>
+                                                            <option value="12 months">12 months</option>
+                                                            <option value="24 months">24 months</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 mb-3">
+                                                        <label for="create-device-description" class="form-label">Description</label>
+                                                        <textarea class="form-control" id="create-device-description" rows="3" placeholder="Enter Description"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex">
+                                                    <button type="button" class="btn btn-primary" action-btn="create-device" onclick="handleCustomRequest(event)">Submit device</button>
+                                                    <div class="form-check form-switch ms-auto">
+                                                        <label class="form-check-label fs-5" for="create-device-avaliable">Avaliable</label>
+                                                        <input class="form-check-input fs-4" type="checkbox" role="switch" id="create-device-avaliable" checked>
+                                                    </div>
+                                                </div>
+                                            </form>                                    
                                         </div>
+
                                     </div>
                                     
                                 </div>

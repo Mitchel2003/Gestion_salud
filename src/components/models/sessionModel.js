@@ -29,7 +29,7 @@ function controllerSideBar(side_bar) {
  */
 async function handlerSection(nav) {
     nav.addEventListener('click', async (e) => {
-        let item = e.target.ariaCurrent; if (!item) return;
+        let item = e.target.ariaCurrent; if (!item || item === 'home') return;
         await Section.loadCurrentSection(item);
         await eventContainer(Section.getContainerSection(0));
     });
@@ -135,6 +135,7 @@ export class Section {
                 this.clearContainerConditionally(res);
                 this.createItems(res, dataDefault);
             });
+            await this.actionsExtraSection();
             await Promise.all(promise);
             offLoadWhile();
         } catch (error) { console.log(error) }
@@ -424,6 +425,34 @@ export class Section {
     }
     /*-------------------------------------------------------------------------------------------------------------------*/
 
+    /*--------------------------------------------------actions extras--------------------------------------------------*/
+    static async actionsExtraSection() {
+        const data = ['', await this.extraHandlerDevice()];
+        data[this.indexSection];
+    }
+    static async extraHandlerDevice(){
+        await this.fillSelect_createDevice();
+    }
+    static async fillSelect_createDevice() {
+        //get docs from collection
+        const { getCollectionDepartament } = await import('../firebase/query.js');
+        const departaments = await getCollectionDepartament();
+
+        //reference "select" into DOM
+        const currentSection = elementById(this.currentSection);
+        const select = currentSection.querySelector('#create-device-departament');
+
+        //keep default option and clear select (to items accumulated)
+        const defaultOption = select.querySelector('option[value=""]'); select.innerHTML = ''; select.appendChild(defaultOption);
+        departaments.forEach((e) => { select.appendChild(this.optionDepartament(e.id)) });
+    }
+    static optionDepartament(e){
+        const option = document.createElement('option');
+        option.value = e; option.textContent = e;
+        return option;
+    }
+    /*-------------------------------------------------------------------------------------------------------------------*/
+
     /*--------------------------------------------------getters--------------------------------------------------*/
     /**
      * On click a button in any card, we can take him the data to operate more actions through the information obtained about card in context
@@ -459,41 +488,40 @@ export class Section {
 export async function controllerSubmitFormRequest(e) {
     const btn = e.target;
     const req = btn.getAttribute('action-btn'); if (!req) return;
-    const objectData = Section.getTargetButton(btn) ?? null; // let objReference = btn.getAttribute('ref') ?? null;
-    if (!objectData) return await ActionButton.resolve(req);
-    await ActionButton.modify(req, objectData);
+    const dataRef = Section.getTargetButton(btn) ?? null;
+    if (!dataRef) return await ActionButton.resolve(req);
+    await ActionButton.modify(req, dataRef);
 }
 
 class ActionButton {
     static request;
-    static values = {};
-    static reference = {};
     static index_request;
+    static reference = {};
+    /*--------------------------------------------------resolve--------------------------------------------------*/
     /**
      * This resolve a form submit according to the type of request, example ["create-report"]
      * @param {string} request - This mean the name of the type request clicked by the user
      */
     static async resolve(request) {
+        this.request = request;
+        this.index_request = this.getIndexResolve();
         try {
             onLoadWhile();
-            this.request = request;
-            this.index_request = this.getIndexAction();
             const object = await this.getValues();
             if (!object) return offLoadWhile();
-            this.values = object;
-            await this.documentPath();
+            await this.documentPath(object);
             await this.clearFields();
-            const res = await this.actionDone();
-            if (res) await this.reloadSection();
+            await this.actionDone();
+            await this.reloadSection();
             offLoadWhile();
-        } catch (e) { offLoadWhile(); console.log(e); return await showMessage('messageTempUnknow') }
+        } catch (e) { offLoadWhile(); return await showMessage('messageErrorSubmitCheckConnection') }
     }
     /**
      * To get the index corresponding to current request
      * @returns {number} returns the index associated to the request, this allows us to submit the form in a method corresponding
      */
-    static getIndexAction() {
-        const array = ['create-report'];
+    static getIndexResolve() {
+        const array = ['create-report', 'create-device'];
         return array.findIndex(value => value === this.request);
     }
     /**
@@ -503,7 +531,10 @@ class ActionButton {
     static async getValues() {
         const element = elementById(this.request);
         const imp = await import('../utils/values.js');
-        const data = [imp.getInputCreateReport(element)];
+        const data = [
+            imp.getInputCreateReport(element),
+            imp.getInputCreateDevice(element)
+        ];
         const objectFieldValues = data[this.index_request];
         return await this.checkCompletedFields(objectFieldValues);
     }
@@ -517,13 +548,22 @@ class ActionButton {
         if (empty) return await showMessage('messageFieldEmpty');
         return obj;
     }
-    /** Execute the submit according to current context and an index_request */
-    static async documentPath() {
+    /**
+     * Execute the submit according to current context and an index_request
+     * @param {object} values - Correspond to data from diligenced form, this data is represented into keys
+     */
+    static async documentPath(values) {
         const imp = await import('../firebase/query.js');
-        const data = [await imp.createReport(this.values)];
+        const data = [
+            await imp.createReport(values),
+            await imp.createDevice(values)
+        ];
         data[this.index_request];
     }
-    /** Allow show a message 'operation done' according to request specific */
+    /**
+     * Allow show a message 'operation done' according to request specific
+     * @returns {message} get a message that comunicate to the user about state of request
+     */
     static async actionDone() {
         const data = ['messageCreateReportDone'];
         return await showMessage(data[this.index_request], 'alertButtonActionConfirm');
@@ -535,28 +575,31 @@ class ActionButton {
         const data = [imp.cleanInputCreateReport(e)];
         data[this.index_request];
     }
+    /*-------------------------------------------------------------------------------------------------------------------*/
+
+    /*--------------------------------------------------modify--------------------------------------------------*/
     /**
-     * This modify (set or delet) a requested element according to the type of request, example ["create-report"]
+     * This resolve an action for a document in context, this according to the type of request, example ["delete-report, update-report"]
      * @param {string} request - This mean the name of the type request clicked by the user
      * @param {object} reference - Correspond to additional data to operate changes into database
      */
-    static async modify(request, reference) { //working here...
+    static async modify(request, reference) {
+        this.request = request;
+        this.reference = reference;
+        this.index_request = this.getIndexModify();
         try {
             onLoadWhile();
-            this.request = request;
-            this.reference = reference;
-            this.index_request = this.getIndexModify();
-            await this.routeActionModify();
-            const response = await this.modifyDone();
-            if (response) await this.reloadSection();
+            await this.routeModify();
+            await this.modifyDone();
+            await this.reloadSection();
             offLoadWhile();
-        } catch (e) { offLoadWhile(); return await showMessage('messageTempUnknow') }
+        } catch (e) { offLoadWhile(); return await showMessage('messageErrorSubmitCheckConnection') }
     }
     static getIndexModify() {
         const array = ['delete-report'];
         return array.findIndex(value => value === this.request);
     }
-    static async routeActionModify() {
+    static async routeModify() {
         const imp = await import('../firebase/query.js');
         const data = [imp.deleteReport(this.reference)];
         data[this.index_request]
@@ -570,6 +613,7 @@ class ActionButton {
         let section = Section.getCurrentSection();
         await Section.loadCurrentSection(section);
     }
+    /*-------------------------------------------------------------------------------------------------------------------*/
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 

@@ -33,6 +33,20 @@ export function getInputCreateReport(context) {
         typeMaintenance: typeMaintenance
     };
 }
+export function getInputCreateDevice(context) {
+    const serial = context.querySelector('#create-device-serial').value;
+    const id_departament = context.querySelector('#create-device-departament').value;
+    const warranty = context.querySelector('#create-device-warranty').value;
+    const description = context.querySelector('#create-device-description').value;
+    const avaliable = context.querySelector('#create-device-avaliable').checked;
+    return {
+        serial: serial,
+        warranty: warranty,
+        avaliable: avaliable,
+        description: description,
+        id_departament: id_departament
+    };
+}
 /*-------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------server--------------------------------------------------*/

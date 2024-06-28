@@ -68,12 +68,8 @@ export async function createReport({time, date, subject, avaliable, id_device, d
         id_device: id_device,
         type: typeMaintenance,
     });
-
-    //update avaliable device_references
-    await updateDoc(doc(getSubCollection('device_references'), id_device), { avaliable: avaliable });
-
-    //update global data device (collection deep)
-    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { lastReport: dateTimestamp, length_finding: length_finding, avaliable: avaliable });
+    await updateDoc(doc(getSubCollection('device_references'), id_device), { avaliable: avaliable });//update avaliable device_references
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { avaliable: avaliable, lastReport: dateTimestamp, length_finding: length_finding });//update avaliable device (collection deep)
 }
 export async function deleteReport({id_device, id_report}){
     //get data device_references to obtain path tools
@@ -93,22 +89,15 @@ export async function deleteReport({id_device, id_report}){
     const numberReport = parseInt(report, 10);
     if(numberReport === length_finding) length_finding--; //decrement 1 less
 
-    //delete report from finding_references
-    await deleteDoc(doc(getSubCollection('finding_references'), id_report));
-
-    //delete report from finding (deep collection)
-    await deleteDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', id_report));
-
-    //update info global associated with this device
-    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { length_finding: length_finding });
+    await deleteDoc(doc(getSubCollection('finding_references'), id_report));//delete report from finding_references
+    await deleteDoc(doc(getSubCollection('departament'), ...toDeepDevice, 'finding', id_report));//delete report from finding (deep collection)
+    await updateDoc(doc(getSubCollection('departament'), ...toDeepDevice), { length_finding: length_finding });//update info global associated with this device
 }
-
-//working here...
-export async function updateDataDevice(){
+export async function createDevice({serial, warranty, avaliable, description, id_departament}) {
     
 }
-export async function createDevice(){
-    //i need a comboBox with departament to create device 
+export async function updateDataDevice(){
+    
 }
 /*-------------------------------------------------------------------------------------------------------------------*/
 /** A request could be querySnapshot or documentSnapshot */
@@ -253,6 +242,11 @@ export class DataByRequest {
 /*--------------------------------------------------tools modularization--------------------------------------------------*/
 export function getCollection() { return collection(db, 'main') }
 export function getCollectionUser(entityContext) { return collection(getCollection(), entityContext, 'user') }
+/** to call all departments over entity we its in */
+export async function getCollectionDepartament() {
+    const path = query(getSubCollection('departament'), where("name-room", "!=", ''));
+    return await getDocs(path);
+}
 /**
  * This method simplify the code through access to subcollection in context
  * @param {string} subCollection - Is the name of the sub collection to inspect
