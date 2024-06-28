@@ -94,7 +94,7 @@ export function cardDetails({data, snapshot}, icon) {
                     <p class="text-start"><strong>Date last report:</strong> ${time ? `${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minutes}:${time.seconds}` : 'Nothing here'}</p>
                 </div>
                 <div class="col-5 d-flex">
-                    <p class="ms-auto"><strong>Warranty:</strong> ${data.garantie === 'empty'? `&#x1F534;`:`${data.garantie} &#x1F535;`}</p>
+                    <p class="ms-auto"><strong>Warranty:</strong> ${data.warranty === 'empty'? `&#x1F534;`:`${data.warranty} &#x1F535;`}</p>
                 </div>
             </div>
 

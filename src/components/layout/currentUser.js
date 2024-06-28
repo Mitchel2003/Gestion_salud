@@ -195,7 +195,7 @@ export function getUserContext(res) {//AC #205
 
                                     <div class="tab-panel fade collapse" id="add-device" role="tabpanel" aria-labelledby="nav-add-device">
                                         
-                                        <div class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
+                                        <div id="create-device" class="card card-body border border-4 border-primary-subtle shadow-lg p-3 bg-body rounded" style="background: url('../components/images/bg-create-report.svg') no-repeat center; color: #fff;">
                                             <h2 class="card-title fw-bold text-start mb-3">Device Form</h2>
                                             <form>
                                                 <div class="row">
@@ -214,7 +214,7 @@ export function getUserContext(res) {//AC #205
                                                         <label for="create-device-warranty" class="form-label">Warranty</label>
                                                         <select class="form-select" id="create-device-warranty">
                                                             <option value="" selected disabled>Choose a time</option>
-                                                            <option value="preventive">Not apply</option>
+                                                            <option value="empty">Not apply</option>
                                                             <option value="12 months">12 months</option>
                                                             <option value="24 months">24 months</option>
                                                         </select>

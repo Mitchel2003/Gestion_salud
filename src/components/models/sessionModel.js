@@ -514,7 +514,7 @@ class ActionButton {
             await this.actionDone();
             await this.reloadSection();
             offLoadWhile();
-        } catch (e) { offLoadWhile(); return await showMessage('messageErrorSubmitCheckConnection') }
+        } catch (e) { offLoadWhile(); console.log(e); return await showMessage('messageErrorSubmitCheckConnection') }
     }
     /**
      * To get the index corresponding to current request
@@ -527,16 +527,17 @@ class ActionButton {
     /**
      * This intend get the values from form in an object
      * @returns {object} returns an object that contain all values from the form diligenced
+     * @example addComentary: 008
      */
     static async getValues() {
         const element = elementById(this.request);
         const imp = await import('../utils/values.js');
         const data = [
-            imp.getInputCreateReport(element),
-            imp.getInputCreateDevice(element)
+            () => imp.getInputCreateReport(element),
+            () => imp.getInputCreateDevice(element)
         ];
-        const objectFieldValues = data[this.index_request];
-        return await this.checkCompletedFields(objectFieldValues);
+        const fieldValues = data[this.index_request]();
+        return await this.checkCompletedFields(fieldValues);
     }
     /**
      * Inspect the "keys" of an param obtained (obj) that represent the different fields filled by the user; we check if some its empty
@@ -555,10 +556,10 @@ class ActionButton {
     static async documentPath(values) {
         const imp = await import('../firebase/query.js');
         const data = [
-            await imp.createReport(values),
-            await imp.createDevice(values)
+            async () => await imp.createReport(values),
+            async () => await imp.createDevice(values)
         ];
-        data[this.index_request];
+        await data[this.index_request]();
     }
     /**
      * Allow show a message 'operation done' according to request specific
@@ -668,5 +669,13 @@ class ActionButton {
  *               [avaliable]
  * 
  *      because this i need convert the snapshot data in reverse()
+ * 
+ * #008: El problema se debe a la evaluación inmediata de las expresiones dentro del arreglo. Usar funciones anónimas para diferir la ejecución
+ * de las funciones hasta que realmente las necesites es una práctica más profesional y eficiente. Esto no solo mejora el rendimiento, sino que
+ * también evita errores al acceder a elementos del DOM que podrían no estar disponibles al momento de la evaluación inicial.
+ * 
+ * Cuando creas un arreglo o un objeto en JavaScript, todas las expresiones dentro de ese arreglo u objeto se evalúan inmediatamente. En tu caso,
+ * las funciones imp.getInputCreateReport(element) y imp.getInputCreateDevice(element) se ejecutan de inmediato y sus resultados se almacenan en
+ * el arreglo data.
  */
 /* ------------------------------------------------------------------------------------------------------------------- */
