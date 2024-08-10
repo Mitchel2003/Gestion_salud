@@ -24,28 +24,7 @@ export function getUserContext(res) {//AC #205
                         <button class="nav-link" id="nav-control-departaments" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#control-departaments" aria-current="control-departaments" aria-selected="false">
                             Control departaments
                         </button>
-
-                        <button class="nav-link" id="nav-user-management" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#user-management" aria-current="user-management" aria-selected="false">
-                            User management
-                        </button>
-
-                        <li class="dropdown text-center">
-                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Documents
-                            </a>
-                            <ul class="dropdown-menu text-center">
-                                <button class="dropdown-item" id="nav-finding-data" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#finding-data" aria-current="finding-data" aria-selected="false">
-                                    Finding data
-                                </button>
-                                <button class="dropdown-item" id="nav-device-information" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#device-information" aria-current="device-information" aria-selected="false">
-                                    Device information
-                                </button>
-                                <hr class="dropdown-divider">
-                                <button class="dropdown-item" id="nav-filters" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#filters" aria-current="filters" aria-selected="false">
-                                    Filters
-                                </button>
-                            </ul>
-                        </li>
+                        
                     </ul>
                 </div>
 
@@ -338,21 +317,6 @@ export function getUserContext(res) {//AC #205
                 </div>
             </div>
 
-            <div class="tab-panel fade collapse p-3" id="user-management" role="tabpanel" aria-labelledby="nav-user-management">
-                <h1>user-management</h1>
-            </div>
-
-            <div class="tab-panel fade collapse p-3" id="finding-data" role="tabpanel" aria-labelledby="nav-finding-data">
-                <h1>finding-data</h1>
-            </div>
-
-            <div class="tab-panel fade collapse p-3" id="device-information" role="tabpanel" aria-labelledby="nav-device-information">
-                <h1>device-information</h1>
-            </div>
-
-            <div class="tab-panel fade collapse p-3" id="filters" role="tabpanel" aria-labelledby="nav-filters">
-                <h1>filters</h1>
-            </div>
         </div>
         `;
     } if (res === 'auditor') {
